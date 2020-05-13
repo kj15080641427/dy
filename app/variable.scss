@@ -1,0 +1,18 @@
+/**
+ * $monitorHeight = $monitor_left_pd_top + $monitor_left_pd_bottom + $monitor_left_wthBox_height + $monitor_left_wthChart_height + $monitor_left_wthtable_height
+*/
+$mainColor: #0C63CB;
+$monitorMinHeight: 1026px;
+$monitorHeight: 1080px;
+$headHeight: 90px;
+$monitor_left_w: 534px;
+$monitor_left_pd_top: 80px;
+$monitor_left_pd_left: 20px;
+$monitor_left_pd_bottom: 10px;
+$monitor_right_w: 534px;
+$monitor_right_pd_top: 80px;
+$monitor_right_pd_right: 20px;
+$monitor_right_pd_bottom: 10px;
+$monitor_left_wthBox_height: 130px;
+$monitor_left_wthChart_height: 368px;
+$monitor_left_wthtable_height: 438px;

@@ -1,0 +1,13 @@
+@import "@app/variable.scss";
+.m-wth-box {
+  height: $monitor_left_wthBox_height;
+  background: rgba(255,0,0,.3);
+}
+.m-wth-chart {
+  height: $monitor_left_wthChart_height;
+  background: rgba(0,255,0,.3);
+}
+.m-wth-table {
+  height: $monitor_left_wthtable_height;
+  background: rgba(0,0,255,.3);
+}
