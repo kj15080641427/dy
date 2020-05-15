@@ -29,13 +29,13 @@ class WeatherTable extends React.PureComponent {
       {
         title: '监测时间',
         dataIndex: 'date',
-        width: 160,
+        width: 140,
         className: 'column-money'
       },
       {
-        title: '监测值(mm)',
+        title: '监测值(m)',
         dataIndex: 'num',
-        width: 110,
+        width: 109,
         className: 'column-money'
       },
       {
@@ -94,29 +94,20 @@ class WeatherTable extends React.PureComponent {
     }
     return (
       <div className="m-wth-table">
-        <img style={{
-          top: '100px',
-          width: '107px',
-          height: '8px',
-        }} src={imgURL} alt="" />
-        <div style={{
-          width: '514px',
-          height: '418px',
-          border: '1px solid #007ed7',
-          bottom: '-10px'
-        }}>
-          <Tabs defaultActiveKey="1" onChange={callback} type="card" animated="true" >
+        <img className="m-table-img" src={imgURL} alt="" />
+        <div className="m-div">
+          <Tabs defaultActiveKey="1" onChange={callback} animated="true">
             <TabPane tab="雨量站" key="1">
-              <Table size="small" loading="true" columns={columns} dataSource={data} scroll={{ y: 300 }} pagination={false} />
+              <Table className="m-div-table" size="small" loading="true" columns={columns} dataSource={data} scroll={{ y: 300 }} pagination={false} />
             </TabPane>
             <TabPane tab="水位站" key="2">
-              <Table size="small" columns={columns} dataSource={data} scroll={{ y: 300 }} pagination={false} />
+              <Table className="m-div-table" size="small" columns={columns} dataSource={data} scroll={{ y: 300 }} pagination={false} />
             </TabPane>
             <TabPane tab="视频站点" key="3">
-              <Table size="small" columns={columns} dataSource={data} scroll={{ y: 300 }} pagination={false} />
+              <Table className="m-div-table" size="small" columns={columns} dataSource={data} scroll={{ y: 300 }} pagination={false} />
             </TabPane>
             <TabPane tab="防汛人员" key="4">
-              <Table size="small" columns={columns} dataSource={data} scroll={{ y: 300 }} pagination={false} />
+              <Table className="m-div-table" size="small" columns={columns} dataSource={data} scroll={{ y: 300 }} pagination={false} />
             </TabPane>
           </Tabs>
         </div>

@@ -3,9 +3,10 @@
  */
 import React from 'react';
 import "./style.scss";
-import { Table } from 'antd';
+import { Table, Tag, Row, Col } from 'antd';
 import localimgURL from '../../../resource/local.png';
 import imgURL from '../../../resource/title_bg.png';
+import warningImg from '../../../resource/warning.svg';
 
 class AlarmTable extends React.PureComponent {
   constructor(props, context) {
@@ -27,16 +28,29 @@ class AlarmTable extends React.PureComponent {
         className: 'column-money'
       },
       {
-        title: '监测时间',
+        title: '报警时间',
         dataIndex: 'date',
-        width: 160,
+        width: 140,
         className: 'column-money'
       },
       {
-        title: '监测值(mm)',
+        title: '超警戒水位(m)',
         dataIndex: 'num',
-        width: 110,
-        className: 'column-money'
+        width: 109,
+        className: 'column-money',
+        key: 'num',
+        render:
+          num => {
+            let color = num > 5 ? '#ec595f' : '#40b96c';
+            if (num === '5.00') {
+              color = '#eee54c';
+            }
+            return (
+              <Tag color={color} key={num}>
+                {num}
+              </Tag>
+            );
+          }
       },
       {
         title: '定位',
@@ -55,13 +69,13 @@ class AlarmTable extends React.PureComponent {
       id: "31103937",
       name: `丁王`,
       date: '2020-05-03 12:00',
-      num: `6.08`,
+      num: `5.00`,
       loca: '',
     }, {
       id: "31103937",
       name: `丁王`,
       date: '2020-05-03 12:00',
-      num: `6.08`,
+      num: `4.00`,
       loca: '',
     }, {
       id: "31103937",
@@ -89,13 +103,17 @@ class AlarmTable extends React.PureComponent {
       loca: '',
     }];
     return (
-      <div className="m-alm-table"><div style={{
-        width: '514px',
-        height: '100px',
-        border: '1px solid #007ed7',
-      }}>
-        <Table size="small" columns={columns} dataSource={data} scroll={{ y: 300 }} pagination={false} />
-      </div></div>
+      <div className="m-alm-table">
+        <img className="m-alm-img" src={imgURL} alt="" /><div className="m-alm-div">
+          <Row className="m-alm-row">
+            <Col span={6}><img className="m-alm-warningImg" src={warningImg}></img></Col>
+            <Col span={18}><Row><Col span={12}>超警戒水位<span className="m-alm-row-warning">5</span></Col><Col span={12}>已经处理<span className="m-alm-row-abnormal">2</span></Col>
+            </Row><Row><Col span={12}>数据异常<span className="m-alm-row-processed">1</span></Col><Col span={12}>等待处理<span className="m-alm-row-pending">4</span></Col>
+              </Row>
+            </Col>
+          </Row>
+          <Table className="m-alm-div-table" size="small" columns={columns} dataSource={data} scroll={{ y: 300 }} pagination={false} />
+        </div></div>
     );
   }
   componentDidMount() { }
