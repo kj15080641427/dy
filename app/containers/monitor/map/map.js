@@ -6,17 +6,42 @@ import UbiMap from "./ubimap";
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
 import "./style.scss";
 import { createPersonDom } from "./template";
+import Person from "./overlays/Person";
 class Map extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      overlays: {
+        person: {}
+      }
     };
+    this.type = [Person];
     this.mapKey = "b032247838f51a57717f172c55d25894";
+    this.onOverlayClose = this.onOverlayClose.bind(this);
   }
   render() {
+    let { overlays } = this.state;
+    let domArr = [];
+    if(this.map) {
+      Object.keys(overlays).forEach((type) => {
+        for (let i = 0; i < this.type.length; i++) {
+          let Comp = null;
+          if (this.type[i].type === type) {
+            Comp = this.type[i];
+            let comps = Object.keys(overlays[type]).map((key) => {
+              return <Comp key={key} map={this.map} model={overlays[type][key]} onClose={this.onOverlayClose}></Comp>;
+            });
+            domArr = domArr.concat(comps);
+            break;
+          }
+        }
+      });
+    }
+    
     return (
       <>
         <div id="map"></div>
+        {domArr}
       </>
     );
   }
@@ -25,6 +50,7 @@ class Map extends React.PureComponent {
     this.addEvent();
     this.loadData();
   }
+  
   componentWillUnmount() {
     this._resizeToken.remove();
     if (this._resizeTimeout) {
@@ -62,31 +88,34 @@ class Map extends React.PureComponent {
       key: "tiandi2",
       projection: true
     });
-    this.map.addGeo({
-      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
-      params: {
-        'LAYERS': 'dy:DYWater',
-        'TILED': true
-      },
-      zIndex: 10,
-      key: "river"
+    // this.map.addGeo({
+    //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
+    //   params: {
+    //     'LAYERS': 'dy:DYWater',
+    //     'TILED': true
+    //   },
+    //   zIndex: 10,
+    //   key: "river"
+    // });
+    this.map.addWFS({
+      key: "wfs",
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
+      typename: "dy:河流"
+      // url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs?service=wfs&version=1.1.0&request=GetFeature&typeNames=dy:DYWater&outputFormat=application/json&srsname=EPSG:4326%27"
     });
-    // http:?service=WMS&version=1.1.0&request=GetMap&layers=tiger-ny&styles=&bbox=-74.047185,40.679648,-73.907005,40.882078&width=531&height=768&srs=EPSG:4326&format=application/openlayers
-    // http:?service=WMS&version=1.1.0&request=GetMap&layers=dy%3ADYWater&bbox=118.1063114%2C36.93597828%2C119.3020755%2C38.14744953&width=758&height=768&srs=EPSG%3A4326&format=application/openlayers
-    // http:?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&WIDTH=512&HEIGHT=512&CRS=EPSG%3A3857&STYLES=&FORMAT_OPTIONS=dpi%3A180&BBOX=12758257.26513534%2C4618019.500877209%2C12836528.78209936%2C4696291.017841229
     this.map.addVector({
-      key: "ship",
+      key: "person",
       zIndex: 20,
       style: {
         heading: function(featureObj) {
             return featureObj.heading;
         },
         src: function(featureObj) { //
-            return require("../../../resource/marker-blue.png")["default"];
+            return require("../../../resource/icon/person.svg")["default"];
         },
         anchor: [0.5, 1],
         strokeColor: "#1890ff",
-        width: 3,
+        width: 1,
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontText: function(featureObj) {
@@ -95,16 +124,84 @@ class Map extends React.PureComponent {
         font: '16px sans-serif'
       }
     });
-    this.map.startHighlightFeatureonLayer("ship");
-    this.map.startSelectFeature("ship", (param) => {
-      this.map.addOverlay(param.id, { Coordinate: param.lonlat }, createPersonDom(param, {
-        onVideoClick: () => {
-          console.log(param.id);
+    this.map.addVector({
+      key: "video",
+      zIndex: 20,
+      style: {
+        src: function(featureObj) { //
+            return require("../../../resource/icon/camera.svg")["default"];
         },
-        onClose: () => {
-          this.map.removeOverlay(param.id);
-        }
-      }));
+        anchor: [0.5, 0.5],
+        strokeColor: "#1890ff",
+        width: 1,
+        fillColor: "#1890ff",
+        fontColor: "#82B2FF",
+        fontOffset: [10, 0],
+        fontText: function(featureObj) {
+            return featureObj.id + "";
+        },
+        font: '16px sans-serif'
+      }
+    });
+    this.map.addVector({
+      key: "rain",
+      zIndex: 20,
+      style: {
+        src: function(featureObj) { //
+            return require("../../../resource/icon/rain.svg")["default"];
+        },
+        anchor: [0.5, 0.5],
+        strokeColor: "#1890ff",
+        width: 1,
+        fillColor: "#1890ff",
+        fontColor: "#82B2FF",
+        fontOffset: [10, 0],
+        fontText: function(featureObj) {
+            return featureObj.id + "";
+        },
+        font: '16px sans-serif'
+      }
+    });
+    this.map.addVector({
+      key: "water",
+      zIndex: 20,
+      style: {
+        src: function(featureObj) { //
+            return require("../../../resource/icon/water.svg")["default"];
+        },
+        anchor: [0.5, 0.5],
+        strokeColor: "#1890ff",
+        width: 1,
+        fillColor: "#1890ff",
+        fontColor: "#82B2FF",
+        fontOffset: [10, 0],
+        fontText: function(featureObj) {
+            return featureObj.id + "";
+        },
+        font: '16px sans-serif'
+      }
+    });
+    this.map.startHighlightFeatureonLayer("person");
+    this.map.startHighlightFeatureonLayer("video");
+    this.map.startHighlightFeatureonLayer("rain");
+    this.map.startHighlightFeatureonLayer("water");
+    this.map.startSelectFeature("person", (param) => {
+      let id = param.id;
+      let { overlays } = this.state;
+      let { person } = overlays;
+      if (person[id]) return;
+      person[id] = param;
+      this.setState({
+        overlays: {...overlays}
+      });
+      // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
+      //   onVideoClick: () => {
+      //     console.log(param.id);
+      //   },
+      //   onClose: () => {
+      //     this.map.removeOverlay(param.id);
+      //   }
+      // }));
     });
     // this.map.activeMeasure();
   }
@@ -119,20 +216,71 @@ class Map extends React.PureComponent {
     });
   }
   loadData() {
-    this.map.addFeatures("ship", [
+    this.map.addFeatures("person", [
         {
             type: "Point",
-            id: "ship002",
+            id: "person001",
             lonlat: [118.67, 37.43],
             heading: 0
         },
         {
             type: "Point",
-            id: "ship003",
+            id: "person002",
             lonlat: [118.37, 37.43],
             heading: 0
         },
     ]);
+    this.map.addFeatures("video", [
+        {
+            type: "Point",
+            id: "video001",
+            lonlat: [118.47, 37.43],
+            heading: 0
+        },
+        {
+            type: "Point",
+            id: "video002",
+            lonlat: [118.57, 37.53],
+            heading: 0
+        },
+    ]);
+    this.map.addFeatures("rain", [
+        {
+            type: "Point",
+            id: "rain001",
+            lonlat: [118.47, 37.63],
+            heading: 0
+        },
+        {
+            type: "Point",
+            id: "rain002",
+            lonlat: [118.67, 37.33],
+            heading: 0
+        },
+    ]);
+    this.map.addFeatures("water", [
+        {
+            type: "Point",
+            id: "water001",
+            lonlat: [118.63, 37.73],
+            heading: 0
+        },
+        {
+            type: "Point",
+            id: "water002",
+            lonlat: [118.45, 37.63],
+            heading: 0
+        },
+    ]);
+  }
+  onOverlayClose(id, type) {
+    let { overlays } = this.state;
+    let obj = overlays[type];
+    if (!obj || !obj[id]) return;
+    delete obj[id];
+    this.setState({
+      overlays: {...overlays}
+    });
   }
   
   

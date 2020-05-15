@@ -27,6 +27,13 @@ import Modify from 'ol/interaction/Modify';
 import { shiftKeyOnly, singleClick } from 'ol/events/condition';
 import { unByKey } from 'ol/Observable';
 import TileWMS from 'ol/source/TileWMS';
+import {bbox as bboxStrategy} from 'ol/loadingstrategy';
+import {WFS, GeoJSON} from 'ol/format';
+import {
+  equalTo as equalToFilter,
+  like as likeFilter,
+  and as andFilter
+} from 'ol/format/filter';
 import MousePosition from 'ol/control/MousePosition';
 import { defaults } from 'ol/control';
 import "ol/ol.css";
@@ -129,6 +136,7 @@ export default (function(window) {
             image: new Icon({
                 opacity: opacity == null ? 1: opacity,
                 rotation: heading,
+                size: style.size,
                 // imgSize: [24,24],
                 src: src ? src: undefined,
                 img: style.img ? style.img :undefined,
@@ -466,7 +474,7 @@ export default (function(window) {
         var tilelayer = new TileLayer({
             visible: param.visible == null ? true : param.visible,
             zIndex: param.zIndex ? param.zIndex : 0,
-            source: new TileWMS({
+            source: new TileWMS({ // wfs
               url: oneurl,
               params: param.params,
               serverType: 'geoserver'
@@ -475,6 +483,32 @@ export default (function(window) {
         this.map.addLayer(tilelayer);
         this.layers[param.key] = tilelayer;
 
+    };
+    Map.prototype.addWFS = function(param, urlFunc) {
+      var vectorSource = new VectorSource({
+        format: new GeoJSON(),
+        url: function(extent) {
+          var prj = 'EPSG:3857';
+          return param.url + '?service=WFS&' +
+          'version=1.1.0&request=GetFeature&typename=' + param.typename +
+          '&outputFormat=application/json&srsname=' + prj +
+          '&bbox=' + extent.join(',') + ',' + prj;
+        },
+        strategy: bboxStrategy
+      });
+      var vectorLayer = new VectorLayer({
+        source: vectorSource,
+        style: new Style({
+          stroke: new Stroke({
+            color: 'rgba(0, 0, 255, 1.0)',
+            width: 2
+          })
+        })
+      });
+      vectorLayer.set("key", param.key);
+      this.map.addLayer(vectorLayer);
+      this.layers[param.key] = vectorLayer;
+      
     };
     //添加矢量图
     Map.prototype.addVector = function(param) {
@@ -724,8 +758,8 @@ export default (function(window) {
                     var nowStyle = feature.get("attr").style || this.layerStyle[layer.get("key")];
                     var text = new Text({
                         text: typeof nowStyle.fontText === "function" ? nowStyle.fontText(feature.get("attr")) : nowStyle.fontText,
-                        offsetX: 10,
-                        offsetY: -10,
+                        offsetX: nowStyle.fontOffset && nowStyle.fontOffset[0] != null ? nowStyle.fontOffset[0] : 10,
+                        offsetY: nowStyle.fontOffset && nowStyle.fontOffset[1] != null ? nowStyle.fontOffset[1] : -10,
                         textAlign: "left",
                         fill: new Fill({
                             color: nowStyle.fontColor
@@ -739,7 +773,10 @@ export default (function(window) {
                     return;
                 }
                 
-            }.bind(_this), {hitTolerance:10});
+            }.bind(_this), {hitTolerance:5, layerFilter: function(layer) {
+              return true;
+              
+            }});
             if (flag) {
                 target.style.cursor = "pointer";
             }else{
@@ -840,7 +877,7 @@ export default (function(window) {
                     //     }
                     // }
                 }
-            }.bind(_this),{hitTolerance:10});
+            }.bind(_this),{hitTolerance:5});
             if (!feature) return;
             for (var i = 0; i < _this.sfLayers.length; i++) {
                 var sflayer = _this.sfLayers[i];
@@ -1474,3 +1511,5 @@ export default (function(window) {
     
     return Map;
 })(window);
+
+
