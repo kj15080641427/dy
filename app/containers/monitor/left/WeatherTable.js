@@ -5,12 +5,14 @@ import React from 'react';
 import "./style.scss";
 import localimgURL from '../../../resource/local.png';
 import imgURL from '../../../resource/title_bg.png';
+import emitter from "@app/utils/emitter.js";
 import { Table,Tabs } from 'antd';
 
 class WeatherTable extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {};
+    this.locationClick = this.locationClick.bind(this);
   }
   render() {
     const columns = [
@@ -41,7 +43,7 @@ class WeatherTable extends React.PureComponent {
       {
         title: '定位',
         dataIndex: 'loca',
-        render: value => <img src={localimgURL} alt="" />,
+        render: value => <img src={localimgURL} data-lon={118.37} data-lat={37.43} onClick={this.locationClick} alt="" />,
         className: 'column-money'
       },
     ];
@@ -115,5 +117,11 @@ class WeatherTable extends React.PureComponent {
     );
   }
   componentDidMount() { }
+  locationClick(e) {
+    let lon = e.target.dataset.lon * 1;
+    let lat = e.target.dataset.lat * 1;
+    if (lon == null && lat == null) return;
+    emitter.emit("map-move", [lon, lat], () => { console.log("moveend");});
+  }
 }
 export default WeatherTable;

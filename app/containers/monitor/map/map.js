@@ -4,6 +4,7 @@
 import React from 'react';
 import UbiMap from "./ubimap";
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
+import emitter from "@app/utils/emitter.js";
 import "./style.scss";
 import { createPersonDom } from "./template";
 import Person from "./overlays/Person";
@@ -56,19 +57,18 @@ class Map extends React.PureComponent {
       this.setVisible();
     }
   }
-  
   componentDidMount() {
     this.createMap();
     this.setVisible();
     this.addEvent();
     this.loadData();
   }
-  
   componentWillUnmount() {
     this._resizeToken.remove();
     if (this._resizeTimeout) {
       clearTimeout(this._resizeTimeout);
     }
+    this._mapMove && this._mapMove.remove();
   }
   createMap() {
     this.map = new UbiMap({
@@ -262,6 +262,15 @@ class Map extends React.PureComponent {
         this.map.updateSize();
       }, 300);
     });
+    this._mapMove = emitter.addListener("map-move", (lonlat, onMoveEnd) => {
+      this.map && this.map.animate({
+        center: lonlat,
+        duration: 250,
+      }, () => {
+        onMoveEnd && onMoveEnd();
+      });
+    });
+
   }
   loadData() {
     this.map.addAlarm("alarm001", [118.67, 37.43]);

@@ -31,6 +31,7 @@ class Monitor extends React.PureComponent {
         water: true // 水位站
       }
     };
+    this.onChecked = this.onChecked.bind(this)
   }
   render() {
     let { layerVisible } = this.state;
@@ -49,12 +50,20 @@ class Monitor extends React.PureComponent {
           <WeatherPic></WeatherPic>
         </div>
         <div className="m-bottom">
-          <CheckBox></CheckBox>
+          <CheckBox layerVisible={layerVisible} onChecked={this.onChecked}></CheckBox>
         </div>
       </div>
     );
   }
   componentDidMount() {}
+  onChecked(layerKey, checked) {
+    let { layerVisible } = this.state;
+    if (layerVisible[layerKey] === checked) return;
+    layerVisible[layerKey] = checked;
+    this.setState({
+      layerVisible: {...layerVisible}
+    });
+  }
 }
 // -------------------redux react 绑定--------------------
 
