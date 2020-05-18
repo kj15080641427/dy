@@ -29,6 +29,7 @@ import { unByKey } from 'ol/Observable';
 import TileWMS from 'ol/source/TileWMS';
 import {bbox as bboxStrategy} from 'ol/loadingstrategy';
 import {WFS, GeoJSON} from 'ol/format';
+import Heatmap from 'ol/layer/Heatmap';
 import {
   equalTo as equalToFilter,
   like as likeFilter,
@@ -510,6 +511,59 @@ export default (function(window) {
       this.layers[param.key] = vectorLayer;
       
     };
+    Map.prototype.addHeatmap = function(param, urlFunc) {
+      var vectorSource = new VectorSource({
+        format: new GeoJSON(),
+        url: function(extent) {
+          var prj = 'EPSG:3857';
+          return param.url + '?service=WFS&' +
+          'version=1.1.0&request=GetFeature&typename=' + param.typename +
+          '&outputFormat=application/json&srsname=' + prj +
+          '&bbox=' + extent.join(',') + ',' + prj;
+        },
+        strategy: bboxStrategy
+      });
+      var vectorLayer = new Heatmap({
+        source: vectorSource,
+        blur: 5,
+        radius: 5,
+        weight: function(feature) {
+          var w = feature.get('降雨量');
+          return w;
+        }
+      });
+     
+      vectorLayer.set("key", param.key);
+      this.map.addLayer(vectorLayer);
+      this.layers[param.key] = vectorLayer;
+      
+    };
+    //添加矢量图
+    Map.prototype.addTraffic = function(param) {
+        if (!param || !param.key) return;
+        var _this = this;
+        var vectorLayer = new VectorLayer({
+            source: new VectorSource(),
+            visible: param.visible == null ? true : param.visible,
+            zIndex: param.zIndex ? param.zIndex : 0,
+            style: function(feature) {
+              let traffic = feature.get("attr") && feature.get("attr").traffic;
+              let zoom = _this.getZoom();
+              return new Style({
+                stroke: new Stroke({
+                    color: traffic === 1 ? "#aaee77" : "#ff0000",
+                    width: 8 + (zoom - 11),
+                }),
+              });
+            }
+        });
+        vectorLayer.set("key", param.key);
+        this.map.addLayer(vectorLayer);
+        this.layers[param.key] = vectorLayer;
+        if (param.style) {
+            this.layerStyle[param.key] = param.style;
+        }
+    };
     //添加矢量图
     Map.prototype.addVector = function(param) {
         if (!param || !param.key) return;
@@ -517,12 +571,12 @@ export default (function(window) {
             source: new VectorSource(),
             visible: param.visible == null ? true : param.visible,
             zIndex: param.zIndex ? param.zIndex : 0,
-
+            style: typeof param.style === "function" ? param.style : undefined
         });
         vectorLayer.set("key", param.key);
         this.map.addLayer(vectorLayer);
         this.layers[param.key] = vectorLayer;
-        if (param.style) {
+        if (param.style && typeof param.style !== "function") {
             this.layerStyle[param.key] = param.style;
         }
     };
@@ -537,11 +591,11 @@ export default (function(window) {
         var overlay = new Overlay({
               id:id,
               offset: opt.offset ? opt.offset : [0, -20],
-              stopEvent:true,
+              stopEvent: opt.stopEvent != null ? opt.stopEvent : true,
               className:opt.className,
               // autoPan:true,
-              positioning: 'left',
-              position:transform(opt.Coordinate?opt.Coordinate:[0,0], sprojection, projection),
+              positioning: opt.positioning ? opt.positioning: 'left',
+              position: transform(opt.Coordinate ? opt.Coordinate:[0,0], sprojection, projection),
         });
         overlay.setElement(dom);
         this.map.addOverlay(overlay);
@@ -564,6 +618,29 @@ export default (function(window) {
         var ovl = this.overlay[id];
         ovl.getElement().classList.remove(clazz);
         return this;
+    };
+    Map.prototype.addAlarm = function(id, coordinate, type) {
+
+      let div = document.createElement("div");
+      div.className = "ol-alarm-container";
+      let w1 = document.createElement("div");
+      w1.className = "ol-alarm-water1";
+      let w2 = document.createElement("div");
+      w2.className = "ol-alarm-water2";
+      let w3 = document.createElement("div");
+      w3.className = "ol-alarm-water3";
+      let w4 = document.createElement("div");
+      w4.className = "ol-alarm-water4";
+      div.appendChild(w1);
+      div.appendChild(w2);
+      div.appendChild(w3);
+      div.appendChild(w4);
+      this.addOverlay(id, {
+        Coordinate: coordinate,
+        positioning: "center-center",
+        offset: [0, 0],
+        stopEvent: false,
+      }, div);
     };
     //添加目标
     Map.prototype.addFeature = function(key, obj) {
@@ -774,7 +851,10 @@ export default (function(window) {
                 }
                 
             }.bind(_this), {hitTolerance:5, layerFilter: function(layer) {
-              return true;
+              if (_this.hlLayers && _this.hlLayers.indexOf(layer) > -1) {
+                return true;
+              }
+              return false;
               
             }});
             if (flag) {

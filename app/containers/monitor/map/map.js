@@ -7,22 +7,28 @@ import addEventListener from 'rc-util/lib/Dom/addEventListener';
 import "./style.scss";
 import { createPersonDom } from "./template";
 import Person from "./overlays/Person";
+import Rain from "./overlays/Rain";
+import Water from "./overlays/Water";
+import Video from "./overlays/Video";
 class Map extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
       overlays: {
-        person: {}
+        [Person.type]: {},
+        [Rain.type]: {},
+        [Water.type]: {},
+        [Video.type]: {}
       }
     };
-    this.type = [Person];
+    this.type = [Person, Rain, Water, Video];
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.onOverlayClose = this.onOverlayClose.bind(this);
   }
   render() {
     let { overlays } = this.state;
     let domArr = [];
-    if(this.map) {
+    if (this.map) {
       Object.keys(overlays).forEach((type) => {
         for (let i = 0; i < this.type.length; i++) {
           let Comp = null;
@@ -37,7 +43,6 @@ class Map extends React.PureComponent {
         }
       });
     }
-    
     return (
       <>
         <div id="map"></div>
@@ -45,8 +50,16 @@ class Map extends React.PureComponent {
       </>
     );
   }
+  componentDidUpdate(prevProps, prevState) {
+    let { layerVisible } = this.props;
+    if (layerVisible !== prevProps.layerVisible) {
+      this.setVisible();
+    }
+  }
+  
   componentDidMount() {
     this.createMap();
+    this.setVisible();
     this.addEvent();
     this.loadData();
   }
@@ -98,10 +111,24 @@ class Map extends React.PureComponent {
     //   key: "river"
     // });
     this.map.addWFS({
-      key: "wfs",
+      key: "wfsRiver",
       url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
       typename: "dy:河流"
       // url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs?service=wfs&version=1.1.0&request=GetFeature&typeNames=dy:DYWater&outputFormat=application/json&srsname=EPSG:4326%27"
+    });
+    this.map.addHeatmap({
+      key: "heatmap",
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
+      typename: "dy:雨情测站"
+      // url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs?service=wfs&version=1.1.0&request=GetFeature&typeNames=dy:DYWater&outputFormat=application/json&srsname=EPSG:4326%27"
+    });
+    // this.map.addTile({
+    //   key: "traffic",
+    //   url: 'http://tm.amap.com/trafficengine/mapabc/traffictile?v=1.0&;t=1&x={x}&y={y}&z={z}&&t=longTime'
+    // });
+    this.map.addTraffic({
+      key: "traffic",
+      zIndex: 19,
     });
     this.map.addVector({
       key: "person",
@@ -186,14 +213,7 @@ class Map extends React.PureComponent {
     this.map.startHighlightFeatureonLayer("rain");
     this.map.startHighlightFeatureonLayer("water");
     this.map.startSelectFeature("person", (param) => {
-      let id = param.id;
-      let { overlays } = this.state;
-      let { person } = overlays;
-      if (person[id]) return;
-      person[id] = param;
-      this.setState({
-        overlays: {...overlays}
-      });
+      this.addOverlay(Person.type, param);
       // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
       //   onVideoClick: () => {
       //     console.log(param.id);
@@ -203,7 +223,35 @@ class Map extends React.PureComponent {
       //   }
       // }));
     });
+    this.map.startSelectFeature("rain", (param) => {
+      this.addOverlay(Rain.type, param);
+    });
+    this.map.startSelectFeature("water", (param) => {
+      this.addOverlay(Water.type, param);
+    });
+    this.map.startSelectFeature("video", (param) => {
+      this.addOverlay(Video.type, param);
+    });
     // this.map.activeMeasure();
+  }
+  addOverlay(key, param) {
+    let id = param.id;
+    let { overlays } = this.state;
+    let elements = overlays[key];
+    if (elements[id]) return;
+    elements[id] = param;
+    this.setState({
+      overlays: {...overlays}
+    });
+  }
+  setVisible() {
+    let { layerVisible } = this.props;
+    if (layerVisible) {
+      Object.keys(layerVisible).forEach((layerKey) => {
+        let show = layerVisible[layerKey];
+        this.map.setVisible(layerKey, show);
+      });
+    }
   }
   addEvent() {
     this._resizeToken = addEventListener(window, "resize", () => {
@@ -216,6 +264,7 @@ class Map extends React.PureComponent {
     });
   }
   loadData() {
+    this.map.addAlarm("alarm001", [118.67, 37.43]);
     this.map.addFeatures("person", [
         {
             type: "Point",
@@ -270,6 +319,20 @@ class Map extends React.PureComponent {
             id: "water002",
             lonlat: [118.45, 37.63],
             heading: 0
+        },
+    ]);
+    this.map.addFeatures("traffic", [
+        {
+            type: "LineString",
+            id: "LineString001",
+            traffic: 1,
+            lonlats: [[118.63, 37.73], [118.45, 37.63]],
+        },
+        {
+            type: "LineString",
+            id: "LineString002",
+            traffic: 2,
+            lonlats: [[118.45, 37.63], [118.67, 37.43]],
         },
     ]);
   }
