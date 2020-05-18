@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import "./style.scss";
-import { Statistic, Row, Col,Card } from 'antd';
+import { Statistic, Row, Col } from 'antd';
 
 class WeatherBox extends React.PureComponent {
   constructor(props, context) {
@@ -11,34 +11,44 @@ class WeatherBox extends React.PureComponent {
     this.state = {};
   }
   render() {
+    var Style = {
+      value:{color: '#3eb468',fontSize:'40px',fontWeight: 'bold'}
+    }
     return (
       <div className="m-wth-box">
-        <div style={{
-          width: '514px',
-          height: '500px',
-          border: '1px solid #007ed7',
-        }}>
-        <Row gutter={16}>
-          <Col span={6}>
-            <Statistic title="全市平均降水量" value={19.56} precision={2} suffix="mm"
-            valueStyle={{ color: '#3eb468',fontSize:'40px',fontWeight: 'bold',
-             }}/>
-          </Col>
-          <Col span={5}>
-            <Statistic title="河流数" value={42} precision={2} suffix="条"
-            valueStyle={{ color: '#3eb468' }}/>
+        <div className="m-box-table">
+        <Row>
+          <Col span={7}>
+            <span className="m-box-value">19.56</span>mm
           </Col>
           <Col span={3}>
-            <Statistic title="水库数" value={8} precision={2} suffix=""
-            valueStyle={{ color: '#3eb468' }}/>
+          <span className="m-box-value">42</span>
+          </Col>
+          <Col span={3}>
+          <span className="m-box-value">8</span>
           </Col>
           <Col span={5}>
-            <Statistic title="水闸数" value={109} precision={2} suffix=""
-            valueStyle={{ color: '#3eb468' }}/>
+          <span className="m-box-value">109</span>
+          </Col>
+          <Col span={6}>
+          <span className="m-box-value">1.14</span>亿m³
+          </Col>
+        </Row>
+        <Row>
+          <Col span={7}>
+            全市平均降水量
+          </Col>
+          <Col span={3}>
+            河流数
+          </Col>
+          <Col span={3}>
+            水库数
           </Col>
           <Col span={5}>
-            <Statistic title="总蓄水量" value={1.14} precision={2} suffix="亿m³"
-            valueStyle={{ color: '#3eb468' }}/>
+            水闸数
+          </Col>
+          <Col span={6}>
+            总蓄水量
           </Col>
         </Row>
         </div>

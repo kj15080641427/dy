@@ -14,24 +14,12 @@ class WeatherChart extends React.PureComponent {
     this.state = {};
   }
   render() {
-    var divStyle = {
-      img: {
-        top: '100px',
-        width: '107px',
-        height: '8px',
-        top: '200px'
-      },
-      table: {
-        width: '514px',
-        height: '352px',
-        border: '1px solid #007ed7',
-        bottom: '6px'
-      }
-    };
     return (
       <div className="m-wth-chart">
-        <img style={divStyle.img} src={imgURL} alt="" />
-        <div style={divStyle.table} id="main"></div>
+        <img className="m-chart-img" src={imgURL} alt="" />
+        <div className="m-chart-dev">
+          <div id="main" className="m-chart-table"></div>
+        </div>
       </div>
     );
   }
@@ -43,7 +31,7 @@ class WeatherChart extends React.PureComponent {
       color: ['#fba02b'],
       tooltip: {
         trigger: 'axis',
-        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+        axisPointer: {// 坐标轴指示器，坐标轴触发有效
           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         }
       },
@@ -89,7 +77,7 @@ class WeatherChart extends React.PureComponent {
         {
           name: '单位(mm)',
           nameTextStyle: {
-            padding: [-345, -670, 0, 0],// 四个数字分别为上右下左与原位置距离
+           // padding: [-345, -670, 0, 0],// 四个数字分别为上右下左与原位置距离
             color:'#007ed7',
           },
           inverse: true,

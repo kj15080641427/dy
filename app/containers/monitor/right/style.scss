@@ -1,13 +1,146 @@
 @import "@app/variable.scss";
 .m-pannel-btns {
   height: 83px;
-  background: rgba(255,0,0,.3);
+  background: rgba(255, 255, 255, 0);
+}
+.m-btn-weather{
+  width: 285px;
+  height: 83px;
+  border: 1px solid #007ed7;
+  position:relative; 
+  bottom:15px;
+  right: 14px;
+  background-color: #fff;
+}
+.m-btn-sunny{
+  width: 50px;
+  height: 50px;
+  position:relative; 
+  top:14px;
+  left: 14px;
+}
+.m-btn-weather-data{
+  font-size: 15px;
+  position:relative; 
+  top:18px;
+  left: 14px;
+}
+.m-btn-everyday{
+  position:relative; 
+  bottom:13px;
+}
+.m-btn-flood{
+  position:relative; 
+  bottom:13px;
+}
+.m-alm-div {
+  width: 514px;
+  height: 500px;
+  border: 1px solid #007ed7;
+  position:relative; 
+  bottom:22px;
+}
+.m-alm-div-table {
+  width: 484px;
+  height: 500px;
+  position:relative;
+  top: 15px;
+  left:15px;
+  right: 15px;
 }
 .m-alm-table {
   height: 500px;
-  background: rgba(0,255,0,.3);
+  background: rgb(255, 255, 255);
+}
+.m-alm-img {
+  width: 107px;
+  height: 8px;
+  position:relative; 
+  bottom:16px;
+}
+.m-alm-warningImg{
+  width: 120px;
+  height: 80px;
+}
+.m-alm-row{
+  font-size: 18px;
+  left: 10px;
+  width: 514px;
+  height: 115px;
+  position:relative; 
+  left:15px;
+  top: 15px;
+  bottom:15px;
+  right: 15px;
+}
+.m-alm-row-warning{
+  font-size: 25px;
+  font-weight:bold ;
+  color: #ec595f;
+  position:relative; 
+  left:15px;
+}
+.m-alm-row-processed{
+  font-size: 25px;
+  font-weight:bold ;
+  color: #eee54c;
+  position:relative; 
+  left:15px;
+}
+.m-alm-row-abnormal{
+  font-size: 25px;
+  font-weight:bold ;
+  color: #40b96c;
+  position:relative; 
+  left:15px;
+}
+.m-alm-row-pending{
+  font-size: 25px;
+  font-weight:bold ;
+  color: #007ed7;
+  position:relative; 
+  left:15px;
 }
 .m-wth-pic {
   height: 371px;
-  background: rgba(0,0,255,.3);
+  background: rgb(255, 255, 255);
+}
+.m-pic-img {
+  width: 107px;
+  height: 8px;
+  position:relative; 
+  bottom:16px;
+}
+.m-pic-div{
+  width: 514px;
+  height: 371px;
+  border: 1px solid #007ed7;
+  position:relative; 
+  bottom:22px;
+}
+.m-pic-div-img {
+  width: 484px;
+  height: 350px;
+  position:relative;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+}
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 160px;
+  line-height: 330px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+  color: #fff;
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #87a4d0;
+  border-color: #87a4d0;
+}
+.ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner {
+  border-color: #87a4d0;
 }

@@ -1,12 +1,55 @@
 .m-checkbox-row {
   width: 643px;
   height: 40px;
-  background: rgba(0,0,0,.3);
+  background: rgba(255, 255, 255, 0.822);
   pointer-events: auto;
+  border-radius: 10px;
+}
+.m-checkbox-row-div{
+  width: 630px;
+  height: 40px;
+  position: relative;
+  left: 35px;
+  top: 7px;
+}
+.m-row-checkbox-img{
+  width: 18px;
+  height: 18px;
+  position: relative;
+  bottom: 1px;
+}
+.m-row-checkbox-span{
+  font-size: 16px;
+  position: relative;
+  left: 7px;
+  color: #000000fd;
 }
 .m-checkbox-col {
   width: 138px;
   height: 248px;
-  background: rgba(255,0,0,.3);
+  background: rgba(255, 255, 255, 0.801);
   pointer-events: auto;
+  position: relative;
+  left: 15px;
+  right: 15px;
+  border-radius: 10px;
+}
+.m-checkbox-col-div{
+  width: 138px;
+  height: 248px;
+  position: relative;
+  left: 16px;
+  top: 0px;
+}
+.m-checkbox-col-row{
+  margin-top:14px;
+}
+.m-col-checkbox-span{
+  font-size:16px;
+  color: #000000fd;
+}
+.m-col-checkbox-normal{
+  font-size:15px;
+  letter-spacing:8px;
+  border-radius: 2px;
 }
