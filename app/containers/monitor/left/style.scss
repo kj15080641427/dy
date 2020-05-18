@@ -47,6 +47,7 @@
 .m-wth-table {
   height: $monitor_left_wthtable_height;
   background: rgb(253, 250, 250);
+  overflow: hidden;
 }
 .m-table-img {
   width: 107px;
