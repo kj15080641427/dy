@@ -13,6 +13,7 @@ import Text from 'ol/style/Text';
 import CircleStyle from 'ol/style/Circle';
 import ImageStyle from 'ol/style/Image';
 import LineString from 'ol/geom/LineString';
+import MultiLineString from 'ol/geom/MultiLineString';
 import Polygon from 'ol/geom/Polygon';
 import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
@@ -242,8 +243,28 @@ export default (function(window) {
     Map.prototype._createLineFeatures = function(key, array) {
         if (!this.layers[key] || array == null || array.length === 0) return;
         return array.map(function(obj) {
-            var geoLine = new LineString(obj.lonlats);
-            geoLine.transform(sprojection, projection);
+            var geoLine = null;
+            if (obj.isMuti) {
+        //       let geom = new MultiLineString(coords);
+        // geom.rotate(10, [150, 50]);
+        // geom.translate(coord[0], coord[1]);
+              if (obj.coords) {
+                let lonlats = fromLonLat(obj.lonlats, 'EPSG:3857');
+                geoLine = new MultiLineString(obj.coords);
+                geoLine.rotate(obj.rotate, obj.rotateAnchor, 'EPSG:3857');
+                geoLine.translate(lonlats[0], lonlats[1]);
+                geoLine.translate(-150, -50);
+                // geoLine.transform(sprojection, projection);
+              }else {
+                geoLine = new MultiLineString(obj.lonlats);
+                geoLine.transform(sprojection, projection);
+              }
+              
+            }else {
+              geoLine = new LineString(obj.lonlats);
+              geoLine.transform(sprojection, projection);
+            }
+            
             var feature = new Feature({
                 geometry: geoLine
             });
@@ -497,6 +518,9 @@ export default (function(window) {
         },
         strategy: bboxStrategy
       });
+      vectorSource.on("addfeature", function(abs) {
+        // console.log(abs);
+      });
       var vectorLayer = new VectorLayer({
         source: vectorSource,
         style: new Style({
@@ -524,12 +548,13 @@ export default (function(window) {
         strategy: bboxStrategy
       });
       var vectorLayer = new Heatmap({
+        gradient: param.gradient,
         source: vectorSource,
-        blur: 5,
-        radius: 5,
+        blur: 8,
+        radius: 8,
         weight: function(feature) {
           var w = feature.get('降雨量');
-          return w;
+          return 1;
         }
       });
      
@@ -564,6 +589,49 @@ export default (function(window) {
             this.layerStyle[param.key] = param.style;
         }
     };
+    Map.prototype.addGate = function(param) {
+      if (!param || !param.key) return;
+      var vectorLayer = new VectorLayer({
+          source: new VectorSource(),
+          visible: param.visible == null ? true : param.visible,
+          zIndex: param.zIndex ? param.zIndex : 0,
+          style: typeof param.style === "function" ? param.style : undefined
+      });
+      vectorLayer.set("key", param.key);
+      this.map.addLayer(vectorLayer);
+      this.layers[param.key] = vectorLayer;
+      if (param.style && typeof param.style !== "function") {
+          this.layerStyle[param.key] = param.style;
+      }
+      // let coord = [118.67, 37.43];
+      let coord = fromLonLat([118.67, 37.43], 'EPSG:3857');
+
+
+      // let coords = [
+      //   [[0, 0], [118.67, 37.43], [118.67, 37.43], [118.67, 37.430], [0, 0]],
+      //   [[0, 0], [118.67, 37.43]],
+      //   [[0, 0], [118.67, 37.43]]
+      // ];
+      let coords = [
+        [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0]],
+        [[0, 100], [300, 0]],
+        [[0, 0], [300, 100]]];
+
+      // let coords = [
+      //   [[0, 0],[118.67, 37.43],[118.37, 37.43]],
+      //   [[118.67, 37.43],[118.37, 38.43]]
+      // ];
+        let geom = new MultiLineString(coords);
+        geom.rotate(10, [150, 50]);
+        geom.translate(coord[0], coord[1]);
+        // geom.transform(sprojection, projection);
+        let feature = new Feature({
+            id: "123",
+            geometry: geom,
+        });
+        feature.setId("123");
+        vectorLayer.getSource().addFeature(feature);
+    }
     //添加矢量图
     Map.prototype.addVector = function(param) {
         if (!param || !param.key) return;
@@ -957,7 +1025,13 @@ export default (function(window) {
                     //     }
                     // }
                 }
-            }.bind(_this),{hitTolerance:5});
+            }.bind(_this),{hitTolerance:5,layerFilter: function(layer) {
+              if (_this.hlLayers && _this.hlLayers.indexOf(layer) > -1) {
+                return true;
+              }
+              return false;
+              
+            }});
             if (!feature) return;
             for (var i = 0; i < _this.sfLayers.length; i++) {
                 var sflayer = _this.sfLayers[i];

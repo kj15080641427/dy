@@ -16,10 +16,10 @@ class Rain extends Base {
     let { model } = this.props;
     return ( 
       <div className="m-ovl-box m-ovl-rain" ref={(node) => { this.container = node;}}>
-        <div className="m-ovl-line">雨量站点:丁王</div>
-        <div className="m-ovl-line">站点编号:3100029</div>
-        <div className="m-ovl-line">超警戒水位:6.08mm</div>
-        <div className="m-ovl-line">报警时间:2020-5-16 12:01</div>
+        <div className="m-ovl-line">雨量站点:{model.name}</div>
+        <div className="m-ovl-line">站点编号:{model.stcd}</div>
+        <div className="m-ovl-line">降水量:{model.intv || "未知"}mm</div>
+        <div className="m-ovl-line">报警时间:{model.tm || "未知"}</div>
         <span className="iconfont iconcuo m-ovl-close" ></span>
       </div>
     );

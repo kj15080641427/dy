@@ -17,7 +17,7 @@ class Video extends Base {
     return ( 
       <div className="m-ovl-box m-ovl-video" style={{display: "none"}} ref={(node) => { this.container = node;}}>
         <span className="iconfont iconcuo m-ovl-close"></span>
-        <div className="m-ovl-line"><span>视频站点: {model.id}</span><span>更新日期: 2020-05-10 12:00</span></div>
+        <div className="m-ovl-line"><span>视频站点: {model.sitename}</span><span>更新日期: 2020-05-10 12:00</span></div>
         <div className="m-ovl-vc">
           <video preload="none" control="true" muted autoPlay="autoplay"
             src="https://img1.isheji5.com/ips_video_previews/2020-04-02/11/117beb60-5453-494a-ad83-cab0ba844328.mp4?auth_key=1589625184-0-0-e1b04d01c30101ba346b37a1de981573"
