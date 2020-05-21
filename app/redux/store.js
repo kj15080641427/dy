@@ -11,7 +11,7 @@ export default function configureStore(initialState) {
     const store = createStore(rootReducer, initialState,
         // 触发 redux-devtools
         // eslint-disable-next-line no-undef
-        window.__REDUX_DEVTOOLS_EXTENSION__ && dev ? window.__REDUX_DEVTOOLS_EXTENSION__() : undefined
+      window.__REDUX_DEVTOOLS_EXTENSION__ && dev ? window.__REDUX_DEVTOOLS_EXTENSION__() : undefined
     );
     storeCach = store;
     return store;

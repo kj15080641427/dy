@@ -35,6 +35,13 @@ class Precipitation extends React.PureComponent {
     }
 render() {
     const qycolumns = [
+        
+        {
+            title: '站点编号',
+            dataIndex: 'stcd',
+            width: 109,
+            className: 'column-money'
+        },
         {
             title: '站名',
             dataIndex: 'stnm',
@@ -67,16 +74,11 @@ render() {
             render: value => moment(value).format("YYYY-MM-DD HH:mm")
         },
         {
-            title: '时监测值(m)',
+            title: '监测值(m)',
             dataIndex: 'z',
             width: 109,
-            className: 'column-money'
-        },
-        {
-            title: '日监测值(m)',
-            dataIndex: 'z',
-            width: 109,
-            className: 'column-money'
+            className: 'column-money',
+            render: dayAvg => Math.round(dayAvg * 1000) / 1000
         },
         {
             title: '定位',

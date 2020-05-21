@@ -1,0 +1,50 @@
+.m-ovl-box {
+  position: relative;
+  background: white;
+  padding: 15px;
+  font-size: 14px;
+  color: #666666;
+  box-shadow: 0 2px 4px 0 rgba(152, 152,152,.5);
+  border-radius: 4px;
+  .m-ovl-close {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 14px;
+    color: #999999;
+    cursor: pointer;
+  }
+}
+.m-ovl-person {
+  .m-ovl-line {
+    span:first-child {
+      padding-right: 20px;
+    }
+    .m-ovl-video {
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      line-height: 25px;
+      color: #0C63CA;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+}
+.m-ovl-video {
+  width: 384px;
+  .m-ovl-vc {
+    height: 186px;
+    video {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+.m-ovl-line {
+  position: relative;
+  line-height: 25px;
+}

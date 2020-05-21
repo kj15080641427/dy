@@ -7,6 +7,7 @@ import imgURL from '../../../resource/title_bg.png';
 import { Table, Tabs } from 'antd';
 import Precipitation from './WeatherModule/Precipitation';
 import WaterLevel from './WeatherModule/WaterLevel';
+import emitter from "@app/utils/emitter.js";
 
 class WeatherTable extends React.PureComponent {
   constructor(props, context) {
@@ -15,6 +16,83 @@ class WeatherTable extends React.PureComponent {
     };
   }
   render() {
+    this.state = {};
+    this.locationClick = this.locationClick.bind(this);
+    const columns = [
+      {
+        title: '站点编号',
+        dataIndex: 'id',
+        width: 100,
+        className: 'column-money'
+      },
+      {
+        title: '站名',
+        dataIndex: 'name',
+        width: 75,
+        className: 'column-money'
+      },
+      {
+        title: '监测时间',
+        dataIndex: 'date',
+        width: 140,
+        className: 'column-money'
+      },
+      {
+        title: '监测值(m)',
+        dataIndex: 'num',
+        width: 109,
+        className: 'column-money'
+      },
+      {
+        title: '定位',
+        dataIndex: 'loca',
+        render: value => <img src={localimgURL} data-lon={118.37} data-lat={37.43} onClick={this.locationClick} alt="" />,
+        className: 'column-money'
+      },
+    ];
+    const data = [{
+      id: "31103937",
+      name: `丁王是`,
+      date: '2020-05-03 12:00',
+      num: `6.08`,
+      loca: '',
+    }, {
+      id: "31103937",
+      name: `丁王`,
+      date: '2020-05-03 12:00',
+      num: `6.08`,
+      loca: '',
+    }, {
+      id: "31103937",
+      name: `丁王`,
+      date: '2020-05-03 12:00',
+      num: `6.08`,
+      loca: '',
+    }, {
+      id: "31103937",
+      name: `丁王`,
+      date: '2020-05-03 12:00',
+      num: `6.08`,
+      loca: '',
+    }, {
+      id: "31103937",
+      name: `丁王`,
+      date: '2020-05-03 12:00',
+      num: `6.08`,
+      loca: '',
+    }, {
+      id: "31103937",
+      name: `丁王`,
+      date: '2020-05-03 12:00',
+      num: `6.08`,
+      loca: '',
+    }, {
+      id: "31103937",
+      name: `丁王`,
+      date: '2020-05-03 12:00',
+      num: `6.08`,
+      loca: '',
+    }];
     const { TabPane } = Tabs;
     return (
       <div className="m-wth-table">
@@ -39,5 +117,11 @@ class WeatherTable extends React.PureComponent {
     );
   }
   componentDidMount() { }
+  locationClick(e) {
+    let lon = e.target.dataset.lon * 1;
+    let lat = e.target.dataset.lat * 1;
+    if (lon == null && lat == null) return;
+    emitter.emit("map-move", [lon, lat], () => { console.log("moveend");});
+  }
 }
 export default WeatherTable;

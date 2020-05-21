@@ -27,3 +27,31 @@ export function createPersonDom(modal, callback) {
   addEventListener(close, "click", callback.onClose);
   return root;
 }
+export function createCameraDom(modal, callback) {
+  let root = document.createElement('div');
+  root.className = "m-ovl-box m-ovl-camera";
+  let fLine = document.createElement('div');
+  fLine.className = "m-ovl-line";
+  fLine.innerHTML = `职位: 工程师`;
+}
+export function createRainDom(modal, callback) {
+  let root = document.createElement('div');
+  root.className = "m-ovl-box m-ovl-rain";
+  let fLine = document.createElement('div');
+  fLine.className = "m-ovl-line";
+  fLine.innerHTML = `雨量站点:丁王`;
+  let line2 = document.createElement('div');
+  line2.className = "m-ovl-line";
+  line2.innerHTML = `雨量站点:丁王`;
+  let line3 = document.createElement('div');
+  line3.className = "m-ovl-line";
+  line3.innerHTML = `雨量站点:丁王`;
+  let line4 = document.createElement('div');
+  line4.className = "m-ovl-line";
+  line4.innerHTML = `雨量站点:丁王`;
+  root.appendChild(fLine);
+  root.appendChild(line2);
+  root.appendChild(line3);
+  root.appendChild(line3);
+  return root;
+}

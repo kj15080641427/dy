@@ -69,25 +69,14 @@ class Precipitation extends React.PureComponent {
                 dataIndex: 'hourAvg',
                 width: 109,
                 className: 'column-money',
-                render:
-                    hourAvg => {
-                        if (this.getByteLen(hourAvg) > 4 && hourAvg !== null && hourAvg !== "") {
-                            (Math.round(hourAvg * 100) / 100)
-                            return (
-                                { hourAvg }
-                            )
-                        } else {
-                            return (
-                                { hourAvg }
-                            )
-                        }
-                    }
+                render: hourAvg => Math.round(hourAvg * 1000) / 1000
             },
             {
                 title: '日监测值(m)',
                 dataIndex: 'dayAvg',
                 width: 109,
-                className: 'column-money'
+                className: 'column-money',
+                render: dayAvg => Math.round(dayAvg * 1000) / 1000
             },
             {
                 title: '定位',

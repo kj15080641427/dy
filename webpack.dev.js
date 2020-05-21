@@ -50,8 +50,9 @@ module.exports = {
                 use: [
                     {loader: "style-loader"},
                     {loader: "css-loader"},
+                    {loader: "postcss-loader"},
                     {loader: "sass-loader"},
-                    {loader: "postcss-loader"}
+                    
                 ]
             },
             {
@@ -76,7 +77,7 @@ module.exports = {
             //     ]
             // },
             {
-                test: /\.(woff|woff2|svg|eot|ttf|png)$/,
+                test: /\.(woff|woff2|svg|eot|ttf|png|svg)$/,
                 loader: 'file-loader',
                 options: {
                     name: ("static/[name].[hash:5].[ext]"),
