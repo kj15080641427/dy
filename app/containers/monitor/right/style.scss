@@ -10,7 +10,7 @@
   position:relative; 
   bottom:15px;
   right: 14px;
-  background-color: #fff;
+  background-color: rgb(255, 255, 255);
 }
 .m-btn-sunny{
   width: 50px;
@@ -18,11 +18,12 @@
   position:relative; 
   top:14px;
   left: 14px;
+  filter:invert(10%)
 }
 .m-btn-weather-data{
-  font-size: 15px;
+  font-size: 14px;
   position:relative; 
-  top:18px;
+  top:7px;
   left: 14px;
 }
 .m-btn-everyday{
@@ -108,7 +109,7 @@
 .m-pic-img {
   width: 107px;
   height: 8px;
-  position:relative; 
+  position:relative;
   bottom:16px;
 }
 .m-pic-div{
@@ -119,23 +120,28 @@
   bottom:22px;
 }
 .m-pic-div-img {
-  width: 484px;
-  height: 350px;
+  width: 400px;
+  height: 365px;
   position:relative;
-  top: 15px;
-  left: 15px;
-  right: 15px;
+  top: 4px;
+  left: -20px;
+}
+.m-pic-Carousel-img{
+  width: 460px;
+  height: 360px;
 }
 .ant-carousel .slick-slide {
   text-align: center;
   height: 160px;
-  line-height: 330px;
-  background: #364d79;
+  line-height: 160px;
+  background: #cc333346;
   overflow: hidden;
 }
-
 .ant-carousel .slick-slide h3 {
   color: #fff;
+}
+.ant-carousel .slick-dots-bottom {
+    bottom: 12px;
 }
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #87a4d0;

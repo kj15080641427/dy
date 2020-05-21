@@ -54,6 +54,14 @@ module.exports = {
                     {loader: "postcss-loader"}
                 ]
             },
+            {
+                test: /\.html$/,
+                use: [
+                      {
+                        loader: require.resolve('html-loader')
+                      }
+                     ]
+             },
             // {
             //     test: /\.(png|jpg|gif|jpeg)/,
             //     use: [
@@ -121,9 +129,9 @@ module.exports = {
         hot: true,
         proxy: {
             '/api/*': {
-                target: 'http://122.152.198.220',
-                // pathRewrite: {'^/api' : ''},
-                secure: false,
+                target: 'http://172.19.112.74:8080/',
+                pathRewrite: {'^/api' : ''},
+                secure: true,
                 changeOrigin: true,
             }
         }

@@ -8,53 +8,73 @@ import { Statistic, Row, Col } from 'antd';
 class WeatherBox extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+    this.state = {
+      weatherCount: 0
+    };
   }
   render() {
-    var Style = {
-      value:{color: '#3eb468',fontSize:'40px',fontWeight: 'bold'}
-    }
     return (
       <div className="m-wth-box">
         <div className="m-box-table">
-        <Row>
-          <Col span={7}>
-            <span className="m-box-value">19.56</span>mm
+          <Row>
+            <Col span={8}>
+              <span className="m-box-value">{this.state.weatherCount}</span>mm
           </Col>
-          <Col span={3}>
-          <span className="m-box-value">42</span>
+            <Col span={3}>
+              <span className="m-box-value">42</span>
+            </Col>
+            <Col span={3}>
+              <span className="m-box-value">8</span>
+            </Col>
+            <Col span={4}>
+              <span className="m-box-value">109</span>
+            </Col>
+            <Col span={6}>
+              <span className="m-box-value">1.14</span>亿m³
           </Col>
-          <Col span={3}>
-          <span className="m-box-value">8</span>
+          </Row>
+          <Row>
+            <Col span={8}>
+              全市平均降水量
           </Col>
-          <Col span={5}>
-          <span className="m-box-value">109</span>
+            <Col span={3}>
+              河流数
           </Col>
-          <Col span={6}>
-          <span className="m-box-value">1.14</span>亿m³
+            <Col span={3}>
+              水库数
           </Col>
-        </Row>
-        <Row>
-          <Col span={7}>
-            全市平均降水量
+            <Col span={4}>
+              水闸数
           </Col>
-          <Col span={3}>
-            河流数
+            <Col span={6}>
+              河槽总蓄水量
           </Col>
-          <Col span={3}>
-            水库数
-          </Col>
-          <Col span={5}>
-            水闸数
-          </Col>
-          <Col span={6}>
-            总蓄水量
-          </Col>
-        </Row>
+          </Row>
         </div>
       </div>
     );
   }
-  componentDidMount() { }
+  fomatFloat(num, pos) {
+    // Math.pow(x,y) x 的 y 次幂
+    return Math.round(num * Math.pow(10, pos)) / Math.pow(10, pos);
+  }
+  componentDidMount() {
+
+    fetch("/api/count/getCityAvgRaindata", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify()
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.data.length > 5) {
+          this.setState({ weatherCount: Math.round(result.data * 100) / 100 })
+        }
+      })
+
+  }
 }
 export default WeatherBox;

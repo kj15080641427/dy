@@ -6,14 +6,18 @@ import "./style.scss";
 import { Row, Col } from 'antd';
 import everyday from '../../../resource/everyday.png';
 import flood from '../../../resource/flood.png';
-import sunny from '../../../resource/sunny.svg';
+import moment from "moment";
 
 class PannelBtn extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+    this.state = {
+      weatherData: {}
+    };
   }
+
   render() {
+    const { weatherData } = this.state;
     return (
       <div className="m-pannel-btns">
         <div>
@@ -21,14 +25,17 @@ class PannelBtn extends React.PureComponent {
             <Col span={14}>
               <div className="m-btn-weather">
                 <Row>
-                  <Col span={6}><img className="m-btn-sunny" src={sunny}></img></Col>
+                  <Col span={6}><img className="m-btn-sunny" src={weatherData.state1MaxIco}></img></Col>
                   <Col span={18}>
                     <div className="m-btn-weather-data">
                       <Row>
-                        天气预报:5月15日,
+                        天气预报:<span ref={(node) => { this.time = node; }}>{moment().format("MM月DD日")}</span>,
                       </Row>
                       <Row>
-                        晴,22℃,东南风,4-5级风
+                        {weatherData.stateDetailed},{weatherData.temNow}℃,
+                      </Row>
+                      <Row>
+                        {weatherData.windState}
                       </Row>
                     </div>
                   </Col>
@@ -46,6 +53,24 @@ class PannelBtn extends React.PureComponent {
       </div>
     );
   }
-  componentDidMount() { }
+  componentDidMount() {
+    this._timer = window.setInterval(() => {
+      if (this.time) {
+        this.time.innerHTML = moment().format("MM月DD日");
+      }
+    }, 1000);
+    fetch("/api/weather/get", {
+      method: 'GET',
+      mode: 'cors',
+    })
+      .then(response => response.json())
+      .then(result => {
+        this.setState({ weatherData: result.data })
+        console.log(this.state.weatherData)
+      })
+  }
+  componentWillUnmount() {
+    clearTimeout(this.time);
+  }
 }
 export default PannelBtn;
