@@ -25,7 +25,29 @@ export default function main (state = defaultState, action) {
       let key = action.data.key;
       let value = action.data.value;
       if (value && value.stcd) {
-        newState.details[key][value.stcd] = value;
+        let oldV = newState.details[key][value.stcd];
+        if (oldV) {
+          newState.details[key][value.stcd] = {...oldV, ...value};
+        } else {
+          newState.details[key][value.stcd] = value;
+        }
+      }
+      break;
+    }
+    case actionTypes.SET_MUTI_DETAIL_DATA: {
+      let key = action.data.key;
+      let arr = action.data.value;
+      if (arr && arr.length) {
+        arr.forEach((value) => {
+          if (value && value.stcd) {
+            let oldV = newState.details[key][value.stcd];
+            if (oldV) {
+              newState.details[key][value.stcd] = {...oldV, ...value};
+            } else {
+              newState.details[key][value.stcd] = value;
+            }
+          }
+        });
       }
       break;
     }

@@ -518,8 +518,9 @@ export default (function(window) {
         },
         strategy: bboxStrategy
       });
-      vectorSource.on("addfeature", function(abs) {
-        // console.log(abs);
+      vectorSource.on("addfeature", function({feature}) {
+        console.log(feature.getProperties());
+        // feature.set("attr", feature.getProperties());
       });
       var vectorLayer = new VectorLayer({
         source: vectorSource,
@@ -1662,6 +1663,9 @@ export default (function(window) {
     Map.prototype.getView = function() {
         return this.map.getView();
     };
+    Map.prototype.getMap = function() {
+      return this.map;
+  };
     
     return Map;
 })(window);

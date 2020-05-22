@@ -18,6 +18,13 @@ export function setDetailData(data) {
     data
   };
 }
+export function setMutiDetailData(data) {
+  return {
+    type: actionTypes.SET_MUTI_DETAIL_DATA,
+    data
+  };
+}
+
 export function addVideos(data) {
   return {
     type: actionTypes.ADD_VIDEOS,

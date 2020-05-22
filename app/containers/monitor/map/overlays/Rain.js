@@ -15,7 +15,7 @@ class Rain extends Base {
   render() {
     let { model } = this.props;
     return ( 
-      <div className="m-ovl-box m-ovl-rain" ref={(node) => { this.container = node;}}>
+      <div className="m-ovl-box m-ovl-rain" style={{display: "none"}} ref={(node) => { this.container = node;}}>
         <div className="m-ovl-line">雨量站点:{model.name}</div>
         <div className="m-ovl-line">站点编号:{model.stcd}</div>
         <div className="m-ovl-line">降水量:{model.intv || "未知"}mm</div>
