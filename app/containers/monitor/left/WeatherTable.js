@@ -1,5 +1,7 @@
 /**
  * WeatherTable 2020-05-12
+ * zdl
+ * 雨量站，水位，视频，人员
  */
 import React from 'react';
 import "./style.scss";
@@ -18,85 +20,10 @@ class WeatherTable extends React.PureComponent {
   render() {
     this.state = {};
     this.locationClick = this.locationClick.bind(this);
-    const columns = [
-      {
-        title: '站点编号',
-        dataIndex: 'id',
-        width: 100,
-        className: 'column-money'
-      },
-      {
-        title: '站名',
-        dataIndex: 'name',
-        width: 75,
-        className: 'column-money'
-      },
-      {
-        title: '监测时间',
-        dataIndex: 'date',
-        width: 140,
-        className: 'column-money'
-      },
-      {
-        title: '监测值(m)',
-        dataIndex: 'num',
-        width: 109,
-        className: 'column-money'
-      },
-      {
-        title: '定位',
-        dataIndex: 'loca',
-        render: value => <img src={localimgURL} data-lon={118.37} data-lat={37.43} onClick={this.locationClick} alt="" />,
-        className: 'column-money'
-      },
-    ];
-    const data = [{
-      id: "31103937",
-      name: `丁王是`,
-      date: '2020-05-03 12:00',
-      num: `6.08`,
-      loca: '',
-    }, {
-      id: "31103937",
-      name: `丁王`,
-      date: '2020-05-03 12:00',
-      num: `6.08`,
-      loca: '',
-    }, {
-      id: "31103937",
-      name: `丁王`,
-      date: '2020-05-03 12:00',
-      num: `6.08`,
-      loca: '',
-    }, {
-      id: "31103937",
-      name: `丁王`,
-      date: '2020-05-03 12:00',
-      num: `6.08`,
-      loca: '',
-    }, {
-      id: "31103937",
-      name: `丁王`,
-      date: '2020-05-03 12:00',
-      num: `6.08`,
-      loca: '',
-    }, {
-      id: "31103937",
-      name: `丁王`,
-      date: '2020-05-03 12:00',
-      num: `6.08`,
-      loca: '',
-    }, {
-      id: "31103937",
-      name: `丁王`,
-      date: '2020-05-03 12:00',
-      num: `6.08`,
-      loca: '',
-    }];
     const { TabPane } = Tabs;
     return (
       <div className="m-wth-table">
-        <img className="m-table-img" src={imgURL} alt="" />
+        <img className="m-table-img" src={imgURL}/>
         <div className="m-div">
           <Tabs type="card" defaultActiveKey="1" onChange={this.callback} animated="true" tabBarGutter={20} size="large" className="ant-tabs-nav-container">
             <TabPane tab="雨量站" key="1">

@@ -26,6 +26,9 @@ class Monitor extends React.PureComponent {
       showRight: true,
       showBottom: true,
       visible: false,
+      dispalyLeft: 'block',
+      dispalyRight: 'block',
+      dispalyBottom: 'block',
       layerVisible: {
         tiandi: true, // 天地图底图
         tiandi2: true, // 天地图标注
@@ -40,93 +43,89 @@ class Monitor extends React.PureComponent {
     };
     this.onChecked = this.onChecked.bind(this)
   };
- 
 
-onClose = () => {
-  this.setState({
-    visible: false,
-  });
-};
-render() {
-  let { layerVisible } = this.state;
-  return (
-    
-  <div className="monitor">
-    <Map layerVisible={layerVisible}></Map>
-    <Head></Head>
-    {
-      this.state.showLeft ? (
-        <div className="m-left">
-          <WeatherBox></WeatherBox>
-          <WeatherChart></WeatherChart>
-          <WeatherTable></WeatherTable>
+  //设置抽屉页
+  onClose = () => {
+    this.setState({
+      visible: false,
+    });
+  };
+  render() {
+    let { layerVisible } = this.state;
+    return (
+      <div className="monitor">
+        <Map layerVisible={layerVisible}></Map>
+        <Head></Head>
+        <div style={{ display: this.state.displayLeft }}>
+          <div className="m-left">
+            <WeatherBox></WeatherBox>
+            <WeatherChart></WeatherChart>
+            <WeatherTable></WeatherTable>
+          </div>
         </div>
-      ) : null
-    }
-    {
-      this.state.showRight ? (
-        <div className="m-right">
-          <PannelBtn></PannelBtn>
-          <AlarmTable></AlarmTable>
-          <WeatherPic></WeatherPic>
+        <div style={{ display: this.state.displayRight }}>
+          <div className="m-right">
+            <PannelBtn></PannelBtn>
+            <AlarmTable></AlarmTable>
+            <WeatherPic></WeatherPic>
+          </div>
         </div>
-      ) : null
-    }
-    {
-      this.state.showBottom ? (
-        <div className="m-bottom">
-         <CheckBox layerVisible={layerVisible} onChecked={this.onChecked}></CheckBox> 
+        <div style={{ display: this.state.displayBottom }}>
+          <div className="m-bottom" >
+            <CheckBox layerVisible={layerVisible} onChecked={this.onChecked}></CheckBox>
+          </div>
         </div>
-      ) : null
-    }
-    <img onClick={() => {
-      this.setState({
-        visible: true,
-      });
-    }} className="m-set-img" src={setImg}></img>
-    <Drawer
-      title="设置"
-      placement="right"
-      closable={false}
-      onClose={this.onClose}
-      visible={this.state.visible}
-    >
-      <Row>
-        <Switch checkedChildren="开" checked={this.state.showLeft} onClick={() => {
+        <img onClick={() => {
           this.setState({
-            showLeft: !this.state.showLeft,
+            visible: true,
           });
-        }} unCheckedChildren="关" defaultChecked />左侧栏
+        }} className="m-set-img" src={setImg}></img>
+        <Drawer
+          title="设置"
+          placement="right"
+          closable={false}
+          onClose={this.onClose}
+          visible={this.state.visible}
+        >
+          <Row>
+            <Switch checkedChildren="开" checked={this.state.showLeft} onClick={() => {
+              this.setState({
+                showLeft: !this.state.showLeft,
+                displayLeft: this.state.showLeft ? 'none' : 'block'
+              });
+            }} unCheckedChildren="关" defaultChecked />左侧栏
           </Row>
-      <br />
-      <Row>
-        <Switch checkedChildren="开" checked={this.state.showRight} onClick={() => {
-          this.setState({
-            showRight: !this.state.showRight,
-          });
-        }} unCheckedChildren="关" defaultChecked />右侧栏
+          <br />
+          <Row>
+            <Switch checkedChildren="开" checked={this.state.showRight} onClick={() => {
+              this.setState({
+                showRight: !this.state.showRight,
+                displayRight: this.state.showRight ? 'none' : 'block'
+              });
+            }} unCheckedChildren="关" defaultChecked />右侧栏
           </Row>
-      <br />
-      <Row>
-        <Switch checkedChildren="开" unCheckedChildren="关" checked={this.state.showBottom} onClick={() => {
-          this.setState({
-            showBottom: !this.state.showBottom,
-          });
-        }} defaultChecked />下栏目
+          <br />
+          <Row>
+            <Switch checkedChildren="开" unCheckedChildren="关" checked={this.state.showBottom} onClick={() => {
+              this.setState({
+                showBottom: !this.state.showBottom,
+                displayBottom: this.state.showBottom ? 'none' : 'block'
+              });
+            }} defaultChecked />下栏目
           </Row>
-    </Drawer>
-  </div>
+        </Drawer>
+      </div>
     );
-}
-componentDidMount() { }
-onChecked(layerKey, checked) {
-  let { layerVisible } = this.state;
-  if (layerVisible[layerKey] === checked) return;
-  layerVisible[layerKey] = checked;
-  this.setState({
-    layerVisible: { ...layerVisible }
-  });
-}
+  }
+  componentDidMount() { }
+  onChecked(layerKey, checked) {
+    let { layerVisible } = this.state;
+    if (layerVisible[layerKey] === checked) return;
+    layerVisible[layerKey] = checked;
+    this.setState({
+      layerVisible: { ...layerVisible }
+    });
+  }
 }
 // -------------------redux react 绑定--------------------
 
