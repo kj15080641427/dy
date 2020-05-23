@@ -2,6 +2,9 @@ const path = require("path");
 const htmlPlugin = require("html-webpack-plugin");
 var webpack = require("webpack");
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
+// const CopyPlugin = require('copy-webpack-plugin');
+const os = require('os');
+const isTao = os.hostname() === '66tao.local';
 // const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 // const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
 module.exports = {
@@ -99,6 +102,11 @@ module.exports = {
             'process.env.NODE_ENV': JSON.stringify('development')
         }),
         new ErrorOverlayPlugin(),
+        // new CopyPlugin({
+        //   patterns: [
+        //     { from: 'vender', to: 'vender' },
+        //   ],
+        // }),
         // new ForkTsCheckerWebpackPlugin({
         //     // 将async设为false，可以阻止Webpack的emit以等待类型检查器/linter，并向Webpack的编译添加错误。
         //     async: false
@@ -130,8 +138,8 @@ module.exports = {
         hot: true,
         proxy: {
             '/api/*': {
-                // target: 'http://172.19.112.74:8080/',
-                target: "http://2287ym5502.51mypc.cn/",
+                // target: ',
+                target: isTao ? "http://2287ym5502.51mypc.cn/" : 'http://172.19.112.74:8080/',
                 // pathRewrite: {'^/api' : ''},
                 secure: true,
                 changeOrigin: true,

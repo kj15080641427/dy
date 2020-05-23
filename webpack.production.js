@@ -8,6 +8,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 var ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+// const CopyPlugin = require('copy-webpack-plugin');
 // const devMode = process.env.NODE_ENV !== 'production';
 // console.log(devMode);
 
@@ -94,6 +95,11 @@ module.exports = {
           // format: '  build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
           clear: false
         }),
+        // new CopyPlugin({
+        //   patterns: [
+        //     { from: 'vender', to: 'vender' },
+        //   ],
+        // }),
     ],
     optimization: {
       minimize: true,
