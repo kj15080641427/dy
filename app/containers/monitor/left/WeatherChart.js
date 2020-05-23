@@ -1,5 +1,7 @@
 /**
  * WeatherChart 2020-05-12
+ * zdl
+ * 五个县降水量
  */
 import React from 'react';
 import "./style.scss";
@@ -7,12 +9,11 @@ import "./style.scss";
 import echarts from 'echarts/lib/echarts';
 import 'echarts';
 import imgURL from '../../../resource/title_bg.png';
-
+import { getFiveCitydata } from "@app/data/request";
 class WeatherChart extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      address: []
     };
   }
   render() {
@@ -26,30 +27,66 @@ class WeatherChart extends React.PureComponent {
     );
   }
   componentDidMount() {
-    var myChart = echarts.init(document.getElementById('main'));
-    let hourData = [];
-    let dayData = [];
-    let thDayData = [];
-    let seDayData = [];
-    let addData = [];
-    fetch("/api/count/getAreaAvgRaindata", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ "type": 1 })
-    })
-      .then((response) => response.json())
+
+    //获取五个县画图表
+    getFiveCitydata({ "type": 1 })
       .then((result) => {
+        let hourData = [];
+        let dayData = [];
+        let thDayData = [];
+        let seDayData = [];
+        let addData = [];
+        var myChart = echarts.init(document.getElementById('main'));
         for (var i = result.data.length - 1; i >= 0; i--) {
-          if (result.data[i].prd.length > 5) {
-            hourData.push(Math.round(result.data[i].prd * 100) / 100)
-          }
+          hourData.push(Math.round(result.data[i].prd * 100) / 100)
           addData.push(result.data[i].areaName)
         }
+
+        getFiveCitydata({ "type": 2 })
+          .then((result) => {
+            for (var i = result.data.length - 1; i >= 0; i--) {
+              dayData.push(Math.round(result.data[i].prd * 100) / 100)
+            }
+            myChart.setOption({
+              series: [
+                {
+                  name: '24小时',
+                  data: dayData,
+                }
+              ]
+            })
+          });
+        getFiveCitydata({ "type": 3 })
+          .then((result) => {
+            for (var i = result.data.length - 1; i >= 0; i--) {
+              thDayData.push(Math.round(result.data[i].prd * 100) / 100)
+            }
+            myChart.setOption({
+              series: [
+                {
+                  name: '近三天',
+                  data: thDayData,
+                }
+              ]
+            })
+          });
+        getFiveCitydata({ "type": 4 })
+          .then((result) => {
+            for (var i = result.data.length - 1; i >= 0; i--) {
+              seDayData.push(Math.round(result.data[i].prd * 100) / 100)
+            }
+            myChart.setOption({
+              series: [
+                {
+                  name: '近一周',
+                  data: seDayData,
+                }
+              ]
+            })
+          });
+        var myChart = echarts.init(document.getElementById('main'));
         myChart.setOption({
-          color: ['#fba02b'],
+          color: ['#fba02b', '#fba02b', '#fba02b', '#fba02b'],
           tooltip: {
             trigger: 'axis',
             axisPointer: {// 坐标轴指示器，坐标轴触发有效
@@ -72,12 +109,6 @@ class WeatherChart extends React.PureComponent {
             x: '100px',
             y: '30px',
             data: ['1小时', '24小时', '近三天', '近一周'],
-            selected: {
-              '1小时': false,
-              '24小时': true,
-              '近三天': false,
-              '近一周': false
-            }
           },
           grid: {
             left: '3%',
@@ -90,9 +121,6 @@ class WeatherChart extends React.PureComponent {
               position: 'top',
               type: 'category',
               data: addData,
-              axisTick: {
-                alignWithLabel: true
-              },
             }
           ],
           yAxis: [
@@ -116,113 +144,21 @@ class WeatherChart extends React.PureComponent {
               name: '24小时',
               type: 'bar',
               barWidth: '20%',
-              data: dayData,
             },
             {
               name: '近三天',
               type: 'bar',
               barWidth: '20%',
-              data: thDayData,
             },
             {
               name: '近一周',
               type: 'bar',
               barWidth: '20%',
-              data: seDayData,
             }
           ]
         });
       })
-    fetch("/api/count/getAreaAvgRaindata", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ "type": 2 })
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        for (var i = result.data.length - 1; i >= 0; i--) {
-          if (result.data[i].prd.length > 5) {
-            dayData.push(Math.round(result.data[i].prd * 100) / 100)
-          }
-        }
-        console.log(dayData)
-        myChart.setOption({
-          series: [
-            {
-              name: '24小时',
-              type: 'bar',
-              barWidth: '20%',
-              data: dayData,
-              itemStyle: {
-                normal: {
-                }
-              },
-            }]
-        })
-      });
-    fetch("/api/count/getAreaAvgRaindata", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ "type": 3 })
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        for (var i = result.data.length - 1; i >= 0; i--) {
-          if (result.data[i].prd.length > 5) {
-            thDayData.push(Math.round(result.data[i].prd * 100) / 100)
-          }
-        }
-        console.log(thDayData)
-        myChart.setOption({
-          series: [
-            {
-              name: '近三天',
-              type: 'bar',
-              barWidth: '20%',
-              data: thDayData,
-              itemStyle: {
-                normal: {
-                }
-              },
-            }]
-        })
-      });
-    fetch("/api/count/getAreaAvgRaindata", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ "type": 4 })
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        for (var i = result.data.length - 1; i >= 0; i--) {
-          if (result.data[i].prd.length > 5) {
-            seDayData.push(Math.round(result.data[i].prd * 100) / 100)
-          }
-        }
-        console.log(seDayData)
-        myChart.setOption({
-          series: [
-            {
-              name: '近一周',
-              type: 'bar',
-              barWidth: '20%',
-              data: seDayData,
-              itemStyle: {
-                normal: {
-                }
-              },
-            }]
-        })
-      });
+
   }
 }
 export default WeatherChart;

@@ -80,8 +80,8 @@ module.exports = {
                 test: /\.(woff|woff2|svg|eot|ttf|png|svg)$/,
                 loader: 'file-loader',
                 options: {
-                    name: ("static/[name].[hash:5].[ext]"),
-                    publicPath: "../"
+                    name: ("../static/[name].[hash:5].[ext]"),
+                    publicPath: "./"
                 }
             }
         ]
