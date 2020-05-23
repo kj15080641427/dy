@@ -1,9 +1,12 @@
 /**
  * WeatherBox 2020-05-12
+ * zdl
+ * 数据展示（全市平均降水量河流数水库数水闸数河槽总蓄水量）
  */
 import React from 'react';
 import "./style.scss";
 import { Statistic, Row, Col } from 'antd';
+import { getCityAvgRaindata } from "@app/data/request";
 
 class WeatherBox extends React.PureComponent {
   constructor(props, context) {
@@ -58,17 +61,9 @@ class WeatherBox extends React.PureComponent {
     // Math.pow(x,y) x 的 y 次幂
     return Math.round(num * Math.pow(10, pos)) / Math.pow(10, pos);
   }
+  //初始化数据
   componentDidMount() {
-
-    fetch("/api/count/getCityAvgRaindata", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify()
-    })
-      .then((response) => response.json())
+    getCityAvgRaindata({})
       .then((result) => {
         if (result.data.length > 5) {
           this.setState({ weatherCount: Math.round(result.data * 100) / 100 })

@@ -83,7 +83,7 @@ module.exports = {
                 test: /\.(woff|woff2|svg|eot|ttf|png|svg)$/,
                 loader: 'file-loader',
                 options: {
-                    name: ("static/[name].[hash:5].[ext]"),
+                    name: ("../static/[name].[hash:5].[ext]"),
                     publicPath: "./"
                 }
             }
@@ -138,7 +138,6 @@ module.exports = {
         hot: true,
         proxy: {
             '/api/*': {
-                // target: ',
                 target: isTao ? "http://2287ym5502.51mypc.cn/" : 'http://172.19.112.74:8080/',
                 // pathRewrite: {'^/api' : ''},
                 secure: true,

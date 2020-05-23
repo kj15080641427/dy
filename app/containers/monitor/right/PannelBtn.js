@@ -1,18 +1,21 @@
 /**
  * PannelBtn 2020-05-12
+ * zdl
+ * 天气，日常，防汛
  */
 import React from 'react';
+import { BrowserRouter, Route, Link } from 'react-router-dom'
 import "./style.scss";
 import { Row, Col } from 'antd';
 import everyday from '../../../resource/everyday.png';
 import flood from '../../../resource/flood.png';
 import moment from "moment";
-
+import { getWeatherdata } from "@app/data/request";
 class PannelBtn extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      weatherData: {}
+      weatherData: {}//天气信息
     };
   }
 
@@ -44,7 +47,7 @@ class PannelBtn extends React.PureComponent {
             </Col>
             <Col span={10}>
               <Row>
-                <Col span={12}><img className="m-btn-flood" src={flood}></img></Col>
+                <Col span={12}><Link to={"#/index"}><img className="m-btn-flood" src={flood}></img></Link></Col>
                 <Col span={12}><img className="m-btn-everyday" src={everyday}></img></Col>
               </Row>
             </Col>
@@ -59,14 +62,10 @@ class PannelBtn extends React.PureComponent {
         this.time.innerHTML = moment().format("MM月DD日");
       }
     }, 1000);
-    fetch("/api/weather/get", {
-      method: 'GET',
-      mode: 'cors',
-    })
-      .then(response => response.json())
+    //获取天气信息
+    getWeatherdata()
       .then(result => {
         this.setState({ weatherData: result.data })
-        console.log(this.state.weatherData)
       })
   }
   componentWillUnmount() {

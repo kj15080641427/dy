@@ -1,4 +1,6 @@
-const host = "http://2287ym5502.51mypc.cn";
+// const host = "http://2287ym5502.51mypc.cn";
+const host = "http://172.19.112.74:8080/";
+//const host = "http://10.1.4.187:8080/";
 // element判断是否含有className
 export function hasClassName(obj, name) {
   let tmpName = obj.className;

@@ -88,17 +88,7 @@ class Map extends React.PureComponent {
       maxZoom: 18,
       mouseControl: false
     });
-    this.flood = new FloodAnimation({
-      map: this.map.getMap(),
-      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/ows?service=WFS',
-      srsName: 'EPSG:4326', ns: 'www.gcspace.com', ws: 'dy',
-      layerName: '河流',
-      colorTable: [{ min: 0, max: 0.1, color: '#ccbbff' },
-      { min: 0.1, max: 0.5, color: '#9f88ff' },
-      { min: 0.5, max: 0.75, color: '#5500ff' },
-      { min: 0.75, max: 10000, color: '#0000cc' }]
-    });
-    this.flood.on("click", this.onFloodClick);
+    
     this.map.addTile({
       // url: "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}",
       url: `https://t0.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
@@ -121,15 +111,33 @@ class Map extends React.PureComponent {
       key: "tiandi2",
       projection: true
     });
-    // this.map.addGeo({
-    //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
-    //   params: {
-    //     'LAYERS': 'dy:DYWater',
-    //     'TILED': true
-    //   },
-    //   zIndex: 10,
-    //   key: "river"
-    // });
+    this.map.addGeo({
+      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
+      params: {
+        'LAYERS': 'dy:DYWater',
+        'TILED': true
+      },
+      zIndex: 10,
+      key: "river"
+    });
+
+    this.flood = new FloodAnimation({
+      map: this.map.getMap(),
+      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/ows?service=WFS',
+      srsName: 'EPSG:4326', ns: 'www.gcspace.com', ws: 'dy',
+      layerName: 'River',
+      colorTable: [
+      // { min: 0, max: 0.1, color: '#ccbbff' },
+        { min: 0, max: 0.1, color: '#00ff00' },
+        {min: 0.1, max: 0.5, color: '#eee538'},
+      //{ min: 0.1, max: 0.5, color: '#9f88ff' },
+        {min: 0.5, max: 0.75, color: '#ffa500'},
+      //{ min: 0.5, max: 0.75, color: '#5500ff' },
+        //{ min: 0.75, max: 10000, color: '#0000cc' }
+        {min: 0.75, max: 1000, color: '#ff0000'}
+      ]
+    });
+    this.flood.on("click", this.onFloodClick);
     // this.map.addWFS({
     //   key: "wfsRiver",
     //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",

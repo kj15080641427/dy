@@ -73,7 +73,7 @@ export default class FloodAnimation {
             let style = new Style({
                 stroke: new Stroke({
                     color: t.color,
-                    width: 2
+                    width: 4
                 })
             });
             this.cachedStyles_.push(style)

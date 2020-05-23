@@ -3,105 +3,104 @@
   height: 83px;
   background: rgba(255, 255, 255, 0);
 }
-.m-btn-weather{
+.m-btn-weather {
   width: 285px;
   height: 83px;
   border: 1px solid #007ed7;
-  position:relative; 
-  bottom:15px;
+  position: relative;
+  bottom: 15px;
   right: 14px;
   background-color: rgb(255, 255, 255);
 }
-.m-btn-sunny{
+.m-btn-sunny {
   width: 50px;
   height: 50px;
-  position:relative; 
-  top:14px;
+  position: relative;
+  top: 14px;
   left: 14px;
-  filter:invert(10%)
+  filter: invert(10%);
 }
-.m-btn-weather-data{
+.m-btn-weather-data {
   font-size: 14px;
-  position:relative; 
-  top:7px;
+  position: relative;
+  top: 7px;
   left: 14px;
 }
-.m-btn-everyday{
-  position:relative; 
-  bottom:13px;
+.m-btn-everyday {
+  position: relative;
+  bottom: 13px;
 }
-.m-btn-flood{
-  position:relative; 
-  bottom:13px;
+.m-btn-flood {
+  position: relative;
+  bottom: 13px;
 }
 .m-alm-div {
   width: 514px;
   height: 500px;
   border: 1px solid #007ed7;
-  position:relative; 
-  bottom:22px;
+  position: relative;
+  bottom: 22px;
 }
 .m-alm-div-table {
   width: 484px;
   height: 500px;
-  position:relative;
+  position: relative;
   top: 15px;
-  left:15px;
+  left: 15px;
   right: 15px;
 }
 .m-alm-table {
   height: 500px;
   background: rgb(255, 255, 255);
-  overflow: hidden;
 }
 .m-alm-img {
   width: 107px;
   height: 8px;
-  position:relative; 
-  bottom:16px;
+  position: relative;
+  bottom: 16px;
 }
-.m-alm-warningImg{
+.m-alm-warningImg {
   width: 120px;
   height: 80px;
 }
-.m-alm-row{
+.m-alm-row {
   font-size: 18px;
   left: 10px;
   width: 514px;
   height: 115px;
-  position:relative; 
-  left:15px;
+  position: relative;
+  left: 15px;
   top: 15px;
-  bottom:15px;
+  bottom: 15px;
   right: 15px;
 }
-.m-alm-row-warning{
+.m-alm-row-warning {
   font-size: 25px;
-  font-weight:bold ;
+  font-weight: bold;
   color: #ec595f;
-  position:relative; 
-  left:15px;
+  position: relative;
+  left: 15px;
 }
-.m-alm-row-processed{
+.m-alm-row-processed {
   font-size: 25px;
-  font-weight:bold ;
+  font-weight: bold;
   color: #eee54c;
-  position:relative; 
-  left:15px;
+  position: relative;
+  left: 15px;
 }
-.m-alm-row-abnormal{
+.m-alm-row-abnormal {
   font-size: 25px;
-  font-weight:bold ;
+  font-weight: bold;
   color: #40b96c;
-  position:relative; 
-  left:15px;
+  position: relative;
+  left: 15px;
 }
-.m-alm-row-pending{
+.m-alm-row-pending {
   font-size: 25px;
-  font-weight:bold ;
+  font-weight: bold;
   color: #007ed7;
-  position:relative; 
-  left:15px;
+  position: relative;
+  left: 15px;
 }
 .m-wth-pic {
   height: 371px;
@@ -110,44 +109,50 @@
 .m-pic-img {
   width: 107px;
   height: 8px;
-  position:relative;
-  bottom:16px;
+  position: relative;
+  bottom: 16px;
 }
-.m-pic-div{
+.m-pic-div {
   width: 514px;
   height: 371px;
   border: 1px solid #007ed7;
-  position:relative; 
-  bottom:22px;
+  position: relative;
+  bottom: 22px;
 }
 .m-pic-div-img {
   width: 400px;
   height: 365px;
-  position:relative;
+  position: relative;
   top: 4px;
   left: -20px;
 }
-.m-pic-Carousel-img{
+.m-pic-Carousel-img {
   width: 460px;
   height: 360px;
 }
-.ant-carousel .slick-slide {
-  text-align: center;
-  height: 160px;
-  line-height: 160px;
-  background: #cc333346;
-  overflow: hidden;
+.ant-carousel {
+  height: 365px;
 }
-.ant-carousel .slick-slide h3 {
-  color: #fff;
-}
-.ant-carousel .slick-dots-bottom {
-    bottom: 12px;
+.ant-carousel .slick-initialized .slick-slide {
+  height: 365px;
 }
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #87a4d0;
   border-color: #87a4d0;
 }
-.ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner {
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner,
+.ant-checkbox-input:focus + .ant-checkbox-inner {
   border-color: #87a4d0;
+}
+.m-pic-Carousel-img {
+  width: 460px;
+  height: 380px;
+}
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 380px;
+  line-height: 380px;
+  background: rgba(204, 51, 51, 0.27);
+  overflow: hidden;
 }
