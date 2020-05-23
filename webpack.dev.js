@@ -81,7 +81,7 @@ module.exports = {
                 loader: 'file-loader',
                 options: {
                     name: ("static/[name].[hash:5].[ext]"),
-                    publicPath: "./"
+                    publicPath: "../"
                 }
             }
         ]
@@ -130,8 +130,8 @@ module.exports = {
         hot: true,
         proxy: {
             '/api/*': {
-                // target: 'http://172.19.112.74:8080/',
-                target: "http://2287ym5502.51mypc.cn/",
+                target: 'http://172.19.112.74:8080/',
+                //target: "http://2287ym5502.51mypc.cn/",
                 // pathRewrite: {'^/api' : ''},
                 secure: true,
                 changeOrigin: true,
