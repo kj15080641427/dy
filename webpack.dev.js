@@ -83,7 +83,7 @@ module.exports = {
                 test: /\.(woff|woff2|svg|eot|ttf|png|svg)$/,
                 loader: 'file-loader',
                 options: {
-                    name: ("../static/[name].[hash:5].[ext]"),
+                    name: ("static/[name].[hash:5].[ext]"),
                     publicPath: "./"
                 }
             }
@@ -132,6 +132,7 @@ module.exports = {
     
     devServer: {
         contentBase: path.resolve(__dirname, "./dist"),
+        historyApiFallback: true,
         host: "localhost",
         compress: true,
         port: 8888,

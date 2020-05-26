@@ -153,7 +153,8 @@ class Map extends React.PureComponent {
     // });
     // this.map.addTile({
     //   key: "traffic",
-    //   url: 'http://tm.amap.com/trafficengine/mapabc/traffictile?v=1.0&;t=1&x={x}&y={y}&z={z}&&t=longTime'
+    //   url: 'http://tm.amap.com/trafficengine/mapabc/traffictile?v=1.0&;t=1&x={x}&y={y}&z={z}&&t=longTime',
+    //   projection: true,
     // });
     // this.map.addTraffic({
     //   key: "traffic",
@@ -423,7 +424,7 @@ class Map extends React.PureComponent {
     // 模拟洪水
     setInterval(() => {
       let data = [];
-      for (let i = 0; i < 536; i++){
+      for (let i = 0; i < 195; i++){
         let r = 'R' + i;
         data.push({ r: r, d: Math.random() });
       }

@@ -1,0 +1,12 @@
+.hm-menu {
+  display: flex;
+  flex-direction: column;
+  .hm-logo {
+    height: 64px;
+    flex-shrink: 0;
+    color: white;
+  }
+  .hm-content {
+    flex-grow: 1;
+  }
+}

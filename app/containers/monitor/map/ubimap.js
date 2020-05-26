@@ -572,6 +572,7 @@ export default (function(window) {
             source: new VectorSource(),
             visible: param.visible == null ? true : param.visible,
             zIndex: param.zIndex ? param.zIndex : 0,
+            
             style: function(feature) {
               let traffic = feature.get("attr") && feature.get("attr").traffic;
               let zoom = _this.getZoom();
