@@ -13,6 +13,7 @@ import emitter from "@app/utils/emitter.js";
 import "./style.scss";
 import { templateWater, templateRain } from "./template";
 import { getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning } from "@app/data/request";
+import VideoControl from '@app/components/video/VideoControl';
 import Person from "./overlays/Person";
 import Rain from "./overlays/Rain";
 import Water from "./overlays/Water";
@@ -33,6 +34,7 @@ class Map extends React.PureComponent {
     this.type = [Person, Rain, Water, Video];
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.onOverlayClose = this.onOverlayClose.bind(this);
+    this.videoControl = new VideoControl();
   }
   render() {
     let { overlays } = this.state;
@@ -70,6 +72,7 @@ class Map extends React.PureComponent {
     this.setVisible();
     this.addEvent();
     this.loadData();
+    this.videoControl.login();
   }
   componentWillUnmount() {
     this._resizeToken.remove();
@@ -323,7 +326,10 @@ class Map extends React.PureComponent {
       }
     });
     this.map.startSelectFeature("video", (param) => {
-      this.addOverlay(Video.type, param);
+      //this.addOverlay(Video.type, param);
+      let newParam = { ...param };
+      newParam.videoControl = this.videoControl;
+      this.addOverlay(Video.type, newParam);
     });
     // this.map.activeMeasure();
     this.map.on("moveend", () => {
