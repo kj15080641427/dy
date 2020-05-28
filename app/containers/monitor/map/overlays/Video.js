@@ -4,25 +4,30 @@
 import React from 'react';
 import "./style.scss";
 import Base from "./Base";
+import VideoComponent from '@app/components/video/VideoComponent';
 class Video extends Base {
   static type = "video";
+  
   constructor(props, context) {
     super(props, context);
-    this.state = {
-    };
+    // this.state = {
+    //   videoControl: props.videoControl ? props.videoControl : null,
+    // };
     this.onClose = this.onClose.bind(this);
+
   }
   render() {
     let { model } = this.props;
+    let { videoControl } = model;
     return ( 
-      <div className="m-ovl-box m-ovl-video" style={{display: "none"}} ref={(node) => { this.container = node;}}>
+      <div className="m-ovl-box m-ovl-video" style={{display: "none", width: 620, height: 420}} ref={(node) => { this.container = node;}}>
         <span className="iconfont iconcuo m-ovl-close"></span>
-        <div className="m-ovl-line"><span>视频站点: {model.sitename}</span><span>更新日期: 2020-05-10 12:00</span></div>
+        <div className="m-ovl-line" onClick={this.onRequestFullScreen.bind(this)}>
+          <span>视频站点: {model.sitename}</span>
+        </div>
         <div className="m-ovl-vc">
-          <video preload="none" control="true" muted autoPlay="autoplay"
-            src="https://img1.isheji5.com/ips_video_previews/2020-04-02/11/117beb60-5453-494a-ad83-cab0ba844328.mp4?auth_key=1589625184-0-0-e1b04d01c30101ba346b37a1de981573"
-            poster="https://img1.isheji5.com/ips_video_thumbs/2020-04-02/93/93bdd3b3-fb13-4802-a6de-c3996a7a2cd9.png!w380?auth_key=1589625184-0-0-c10d84c5b2cfed27f284aa06da855c95"
-          ></video>
+          <VideoComponent videoControl={videoControl} token={'device1--21'} style={{width: 590 , height: 380 , borderWidth: 0}} />
+      
         </div>
       </div>
     );
@@ -39,6 +44,13 @@ class Video extends Base {
   onCustomClick(e) {
 
   }
+  onRequestFullScreen() {
+    console.log('click');
+    if (this.requestFullscreen) {
+      this.requestFullscreen();
+    }
+  }
+
   onClose() {
     let { onClose, model } = this.props;
     if (onClose) {
