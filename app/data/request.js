@@ -18,6 +18,10 @@ export function getWaterRealTime(data) {
 export function getWaterWarning(data) {
   return fetchJSONData("POST", "/riverwaterdata/getWarning", data);
 }
+// 获取预警水位
+export function getGate(data) {
+  return fetchJSONData("POST", "/gate/getAll", data);
+}
 // 获取实时天气信息
 export function getWeatherdata() {
   return fetchJSONData("GET", "/weather/get",null);
