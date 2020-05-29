@@ -19,6 +19,7 @@ import Person from "./overlays/Person";
 import Rain from "./overlays/Rain";
 import Water from "./overlays/Water";
 import Video from "./overlays/Video";
+import Gate from "./overlays/Gate";
 import { message } from 'antd';
 import TileSource from 'ol/source/Tile';
 class Map extends React.PureComponent {
@@ -29,10 +30,11 @@ class Map extends React.PureComponent {
         [Person.type]: {},
         [Rain.type]: {},
         [Water.type]: {},
-        [Video.type]: {}
+        [Video.type]: {},
+        [Gate.type]: {},
       }
     };
-    this.type = [Person, Rain, Water, Video];
+    this.type = [Person, Rain, Water, Video, Gate];
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.onOverlayClose = this.onOverlayClose.bind(this);
     this.videoControl = new VideoControl();
@@ -264,7 +266,7 @@ class Map extends React.PureComponent {
         width: 1,
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
-        fontOffset: [10, 0],
+        fontOffset: [0, 0],
         fontText: function(featureObj) {
             return featureObj.name + "";
         },
@@ -344,6 +346,10 @@ class Map extends React.PureComponent {
       let newParam = { ...param };
       newParam.videoControl = this.videoControl;
       this.addOverlay(Video.type, newParam);
+    });
+    this.map.startSelectFeature("gate", (param) => {
+      let newParam = { ...param };
+      this.addOverlay(Gate.type, newParam);
     });
     // this.map.activeMeasure();
     this.map.on("moveend", () => {
@@ -433,16 +439,17 @@ class Map extends React.PureComponent {
         this.map.addFeatures("gate", res.data.filter((item) => { return item.lat > 3 && item.lat < 53}).map((item) => {
           return {
             type: "LineString",
-            id: item.gateID+"",
+            id: item.gateID + "",
             name: item.name,
+            rivername: item.rivername,
+            management: item.management,
             isMuti: true,
             rotate: 0,
             rotateAnchor: [150, 50],
             lonlats: [item.lon, item.lat],
             coords: [
-              [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0]],
-              [[0, 100], [300, 0]],
-              [[0, 0], [300, 100]]
+              [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0],[0, 100], [300, 0],[0, 0], [300, 100]]
+              
             ]
           };
         })) ;
