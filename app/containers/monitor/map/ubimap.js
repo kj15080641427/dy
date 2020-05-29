@@ -232,7 +232,7 @@ export default (function(window) {
             //默认文字样式
             text: new Text({
                 font: style.font ? style.font : '10px sans-serif',
-                text: text,
+                // text: text,
                 fill: new Fill({
                     color: style.fontColor ? style.fontColor : "#000000"
                 })
@@ -519,11 +519,12 @@ export default (function(window) {
         strategy: bboxStrategy
       });
       vectorSource.on("addfeature", function({feature}) {
-        console.log(feature.getProperties());
-        // feature.set("attr", feature.getProperties());
+        // console.log(feature.getProperties());
+        feature.set("attr", feature.getProperties());
       });
       var vectorLayer = new VectorLayer({
         source: vectorSource,
+        zIndex: param.zIndex,
         style: new Style({
           stroke: new Stroke({
             color: 'rgba(0, 0, 255, 1.0)',
@@ -606,7 +607,7 @@ export default (function(window) {
           this.layerStyle[param.key] = param.style;
       }
       // let coord = [118.67, 37.43];
-      let coord = fromLonLat([118.67, 37.43], 'EPSG:3857');
+      // let coord = fromLonLat([118.67, 37.43], 'EPSG:3857');
 
 
       // let coords = [
@@ -614,25 +615,25 @@ export default (function(window) {
       //   [[0, 0], [118.67, 37.43]],
       //   [[0, 0], [118.67, 37.43]]
       // ];
-      let coords = [
-        [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0]],
-        [[0, 100], [300, 0]],
-        [[0, 0], [300, 100]]];
-
       // let coords = [
-      //   [[0, 0],[118.67, 37.43],[118.37, 37.43]],
-      //   [[118.67, 37.43],[118.37, 38.43]]
-      // ];
-        let geom = new MultiLineString(coords);
-        geom.rotate(10, [150, 50]);
-        geom.translate(coord[0], coord[1]);
-        // geom.transform(sprojection, projection);
-        let feature = new Feature({
-            id: "123",
-            geometry: geom,
-        });
-        feature.setId("123");
-        vectorLayer.getSource().addFeature(feature);
+      //   [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0]],
+      //   [[0, 100], [300, 0]],
+      //   [[0, 0], [300, 100]]];
+
+      // // let coords = [
+      // //   [[0, 0],[118.67, 37.43],[118.37, 37.43]],
+      // //   [[118.67, 37.43],[118.37, 38.43]]
+      // // ];
+      //   let geom = new MultiLineString(coords);
+      //   geom.rotate(10, [150, 50]);
+      //   geom.translate(coord[0], coord[1]);
+      //   // geom.transform(sprojection, projection);
+      //   let feature = new Feature({
+      //       id: "123",
+      //       geometry: geom,
+      //   });
+      //   feature.setId("123");
+      //   vectorLayer.getSource().addFeature(feature);
     }
     //添加矢量图
     Map.prototype.addVector = function(param) {
@@ -898,7 +899,7 @@ export default (function(window) {
                     hlFeature.setStyle(hlfeatureStyle);
                     hlFeature = null;
                 }
-                if (feature && layer && feature.get("attr") && feature.get("attr").type === "Point" &&
+                if (feature && layer && feature.get("attr") && (feature.get("attr").type === "Point" || feature.get("attr").type === "LineString") &&
                         this.hlLayers.indexOf(layer) > -1) {
 
                     var featureStyle = feature.getStyle();

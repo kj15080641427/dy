@@ -12,8 +12,9 @@ import emitter from "@app/utils/emitter.js";
 
 import "./style.scss";
 import { templateWater, templateRain } from "./template";
-import { getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning } from "@app/data/request";
+import { getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning, getGate } from "@app/data/request";
 import VideoControl from '@app/components/video/VideoControl';
+
 import Person from "./overlays/Person";
 import Rain from "./overlays/Rain";
 import Water from "./overlays/Water";
@@ -123,6 +124,15 @@ class Map extends React.PureComponent {
       zIndex: 10,
       key: "river"
     });
+    // this.map.addGeo({
+    //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
+    //   params: {
+    //     'LAYERS': 'dy:河流',
+    //     'TILED': true
+    //   },
+    //   zIndex: 10,
+    //   key: "river2"
+    // });
 
     this.flood = new FloodAnimation({
       map: this.map.getMap(),
@@ -142,10 +152,10 @@ class Map extends React.PureComponent {
     });
     this.flood.on("click", this.onFloodClick);
     // this.map.addWFS({
+    //   zIndex: 11,
     //   key: "wfsRiver",
     //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
-    //   typename: "dy:河流"
-    //   // url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs?service=wfs&version=1.1.0&request=GetFeature&typeNames=dy:DYWater&outputFormat=application/json&srsname=EPSG:4326%27"
+    //   typename: "dy:河流",
     // });
     // this.map.addHeatmap({
     //   key: "heatmap",
@@ -255,7 +265,9 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [10, 0],
-        
+        fontText: function(featureObj) {
+            return featureObj.name + "";
+        },
         font: '16px sans-serif'
       }
     });
@@ -266,7 +278,9 @@ class Map extends React.PureComponent {
     this.map.startHighlightFeatureonLayer("video");
     this.map.startHighlightFeatureonLayer("rain");
     this.map.startHighlightFeatureonLayer("water");
+    this.map.startHighlightFeatureonLayer("gate");
     this.map.startHighlightFeatureonLayer("wfsRiver");
+
     this.map.startSelectFeature("person", (param) => {
       this.addOverlay(Person.type, param);
       // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
@@ -395,6 +409,7 @@ class Map extends React.PureComponent {
     .catch((e) => {
       message.error('获取基础资料失败');
     });
+    // 加载视频数据
     getAllVideo().then((res) => {
       if (res.code === 200) {
         this.props.actions.addVideos(res.data);
@@ -409,6 +424,30 @@ class Map extends React.PureComponent {
       }
     })
     .catch((e) => {
+      console.log(e);
+    });
+    // 加载水闸数据
+    getGate({}).then((res) => {
+      if (res.code === 200) {
+        this.props.actions.addGates(res.data);
+        this.map.addFeatures("gate", res.data.filter((item) => { return item.lat > 3 && item.lat < 53}).map((item) => {
+          return {
+            type: "LineString",
+            id: item.gateID+"",
+            name: item.name,
+            isMuti: true,
+            rotate: 0,
+            rotateAnchor: [150, 50],
+            lonlats: [item.lon, item.lat],
+            coords: [
+              [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0]],
+              [[0, 100], [300, 0]],
+              [[0, 0], [300, 100]]
+            ]
+          };
+        })) ;
+      }
+    }).catch((e) => {
       console.log(e);
     });
     // 轮询预警更新
@@ -451,21 +490,7 @@ class Map extends React.PureComponent {
             heading: 0
         },
     ]);
-    this.map.addFeatures("gate", [
-      {
-        type: "LineString",
-        id: "gate001",
-        isMuti: true,
-        rotate: Math.PI/2,
-        rotateAnchor: [150, 50],
-        lonlats: [118.67, 37.43],
-        coords: [
-          [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0]],
-          [[0, 100], [300, 0]],
-          [[0, 0], [300, 100]]
-        ]
-      }
-    ])
+    
   }
   drawFeatures(data) {
     let { rain, water, details } = this.props;
@@ -484,9 +509,9 @@ class Map extends React.PureComponent {
       water: []
     };
     data.forEach((item) => {
-      if ([3, 5, 6].indexOf(item.sttype) > -1) {
+      if ([3, 5, 6].indexOf(item.indtype) > -1) {
         obj.rain.push(item);
-      } else if ([7, 8].indexOf(item.sttype) > -1) {
+      } else if ([7, 8].indexOf(item.indtype) > -1) {
         obj.water.push(item);
       }
     });

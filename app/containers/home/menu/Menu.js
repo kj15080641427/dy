@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { Menu } from "antd";
-import { Link, withRouter }  from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 const { SubMenu } = Menu;
 import {
   AppstoreOutlined,
@@ -30,7 +30,7 @@ class Menus extends React.PureComponent {
           logo
         </div >
         <div className="hm-content">
-        <Menu
+          <Menu
             mode="inline"
             theme="dark"
             inlineCollapsed={collapsed}

@@ -31,4 +31,10 @@ export function addVideos(data) {
     data
   };
 }
+export function addGates(data) {
+  return {
+    type: actionTypes.ADD_GATES,
+    data
+  };
+}
 

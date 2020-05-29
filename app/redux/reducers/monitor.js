@@ -5,8 +5,9 @@ import * as actionTypes from '../constants/monitor';
 
 const defaultState = {
   rain: [], // 雨量基础数据
-  water: [],// 水位基础数据
+  water: [], // 水位基础数据
   video: [], // 视频基础信息
+  gate: [], // 水闸信息
   details: {
     rain: {},
     water: {},
@@ -55,6 +56,13 @@ export default function main (state = defaultState, action) {
       let data = action.data;
       if (data && data.length) {
         newState.video = data;
+      }
+      break;
+    }
+    case actionTypes.ADD_GATES: {
+      let data = action.data;
+      if (data && data.length) {
+        newState.gate = data;
       }
       break;
     }
