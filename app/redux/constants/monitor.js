@@ -4,3 +4,4 @@ export const SET_DETAIL_DATA = 'SET_DETAIL_DATA';
 export const SET_MUTI_DETAIL_DATA = 'SET_MUTI_DETAIL_DATA';
 export const ADD_VIDEOS = 'ADD_VIDEOS';
 export const ADD_GATES = 'ADD_GATES';
+export const ADD_PUMPS = 'ADD_PUMPS';

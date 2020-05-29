@@ -12,7 +12,8 @@ import emitter from "@app/utils/emitter.js";
 
 import "./style.scss";
 import { templateWater, templateRain } from "./template";
-import { getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning, getGate } from "@app/data/request";
+import { getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning, getGate,
+  getPump, getWfsRiver } from "@app/data/request";
 import VideoControl from '@app/components/video/VideoControl';
 
 import Person from "./overlays/Person";
@@ -20,6 +21,8 @@ import Rain from "./overlays/Rain";
 import Water from "./overlays/Water";
 import Video from "./overlays/Video";
 import Gate from "./overlays/Gate";
+import Pump from "./overlays/Pump";
+import WfsRiver from "./overlays/WfsRiver";
 import { message } from 'antd';
 import TileSource from 'ol/source/Tile';
 class Map extends React.PureComponent {
@@ -32,9 +35,11 @@ class Map extends React.PureComponent {
         [Water.type]: {},
         [Video.type]: {},
         [Gate.type]: {},
+        [Pump.type]: {},
+        [WfsRiver.type]: {}
       }
     };
-    this.type = [Person, Rain, Water, Video, Gate];
+    this.type = [Person, Rain, Water, Video, Gate, Pump, WfsRiver];
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.onOverlayClose = this.onOverlayClose.bind(this);
     this.videoControl = new VideoControl();
@@ -153,12 +158,18 @@ class Map extends React.PureComponent {
       ]
     });
     this.flood.on("click", this.onFloodClick);
-    // this.map.addWFS({
-    //   zIndex: 11,
-    //   key: "wfsRiver",
-    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
-    //   typename: "dy:河流",
-    // });
+    this.map.addWFS({
+      zIndex: 11,
+      key: "wfsRiver",
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
+      typename: "dy:河流",
+      onClick: (props) => {
+        if (props && props.NAME) {
+          this.onWfsRiverClick(props);
+        }
+        
+      }
+    });
     // this.map.addHeatmap({
     //   key: "heatmap",
     //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
@@ -273,6 +284,26 @@ class Map extends React.PureComponent {
         font: '16px sans-serif'
       }
     });
+    this.map.addVector({
+      key: "pump",
+      zIndex: 30,
+      style: {
+        anchor: [0.5, 0.5],
+        strokeColor: "#ff0000",
+        width: 1,
+        fillColor: "#1890ff",
+        fontColor: "#82B2FF",
+        fontOffset: [0, 0],
+        src: function(featureObj) { 
+          return require("../../../resource/pump.svg")["default"];
+          
+        },
+        fontText: function(featureObj) {
+            return featureObj.name + "";
+        },
+        font: '16px sans-serif'
+      }
+    });
     // this.map.addGate({
     //   key: "gata1"
     // })
@@ -281,6 +312,7 @@ class Map extends React.PureComponent {
     this.map.startHighlightFeatureonLayer("rain");
     this.map.startHighlightFeatureonLayer("water");
     this.map.startHighlightFeatureonLayer("gate");
+    this.map.startHighlightFeatureonLayer("pump");
     this.map.startHighlightFeatureonLayer("wfsRiver");
 
     this.map.startSelectFeature("person", (param) => {
@@ -351,11 +383,40 @@ class Map extends React.PureComponent {
       let newParam = { ...param };
       this.addOverlay(Gate.type, newParam);
     });
+    this.map.startSelectFeature("pump", (param) => {
+      let newParam = { ...param };
+      this.addOverlay(Pump.type, newParam);
+    });
     // this.map.activeMeasure();
     this.map.on("moveend", () => {
       let a = this.map.getView().calculateExtent();
       // console.log(a);
     })
+  }
+  onWfsRiverClick(props) {
+    props.id = props.Name;
+    let { details } = this.props;
+    if (details.wfsRiver[props.NAME]) {
+      this.addOverlay(WfsRiver.type, {...props, ...details.wfsRiver[props.NAME]});
+    }else {
+      getWfsRiver({name: props.NAME})
+      .then((res) => {
+        if (res.code === 200) {
+          let record = res.data && res.data[0] || null;
+          this.props.actions.setDetailData({
+            key: "wfsRiver",
+            value: record,
+            idKey: "name"
+          });
+          this.addOverlay(WfsRiver.type, record ? {...props, ...record} : props);
+        } else {
+          return Promise.reject(res.msg || "未知错误");
+        }
+      })
+      .catch((e) => {
+        message.error("获取河流详情失败");
+      });
+    }
   }
   addOverlay(key, param) {
     let id = param.id;
@@ -375,7 +436,7 @@ class Map extends React.PureComponent {
         this.map.setVisible(layerKey, show);
       });
       // 特殊几个layer, 如洪水
-      this.flood.setVisible(layerVisible.wfsRiver);
+      this.flood.setVisible(layerVisible.flood);
     }
   }
   addEvent() {
@@ -455,6 +516,24 @@ class Map extends React.PureComponent {
         })) ;
       }
     }).catch((e) => {
+      console.log(e);
+    });
+    getPump({}).then((res) => {
+      if (res.code === 200) {
+        this.props.actions.addPumps(res.data);
+        this.map.addFeatures("pump", res.data.map((item) => {
+          return {
+            type: "Point",
+            id: item.pumpID + "",
+            name: item.name,
+            rivername: item.rivername,
+            management: item.management,
+            lonlat: [item.lon, item.lat]
+          };
+        }));
+      }
+    })
+    .catch((e) => {
       console.log(e);
     });
     // 轮询预警更新

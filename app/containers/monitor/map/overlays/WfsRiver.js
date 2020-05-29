@@ -4,8 +4,8 @@
 import React from 'react';
 import "./style.scss";
 import Base from "./Base";
-class Gate extends Base {
-  static type = "gate";
+class WfsRiver extends Base {
+  static type = "wfsRiver";
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -15,8 +15,8 @@ class Gate extends Base {
   render() {
     let { model } = this.props;
     return ( 
-      <div className="m-ovl-box m-ovl-gate" style={{display: "none"}} ref={(node) => { this.container = node;}}>
-        <div className="m-ovl-line">闸门名称:{model.name}</div>
+      <div className="m-ovl-box m-ovl-wfsRiver" style={{display: "none"}} ref={(node) => { this.container = node;}}>
+        <div className="m-ovl-line">河流名称:{model.name}</div>
         <div className="m-ovl-line">所属河流:{model.rivername}</div>
         <div className="m-ovl-line">管理单位:{model.management || "未知"}</div>
         <span className="iconfont iconcuo m-ovl-close" ></span>
@@ -38,8 +38,8 @@ class Gate extends Base {
   onClose() {
     let { onClose, model } = this.props;
     if (onClose) {
-      onClose(model.id, Gate.type);
+      onClose(model.id, WfsRiver.type);
     }
   }
 }
-export default Gate;
+export default WfsRiver;

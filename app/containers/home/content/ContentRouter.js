@@ -34,6 +34,7 @@ class ContentRouter extends React.PureComponent {
           <Route path={path + "/video"} component={Video} />
           <Route component={NoMatch} />
         </Switch>
+
     );
   }
   componentDidMount() { }

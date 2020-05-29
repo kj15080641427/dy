@@ -22,9 +22,17 @@ export function getWaterWarning(data) {
 export function getwaterlevelAlarmLog(data) {
   return fetchJSONData("POST", "/waterlevelAlarmLog/getWarningInfo", data);
 }
-// 获取预警水位
+// 获取水闸
 export function getGate(data) {
   return fetchJSONData("POST", "/gate/getAll", data);
+}
+// 获取泵站
+export function getPump(data) {
+  return fetchJSONData("POST", "/pump/getAll", data);
+}
+// 获取河流
+export function getWfsRiver(data) {
+  return fetchJSONData("POST", "/river/getAll", data);
 }
 // 获取实时天气信息
 export function getWeatherdata() {

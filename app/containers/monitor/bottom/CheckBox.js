@@ -26,7 +26,7 @@ class CheckBox extends React.PureComponent {
        <div className="m-checkbox-row">
           <div className="m-checkbox-row-div">
             <Row>
-            <Col span={4}><Checkbox><span className="m-row-checkbox-span">降水分布</span></Checkbox></Col>
+              <Col span={4}><Checkbox><span className="m-row-checkbox-span">降水分布</span></Checkbox></Col>
               <Col span={5}><Checkbox layer={"rain"} checked={layerVisible.rain != null ? layerVisible.rain : true} onChange={this.onChange}><img src={precipitation} className="m-row-checkbox-img"></img><span className="m-row-checkbox-span">雨量站</span></Checkbox></Col>
               <Col span={5}><Checkbox layer={"water"} checked={layerVisible.water != null ? layerVisible.water : true} onChange={this.onChange}><img src={waterlevel} className="m-row-checkbox-img"></img><span className="m-row-checkbox-span">水位站</span></Checkbox></Col>
               <Col span={5}><Checkbox layer={"video"} checked={layerVisible.video != null ? layerVisible.video : true} onChange={this.onChange}><img src={monitoring} className="m-row-checkbox-img"></img><span className="m-row-checkbox-span">视频站点</span></Checkbox></Col>
@@ -36,11 +36,23 @@ class CheckBox extends React.PureComponent {
         </div>
         <div className="m-checkbox-col">
           <div className="m-checkbox-col-div">
-            <Row className="m-checkbox-col-row"> 
+            {/* <Row className="m-checkbox-col-row"> 
               <Checkbox onChange={this.onChange}><span className="m-col-checkbox-span">行政区划</span></Checkbox>
+            </Row> */}
+            {/* <Row className="m-checkbox-col-row">
+              <Checkbox onChange={this.onChange}><span className="m-col-checkbox-span">街道</span></Checkbox>
+            </Row> */}
+            <Row className="m-checkbox-col-row">
+              <Checkbox layer={"gate"} checked={layerVisible.gate != null ? layerVisible.gate : true} onChange={this.onChange}><span className="m-col-checkbox-span">水闸</span></Checkbox>
             </Row>
             <Row className="m-checkbox-col-row">
-              <Checkbox onChange={this.onChange}><span className="m-col-checkbox-span">街道</span></Checkbox>
+              <Checkbox layer={"pump"} checked={layerVisible.pump != null ? layerVisible.pump : true} onChange={this.onChange}><span className="m-col-checkbox-span">泵站</span></Checkbox>
+            </Row>
+            <Row className="m-checkbox-col-row">
+              <Checkbox layer={"river"} checked={layerVisible.river != null ? layerVisible.river : true} onChange={this.onChange}><span className="m-col-checkbox-span">水系图</span></Checkbox>
+            </Row>
+            <Row className="m-checkbox-col-row">
+              <Checkbox layer={"flood"} checked={layerVisible.flood != null ? layerVisible.flood : true} onChange={this.onChange}><span className="m-col-checkbox-span">洪水河流</span></Checkbox>
             </Row>
             <Row className="m-checkbox-col-row">
               <Checkbox layer={"wfsRiver"} checked={layerVisible.wfsRiver != null ? layerVisible.wfsRiver : true} onChange={this.onChange}><span className="m-col-checkbox-span">河流</span></Checkbox>
