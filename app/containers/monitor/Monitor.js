@@ -43,7 +43,6 @@ class Monitor extends React.PureComponent {
     };
     this.onChecked = this.onChecked.bind(this)
   };
-
   //设置抽屉页
   onClose = () => {
     this.setState({
