@@ -1,9 +1,32 @@
-.hh-head {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  .hh-collapsed {
-    color: rgba(0,0,0,.65);
-  }
+.top-header {
+	background: #fff;
+	border-bottom: 1px solid #fff;
+	padding: 0 15px;
+	position: relative;
+	.top-header-inner {
+		height: 70px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		.header-title {
+			flex: 1;
+			padding-left: 15px;
+			font-size: 20px;
+		}
+		.header-right {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			width: 320px;
+			> div {
+				margin-left: 20px;
+			}
+		}
+	}
+	.drop-list {
+		li {
+			padding: 10px 15px;
+		}
+	}
 }

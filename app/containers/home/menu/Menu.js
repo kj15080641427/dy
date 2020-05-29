@@ -24,7 +24,7 @@ class Menus extends React.PureComponent {
   }
   render() {
     let { collapsed } = this.props;
-    return ( 
+    return (
       <div className={"hm-menu"}>
         <div className="hm-logo">
           logo
@@ -36,10 +36,10 @@ class Menus extends React.PureComponent {
             inlineCollapsed={collapsed}
             onClick={this.onMenuClick}
           >
-            <Menu.Item key="/test" icon={<PieChartOutlined />}>
+            <Menu.Item title={"标题一"} key="/test" icon={<PieChartOutlined />} >
               test
             </Menu.Item>
-            <Menu.Item key="/test2" icon={<DesktopOutlined />}>
+            <Menu.Item key="/video" icon={<DesktopOutlined />}>
               Option 2
             </Menu.Item>
             <Menu.Item key="/test3" icon={<ContainerOutlined />}>
@@ -58,10 +58,14 @@ class Menus extends React.PureComponent {
       </div>
     );
   }
-  componentDidMount() {}
-  onMenuClick({ item, key, keyPath, domEvent }) {
+  componentDidMount() { }
+  onMenuClick({ item, key, keyPath, domEvent ,title}) {
     let { history } = this.props;
     history.push('/home' + key);
+    console.log(item)
+    console.log(key)
+    console.log(keyPath)
+    console.log(title)
   }
 }
 export default withRouter(Menus);

@@ -9,6 +9,7 @@ import imgURL from '../../../resource/title_bg.png';
 import { Table, Tabs } from 'antd';
 import Precipitation from './WeatherModule/Precipitation';
 import WaterLevel from './WeatherModule/WaterLevel';
+import Video from './WeatherModule/Video';
 import emitter from "@app/utils/emitter.js";
 
 class WeatherTable extends React.PureComponent {
@@ -23,9 +24,9 @@ class WeatherTable extends React.PureComponent {
     const { TabPane } = Tabs;
     return (
       <div className="m-wth-table">
-        <img className="m-table-img" src={imgURL}/>
+        <img className="m-table-img" src={imgURL} />
         <div className="m-div">
-          <Tabs type="card" defaultActiveKey="1" onChange={this.callback} animated="true" tabBarGutter={20} size="large" className="ant-tabs-nav-container">
+          <Tabs type="card" defaultActiveKey="1" onChange={this.callback} animated="true" tabBarGutter={10} size="large" className="ant-tabs-nav-container">
             <TabPane tab="雨量站" key="1">
               <Precipitation></Precipitation>
             </TabPane>
@@ -33,9 +34,12 @@ class WeatherTable extends React.PureComponent {
               <WaterLevel></WaterLevel>
             </TabPane>
             <TabPane tab="视频站点" key="3">
-              <Table className="m-div-table" size="small" loading={true} dataSource={this.state.qydataSource} scroll={{ y: 300 }} pagination={false} />
+              <Video></Video>
             </TabPane>
             <TabPane tab="防汛人员" key="4">
+              <Table className="m-div-table" size="small" loading={true} dataSource={this.state.qydataSource} scroll={{ y: 300 }} pagination={false} />
+            </TabPane>
+            <TabPane tab="易涝点" key="5">
               <Table className="m-div-table" size="small" loading={true} dataSource={this.state.qydataSource} scroll={{ y: 300 }} pagination={false} />
             </TabPane>
           </Tabs>
@@ -48,7 +52,7 @@ class WeatherTable extends React.PureComponent {
     let lon = e.target.dataset.lon * 1;
     let lat = e.target.dataset.lat * 1;
     if (lon == null && lat == null) return;
-    emitter.emit("map-move", [lon, lat], () => { console.log("moveend");});
+    emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
   }
 }
 export default WeatherTable;
