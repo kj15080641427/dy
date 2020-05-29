@@ -8,12 +8,12 @@ const AsyncHome = AsyncComp(() => import("@app/containers/home/Index"));
 export class App extends React.Component {
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           <Route exact path="/" component={Monitor}/>
           <Route path={`/home`} component={AsyncHome}/>
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }
