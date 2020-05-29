@@ -21,7 +21,7 @@ class Base extends React.PureComponent {
     let nowNode = this.container.cloneNode(true);
     nowNode.style.display = "block";
     this.installEvent(nowNode);
-    map.addOverlay(model.id, { Coordinate: model.lonlat, offset: [13, -25] }, nowNode);
+    map.addOverlay(model.id, { Coordinate: model.lonlat || model.lonlats, offset: [13, -25] }, nowNode);
     
   }
   componentWillUnmount() {

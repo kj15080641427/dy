@@ -32,7 +32,7 @@ export default class FloodAnimation {
         this.layer_ = this.createLayer_(opt_options);
         this.layer_.setStyle(style);
         this.olMap_.addLayer(this.layer_);
-        this.install();
+        // this.install();
         this._cachHLFeature = null;
         this.callback = {
           'click': null
@@ -161,40 +161,40 @@ export default class FloodAnimation {
       this.layer_.setVisible(flag);
     }
     install() {
-      let _this = this;
-      this._pointermoveEKey = this.olMap_.on('pointermove', function(e) {
-          var flag = false;
-          var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
-              if (feature) {
-                if (feature.get("moved")) return;
-                if (_this._cachHLFeature && feature !== _this._cachHLFeature) {
-                  _this._cachHLFeature.set("moved", false);
-                };
-                feature.set("moved", true);
-                _this._cachHLFeature = feature;
-              }
+      // let _this = this;
+      // this._pointermoveEKey = this.olMap_.on('pointermove', function(e) {
+      //     var flag = false;
+      //     var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+      //         if (feature) {
+      //           if (feature.get("moved")) return;
+      //           if (_this._cachHLFeature && feature !== _this._cachHLFeature) {
+      //             _this._cachHLFeature.set("moved", false);
+      //           };
+      //           feature.set("moved", true);
+      //           _this._cachHLFeature = feature;
+      //         }
               
-          }.bind(this), {hitTolerance:0, layerFilter: (layer) => {
-            return layer === _this.layer_;
-          }});
-      });
-      this._clickEKey = this.olMap_.on('click', function(e) {
-          var flag = false;
-          var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
-              if (feature) {
-                if (_this.callback["click"]) {
-                  _this.callback["click"](feature.getProperties());
-                }
-              }
+      //     }.bind(this), {hitTolerance:0, layerFilter: (layer) => {
+      //       return layer === _this.layer_;
+      //     }});
+      // });
+      // this._clickEKey = this.olMap_.on('click', function(e) {
+      //     var flag = false;
+      //     var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+      //         if (feature) {
+      //           if (_this.callback["click"]) {
+      //             _this.callback["click"](feature.getProperties());
+      //           }
+      //         }
               
-          }.bind(this), {hitTolerance:0, layerFilter: (layer) => {
-            return layer === _this.layer_;
-          }});
-      });
+      //     }.bind(this), {hitTolerance:0, layerFilter: (layer) => {
+      //       return layer === _this.layer_;
+      //     }});
+      // });
     }
     destroy() {
-      unByKey(this._pointermoveEKey);
-      unByKey(this._clickEKey);
+      // unByKey(this._pointermoveEKey);
+      // unByKey(this._clickEKey);
     }
     on(key, callback) {
       if (!this.callback[key]) {
