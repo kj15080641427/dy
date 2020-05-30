@@ -6,9 +6,12 @@
 import React from 'react';
 import "../style.scss";
 import localimgURL from '../../../../resource/local.png';
-import { Table, Popover, Tag, Modal, Button, Card, Row, Col } from 'antd';
+import emitter from "@app/utils/emitter.js";
+import { Table, Popover, Tag, Modal, Button, Card, Row, Col, Input, Space } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import Highlighter from 'react-highlight-words';
 import moment from 'moment';
-import { getWaterHistory } from "@app/data/request";
+import { getWaterHistory, getBasicsAll } from "@app/data/request";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 import 'echarts';
@@ -24,148 +27,275 @@ class Precipitation extends React.PureComponent {
             swdataSourceById: [],//单个站点水位数据源
             visible: false,//模态框
             mloading: false,//模态框表格加载动画
+            searchText: '',
+            searchedColumn: '',
         };
     }
     //模态框控制
     showModal = (value) => {
         this.setState({
             visible: true,
+            mloading: true
         });
-        this.setState({ mloading: true });
-        let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YY-MM-DD HH:mm:ss")
+        let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7).format("YY-MM-DD HH:mm:ss")
         let endtm = moment(new Date().getTime()).format("YY-MM-DD HH:mm:ss")
         getWaterHistory({
             "stcd": value.stcd,
             "starttm": starttm,
             "endtm": endtm,
             "current": 1,
-            "size": 1000
+            "size": 10000
         })
             .then((result) => {
-                let xdata = []
-                let ydata = []
-                for (var i = result.data.records.length - 1; i >= 0; i--) {
-                    xdata.push(result.data.records[i].tm)
-                    ydata.push(result.data.records[i].z)
-                }
-                this.setState({
-                    swdataSourceById: result.data.records,
-                    mloading: false,
-                })
-                var myChart = echarts.init(document.getElementById('mainbysw'));
-                myChart.setOption({
-                    title: {
-                        text: result.data.records[0].stnm + '-水位站24小时水位变化',
-                        subtext: starttm + '至' + endtm,
-                        left: 'center',
-                    },
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {// 坐标轴指示器，坐标轴触发有效
-                            type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
-                        }
-                    },
-                    toolbox: {
-                        show: true,
-                        feature: {
-                            dataView: { show: true, readOnly: true },
-                            magicType: { show: true, type: ['line', 'bar'] },
-                            restore: { show: true },
-                            saveAsImage: { show: true },
-                        }
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: xdata,
-                        name: '时间',
-                    },
-                    yAxis: {
-                        type: 'value',
-                        name: '水位（m）'
-                    },
-                    series: [{
-                        data: ydata,
-                        type: 'line',
-                        markPoint: {
-                            data: [
-                                { type: 'max', name: '最大值' },
-                                { type: 'min', name: '最小值' }
-                            ]
+                if (result.data.records.length !== 0) {
+                    let xdata = []
+                    let ydata = []
+                    for (var i = result.data.records.length - 1; i >= 0; i--) {
+                        xdata.push(result.data.records[i].tm)
+                        ydata.push(result.data.records[i].z)
+                    }
+                    this.setState({
+                        swdataSourceById: result.data.records,
+                        mloading: false,
+                    })
+                    var myChart = echarts.init(document.getElementById('mainbysw'));
+                    myChart.setOption({
+                        title: {
+                            text: value.name + "-水位站24小时水位变化",
+                            subtext: starttm + '至' + endtm,
+                            left: 'center',
                         },
-                    }],
-                });
+                        grid: {
+                            top: 90,
+                        },
+                        dataZoom: [
+                            {
+                                type: 'slider',
+                                show: true,
+                                xAxisIndex: [0],
+                            },
+                        ],
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {// 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                dataView: { show: true, readOnly: true },
+                                magicType: { show: true, type: ['line', 'bar'] },
+                                restore: { show: true },
+                                saveAsImage: { show: true },
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: xdata,
+                            name: '时间',
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name: '水位（m）'
+                        },
+                        visualMap: {
+                            show: true,
+                            pieces: [
+                                {
+                                    gt: 0,
+                                    lte: value.warning,          //这儿设置基线上下颜色区分 基线下面为绿色
+                                    color: '#03d6d6'
+                                }, {
+                                    gt: value.warning,          //这儿设置基线上下颜色区分 基线上面为红色
+                                    color: '#e91642',
+                                }]
+                            ,
+                        },
+                        series: [{
+                            data: ydata,
+                            type: 'line',
+                            markPoint: {
+                                data: [
+                                    { type: 'max', name: '最大值' },
+                                    {
+                                        type: 'min', name: '最小值', itemStyle: {
+                                            color: '#03d6d6'
+                                        }
+                                    }
+                                ],
+
+                            },
+                            markLine: {
+                                label: {
+                                    position: "end",
+                                },
+                                color: '#ffcc33',
+                                data: [
+                                    {
+                                        silent: false,
+                                        label: {
+                                            position: 'center',
+                                            formatter: "警戒水位" + value.warning + "m",
+                                            itemStyle: {
+                                                left: '100px'
+                                            }
+                                        },
+                                        yAxis: value.warning,
+                                    }
+                                ]
+                            }
+                        }],
+                    });
+                } else {
+                    this.setState({
+                        mloading: false
+                    });
+                }
             })
     };
     //模态框关闭
     handleCancel = () => {
         this.setState({
             visible: false,
+            swdataSourceById: [],
         })
+        var myChart = echarts.init(document.getElementById('mainbysw'));
+        myChart.setOption({
+            title: {
+                text: "暂无数据",
+                subtext: '暂无数据',
+            },
+            xAxis: {
+                data: []
+            },
+            series: [{
+                data: [],
+                markLine: {
+                    data: [
+                        {
+                            label: {
+                                formatter: "暂无数据",
+                            },
+                            yAxis: 2
+                        }
+                    ]
+                }
+            }]
+        })
+    }
+    //检索数据搜索
+    getColumnSearchProps = dataIndex => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 8 }}>
+                <Input
+                    ref={node => {
+                        this.searchInput = node;
+                    }}
+                    placeholder={`请输入要搜索的站名`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                    style={{ width: 188, marginBottom: 8, display: 'block' }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        搜索
+              </Button>
+                    <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                        关闭
+              </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilter: (value, record) =>
+            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => this.searchInput.select());
+            }
+        },
+        render: text =>
+            this.state.searchedColumn === dataIndex ? (
+                <Popover content={text.toString()} title="站名全称">
+                    <Highlighter
+                        highlightStyle={{ backgroundColor: 'red', padding: 0 }}
+                        searchWords={[this.state.searchText]}
+                        autoEscape
+                        textToHighlight={text.toString().length > 8 ? text.toString().substring(0, 8) + "..." : text.toString()}
+                    />
+                </Popover>
+            ) : (
+                    text
+                ),
+    });
+
+    handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        this.setState({
+            searchText: selectedKeys[0],
+            searchedColumn: dataIndex,
+        });
+    };
+
+    handleReset = clearFilters => {
+        clearFilters();
+        this.setState({ searchText: '' });
+    };
+    // 选中行
+    onClickRow = (record) => {
+        return {
+            //单击定位
+            onClick: () => {
+                console.log(record)
+                this.locationClick(record)
+            },
+            //双击打开历史水位
+            onDoubleClick: () => {
+                this.showModal(record)
+            },
+        };
     }
     render() {
         //水位data
         const swcolumns = [
             {
-                title: '站点编号',
-                dataIndex: 'stcd',
-                width: 109,
-                className: 'column-money',
-                key: 'riverwaterdataID'
-            },
-            {
                 title: '站名',
-                dataIndex: 'stnm',
-                width: 75,
+                dataIndex: 'name',
                 className: 'column-money',
+                ...this.getColumnSearchProps('name'),
                 render:
-                    (stnm, key) => {
-                        if (stnm !== null && stnm !== "") {
-                            return (
-                                <Popover content={stnm} title="站名全称">
-                                    <Button size="small" onClick={() => this.showModal(key)}>
-                                        {stnm.substring(0, 2) + '...'}
-                                    </Button>
-                                </Popover>
-                            )
-                        } else {
-                            return (
-                                <Popover content={stnm} title="站名全称">
-                                    <Button size="small" onClick={() => this.showModal(key)}>
-                                        {stnm ? stnm : "暂无数据"}
-                                    </Button>
-                                </Popover>
-                            )
-                        }
-                    }
+                    (name, key) => {
+                        return (
+                            <Popover content={name} title="站名全称">
+                                {name.toString().substring(0, 6) + "..."}
+                            </Popover>
+                        )
+                    },
             },
             {
-                title: '监测时间',
-                dataIndex: 'tm',
-                width: 140,
-                className: 'column-money',
-                render: value => moment(value).format("YYYY-MM-DD HH:mm")
-            },
-            {
-                title: '监测值(m)',
+                title: '水位(m)',
                 dataIndex: 'z',
-                width: 109,
                 className: 'column-money',
-                render: dayAvg => Math.round(dayAvg * 1000) / 1000
+                render: dayAvg => dayAvg = "-" ? dayAvg : Math.round(dayAvg * 1000) / 1000
             },
             {
-                title: '定位',
-                dataIndex: 'loca',
-                render: value => <img src={localimgURL} alt="" />,
-                className: 'column-money'
+                title: '更新时间',
+                dataIndex: 'ztm',
+                className: 'column-money',
+                width: 140,
+                render: value => moment(value).format("YYYY-MM-DD HH:mm")
             },
         ];
         //根据编号获取信息表头daata
         const swcolumnsById = [
-            {
-                title: '站点编号',
-                dataIndex: 'stcd',
-                className: 'column-money'
-            },
             {
                 title: '站名',
                 dataIndex: 'stnm',
@@ -174,44 +304,33 @@ class Precipitation extends React.PureComponent {
                     stnm => {
                         if (stnm !== null && stnm !== "") {
                             return (
-                                <Tag>
+                                <a>
                                     {stnm}
-                                </Tag>
+                                </a>
                             )
                         } else {
                             return (
-                                <Tag>
+                                <a>
                                     {stnm ? stnm : "暂无数据"}
-                                </Tag>
+                                </a>
                             )
                         }
                     }
             },
             {
-                title: '监测时间',
-                dataIndex: 'tm',
-                className: 'column-money',
-                render: value => moment(value).format("YYYY-MM-DD HH:mm")
-            },
-            {
-                title: '监测值(m)',
+                title: '水位(m)',
                 dataIndex: 'z',
                 className: 'column-money',
                 render: dayAvg => Math.round(dayAvg * 1000) / 1000
             },
+            {
+                title: '更新时间',
+                dataIndex: 'tm',
+                className: 'column-money',
+                render: value => moment(value).format("YYYY-MM-DD HH:mm")
+            },
+           
         ];
-        //分页
-        let pagination = {
-            total: this.state.total,
-            size: "small",
-            current: this.state.current,
-            onChange: (current) => this.changePage(current),
-            pageSize: this.state.pageSize,
-            onShowSizeChange: (current, pageSize) => {//设置每页显示数据条数，current表示当前页码，pageSize表示每页展示数据条数
-                console.log(pageSize);
-                this.onShowSizeChange(current, pageSize)
-            }
-        }
         return (
             <>
                 <Table className="m-div-table"
@@ -220,7 +339,9 @@ class Precipitation extends React.PureComponent {
                     columns={swcolumns}
                     dataSource={this.state.qydataSource}
                     scroll={{ y: 300 }}
-                    pagination={pagination} />
+                    rowKey={row => row.stcd}
+                    onRow={this.onClickRow}
+                />
                 <Modal
                     title="24小时水位详情"
                     visible={this.state.visible}
@@ -239,6 +360,7 @@ class Precipitation extends React.PureComponent {
                                 columns={swcolumnsById}
                                 dataSource={this.state.swdataSourceById}
                                 scroll={{ y: 500 }}
+                                rowKey={row => row.stcd}
                             />
                         </Card></Col>
                     </Row>
@@ -247,52 +369,35 @@ class Precipitation extends React.PureComponent {
 
         );
     }
-    //水位分页
-    onShowSizeChange(current, pageSize) {
-        this.setState({ loading: true });
-        getWaterHistory({
-            "current": current,
-            "size": pageSize
-        })
-            .then((result) => {
-                this.setState({ qydataSource: result.data.records })
-                this.setState({ loading: false });
-                this.setState({ current: result.data.current })
-                this.setState({
-                    pageSize: pageSize
-                })
-            })
-    }
-
-    // 回调函数，切换下一页
-    changePage(current) {
-        this.setState({ loading: true });
-        getWaterHistory({
-            "current": current,
-            "size": this.state.pageSize
-        })
-            .then((result) => {
-                this.setState({ qydataSource: result.data.records })
-                this.setState({ loading: false });
-                this.setState({ total: result.data.total })
-                this.setState({ current: result.data.current })
-            })
-    }
     //初始化加载数据
     componentDidMount() {
         this.setState({ loading: true });
-        getWaterHistory({
-            "current": this.state.current,
-            "size": this.state.pageSize
+        getBasicsAll({
+            "type": 2
         })
             .then((result) => {
-                this.setState({ qydataSource: result.data.records })
+                let dataArr = []
+                for (let i = 0; i < result.data.length; i++) {
+                    dataArr.push({
+                        name: result.data[i].name + "(" + result.data[i].dataSourceName + ")",
+                        ztm: result.data[i].ztm,
+                        z: result.data[i].z,
+                        stcd: result.data[i].stcd,
+                        lon: result.data[i].lon,
+                        lat: result.data[i].lat,
+                        warning: result.data[i].warning,
+                    })
+                }
                 this.setState({ loading: false });
-                this.setState({ total: result.data.total })
-                console.log(result.data.records)
+                this.setState({ qydataSource: dataArr })
             })
-
-
+    }
+    locationClick(e) {
+        console.log(e)
+        let lon = e.lon * 1;
+        let lat = e.lat * 1;
+        if (lon == null && lat == null) return;
+        emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
     }
 }
 export default Precipitation;

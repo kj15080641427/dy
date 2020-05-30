@@ -519,18 +519,44 @@ export default (function(window) {
         strategy: bboxStrategy
       });
       vectorSource.on("addfeature", function({feature}) {
-        // console.log(feature.getProperties());
         feature.set("attr", feature.getProperties());
       });
       var vectorLayer = new VectorLayer({
         source: vectorSource,
         zIndex: param.zIndex,
-        style: new Style({
-          stroke: new Stroke({
-            color: 'rgba(0, 0, 255, 1.0)',
-            width: 2
-          })
-        })
+        style: function(feature) {
+          let isEnter = feature.get("mEnter");
+          return new Style({
+              stroke: new Stroke({
+                color: isEnter ? 'rgba(255,0,0,1.0)' : 'rgba(0, 0, 255, 1.0)',
+                width: isEnter ? 5 : 2
+              })
+            })
+        }
+        // 
+      });
+      var cachFeature = null;
+      this._pointermoveWFSKey = this.map.on('pointermove', function(e) {
+          var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+              if (feature && layer) {
+                if (cachFeature) {
+                  cachFeature.set("mEnter", false);
+                }
+                feature.set("mEnter", true);
+                cachFeature = feature;
+              }
+          }.bind(this), {hitTolerance:5, layerFilter: function(layer) {
+            return layer === vectorLayer;
+          }});
+      });
+      this._pointermoveWFSKey = this.map.on('click', function(e) {
+          var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+              if (feature && layer) {
+                param.onClick && param.onClick(feature.getProperties());
+              }
+          }.bind(this), {hitTolerance:5, layerFilter: function(layer) {
+            return layer === vectorLayer;
+          }});
       });
       vectorLayer.set("key", param.key);
       this.map.addLayer(vectorLayer);

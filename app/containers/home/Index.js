@@ -6,35 +6,43 @@ import "./style.scss";
 import Menus from "./menu/Menu";
 import Head from "./head/Head";
 import ContentRouter from "./content/ContentRouter";
+import { Layout } from "antd"
+const { Header, Sider, Content } = Layout;
 class Home extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      collapsed: true
+      collapsed: false
     };
     this.onCollapsClick = this.onCollapsClick.bind(this);
-    console.log("this.props.match",this.props.match,this.props.location);
+    console.log("this.props.match", this.props.match, this.props.location);
   }
   render() {
     let { collapsed } = this.state;
     let { match } = this.props;
-    return ( 
+    return (
       <div className="home">
         <div className={"h-menu " + (collapsed ? "active" : "")} >
           <Menus collapsed={collapsed}></Menus>
         </div>
-        <div className="h-wrap">
-          <div className="h-header">
-            <Head collapsClick={this.onCollapsClick}></Head>
-          </div>
-          <div className="h-content">
+        <Layout className="site-layout">
+          <Head collapsClick={this.onCollapsClick}></Head>
+          <Content
+            className="site-layout-background"
+            style={{
+              margin: '24px 16px',
+              padding: 24,
+              minHeight: 280,
+            }}
+          >
             <ContentRouter path={match.path}></ContentRouter>
-          </div>
-        </div>
+          </Content>
+        </Layout>
       </div>
+
     );
   }
-  componentDidMount() {}
+  componentDidMount() { }
   onCollapsClick() {
     this.setState({
       collapsed: !this.state.collapsed

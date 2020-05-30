@@ -4,6 +4,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Test from "./subpages/test/Test";
+import Video from "./subpages/media/Video";
 const EmptyContent = () => {
   return (
     <div>
@@ -26,14 +27,16 @@ class ContentRouter extends React.PureComponent {
   render() {
     // path现在就是 /home
     let { path } = this.props;
-    return ( 
-      <Switch>
-        <Route exact path={path} component={EmptyContent}/>
-        <Route path={path + "/test"} component={Test}/>
-        <Route component={NoMatch} />
-      </Switch>
+    return (
+        <Switch>
+          <Route exact path={path} component={EmptyContent} />
+          <Route path={path + "/test"} component={Test} />
+          <Route path={path + "/video"} component={Video} />
+          <Route component={NoMatch} />
+        </Switch>
+
     );
   }
-  componentDidMount() {}
+  componentDidMount() { }
 }
 export default ContentRouter;

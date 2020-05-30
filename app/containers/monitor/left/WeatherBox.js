@@ -20,38 +20,27 @@ class WeatherBox extends React.PureComponent {
       <div className="m-wth-box">
         <div className="m-box-table">
           <Row>
-            <Col span={8}>
-              <span className="m-box-value">{this.state.weatherCount}</span>mm
-          </Col>
-            <Col span={3}>
-              <span className="m-box-value">42</span>
+            <Col span={6}>
+              <Row>
+                <Col><span className="m-box-value">{this.state.weatherCount}</span>mm</Col></Row>
+              <Row>全市日降水量</Row>
             </Col>
             <Col span={3}>
-              <span className="m-box-value">8</span>
+              <Row><span className="m-box-value">40</span></Row>
+              <Row>河流数</Row>
             </Col>
             <Col span={4}>
-              <span className="m-box-value">109</span>
+              <Row><span className="m-box-value">13</span></Row>
+              <Row>大中型水库</Row>
+            </Col>
+            <Col span={5}>
+              <Row><span style={{ position: 'relative', right: '2px' }} className="m-box-value">109</span></Row>
+              <Row>水闸数</Row>
             </Col>
             <Col span={6}>
-              <span className="m-box-value">1.14</span>亿m³
-          </Col>
-          </Row>
-          <Row>
-            <Col span={8}>
-              全市平均降水量
-          </Col>
-            <Col span={3}>
-              河流数
-          </Col>
-            <Col span={3}>
-              水库数
-          </Col>
-            <Col span={4}>
-              水闸数
-          </Col>
-            <Col span={6}>
-              河槽总蓄水量
-          </Col>
+              <Row><Col> <span className="m-box-value">1.14</span>亿m³</Col></Row>
+              <Row>水库蓄水量</Row>
+            </Col>
           </Row>
         </div>
       </div>

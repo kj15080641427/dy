@@ -37,4 +37,11 @@ export function addGates(data) {
     data
   };
 }
+export function addPumps(data) {
+  return {
+    type: actionTypes.ADD_PUMPS,
+    data
+  };
+}
+
 

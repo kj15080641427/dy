@@ -47,8 +47,8 @@ class PannelBtn extends React.PureComponent {
             </Col>
             <Col span={10}>
               <Row>
-                <Col span={12}><Link to={"#/index"}><img className="m-btn-flood" src={flood}></img></Link></Col>
-                <Col span={12}><img className="m-btn-everyday" src={everyday}></img></Col>
+                <Col span={12}><img className="m-btn-flood" src={flood}></img></Col>
+                <Col span={12}><Link to={"/home"}><img className="m-btn-everyday" src={everyday}></img></Link></Col>
               </Row>
             </Col>
           </Row>

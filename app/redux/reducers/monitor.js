@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /*
  *  reducer
  */
@@ -8,9 +9,11 @@ const defaultState = {
   water: [], // 水位基础数据
   video: [], // 视频基础信息
   gate: [], // 水闸信息
+  pump: [], // 水泵信息
   details: {
     rain: {},
     water: {},
+    wfsRiver: {}
   }
 };
 
@@ -25,12 +28,13 @@ export default function main (state = defaultState, action) {
     case actionTypes.SET_DETAIL_DATA: {
       let key = action.data.key;
       let value = action.data.value;
-      if (value && value.stcd) {
-        let oldV = newState.details[key][value.stcd];
+      let detailIdKey = action.data.idKey || 'stcd';
+      if (value && value[detailIdKey]) {
+        let oldV = newState.details[key][value[detailIdKey]];
         if (oldV) {
-          newState.details[key][value.stcd] = {...oldV, ...value};
+          newState.details[key][value[detailIdKey]] = {...oldV, ...value};
         } else {
-          newState.details[key][value.stcd] = value;
+          newState.details[key][value[detailIdKey]] = value;
         }
       }
       break;
@@ -63,6 +67,13 @@ export default function main (state = defaultState, action) {
       let data = action.data;
       if (data && data.length) {
         newState.gate = data;
+      }
+      break;
+    }
+    case actionTypes.ADD_PUMPS: {
+      let data = action.data;
+      if (data && data.length) {
+        newState.pump = data;
       }
       break;
     }
