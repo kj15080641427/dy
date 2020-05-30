@@ -33,6 +33,7 @@ class Monitor extends React.PureComponent {
         tiandi: true, // 天地图底图
         tiandi2: true, // 天地图标注
         wfsRiver: false, // wfs河道图
+        river40: true, //40条河图片 用于解决河道标注很多的问题
         flood: true, // 洪水图层
         river: true, // 水系图
         heatmap: true, // 热力图
