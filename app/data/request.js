@@ -66,7 +66,14 @@ export function getBasicsAll(data) {
 export function getRadioAll(data) {
   return fetchJSONData("POST", "/radio/getAll", data);
 }
-//获取防汛人员信息
+//获取防汛物资仓库
+export function getWarehouse(data) {
+  return fetchJSONData("POST", "/materialWarehouse/getAll", data);
+}
+//获取防汛物资仓库物资
+export function getWarehouseMt(data) {
+  return fetchJSONData("POST", "/material/getAll", data);
+}//获取防汛人员信息
 export function getfloodUser(data) {
   return fetchJSONData("POST", "/floodUser/getAll", data);
 }

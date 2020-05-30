@@ -21,13 +21,15 @@ class Base extends React.PureComponent {
     let nowNode = this.container.cloneNode(true);
     nowNode.style.display = "block";
     this.installEvent(nowNode);
-    map.addOverlay(model.id, { Coordinate: model.lonlat || model.lonlats, offset: [13, -25] }, nowNode);
+    let id = this.getType() + "_" + model.id;
+    map.addOverlay(id, { Coordinate: model.lonlat || model.lonlats, offset: [13, -25] }, nowNode);
     
   }
   componentWillUnmount() {
     let { map, model } = this.props;
     if (!map || !model) return;
-    map.removeOverlay(model.id);
+    let id = this.getType() + "_" + model.id;
+    map.removeOverlay(id);
     this._cloneDomEventToken && this._cloneDomEventToken.remove();
   }
   installEvent(node) {
@@ -40,6 +42,10 @@ class Base extends React.PureComponent {
         this.onCustomClick(e);
       }
     })
+  }
+  getType() {
+    console.warning("请重写getType");
+    return "";
   }
   onClose() {
     console.warning("请实现onClose方法");

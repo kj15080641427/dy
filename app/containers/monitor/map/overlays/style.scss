@@ -48,3 +48,17 @@
   position: relative;
   line-height: 25px;
 }
+.m-ovl-warehouse {
+  padding: 0;
+  .m-ovl-wh-wrap {
+    width: 380px;
+    // height: 300px;
+    overflow: auto;
+    .ant-table-header {
+      > table {
+        visibility: visible!important;
+      }
+    }
+  }
+  
+}

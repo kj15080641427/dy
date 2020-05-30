@@ -5,10 +5,10 @@ import React from 'react';
 import "./style.scss";
 import { Checkbox, Row, Col, Tag } from 'antd';
 import precipitation from '../../../resource/1-雨量站.svg';
-import waterlevel from '../../../resource/2-水位.svg';
+import waterlevel from '@app/resource/icon/water.svg';
 import monitoring from '../../../resource/3-监控.svg';
 import perpos from '../../../resource/4-人员定位.svg';
-
+import pondingPic from "@app/resource/icon/ponding.svg";
 class CheckBox extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -29,8 +29,9 @@ class CheckBox extends React.PureComponent {
               <Col span={4}><Checkbox><span className="m-row-checkbox-span">降水分布</span></Checkbox></Col>
               <Col span={5}><Checkbox layer={"rain"} checked={layerVisible.rain != null ? layerVisible.rain : true} onChange={this.onChange}><img src={precipitation} className="m-row-checkbox-img"></img><span className="m-row-checkbox-span">雨量站</span></Checkbox></Col>
               <Col span={5}><Checkbox layer={"water"} checked={layerVisible.water != null ? layerVisible.water : true} onChange={this.onChange}><img src={waterlevel} className="m-row-checkbox-img"></img><span className="m-row-checkbox-span">水位站</span></Checkbox></Col>
+              <Col span={5}><Checkbox layer={"ponding"} checked={layerVisible.ponding != null ? layerVisible.ponding : true} onChange={this.onChange}><img src={pondingPic} className="m-row-checkbox-img"></img><span className="m-row-checkbox-span">积水站</span></Checkbox></Col>
               <Col span={5}><Checkbox layer={"video"} checked={layerVisible.video != null ? layerVisible.video : true} onChange={this.onChange}><img src={monitoring} className="m-row-checkbox-img"></img><span className="m-row-checkbox-span">视频站点</span></Checkbox></Col>
-              <Col span={5}><Checkbox layer={"person"} checked={layerVisible.person != null ? layerVisible.person : true} onChange={this.onChange}><img src={perpos} className="m-row-checkbox-img"></img><span className="m-row-checkbox-span">防汛人员</span></Checkbox></Col>
+              {/* <Col span={5}><Checkbox layer={"person"} checked={layerVisible.person != null ? layerVisible.person : true} onChange={this.onChange}><img src={perpos} className="m-row-checkbox-img"></img><span className="m-row-checkbox-span">防汛人员</span></Checkbox></Col> */}
             </Row>
           </div>
         </div>

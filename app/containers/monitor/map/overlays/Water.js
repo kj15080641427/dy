@@ -33,6 +33,9 @@ class Water extends Base {
   componentWillUnmount() {
     super.componentWillUnmount();
   }
+  getType() {
+    return Water.type;
+  }
   onCustomClick(e) {
 
   }

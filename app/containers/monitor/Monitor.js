@@ -44,6 +44,7 @@ class Monitor extends React.PureComponent {
         water: true, // 水位站
         gate: false, // 水闸
         pump: false, // 水泵
+        ponding: true, // 积水
       }
     };
     this.onChecked = this.onChecked.bind(this)
@@ -121,7 +122,8 @@ class Monitor extends React.PureComponent {
       </div>
     );
   }
-  componentDidMount() { }
+  componentDidMount() { 
+  }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
     if (layerVisible[layerKey] === checked) return;

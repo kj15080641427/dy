@@ -11,12 +11,13 @@ const defaultState = {
   video: [], // 视频基础信息
   gate: [], // 水闸信息
   pump: [], // 水泵信息
-
+  warehouse: [],// 防汛物资仓库
   details: {
     rain: {},
     water: {},
     wfsRiver: {},
     ponding: {},
+    warehouse: {}, // 防汛物资详情(即仓库物资)
   }
 };
 
@@ -77,6 +78,13 @@ export default function main (state = defaultState, action) {
       let data = action.data;
       if (data && data.length) {
         newState.pump = data;
+      }
+      break;
+    }
+    case actionTypes.ADD_WAREHOUSE: {
+      let data = action.data;
+      if (data && data.length) {
+        newState.warehouse = data;
       }
       break;
     }

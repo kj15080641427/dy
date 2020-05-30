@@ -42,6 +42,9 @@ class Video extends Base {
   componentWillUnmount() {
     super.componentWillUnmount();
   }
+  getType() {
+    return Video.type;
+  }
   onCustomClick(e) {
 
   }

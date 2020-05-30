@@ -11,9 +11,9 @@ import addEventListener from 'rc-util/lib/Dom/addEventListener';
 import emitter from "@app/utils/emitter.js";
 
 import "./style.scss";
-import { templateWater, templateRain, templatePonding } from "./template";
+import { templateWater, templateRain, templatePonding, templateWareHouse } from "./template";
 import { getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning, getGate,
-  getPump, getWfsRiver } from "@app/data/request";
+  getPump, getWfsRiver, getWarehouse, getWarehouseMt } from "@app/data/request";
 import VideoControl from '@app/components/video/VideoControl';
 
 import Person from "./overlays/Person";
@@ -24,24 +24,29 @@ import Video from "./overlays/Video";
 import Gate from "./overlays/Gate";
 import Pump from "./overlays/Pump";
 import WfsRiver from "./overlays/WfsRiver";
+import Warehouse from "./overlays/Warehouse";
 import { message } from 'antd';
 import TileSource from 'ol/source/Tile';
 class Map extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      test: 1,
       overlays: {
-        [Person.type]: {},
-        [Rain.type]: {},
-        [Water.type]: {},
-        [Video.type]: {},
-        [Gate.type]: {},
-        [Pump.type]: {},
-        [WfsRiver.type]: {},
-        [Ponding.type]: {}
+        // [Person.type]: {},
+        // [Rain.type]: {},
+        // [Water.type]: {},
+        // [Video.type]: {},
+        // [Gate.type]: {},
+        // [Pump.type]: {},
+        // [WfsRiver.type]: {},
+        // [Ponding.type]: {},
+        // [Warehouse.type]: {}
       }
     };
-    this.type = [Person, Rain, Water, Video, Gate, Pump, WfsRiver, Ponding];
+    this.type = [Person, Rain, Water, Video, Gate, Pump, WfsRiver, Ponding, Warehouse];
+    // eslint-disable-next-line react/no-direct-mutation-state
+    this.type.forEach((Ovl) => {this.state.overlays[Ovl.type] = {};});
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.onOverlayClose = this.onOverlayClose.bind(this);
     this.videoControl = new VideoControl();
@@ -329,6 +334,25 @@ class Map extends React.PureComponent {
         font: '16px sans-serif'
       }
     });
+    this.map.addVector({
+      key: "warehouse",
+      zIndex: 30,
+      style: {
+        anchor: [0.5, 0.5],
+        strokeColor: "#ff0000",
+        width: 1,
+        fillColor: "#1890ff",
+        fontColor: "#82B2FF",
+        fontOffset: [20, 0],
+        src: function(featureObj) { 
+          return require("../../../resource/icon/warehouse.svg")["default"];
+        },
+        fontText: function(featureObj) {
+            return featureObj.name + "";
+        },
+        font: '16px sans-serif'
+      }
+    });
     // this.map.addGate({
     //   key: "gata1"
     // })
@@ -340,7 +364,7 @@ class Map extends React.PureComponent {
     this.map.startHighlightFeatureonLayer("gate");
     this.map.startHighlightFeatureonLayer("pump");
     this.map.startHighlightFeatureonLayer("wfsRiver");
-
+    this.map.startHighlightFeatureonLayer("warehouse");
     this.map.startSelectFeature("person", (param) => {
       this.addOverlay(Person.type, param);
       // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
@@ -395,7 +419,7 @@ class Map extends React.PureComponent {
           }
         })
         .catch((e) => {
-          message.error("获取雨晴详情失败");
+          message.error("获取水位详情失败");
         });
       }
     });
@@ -416,6 +440,31 @@ class Map extends React.PureComponent {
       let newParam = { ...param };
       this.addOverlay(Pump.type, newParam);
     });
+    this.map.startSelectFeature("warehouse", (param) => {
+      let { details } = this.props;
+      console.log(1);
+      if (details.warehouse[param.id]) {
+        this.addOverlay(Warehouse.type, {...param, ...details.warehouse[param.id]});
+      }else {
+        getWarehouseMt({materialWarehouseId: param.id})
+        .then((res) => {
+          if (res.code === 200) {
+            let record = res.data || [];
+            this.props.actions.setDetailData({
+              key: "warehouse",
+              value: {materials: record, id: param.id},
+              idKey: 'id'
+            });
+            this.addOverlay(Warehouse.type, record ? {...param, materials: record, id: param.id} : param);
+          } else {
+            return Promise.reject(res.msg || "未知错误");
+          }
+        })
+        .catch((e) => {
+          message.error("获取仓库详情失败");
+        });
+      }
+    });
     // this.map.activeMeasure();
     this.map.on("moveend", () => {
       let a = this.map.getView().calculateExtent();
@@ -423,7 +472,7 @@ class Map extends React.PureComponent {
     })
   }
   onWfsRiverClick(props) {
-    props.id = props.Name;
+    props.id = props.NAME;
     let { details } = this.props;
     if (details.wfsRiver[props.NAME]) {
       this.addOverlay(WfsRiver.type, {...props, ...details.wfsRiver[props.NAME]});
@@ -580,6 +629,16 @@ class Map extends React.PureComponent {
     .catch((e) => {
       console.log(e);
     });
+    // 防汛物资仓库
+    getWarehouse({}).then((res) => {
+      if (res.code === 200) {
+        this.props.actions.addWarehouse(res.data);
+        this.map.addFeatures("warehouse", templateWareHouse(res.data));
+      }
+    })
+    .catch(() => {
+      console.log(e);
+    })
     // 轮询预警更新
     window.setTimeout(() => {
       getWaterWarning({})
@@ -672,7 +731,8 @@ function mapStateToProps(state) {
     water: state.monitor.water,
     rain: state.monitor.rain,
     ponding: state.monitor.ponding,
-    details: state.monitor.details
+    details: state.monitor.details,
+    warehouse: state.monitor.warehouse,
   };
 }
 

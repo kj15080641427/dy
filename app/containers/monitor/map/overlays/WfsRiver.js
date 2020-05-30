@@ -17,20 +17,21 @@ class WfsRiver extends Base {
     return ( 
       <div className="m-ovl-box m-ovl-wfsRiver" style={{display: "none"}} ref={(node) => { this.container = node;}}>
         <div className="m-ovl-line">河流名称:{model.name}</div>
-        <div className="m-ovl-line">所属河流:{model.rivername}</div>
-        <div className="m-ovl-line">管理单位:{model.management || "未知"}</div>
+        <div className="m-ovl-line">地址:{model.addresssrs}</div>
+        <div className="m-ovl-line">河长:{model.riverlen||0 +'米'}</div>
         <span className="iconfont iconcuo m-ovl-close" ></span>
       </div>
     );
   }
-  componentDidCatch() {
-
-  }
+  
   componentDidMount() {
     super.componentDidMount();
   }
   componentWillUnmount() {
     super.componentWillUnmount();
+  }
+  getType() {
+    return WfsRiver.type;
   }
   onCustomClick(e) {
 

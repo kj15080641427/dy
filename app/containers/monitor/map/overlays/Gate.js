@@ -32,6 +32,9 @@ class Gate extends Base {
   componentWillUnmount() {
     super.componentWillUnmount();
   }
+  getType() {
+    return Gate.type;
+  }
   onCustomClick(e) {
 
   }

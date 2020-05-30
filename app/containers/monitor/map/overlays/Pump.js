@@ -37,6 +37,9 @@ class Pump extends Base {
   componentWillUnmount() {
     super.componentWillUnmount();
   }
+  getType() {
+    return Pump.type;
+  }
   onCustomClick(e) {
 
   }

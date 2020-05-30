@@ -35,3 +35,14 @@ export function templatePonding(baseData, detailData) {
     };
   });
 }
+export function templateWareHouse(baseData, detailData) {
+  if (!baseData) return [];
+  return baseData.map((item) => {
+    return {
+      type: "Point",
+      id: item.materialWarehouseId,
+      lonlat: [item.lon, item.lat],
+      ...item,
+    };
+  });
+}

@@ -31,6 +31,9 @@ class Person extends Base {
   componentWillUnmount() {
     super.componentWillUnmount();
   }
+  getType() {
+    return Person.type;
+  }
   onCustomClick(e) {
 
   }

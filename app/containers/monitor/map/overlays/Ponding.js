@@ -31,6 +31,9 @@ class Ponding extends Base {
   componentWillUnmount() {
     super.componentWillUnmount();
   }
+  getType() {
+    return Ponding.type;
+  }
   onCustomClick(e) {
 
   }

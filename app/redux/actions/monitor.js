@@ -43,5 +43,11 @@ export function addPumps(data) {
     data
   };
 }
+export function addWarehouse(data) {
+  return {
+    type: actionTypes.ADD_WAREHOUSE,
+    data
+  };
+}
 
 

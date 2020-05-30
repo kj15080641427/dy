@@ -572,7 +572,10 @@ export default (function(window) {
       this._pointermoveWFSKey = this.map.on('click', function(e) {
           var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
               if (feature && layer) {
-                param.onClick && param.onClick(feature.getProperties());
+                let props = feature.getProperties();
+                let lonlat = props.geometry.getCoordinates()[0][0];
+                lonlat = transform(lonlat, projection, sprojection);
+                param.onClick && param.onClick({...feature.getProperties(), lonlat });
               }
           }.bind(this), {hitTolerance:5, layerFilter: function(layer) {
             return layer === vectorLayer;
@@ -723,6 +726,9 @@ export default (function(window) {
         if (!id || !this.overlay[id]) return;
         this.map.removeOverlay(this.overlay[id]);
         delete this.overlay[id];
+    };
+    Map.prototype.getOverlay = function(id) {
+      return this.overlay[id];
     };
     Map.prototype.addOverlayClass = function(id, clazz) {
         if (!id || !this.overlay[id]) return;

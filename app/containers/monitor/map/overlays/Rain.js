@@ -33,6 +33,9 @@ class Rain extends Base {
   componentWillUnmount() {
     super.componentWillUnmount();
   }
+  getType() {
+    return Rain.type;
+  }
   onCustomClick(e) {
 
   }
