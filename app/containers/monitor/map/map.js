@@ -11,7 +11,7 @@ import addEventListener from 'rc-util/lib/Dom/addEventListener';
 import emitter from "@app/utils/emitter.js";
 
 import "./style.scss";
-import { templateWater, templateRain } from "./template";
+import { templateWater, templateRain, templatePonding } from "./template";
 import { getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning, getGate,
   getPump, getWfsRiver } from "@app/data/request";
 import VideoControl from '@app/components/video/VideoControl';
@@ -19,6 +19,7 @@ import VideoControl from '@app/components/video/VideoControl';
 import Person from "./overlays/Person";
 import Rain from "./overlays/Rain";
 import Water from "./overlays/Water";
+import Ponding from "./overlays/Ponding";
 import Video from "./overlays/Video";
 import Gate from "./overlays/Gate";
 import Pump from "./overlays/Pump";
@@ -36,10 +37,11 @@ class Map extends React.PureComponent {
         [Video.type]: {},
         [Gate.type]: {},
         [Pump.type]: {},
-        [WfsRiver.type]: {}
+        [WfsRiver.type]: {},
+        [Ponding.type]: {}
       }
     };
-    this.type = [Person, Rain, Water, Video, Gate, Pump, WfsRiver];
+    this.type = [Person, Rain, Water, Video, Gate, Pump, WfsRiver, Ponding];
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.onOverlayClose = this.onOverlayClose.bind(this);
     this.videoControl = new VideoControl();
@@ -264,6 +266,25 @@ class Map extends React.PureComponent {
       }
     });
     this.map.addVector({
+      key: "ponding",
+      zIndex: 20,
+      style: {
+        src: function(featureObj) { //
+          return require("../../../resource/icon/ponding.svg")["default"];
+        },
+        anchor: [0.5, 0.5],
+        strokeColor: "#1890ff",
+        width: 1,
+        fillColor: "#1890ff",
+        fontColor: "#82B2FF",
+        fontOffset: [10, 0],
+        fontText: function(featureObj) {
+            return featureObj.name + "";
+        },
+        font: '16px sans-serif'
+      }
+    });
+    this.map.addVector({
       key: "gate",
       zIndex: 30,
       style: {
@@ -306,6 +327,7 @@ class Map extends React.PureComponent {
     this.map.startHighlightFeatureonLayer("video");
     this.map.startHighlightFeatureonLayer("rain");
     this.map.startHighlightFeatureonLayer("water");
+    this.map.startHighlightFeatureonLayer("ponding");
     this.map.startHighlightFeatureonLayer("gate");
     this.map.startHighlightFeatureonLayer("pump");
     this.map.startHighlightFeatureonLayer("wfsRiver");
@@ -368,6 +390,9 @@ class Map extends React.PureComponent {
         });
       }
     });
+    this.map.startSelectFeature("ponding", (param) => {
+        this.addOverlay(Ponding.type, {...param});
+    });
     this.map.startSelectFeature("video", (param) => {
       //this.addOverlay(Video.type, param);
       let newParam = { ...param };
@@ -418,7 +443,20 @@ class Map extends React.PureComponent {
     let { overlays } = this.state;
     let elements = overlays[key];
     if (elements[id]) return;
-    elements[id] = param;
+    // 查询该key是否只能显示一个overlay
+    let isSingle = this.type.some((Overlay) => { 
+      if (Overlay.type === key) {
+        return Overlay.single;
+      }
+      return false;
+    });
+    if (isSingle) {
+      overlays[key] = {
+        [id]: param
+      };
+    } else {
+      elements[id] = param;
+    }
     this.setState({
       overlays: {...overlays}
     });
@@ -454,6 +492,7 @@ class Map extends React.PureComponent {
 
   }
   loadData() {
+    // 加载雨量站和水位站,水位站报警信息
     let warningPro = getWaterWarning({});
     let allPro = getAll();
     Promise.all([allPro, warningPro]).then((res) => {
@@ -513,6 +552,7 @@ class Map extends React.PureComponent {
     }).catch((e) => {
       console.log(e);
     });
+    // 加载水泵数据
     getPump({}).then((res) => {
       if (res.code === 200) {
         this.props.actions.addPumps(res.data);
@@ -574,7 +614,7 @@ class Map extends React.PureComponent {
     
   }
   drawFeatures(data) {
-    let { rain, water, details } = this.props;
+    let { rain, water, details, ponding } = this.props;
     if (!data) return;
     if (rain && rain.length) {
       this.map.addFeatures("rain", templateRain(rain, details.rain));
@@ -582,19 +622,25 @@ class Map extends React.PureComponent {
     if (water && water.length) {
       this.map.addFeatures("water", templateWater(water, details.water));
     }
+    if (ponding && ponding.length) {
+      this.map.addFeatures("ponding", templatePonding(ponding, details.water));
+    }
   }
   transformData(data) {
     if (!data || !data.length) return {};
     let obj = {
       rain: [],
-      water: []
+      water: [],
+      ponding: [],
     };
     data.forEach((item) => {
       if ([3, 5, 6, 10].indexOf(item.indtype) > -1) {
         obj.rain.push(item);
       } else if ([1, 2, 7, 8].indexOf(item.indtype) > -1) {
         obj.water.push(item);
-      }
+      } else if ([9].indexOf(item.indtype) > -1) {
+        obj.ponding.push(item);
+      } 
     });
     return obj;
   }
@@ -616,6 +662,7 @@ function mapStateToProps(state) {
   return {
     water: state.monitor.water,
     rain: state.monitor.rain,
+    ponding: state.monitor.ponding,
     details: state.monitor.details
   };
 }

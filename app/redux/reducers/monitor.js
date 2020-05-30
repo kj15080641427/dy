@@ -7,13 +7,16 @@ import * as actionTypes from '../constants/monitor';
 const defaultState = {
   rain: [], // 雨量基础数据
   water: [], // 水位基础数据
+  ponding: [], // 积水基础数据
   video: [], // 视频基础信息
   gate: [], // 水闸信息
   pump: [], // 水泵信息
+
   details: {
     rain: {},
     water: {},
-    wfsRiver: {}
+    wfsRiver: {},
+    ponding: {},
   }
 };
 
