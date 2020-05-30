@@ -3,12 +3,13 @@
  */
 import React from 'react';
 import "./style.scss";
-import { Checkbox, Row, Col, Tag } from 'antd';
+import { Checkbox, Row, Col, Tag, Menu } from 'antd';
 import precipitation from '../../../resource/1-雨量站.svg';
 import waterlevel from '@app/resource/icon/water.svg';
 import monitoring from '../../../resource/3-监控.svg';
 import perpos from '../../../resource/4-人员定位.svg';
 import pondingPic from "@app/resource/icon/ponding.svg";
+const { SubMenu } = Menu;
 class CheckBox extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -16,6 +17,8 @@ class CheckBox extends React.PureComponent {
     this.onChange = this.onChange.bind(this);
   }
   onChange(e) {
+    e.stopPropagation();
+    e.nativeEvent.stopPropagation();
     let { onChecked } = this.props;
     onChecked && e.target.layer && onChecked(e.target.layer, e.target.checked);
   }
@@ -58,6 +61,13 @@ class CheckBox extends React.PureComponent {
             <Row className="m-checkbox-col-row">
               <Checkbox layer={"wfsRiver"} checked={layerVisible.wfsRiver != null ? layerVisible.wfsRiver : true} onChange={this.onChange}><span className="m-col-checkbox-span">河流</span></Checkbox>
             </Row>
+            {/* <Menu mode="vertical">
+              <SubMenu key="sub1" title="其他设置">
+                <Menu.Item key="1">
+                  <Checkbox layer={"wfsRiver"} checked={layerVisible.wfsRiver != null ? layerVisible.wfsRiver : true} onChange={this.onChange} onClick={this.stopPropagation}><span className="m-col-checkbox-span">河流</span></Checkbox>
+                </Menu.Item>
+              </SubMenu>
+            </Menu> */}
             {/* <Row className="m-checkbox-col-row">
               <Checkbox onChange={this.onChange}><Tag className="m-col-checkbox-normal" color='#40b96c'>正常</Tag></Checkbox>
             </Row>
@@ -73,6 +83,10 @@ class CheckBox extends React.PureComponent {
     );
   }
   componentDidMount() { }
+  stopPropagation(e) {
+    e.stopPropagation();
+    e.nativeEvent.stopPropagation();
+  }
  
 }
 export default CheckBox;

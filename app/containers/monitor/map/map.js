@@ -574,10 +574,11 @@ class Map extends React.PureComponent {
         this.props.actions.addVideos(res.data);
         this.map.addFeatures("video", res.data.map((item) => {
           return {
+            ...item,
             type: "Point",
             id: item.radioID + "",
             lonlat: [item.lon, item.lat],
-            ...item
+            
           };
         })) ;
       }
@@ -591,6 +592,7 @@ class Map extends React.PureComponent {
         this.props.actions.addGates(res.data);
         this.map.addFeatures("gate", res.data.filter((item) => { return item.lat > 3 && item.lat < 53}).map((item) => {
           return {
+            ...item,
             type: "LineString",
             id: item.gateID + "",
             name: item.name,
@@ -616,11 +618,10 @@ class Map extends React.PureComponent {
         this.props.actions.addPumps(res.data);
         this.map.addFeatures("pump", res.data.map((item) => {
           return {
+            ...item,
             type: "Point",
             id: item.pumpID + "",
             name: item.name,
-            rivername: item.rivername,
-            management: item.management,
             lonlat: [item.lon, item.lat]
           };
         }));
