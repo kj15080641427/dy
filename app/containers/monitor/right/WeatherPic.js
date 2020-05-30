@@ -99,8 +99,8 @@ class WeatherPic extends React.PureComponent {
                 visible={this.state.cloudvisible}
                 width={1378}
               >
-                <div style={{ height: '950px', width: '950px' }}>
-                  <Carousel height={800} width={800} effect="fade" dots={false} autoplaySpeed={400} speed={1} autoplay>
+                <div style={{ height: '970px', width: '970px' }}>
+                  <Carousel height={900} width={900} effect="fade" dots={false} autoplaySpeed={400} speed={1} autoplay>
                     {elements}
                   </Carousel>
                 </div>
@@ -146,7 +146,7 @@ class WeatherPic extends React.PureComponent {
             </TabPane>
             <TabPane tab="全国预报" key="4">
               <div className="m-pic-div-img">
-                <iframe frameborder="0" scrolling="no" src="http://m.nmc.cn/publish/precipitation/1-day.html" width="380px" height="560px" style={{ position: 'absolute', top: '-200px' }}></iframe>
+                <iframe frameborder="0" scrolling="no" src="http://m.nmc.cn/publish/precipitation/1-day.html" width="400px" height="590px" style={{ position: 'absolute', top: '-212px' }}></iframe>
               </div>
               <Drawer
                 title="全国降雨量预报图"
@@ -164,7 +164,7 @@ class WeatherPic extends React.PureComponent {
             </TabPane>
             <TabPane tab="全国时报" key="5">
               <div className="m-pic-div-img">
-                <iframe frameborder="0" scrolling="no" src="http://m.nmc.cn/publish/observations/hourly-precipitation.html" width="380px" height="510px" style={{ position: 'absolute', top: '-162px' }}></iframe>
+                <iframe frameborder="0" scrolling="no" src="http://m.nmc.cn/publish/observations/hourly-precipitation.html" width="400px" height="590px" style={{ position: 'absolute', top: '-175px' }}></iframe>
               </div>
               <Drawer
                 title="全国降雨量实况图"
@@ -181,7 +181,7 @@ class WeatherPic extends React.PureComponent {
             </TabPane>
             <TabPane tab="市降雨量" key="6">
               <div className="m-pic-div-img">
-                <iframe frameborder="0" scrolling="no" src="http://m.nmc.cn/publish/observations/hourly-precipitation.html" width="380px" height="510px" style={{ position: 'absolute', top: '-162px' }}></iframe>
+                <iframe frameborder="0" scrolling="no" src="http://m.nmc.cn/publish/observations/hourly-precipitation.html" width="400px" height="590px" style={{ position: 'absolute', top: '-175px' }}></iframe>
 
               </div>
               <Drawer

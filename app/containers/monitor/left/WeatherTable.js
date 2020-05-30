@@ -10,7 +10,9 @@ import { Table, Tabs } from 'antd';
 import Precipitation from './WeatherModule/Precipitation';
 import WaterLevel from './WeatherModule/WaterLevel';
 import Video from './WeatherModule/Video';
+import EasyFlood from './WeatherModule/easyFlood';
 import emitter from "@app/utils/emitter.js";
+import FloodPeople from './WeatherModule/FloodPeople';
 
 class WeatherTable extends React.PureComponent {
   constructor(props, context) {
@@ -37,10 +39,10 @@ class WeatherTable extends React.PureComponent {
               <Video></Video>
             </TabPane>
             <TabPane tab="防汛人员" key="4">
-              <Table className="m-div-table" size="small" loading={true} dataSource={this.state.qydataSource} scroll={{ y: 300 }} pagination={false} />
+              <FloodPeople></FloodPeople>
             </TabPane>
             <TabPane tab="易涝点" key="5">
-              <Table className="m-div-table" size="small" loading={true} dataSource={this.state.qydataSource} scroll={{ y: 300 }} pagination={false} />
+                <EasyFlood></EasyFlood>
             </TabPane>
           </Tabs>
         </div>

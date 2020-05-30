@@ -48,6 +48,7 @@ class AlarmTable extends React.PureComponent {
       .then((result) => {
         let xdata = []
         let ydata = []
+        var myChart = echarts.init(document.getElementById('mainbywat'));
         if (result.data.length !== 0) {
           for (var i = result.data.length - 1; i >= 0; i--) {
             xdata.push(result.data[i].alarmtime)
@@ -57,12 +58,12 @@ class AlarmTable extends React.PureComponent {
             dataSourceById: result.data,
             mloading: false,
           })
-          var myChart = echarts.init(document.getElementById('mainbywat'));
+
           myChart.setOption({
             title: {
               text: result.data[0].stnm + "-警戒站24小时水位变化",
               subtext: starttm + '至' + endtm,
-              left: 'center',
+              // left: 'center',
             },
             grid: {
               top: 90,
@@ -134,7 +135,7 @@ class AlarmTable extends React.PureComponent {
                     silent: false,
                     label: {
                       position: 'left',
-                      formatter: "警戒值" + value.baselevel + "m",
+                      formatter: "警戒水位" + value.baselevel + "m",
                     },
                     yAxis: value.baselevel,
                   }
@@ -146,6 +147,41 @@ class AlarmTable extends React.PureComponent {
           this.setState({
             mloading: false
           });
+          myChart.setOption({
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {// 坐标轴指示器，坐标轴触发有效
+                type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+              }
+            },
+            grid: {
+              top: 90,
+            },
+            dataZoom: [
+              {
+                type: 'slider',
+                show: true,
+                xAxisIndex: [0],
+              },
+            ],
+            title: {
+              text: "暂无数据",
+              subtext: '暂无数据',
+            },
+            xAxis: {
+              type: 'category',
+              data: [],
+              name: '时间',
+            },
+            yAxis: {
+              type: 'value',
+              name: '水位(m)'
+            },
+            series: [{
+              data: [],
+              type: 'line',
+            }]
+          })
         }
       })
   };
@@ -220,53 +256,34 @@ class AlarmTable extends React.PureComponent {
     //根据编号获取信息表头daata
     const swcolumnsById = [
       {
-        title: '站名',
+        title: '站点名称',
         dataIndex: 'stnm',
         className: 'column-money',
         render:
-          stnm => {
-            if (stnm !== null && stnm !== "") {
-              return (
-                <a>
-                  {stnm}
-                </a>
-              )
-            } else {
-              return (
-                <a>
-                  {stnm ? stnm : "暂无数据"}
-                </a>
-              )
-            }
+          (stnm, key) => {
+            return (
+              <Popover content={stnm} title="站名全称">
+                {stnm.substring(0, 6) + '...'}
+              </Popover>
+            )
           }
       },
       {
-        title: '报警时间',
-        dataIndex: 'alarmtime',
-        className: 'column-money',
-        render: value => moment(value).format("YYYY-MM-DD HH:mm")
-      },
-      {
-        title: '超警戒水位(m)',
+        title: '警戒水位(m)',
         dataIndex: 'baselevel',
         className: 'column-money',
-        key: 'baselevel',
-        render:
-          (baselevel, key) => {
-            if (baselevel !== null && baselevel > 0) {
-              return (
-                <Tag color={'#ec595f'} key={baselevel}>
-                  {baselevel - key.actuallevel}
-                </Tag>
-              );
-            } else {
-              return (
-                <Tag color={'#40b96c'} key={baselevel}>
-                  {baselevel - key.actuallevel}
-                </Tag>
-              );
-            }
-          }
+      },
+      {
+        title: '当前水位(m)',
+        dataIndex: 'actuallevel',
+        className: 'column-money'
+      },
+      {
+        title: '更新时间',
+        dataIndex: 'alarmtime',
+        width: 140,
+        className: 'column-money',
+        render: (value, key) => moment(value).format("YYYY-MM-DD HH:mm")
       },
     ];
     const { loading } = this.state;
@@ -282,7 +299,7 @@ class AlarmTable extends React.PureComponent {
               </Row> */}
             </Col>
           </Row>
-          <Table className="m-alm-div-table" size="small" loading={loading} columns={columns} dataSource={this.state.wardataSource} scroll={{ y: 280 }}
+          <Table className="m-alm-div-table" size="small" loading={loading} columns={columns} dataSource={this.state.wardataSource} scroll={{ y: 320 }}
             rowKey={row => row.stcd}
             onRow={this.onClickRow}
           // pagination={pagination}

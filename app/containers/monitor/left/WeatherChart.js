@@ -88,10 +88,8 @@ class WeatherChart extends React.PureComponent {
           ],
           yAxis: [
             {
-              name: '单位(mm)',
-              nameLocation: 'start',
-              nameTextStyle: {
-                color: '#007ed7',
+              axisLabel:{
+                formatter:'{value} mm'
               },
               inverse: true,
               type: 'value',

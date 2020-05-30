@@ -23,7 +23,7 @@ class Video extends React.PureComponent {
     }
 
     render() {
-        
+
         const qycolumns = [
             {
                 title: '站名',
@@ -69,28 +69,31 @@ class Video extends React.PureComponent {
                     <Col span={15}>
                         <Row style={{ height: 250 }}>
                             <Col span={8} >
-                               1 {/* <VideoComponent videoControl={videoControl} token={token} style={{ width: 590, height: 380, borderWidth: 0 }} /> */}
+                                <div style={{ width: '300px', height: '200px' }}>
+                                    <iframe src="http://172.19.112.74/video/index.html?sessionId=23eb3508-c976-47a4-a4e6-71478a1be04e&token=device1--84" frameborder="no"
+                                        scrolling="no" className="ifvideo"></iframe>
+                                </div>
                             </Col>
-                            <Col span={8}>2</Col>
-                            <Col span={8}>3</Col>
+                        <Col span={8}>2</Col>
+                        <Col span={8}>3</Col>
                         </Row>
-                        <Row style={{ height: 250 }}>
+                    <Row style={{ height: 250 }}>
                         <Col span={8} >
-                               1 {/* <VideoComponent videoControl={videoControl} token={token} style={{ width: 590, height: 380, borderWidth: 0 }} /> */}
+                            1
                             </Col>
-                            <Col span={8}>2</Col>
-                            <Col span={8}>3</Col>
-                        </Row>
-                        <Row style={{ height: 250 }}>
+                        <Col span={8}>2</Col>
+                        <Col span={8}>3</Col>
+                    </Row>
+                    <Row style={{ height: 250 }}>
                         <Col span={8} >
-                               1 {/* <VideoComponent videoControl={videoControl} token={token} style={{ width: 590, height: 380, borderWidth: 0 }} /> */}
-                            </Col>
-                            <Col span={8}>2</Col>
-                            <Col span={8}>3</Col>
-                        </Row>
+                            1 {/* <VideoComponent videoControl={videoControl} token={token} style={{ width: 590, height: 380, borderWidth: 0 }} /> */}
+                        </Col>
+                        <Col span={8}>2</Col>
+                        <Col span={8}>3</Col>
+                    </Row>
                     </Col>
                 </Row>
-            </div>
+            </div >
         );
     }
     componentDidMount() {

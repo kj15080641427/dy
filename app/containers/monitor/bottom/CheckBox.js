@@ -57,7 +57,7 @@ class CheckBox extends React.PureComponent {
             <Row className="m-checkbox-col-row">
               <Checkbox layer={"wfsRiver"} checked={layerVisible.wfsRiver != null ? layerVisible.wfsRiver : true} onChange={this.onChange}><span className="m-col-checkbox-span">河流</span></Checkbox>
             </Row>
-            <Row className="m-checkbox-col-row">
+            {/* <Row className="m-checkbox-col-row">
               <Checkbox onChange={this.onChange}><Tag className="m-col-checkbox-normal" color='#40b96c'>正常</Tag></Checkbox>
             </Row>
             <Row className="m-checkbox-col-row">
@@ -65,7 +65,7 @@ class CheckBox extends React.PureComponent {
             </Row>
             <Row className="m-checkbox-col-row">
               <Checkbox onChange={this.onChange}><Tag className="m-col-checkbox-normal" color='#eee54c'>异常</Tag></Checkbox>
-            </Row>
+            </Row> */}
           </div>
         </div>
       </>

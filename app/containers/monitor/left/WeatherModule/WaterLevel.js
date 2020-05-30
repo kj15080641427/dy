@@ -32,21 +32,23 @@ class Precipitation extends React.PureComponent {
         };
     }
     //模态框控制
-    showModal = (value) => {
+    showModal = (obj) => {
         this.setState({
             visible: true,
             mloading: true
         });
+        console.log(obj.warning)
         let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7).format("YY-MM-DD HH:mm:ss")
         let endtm = moment(new Date().getTime()).format("YY-MM-DD HH:mm:ss")
         getWaterHistory({
-            "stcd": value.stcd,
+            "stcd": obj.stcd,
             "starttm": starttm,
             "endtm": endtm,
             "current": 1,
             "size": 10000
         })
             .then((result) => {
+                var myChart = echarts.init(document.getElementById('mainbysw'));
                 if (result.data.records.length !== 0) {
                     let xdata = []
                     let ydata = []
@@ -58,12 +60,12 @@ class Precipitation extends React.PureComponent {
                         swdataSourceById: result.data.records,
                         mloading: false,
                     })
-                    var myChart = echarts.init(document.getElementById('mainbysw'));
+
                     myChart.setOption({
                         title: {
-                            text: value.name + "-水位站24小时水位变化",
+                            text: obj.name + "-水位站24小时水位变化",
                             subtext: starttm + '至' + endtm,
-                            left: 'center',
+                            // left: 'center',
                         },
                         grid: {
                             top: 90,
@@ -97,17 +99,20 @@ class Precipitation extends React.PureComponent {
                         },
                         yAxis: {
                             type: 'value',
-                            name: '水位（m）'
+                            name: '水位（m）',
+                            max: function (value) {
+                                return value.max + obj.warning * 1;
+                            }
                         },
                         visualMap: {
                             show: true,
                             pieces: [
                                 {
                                     gt: 0,
-                                    lte: value.warning,          //这儿设置基线上下颜色区分 基线下面为绿色
+                                    lte: obj.warning,          //这儿设置基线上下颜色区分 基线下面为绿色
                                     color: '#03d6d6'
                                 }, {
-                                    gt: value.warning,          //这儿设置基线上下颜色区分 基线上面为红色
+                                    gt: obj.warning,          //这儿设置基线上下颜色区分 基线上面为红色
                                     color: '#e91642',
                                 }]
                             ,
@@ -136,12 +141,12 @@ class Precipitation extends React.PureComponent {
                                         silent: false,
                                         label: {
                                             position: 'center',
-                                            formatter: "警戒水位" + value.warning + "m",
+                                            formatter: "警戒水位" + obj.warning + "m",
                                             itemStyle: {
                                                 left: '100px'
                                             }
                                         },
-                                        yAxis: value.warning,
+                                        yAxis: obj.warning,
                                     }
                                 ]
                             }
@@ -151,6 +156,41 @@ class Precipitation extends React.PureComponent {
                     this.setState({
                         mloading: false
                     });
+                    myChart.setOption({
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {// 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        grid: {
+                            top: 90,
+                        },
+                        dataZoom: [
+                            {
+                                type: 'slider',
+                                show: true,
+                                xAxisIndex: [0],
+                            },
+                        ],
+                        title: {
+                            text: "暂无数据",
+                            subtext: '暂无数据',
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: [],
+                            name: '时间',
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name: '水位(m)'
+                        },
+                        series: [{
+                            data: [],
+                            type: 'line',
+                        }]
+                    })
                 }
             })
     };
@@ -254,7 +294,6 @@ class Precipitation extends React.PureComponent {
         return {
             //单击定位
             onClick: () => {
-                console.log(record)
                 this.locationClick(record)
             },
             //双击打开历史水位
@@ -329,7 +368,7 @@ class Precipitation extends React.PureComponent {
                 className: 'column-money',
                 render: value => moment(value).format("YYYY-MM-DD HH:mm")
             },
-           
+
         ];
         return (
             <>
@@ -388,6 +427,7 @@ class Precipitation extends React.PureComponent {
                         warning: result.data[i].warning,
                     })
                 }
+                console.log(dataArr)
                 this.setState({ loading: false });
                 this.setState({ qydataSource: dataArr })
             })

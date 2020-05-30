@@ -1,4 +1,4 @@
-.head-div{
+.head-div {
     background-color: #ebebeb;
     height: 70px;
     text-align: center;
@@ -6,9 +6,15 @@
     top: 10px;
     border-radius: 5px;
 }
-.chart-div{
+.chart-div {
     width: 800px;
     height: 600px;
     background-color: #fff;
     position: relative;
-  }
+}
+.ifvideo {
+    width: 100%;
+    height: 100%;
+    object-fit:fill;
+    display: block;
+}

@@ -36,11 +36,11 @@ export function getWfsRiver(data) {
 }
 // 获取实时天气信息
 export function getWeatherdata() {
-  return fetchJSONData("GET", "/weather/get",null);
+  return fetchJSONData("GET", "/weather/get", null);
 }
 // 获取五个区县平均降雨量信息
 export function getFiveCitydata(data) {
-  return fetchJSONData("POST", "/count/getAreaAvgRaindata",data);
+  return fetchJSONData("POST", "/count/getAreaAvgRaindata", data);
 }
 // 获取雨晴历史信息
 export function getRainHistory(data) {
@@ -65,4 +65,8 @@ export function getBasicsAll(data) {
 //获取视频站点信息
 export function getRadioAll(data) {
   return fetchJSONData("POST", "/radio/getAll", data);
+}
+//获取防汛人员信息
+export function getfloodUser(data) {
+  return fetchJSONData("POST", "/floodUser/getAll", data);
 }

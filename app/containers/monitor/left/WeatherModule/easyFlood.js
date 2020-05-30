@@ -1,35 +1,34 @@
 /**
  * Precipitation 2020-05-18
  * zdl
- * 雨量站
+ * 易涝点
  */
 import React from 'react';
 import "../style.scss";
 import localimgURL from '../../../../resource/local.png';
-import { Table, Tag, Popover, Modal, Button, Card, Row, Col, Input, Space, Tooltip } from 'antd';
-import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import emitter from "@app/utils/emitter.js";
-import { getRainHistory, getBasicsAll } from "@app/data/request";
+import { Table, Popover, Tag, Modal, Button, Card, Row, Col, Input, Space } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import Highlighter from 'react-highlight-words';
+import moment from 'moment';
+import { getWaterHistory, getBasicsAll } from "@app/data/request";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 import 'echarts';
-
-class Precipitation extends React.PureComponent {
+class easyFlood extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            qydataSource: [],//雨量站数据源
-            loading: false,//雨量站数据源加载
-            qydataSourceById: [],//单个站点雨量数据源
+            qydataSource: [],//易涝点数据源
+            loading: false,//易涝点数数据源加载
+            swdataSourceById: [],//单个易涝点数水位数据源
             visible: false,//模态框
             mloading: false,//模态框表格加载动画
             searchText: '',
             searchedColumn: '',
         };
     }
-    //模态框
+    //模态框控制
     showModal = (value) => {
         this.setState({
             visible: true,
@@ -37,7 +36,7 @@ class Precipitation extends React.PureComponent {
         });
         let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7).format("YY-MM-DD HH:mm:ss")
         let endtm = moment(new Date().getTime()).format("YY-MM-DD HH:mm:ss")
-        getRainHistory({
+        getWaterHistory({
             "stcd": value.stcd,
             "starttm": starttm,
             "endtm": endtm,
@@ -45,26 +44,24 @@ class Precipitation extends React.PureComponent {
             "size": 10000
         })
             .then((result) => {
-                console.log(result)
-                let xdata = []
-                let ydata = []
-                let ydataByDay = []
-                var myChart = echarts.init(document.getElementById('mainbyqy'));
+                var myChart = echarts.init(document.getElementById('mainbyef'));
                 if (result.data.records.length !== 0) {
+                    let xdata = []
+                    let ydata = []
                     for (var i = result.data.records.length - 1; i >= 0; i--) {
                         xdata.push(result.data.records[i].tm)
-                        ydata.push(result.data.records[i].hourAvg)
-                        ydataByDay.push(result.data.records[i].dayAvg)
+                        ydata.push(result.data.records[i].z)
                     }
                     this.setState({
-                        qydataSourceById: result.data.records,
+                        swdataSourceById: result.data.records,
                         mloading: false,
                     })
+                    
                     myChart.setOption({
                         title: {
-                            text: value.name + '-雨量站七天雨量变化',
+                            text: value.name + "-易涝点24小时水位变化",
                             subtext: starttm + '至' + endtm,
-                            // left: 'center',
+                            left: 'center',
                         },
                         grid: {
                             top: 90,
@@ -98,36 +95,55 @@ class Precipitation extends React.PureComponent {
                         },
                         yAxis: {
                             type: 'value',
-                            name: '雨量（mm）'
+                            name: '水位（m）'
                         },
-                        legend: {
-                            right: 'center',
-                            x: '190px',
-                            y: '50px',
-                            data: ['1小时降水', '24小时降水'],
-                        },
+                        // visualMap: {
+                        //     show: true,
+                        //     pieces: [
+                        //         {
+                        //             gt: 0,
+                        //             lte: value.warning,          //这儿设置基线上下颜色区分 基线下面为绿色
+                        //             color: '#03d6d6'
+                        //         }, {
+                        //             gt: value.warning,          //这儿设置基线上下颜色区分 基线上面为红色
+                        //             color: '#e91642',
+                        //         }]
+                        //     ,
+                        // },
                         series: [{
-                            name: '1小时降水',
                             data: ydata,
                             type: 'line',
                             markPoint: {
                                 data: [
                                     { type: 'max', name: '最大值' },
-                                    { type: 'min', name: '最小值' }
-                                ]
-                            },
+                                    {
+                                        type: 'min', name: '最小值', itemStyle: {
+                                            color: '#03d6d6'
+                                        }
+                                    }
+                                ],
 
-                        }, {
-                            name: '24小时降水',
-                            type: 'line',
-                            data: ydataByDay,
-                            markPoint: {
-                                data: [
-                                    { type: 'max', name: '最大值' },
-                                    { type: 'min', name: '最小值' }
-                                ]
                             },
-                        },],
+                            markLine: {
+                                label: {
+                                    position: "end",
+                                },
+                                color: '#ffcc33',
+                                data: [
+                                    {
+                                        silent: false,
+                                        label: {
+                                            position: 'center',
+                                            formatter: "警戒水位" + value.warning + "m",
+                                            itemStyle: {
+                                                left: '100px'
+                                            }
+                                        },
+                                        yAxis: value.warning,
+                                    }
+                                ]
+                            }
+                        }],
                     });
                 } else {
                     this.setState({
@@ -135,49 +151,49 @@ class Precipitation extends React.PureComponent {
                     });
                     myChart.setOption({
                         tooltip: {
-                            trigger: 'axis',
-                            axisPointer: {// 坐标轴指示器，坐标轴触发有效
-                                type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
-                            }
+                          trigger: 'axis',
+                          axisPointer: {// 坐标轴指示器，坐标轴触发有效
+                            type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+                          }
                         },
                         grid: {
-                            top: 90,
+                          top: 90,
                         },
                         dataZoom: [
-                            {
-                                type: 'slider',
-                                show: true,
-                                xAxisIndex: [0],
-                            },
+                          {
+                            type: 'slider',
+                            show: true,
+                            xAxisIndex: [0],
+                          },
                         ],
                         title: {
-                            text: "暂无数据",
-                            subtext: '暂无数据',
+                          text: "暂无数据",
+                          subtext: '暂无数据',
                         },
                         xAxis: {
-                            type: 'category',
-                            data: [],
-                            name: '时间',
+                          type: 'category',
+                          data: [],
+                          name: '时间',
                         },
                         yAxis: {
-                            type: 'value',
-                            name: '雨量（mm）'
+                          type: 'value',
+                          name: '水位(m)'
                         },
                         series: [{
-                            data: [],
-                            type: 'line',
+                          data: [],
+                          type: 'line',
                         }]
-                    })
+                      })
                 }
             })
     };
-    //关闭模态框
+    //模态框关闭
     handleCancel = () => {
         this.setState({
             visible: false,
-            qydataSourceById: []
+            swdataSourceById: [],
         })
-        var myChart = echarts.init(document.getElementById('mainbyqy'));
+        var myChart = echarts.init(document.getElementById('mainbyef'));
         myChart.setOption({
             title: {
                 text: "暂无数据",
@@ -188,6 +204,16 @@ class Precipitation extends React.PureComponent {
             },
             series: [{
                 data: [],
+                markLine: {
+                    data: [
+                        {
+                            label: {
+                                formatter: "暂无数据",
+                            },
+                            yAxis: 2
+                        }
+                    ]
+                }
             }]
         })
     }
@@ -263,20 +289,19 @@ class Precipitation extends React.PureComponent {
             onClick: () => {
                 this.locationClick(record)
             },
-            //双击打开历史雨量
+            //双击打开历史水位
             onDoubleClick: () => {
                 this.showModal(record)
             },
         };
     }
     render() {
-        const qycolumns = [
+        //水位data
+        const swcolumns = [
             {
                 title: '站名',
                 dataIndex: 'name',
-                width: '40%',
                 className: 'column-money',
-                key: 'riverwaterdataID',
                 ...this.getColumnSearchProps('name'),
                 render:
                     (name, key) => {
@@ -288,175 +313,122 @@ class Precipitation extends React.PureComponent {
                     },
             },
             {
-                title: '1小时降水(mm)',
-                dataIndex: 'hourAvg',
-                width: 113,
+                title: '水位(m)',
+                dataIndex: 'z',
                 className: 'column-money',
-                render: hourAvg => Math.round(hourAvg * 1000) / 1000
+                render: dayAvg => dayAvg = null ? "-" : Math.round(dayAvg * 100) / 100
             },
             {
-                title: '日降水量(mm)',
-                dataIndex: 'dayAvg',
-                width: 109,
+                title: '更新时间',
+                dataIndex: 'ztm',
+                className: 'column-money',
+                width: 140,
+                render: value => moment(value).format("YYYY-MM-DD HH:mm")
+            },
+        ];
+        //根据编号获取信息表头daata
+        const swcolumnsById = [
+            {
+                title: '站名',
+                dataIndex: 'stnm',
+                className: 'column-money',
+                render:
+                    stnm => {
+                        if (stnm !== null && stnm !== "") {
+                            return (
+                                <a>
+                                    {stnm}
+                                </a>
+                            )
+                        } else {
+                            return (
+                                <a>
+                                    {stnm ? stnm : "暂无数据"}
+                                </a>
+                            )
+                        }
+                    }
+            },
+            {
+                title: '水位(m)',
+                dataIndex: 'z',
                 className: 'column-money',
                 render: dayAvg => Math.round(dayAvg * 1000) / 1000
             },
             {
                 title: '更新时间',
                 dataIndex: 'tm',
-                width: 140,
                 className: 'column-money',
                 render: value => moment(value).format("YYYY-MM-DD HH:mm")
-            }
+            },
+           
         ];
-        const { loading } = this.state;
         return (
             <>
                 <Table className="m-div-table"
                     size="small"
-                    loading={loading}
-                    columns={qycolumns}
+                    loading={this.state.loading}
+                    columns={swcolumns}
                     dataSource={this.state.qydataSource}
                     scroll={{ y: 300 }}
                     rowKey={row => row.stcd}
                     onRow={this.onClickRow}
-                // pagination={pagination} 
                 />
                 <Modal
-                    title="7天雨量详情"
+                    title="24小时易涝点详情"
                     visible={this.state.visible}
                     footer={null}
                     onCancel={this.handleCancel}
-                    width={1300}>
+                    width={1300}
+                >
                     <Row>
-                        <Col span={12}>
-                            <Card title="雨量走势" bordered={false}>
-                                <div id="mainbyqy" style={{ width: 600, height: 500 }}></div>
-                            </Card></Col>
-                        <Col span={12}>
-                            <Card title="数据详情" bordered={false}>
-                                <Table
-                                    size="small"
-                                    loading={this.state.mloading}
-                                    rowKey={row => row.stcd}
-                                    columns={[
-                                        {
-                                            title: '站名',
-                                            dataIndex: 'stnm',
-                                            width: 75,
-                                            className: 'column-money',
-                                            render:
-                                                stnm => {
-                                                    if (stnm !== null || stnm !== "") {
-                                                        return (
-                                                            <span>
-                                                                {stnm}
-                                                            </span>
-                                                        )
-                                                    } else {
-                                                        return (
-                                                            <span>
-                                                                {"暂无数据"}
-                                                            </span>
-                                                        )
-                                                    }
-                                                }
-                                        },
-                                        {
-                                            title: '1小时降水(mm)',
-                                            dataIndex: 'hourAvg',
-                                            width: 119,
-                                            className: 'column-money',
-                                            render: hourAvg => Math.round(hourAvg * 1000) / 1000
-                                        },
-                                        {
-                                            title: '24小时降水量(mm)',
-                                            dataIndex: 'dayAvg',
-                                            width: 130,
-                                            className: 'column-money',
-                                            render: dayAvg => Math.round(dayAvg * 1000) / 1000
-                                        },
-                                        {
-                                            title: '更新时间',
-                                            dataIndex: 'tm',
-                                            width: 140,
-                                            className: 'column-money',
-                                            render: value => moment(value).format("YYYY-MM-DD HH:mm")
-                                        },
-                                    ]}
-                                    dataSource={this.state.qydataSourceById}
-                                    scroll={{ y: 500 }}
-                                />
-                            </Card></Col>
+                        <Col span={12}><Card title="水位走势" bordered={false}>
+                            <div id="mainbyef" style={{ width: 600, height: 500 }}></div>
+                        </Card></Col>
+                        <Col span={12}><Card title="水位数据" bordered={false}>
+                            <Table
+                                size="small"
+                                loading={this.state.loading}
+                                columns={swcolumnsById}
+                                dataSource={this.state.swdataSourceById}
+                                scroll={{ y: 500 }}
+                                rowKey={row => row.stcd}
+                            />
+                        </Card></Col>
                     </Row>
                 </Modal>
             </>
+
         );
     }
-    // //切换每页数量
-    // onShowSizeChange(current, pageSize) {
-    //     this.setState({ loading: true });
-    //     getRainHistory({
-    //         "current": current,
-    //         "size": pageSize
-    //     })
-    //         .then((result) => {
-    //             this.setState({ qydataSource: result.data.records })
-    //             this.setState({ loading: false });
-    //             this.setState({ current: result.data.current })
-    //             this.setState({
-    //                 pageSize: pageSize
-    //             })
-    //         })
-    // }
-
-    // // 回调函数，切换下一页
-    // changePage(current) {
-    //     console.log(current)
-    //     this.setState({ loading: true });
-    //     getRainHistory({
-    //         "current": current,
-    //         "size": this.state.pageSize
-    //     })
-    //         .then((result) => {
-    //             this.setState({ qydataSource: result.data.records })
-    //             this.setState({ loading: false });
-    //             this.setState({ total: result.data.total })
-    //             this.setState({ current: result.data.current })
-    //         })
-    // }
-    //初始化数据
+    //初始化加载数据
     componentDidMount() {
         this.setState({ loading: true });
         getBasicsAll({
-            "type": 1
+            "type": 3
         })
             .then((result) => {
                 let dataArr = []
                 for (let i = 0; i < result.data.length; i++) {
                     dataArr.push({
-                        originalName: result.data[i].name,
-                        name: result.data[i].name = "" ? result.data[i].stcd : result.data[i].name + "(" + result.data[i].dataSourceName + ")",
-                        ztm: result.data[i].ztm,
-                        dataSourceName: result.data[i].dataSourceName,
-                        hourAvg: result.data[i].hourAvg,
-                        dayAvg: result.data[i].dayAvg,
+                        name: result.data[i].name + "(" + result.data[i].dataSourceName + ")",
+                        ztm: result.data[i].tm,
+                        z: result.data[i].z,
                         stcd: result.data[i].stcd,
                         lon: result.data[i].lon,
                         lat: result.data[i].lat,
+                        warning: result.data[i].warning,
                     })
                 }
                 this.setState({ loading: false });
                 this.setState({ qydataSource: dataArr })
-
             })
     }
     locationClick(e) {
-        console.log(e)
         let lon = e.lon * 1;
         let lat = e.lat * 1;
         if (lon == null && lat == null) return;
         emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
     }
 }
-export default Precipitation;
+export default easyFlood;
