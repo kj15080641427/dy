@@ -147,13 +147,9 @@ class Map extends React.PureComponent {
       srsName: 'EPSG:4326', ns: 'www.gcspace.com', ws: 'dy',
       layerName: 'River',
       colorTable: [
-      // { min: 0, max: 0.1, color: '#ccbbff' },
         { min: 0, max: 0.1, color: '#00ff00' },
         {min: 0.1, max: 0.5, color: '#eee538'},
-      //{ min: 0.1, max: 0.5, color: '#9f88ff' },
         {min: 0.5, max: 0.75, color: '#ffa500'},
-      //{ min: 0.5, max: 0.75, color: '#5500ff' },
-        //{ min: 0.75, max: 10000, color: '#0000cc' }
         {min: 0.75, max: 1000, color: '#ff0000'}
       ]
     });
@@ -167,7 +163,6 @@ class Map extends React.PureComponent {
         if (props && props.NAME) {
           this.onWfsRiverClick(props);
         }
-        
       }
     });
     // this.map.addHeatmap({
@@ -186,27 +181,27 @@ class Map extends React.PureComponent {
     //   key: "traffic",
     //   zIndex: 19,
     // });
-    this.map.addVector({
-      key: "person",
-      zIndex: 20,
-      style: {
-        heading: function(featureObj) {
-            return featureObj.heading;
-        },
-        src: function(featureObj) { //
-            return require("../../../resource/icon/person.svg")["default"];
-        },
-        anchor: [0.5, 1],
-        strokeColor: "#1890ff",
-        width: 1,
-        fillColor: "#1890ff",
-        fontColor: "#82B2FF",
-        fontText: function(featureObj) {
-            return featureObj.id + "";
-        },
-        font: '16px sans-serif'
-      }
-    });
+    // this.map.addVector({
+    //   key: "person",
+    //   zIndex: 20,
+    //   style: {
+    //     heading: function(featureObj) {
+    //         return featureObj.heading;
+    //     },
+    //     src: function(featureObj) { //
+    //         return require("../../../resource/icon/person.svg")["default"];
+    //     },
+    //     anchor: [0.5, 1],
+    //     strokeColor: "#1890ff",
+    //     width: 1,
+    //     fillColor: "#1890ff",
+    //     fontColor: "#82B2FF",
+    //     fontText: function(featureObj) {
+    //         return featureObj.id + "";
+    //     },
+    //     font: '16px sans-serif'
+    //   }
+    // });
     this.map.addVector({
       key: "video",
       zIndex: 20,
@@ -541,7 +536,7 @@ class Map extends React.PureComponent {
       getWaterWarning({})
       .then((res) => {
         if (res.code === 200) {
-          res.data.records[0].stcd = "31106670";
+          //res.data.records[0].stcd = "31106670";
           this.props.actions.setMutiDetailData({
             key: "water",
             value: res && res.data && res.data.records || []
@@ -561,7 +556,7 @@ class Map extends React.PureComponent {
       }
       this.flood.updateData(data)
     }, 1000);
-    this.map.addAlarm("alarm001", [118.67, 37.43]);
+    //this.map.addAlarm("alarm001", [118.67, 37.43]);
     this.map.addFeatures("person", [
         {
             type: "Point",
@@ -595,9 +590,9 @@ class Map extends React.PureComponent {
       water: []
     };
     data.forEach((item) => {
-      if ([3, 5, 6].indexOf(item.indtype) > -1) {
+      if ([3, 5, 6, 10].indexOf(item.indtype) > -1) {
         obj.rain.push(item);
-      } else if ([7, 8].indexOf(item.indtype) > -1) {
+      } else if ([1, 2, 7, 8].indexOf(item.indtype) > -1) {
         obj.water.push(item);
       }
     });
