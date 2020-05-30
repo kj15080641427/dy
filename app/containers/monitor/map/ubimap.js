@@ -39,6 +39,8 @@ import {
 import MousePosition from 'ol/control/MousePosition';
 import { defaults } from 'ol/control';
 import "ol/ol.css";
+import ImageLayer from 'ol/layer/Image';
+import { ImageWMS } from 'ol/source';
 
 export function formatDegree(value) { 
   value = Math.abs(value);  
@@ -488,7 +490,25 @@ export default (function(window) {
     //删除高分影像图层
     Map.prototype.removeGis = function(key) {
         this._removeLayer(key);
-    };
+  };
+  
+  //添加图片图层
+  Map.prototype.addImageTile = function (param, urlFunc) {
+    if (!param || !param.key) return;
+    var oneurl = param.url;
+    var tilelayer = new ImageLayer({
+      visible: param.visible == null ? true : param.visible,
+      zIndex: param.zIndex ? param.zIndex : 0,
+      source: new ImageWMS({
+        url: oneurl,
+        params: param.params,
+        serverType: 'geoserver'
+      })
+    });
+    this.map.addLayer(tilelayer);
+    this.layers[param.key] = tilelayer;
+
+  };
     //添加高分影像图层
     Map.prototype.addGeo = function(param, urlFunc) {
         if (!param || !param.key) return;
