@@ -18,8 +18,8 @@ class Rain extends Base {
       <div className="m-ovl-box m-ovl-rain" style={{display: "none"}} ref={(node) => { this.container = node;}}>
         <div className="m-ovl-line">雨量站点:{model.name}</div>
         <div className="m-ovl-line">站点编号:{model.stcd}</div>
-        <div className="m-ovl-line">降水量:{model.intv || "未知"}mm</div>
-        <div className="m-ovl-line">报警时间:{model.tm || "未知"}</div>
+        <div className="m-ovl-line">降水量:{model.drp}mm</div>
+        <div className="m-ovl-line">报警时间:{model.tm}</div>
         <span className="iconfont iconcuo m-ovl-close" ></span>
       </div>
     );
