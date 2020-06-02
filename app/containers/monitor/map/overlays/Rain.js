@@ -14,12 +14,16 @@ class Rain extends Base {
   }
   render() {
     let { model } = this.props;
+    let drpLevel = (model.drp !== null && model.drp !== undefined) ? model.drp + 'mm' : '--';
+    let tmDesc = model.tm ? model.tm : '--';
     return ( 
       <div className="m-ovl-box m-ovl-rain" style={{display: "none"}} ref={(node) => { this.container = node;}}>
-        <div className="m-ovl-line">雨量站点:{model.name}</div>
-        <div className="m-ovl-line">站点编号:{model.stcd}</div>
-        <div className="m-ovl-line">降水量:{model.drp}mm</div>
-        <div className="m-ovl-line">报警时间:{model.tm}</div>
+        <div className="m-ovl-line">雨量站点：{model.name}</div>
+        <div className="m-ovl-line">站点编号：{model.stcd}</div>
+        <div className="m-ovl-line">数据来源：{model.dataSourceDesc}</div>
+        <div className="m-ovl-line">站点地址：{model.address}</div>
+        <div className="m-ovl-line">降水量：{drpLevel}</div>
+        <div className="m-ovl-line">更新时间：{tmDesc}</div>
         <span className="iconfont iconcuo m-ovl-close" ></span>
       </div>
     );

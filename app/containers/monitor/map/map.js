@@ -403,7 +403,9 @@ class Map extends React.PureComponent {
     });
     this.map.startSelectFeature("water", (param) => {
       let { details } = this.props;
-      if (details.water[param.stcd]) {
+      //if (details.water[param.stcd]) {
+      //phz 修改，所有的水位都从接口获取
+      if(false){
         this.addOverlay(Water.type, {...param, ...details.water[param.stcd]});
       }else {
         getWaterRealTime({stcd: param.stcd, current: 1, size: 1})

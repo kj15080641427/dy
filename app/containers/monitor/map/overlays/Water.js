@@ -14,9 +14,9 @@ class Water extends Base {
   }
   render() {
     let { model } = this.props;
-    let water = model.z ? (model.z + 'm') : '--';
+    let water = (model.z !== null && model.z !== undefined) ? (model.z + 'm') : '--';
     let udpTm = model.tm ? model.tm : '--'
-    let warningLevel = model.warning && model.warning !== 99 ? (model.warning + 'm') : '--';
+    let warningLevel = (model.warning && model.warning !== 99) ? (model.warning + 'm') : '--';
     return ( 
       <div className="m-ovl-box m-ovl-water" style={{display: "none"}} ref={(node) => { this.container = node;}}>
         <div className="m-ovl-line">水位站点：{model.stnm || model.name}</div>
