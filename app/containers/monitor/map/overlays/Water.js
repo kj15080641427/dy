@@ -14,12 +14,18 @@ class Water extends Base {
   }
   render() {
     let { model } = this.props;
+    let water = model.z ? (model.z + 'm') : '--';
+    let udpTm = model.tm ? model.tm : '--'
+    let warningLevel = model.warning && model.warning !== 99 ? (model.warning + 'm') : '--';
     return ( 
       <div className="m-ovl-box m-ovl-water" style={{display: "none"}} ref={(node) => { this.container = node;}}>
-        <div className="m-ovl-line">水位站点:{model.stnm || model.name}</div>
-        <div className="m-ovl-line">站点编号:{model.stcd}</div>
-        <div className="m-ovl-line">超警戒水位:{model.warningOver}mm</div>
-        <div className="m-ovl-line">报警时间:{model.warningTime}</div>
+        <div className="m-ovl-line">水位站点：{model.stnm || model.name}</div>
+        <div className="m-ovl-line">站点编号：{model.stcd}</div>
+        <div className="m-ovl-line">数据来源：{model.dataSourceDesc}</div>
+        <div className="m-ovl-line">站点地址：{model.address}</div>
+        <div className="m-ovl-line">当前水位：{water}</div>
+        <div className="m-ovl-line">警戒水位：{warningLevel}</div>
+        <div className="m-ovl-line">更新时间：{udpTm}</div>
         <span className="iconfont iconcuo m-ovl-close" ></span>
       </div>
     );
