@@ -378,7 +378,8 @@ class Map extends React.PureComponent {
     });
     this.map.startSelectFeature("rain", (param) => {
       let { details } = this.props;
-      if (details.rain[param.stcd]) {
+      //if (details.rain[param.stcd]) {
+      if(false){
         this.addOverlay(Rain.type, {...param, ...details.rain[param.stcd]});
       }else {
         getRainRealTime({stcd: param.stcd, current: 1, size: 1})
