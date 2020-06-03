@@ -30,7 +30,7 @@ class WeatherBox extends React.PureComponent {
               <Row>河流数</Row>
             </Col>
             <Col span={4}>
-              <Row><span className="m-box-value">13</span></Row>
+              <Row><span className="m-box-value">15</span></Row>
               <Row>大中型水库</Row>
             </Col>
             <Col span={5}>
@@ -38,7 +38,7 @@ class WeatherBox extends React.PureComponent {
               <Row>水闸数</Row>
             </Col>
             <Col span={6}>
-              <Row><Col> <span className="m-box-value">1.14</span>亿m³</Col></Row>
+              <Row><Col> <span className="m-box-value">3.11</span>亿m³</Col></Row>
               <Row>水库蓄水量</Row>
             </Col>
           </Row>
@@ -53,9 +53,9 @@ class WeatherBox extends React.PureComponent {
   //初始化数据
   componentDidMount() {
     getCityAvgRaindata({})
-      .then((result) => {
+      .then((result) => { 
         if (result.data.length > 5) {
-          this.setState({ weatherCount: Math.round(result.data * 100) / 100 })
+          this.setState({ weatherCount: (result.data * 1).toFixed(1) })
         }
       })
 
