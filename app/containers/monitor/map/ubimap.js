@@ -572,8 +572,8 @@ export default (function(window) {
       this._pointermoveWFSKey = this.map.on('click', function(e) {
           var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
               if (feature && layer) {
-                let props = feature.getProperties();
-                let lonlat = props.geometry.getCoordinates()[0][0];
+                let coord = this.getCoordinateFromPixel(e.pixel);
+                let lonlat = coord;
                 lonlat = transform(lonlat, projection, sprojection);
                 param.onClick && param.onClick({...feature.getProperties(), lonlat });
               }

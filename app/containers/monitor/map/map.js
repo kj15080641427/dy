@@ -138,15 +138,15 @@ class Map extends React.PureComponent {
       zIndex: 10,
       key: "river"
     });
-    this.map.addImageTile({
-      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
-      params: {
-        'LAYERS': 'dy:河流40',
-        'TILED': false
-      },
-      zIndex: 11,
-      key: "river40"
-    });
+    // this.map.addImageTile({
+    //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
+    //   params: {
+    //     'LAYERS': 'dy:河流40',
+    //     'TILED': false
+    //   },
+    //   zIndex: 11,
+    //   key: "river40"
+    // });
     // this.map.addGeo({
     //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
     //   params: {
@@ -174,7 +174,7 @@ class Map extends React.PureComponent {
       zIndex: 11,
       key: "wfsRiver",
       url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
-      typename: "dy:河流",
+      typename: "dy:河流40",
       onClick: (props) => {
         if (props && props.NAME) {
           this.onWfsRiverClick(props);
