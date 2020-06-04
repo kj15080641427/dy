@@ -22,19 +22,19 @@ module.exports = {
     module: {
         rules: [
             {
-               test: /\.(ts|tsx|jsx|js)$/,
-               use: {
-                   loader: 'babel-loader',
-                   options: {
-                       presets: [
-                        ["@babel/preset-env", {
-                            "corejs": "3",
-                            "useBuiltIns": "usage"
-                          }],
-                          "@babel/preset-react",
-                          // "@babel/preset-typescript"
-                       ],
-                       "plugins": [
+                test: /\.(ts|tsx|jsx|js)$/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            ["@babel/preset-env", {
+                                "corejs": "3",
+                                "useBuiltIns": "usage"
+                            }],
+                            "@babel/preset-react",
+                            // "@babel/preset-typescript"
+                        ],
+                        "plugins": [
                             "@babel/plugin-transform-runtime",
                             '@babel/plugin-syntax-dynamic-import',
                             '@babel/plugin-proposal-class-properties',
@@ -44,28 +44,28 @@ module.exports = {
                                 "style": "css" // `style: true` 会加载 less 文件
                             }]
                         ]
-                   }
-               },
-               exclude: /node_modules/
+                    }
+                },
+                exclude: /node_modules/
             },
             {
                 test: /\.(css|scss)$/,
                 use: [
-                    {loader: "style-loader"},
-                    {loader: "css-loader"},
-                    {loader: "postcss-loader"},
-                    {loader: "sass-loader"},
-                    
+                    { loader: "style-loader" },
+                    { loader: "css-loader" },
+                    { loader: "postcss-loader" },
+                    { loader: "sass-loader" },
+
                 ]
             },
             {
                 test: /\.html$/,
                 use: [
-                      {
+                    {
                         loader: require.resolve('html-loader')
-                      }
-                     ]
-             },
+                    }
+                ]
+            },
             // {
             //     test: /\.(png|jpg|gif|jpeg)/,
             //     use: [
@@ -122,14 +122,14 @@ module.exports = {
     ],
     resolve: {
         alias: {
-          "@ant-design/icons/lib/dist$": path.resolve(__dirname, "./app/components/icons.js"),
-          "@node-addEventListener": "rc-util/lib/Dom/addEventListener",
-          
-          "@app": path.resolve(__dirname, "./app"),
+            "@ant-design/icons/lib/dist$": path.resolve(__dirname, "./app/components/icons.js"),
+            "@node-addEventListener": "rc-util/lib/Dom/addEventListener",
+
+            "@app": path.resolve(__dirname, "./app"),
         },
         extensions: [".ts", ".tsx", ".js", ".json"]
     },
-    
+
     devServer: {
         contentBase: path.resolve(__dirname, "./dist"),
         historyApiFallback: true,
@@ -138,12 +138,19 @@ module.exports = {
         port: 8888,
         hot: true,
         proxy: {
-            '/api/*': {
-                target: isTao ? "http://2287ym5502.51mypc.cn/" : 'http://172.19.112.74:8080/',
+            //请求东营市气象局代理接口
+            '/Forecast/*': {
+                target: "http://api.dyqxj.com:8091/api/1/",
                 // pathRewrite: {'^/api' : ''},
                 secure: true,
                 changeOrigin: true,
-            }
+            },
+            '/api/*': {
+                target: isTao ? "http://2287ym5502.51mypc.cn/" : 'http://172.19.112.74:8080',
+                // pathRewrite: {'^/api' : ''},
+                secure: true,
+                changeOrigin: true,
+            },
         }
     }
 };

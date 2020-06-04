@@ -1,5 +1,5 @@
 /**
- * Precipitation 2020-05-18
+ * EasyFlood 2020-05-28
  * zdl
  * 易涝点
  */
@@ -11,6 +11,7 @@ import { Table, Popover, Tag, Modal, Button, Card, Row, Col, Input, Space } from
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import moment from 'moment';
+import { SpliceSite } from "@app/utils/common";
 import { getWaterHistory, getBasicsAll } from "@app/data/request";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
@@ -26,6 +27,7 @@ class easyFlood extends React.PureComponent {
             mloading: false,//模态框表格加载动画
             searchText: '',
             searchedColumn: '',
+            pageNum: 1
         };
     }
     //模态框控制
@@ -44,19 +46,22 @@ class easyFlood extends React.PureComponent {
             "size": 10000
         })
             .then((result) => {
+                this.setState({
+                    mloading: false,
+                })
                 var myChart = echarts.init(document.getElementById('mainbyef'));
                 if (result.data.records.length !== 0) {
                     let xdata = []
                     let ydata = []
                     for (var i = result.data.records.length - 1; i >= 0; i--) {
                         xdata.push(result.data.records[i].tm)
-                        ydata.push(result.data.records[i].z)
+                        ydata.push((result.data.records[i].z * 1).toFixed(2))
                     }
                     this.setState({
                         swdataSourceById: result.data.records,
                         mloading: false,
                     })
-                    
+
                     myChart.setOption({
                         title: {
                             text: value.name + "-易涝点24小时水位变化",
@@ -151,39 +156,39 @@ class easyFlood extends React.PureComponent {
                     });
                     myChart.setOption({
                         tooltip: {
-                          trigger: 'axis',
-                          axisPointer: {// 坐标轴指示器，坐标轴触发有效
-                            type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
-                          }
+                            trigger: 'axis',
+                            axisPointer: {// 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+                            }
                         },
                         grid: {
-                          top: 90,
+                            top: 90,
                         },
                         dataZoom: [
-                          {
-                            type: 'slider',
-                            show: true,
-                            xAxisIndex: [0],
-                          },
+                            {
+                                type: 'slider',
+                                show: true,
+                                xAxisIndex: [0],
+                            },
                         ],
                         title: {
-                          text: "暂无数据",
-                          subtext: '暂无数据',
+                            text: "暂无数据",
+                            subtext: '暂无数据',
                         },
                         xAxis: {
-                          type: 'category',
-                          data: [],
-                          name: '时间',
+                            type: 'category',
+                            data: [],
+                            name: '时间',
                         },
                         yAxis: {
-                          type: 'value',
-                          name: '水位(m)'
+                            type: 'value',
+                            name: '水位(m)'
                         },
                         series: [{
-                          data: [],
-                          type: 'line',
+                            data: [],
+                            type: 'line',
                         }]
-                      })
+                    })
                 }
             })
     };
@@ -192,6 +197,7 @@ class easyFlood extends React.PureComponent {
         this.setState({
             visible: false,
             swdataSourceById: [],
+            pageNum: 1
         })
         var myChart = echarts.init(document.getElementById('mainbyef'));
         myChart.setOption({
@@ -295,19 +301,24 @@ class easyFlood extends React.PureComponent {
             },
         };
     }
+    // 回调函数，切换下一页
+    changePage(current) {
+        console.log(current)
+        this.setState({ current: current })
+    }
     render() {
         //水位data
         const swcolumns = [
             {
                 title: '站名',
-                dataIndex: 'name',
+                dataIndex: 'SpliceSiteName',
                 className: 'column-money',
-                ...this.getColumnSearchProps('name'),
+                ...this.getColumnSearchProps('SpliceSiteName'),
                 render:
-                    (name, key) => {
+                    (SpliceSiteName, key) => {
                         return (
-                            <Popover content={name} title="站名全称">
-                                {name.toString().substring(0, 6) + "..."}
+                            <Popover content={SpliceSiteName} title="站名全称">
+                                {SpliceSiteName.toString().substring(0, 6) + "..."}
                             </Popover>
                         )
                     },
@@ -316,14 +327,14 @@ class easyFlood extends React.PureComponent {
                 title: '水位(m)',
                 dataIndex: 'z',
                 className: 'column-money',
-                render: dayAvg => dayAvg = null ? "-" : Math.round(dayAvg * 100) / 100
+                render: dayAvg => dayAvg != "-" ? (dayAvg * 1).toFixed(2) : "-"
             },
             {
                 title: '更新时间',
                 dataIndex: 'ztm',
                 className: 'column-money',
                 width: 140,
-                render: value => moment(value).format("YYYY-MM-DD HH:mm")
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
             },
         ];
         //根据编号获取信息表头daata
@@ -353,15 +364,15 @@ class easyFlood extends React.PureComponent {
                 title: '水位(m)',
                 dataIndex: 'z',
                 className: 'column-money',
-                render: dayAvg => Math.round(dayAvg * 1000) / 1000
+                render: z => (z * 1).toFixed(2)
             },
             {
                 title: '更新时间',
                 dataIndex: 'tm',
                 className: 'column-money',
-                render: value => moment(value).format("YYYY-MM-DD HH:mm")
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
             },
-           
+
         ];
         return (
             <>
@@ -388,11 +399,12 @@ class easyFlood extends React.PureComponent {
                         <Col span={12}><Card title="水位数据" bordered={false}>
                             <Table
                                 size="small"
-                                loading={this.state.loading}
+                                loading={this.state.mloading}
                                 columns={swcolumnsById}
                                 dataSource={this.state.swdataSourceById}
                                 scroll={{ y: 500 }}
                                 rowKey={row => row.stcd}
+                            // pagination={{ current: this.state.pageNum , onChange: (current) => this.changePage(current)}}
                             />
                         </Card></Col>
                     </Row>
@@ -408,18 +420,7 @@ class easyFlood extends React.PureComponent {
             "type": 3
         })
             .then((result) => {
-                let dataArr = []
-                for (let i = 0; i < result.data.length; i++) {
-                    dataArr.push({
-                        name: result.data[i].name + "(" + result.data[i].dataSourceName + ")",
-                        ztm: result.data[i].tm,
-                        z: result.data[i].z,
-                        stcd: result.data[i].stcd,
-                        lon: result.data[i].lon,
-                        lat: result.data[i].lat,
-                        warning: result.data[i].warning,
-                    })
-                }
+                let dataArr = SpliceSite(result)
                 this.setState({ loading: false });
                 this.setState({ qydataSource: dataArr })
             })

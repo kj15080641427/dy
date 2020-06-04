@@ -13,7 +13,6 @@ import {
 } from '@ant-design/icons';
 import { getRadioAll } from "@app/data/request";
 import emitter from "@app/utils/emitter.js";
-// var videoControl = new VideoControl();
 class Precipitation extends React.PureComponent {
     constructor(props, context) {
         super(props, context);

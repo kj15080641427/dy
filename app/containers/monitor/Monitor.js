@@ -14,8 +14,9 @@ import WeatherTable from "./left/WeatherTable";
 import PannelBtn from "./right/PannelBtn";
 import AlarmTable from "./right/AlarmTable";
 import WeatherPic from "./right/WeatherPic";
+import WeatherDy from "./right/WeatherDy";
 import CheckBox from "./bottom/CheckBox";
-import setImg from "../../resource/setsys.png"
+import setImg from "@app/resource/setsys.png"
 import { Drawer, Switch, Row } from 'antd';
 
 class Monitor extends React.PureComponent {
@@ -71,6 +72,7 @@ class Monitor extends React.PureComponent {
         <div style={{ display: this.state.displayRight }}>
           <div className="m-right">
             <PannelBtn></PannelBtn>
+            <WeatherDy></WeatherDy>
             <AlarmTable></AlarmTable>
             <WeatherPic></WeatherPic>
           </div>

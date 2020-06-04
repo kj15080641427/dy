@@ -5,11 +5,16 @@
  */
 import React from 'react';
 import "./style.scss";
-import { Carousel, Tabs, Drawer, Popconfirm, Button } from 'antd';
+import { Carousel, Tabs, Drawer, Icon, Button } from 'antd';
 import imgURL from '../../../resource/title_bg.png';
 import moment from 'moment';
+import {
+  PlayCircleOutlined, PauseCircleOutlined
+} from '@ant-design/icons';
 const { TabPane } = Tabs;
 import { getSatellite } from "@app/data/request";
+import Forecast from './Module/Forecast';
+import { disable } from 'ol/rotationconstraint';
 let count = 0;
 class WeatherPic extends React.PureComponent {
   constructor(props, context) {
@@ -22,6 +27,8 @@ class WeatherPic extends React.PureComponent {
       forecastvisible: false,//预报模态框
       timesvisible: false,//时报模态框
       cityvisible: false,//东营市模态框
+      imglourl: "",//第一张卫星图src
+      elements: []
     };
     this.callback = this.callback.bind(this)
   }
@@ -73,13 +80,28 @@ class WeatherPic extends React.PureComponent {
       count = 0;
     }, 300);
   }
+  slickPlayRoPause(lunboSetting) {
+    console.log(lunboSetting)
+    if (lunboSetting.autoplay) {
+      lunboSetting.autoplay = false
+      this.slider.slick.slickPause();
+
+    } else {
+      lunboSetting.autoplay = true
+      this.slider.slick.slickPlay();
+    }
+  }
   render() {
-    const elements = [];
-    for (var i = this.state.totalData.length - 1; i >= 0; i--) {
+    let { elements, totalData } = this.state;
+    for (var i = totalData.length - 1; i >= 0; i--) {
       elements.push(
         <img key={i} className="m-pic-Carousel-img" src={this.state.totalData[i].img_url}></img>
       )
     }
+    const lunboSetting = {
+      dots: true,
+      autoplay: false,
+    };
     return (
       <div className="m-wth-pic">
         <img className="m-pic-img" src={imgURL} alt="" />
@@ -87,7 +109,8 @@ class WeatherPic extends React.PureComponent {
           <Tabs defaultActiveKey="1" animated="true" tabBarGutter={27} tabPosition="left" size="small" onTabClick={this.callback}>
             <TabPane tab="卫星云图" key="1" >
               <div className="m-pic-div-img" >
-                <Carousel effect="fade" dots={false} autoplaySpeed={400} speed={1} autoplay>
+                <PlayCircleOutlined className="m-pic-icon" onClick={() => this.slickPlayRoPause(lunboSetting)}/>
+                <Carousel rtl={true} autoplaySpeed={400} speed={1} {...lunboSetting} ref={el => (this.slider = el)}>
                   {elements}
                 </Carousel>
               </div>
@@ -99,7 +122,7 @@ class WeatherPic extends React.PureComponent {
                 visible={this.state.cloudvisible}
                 width={1378}
               >
-                <div style={{ height: '970px', width: '970px' }}>
+                <div style={{ height: '970px', width: '970px', position: 'relative', left: 170 }}>
                   <Carousel height={900} width={900} effect="fade" dots={false} autoplaySpeed={400} speed={1} autoplay>
                     {elements}
                   </Carousel>
@@ -156,9 +179,11 @@ class WeatherPic extends React.PureComponent {
                 visible={this.state.forecastvisible}
                 width={1378}
               >
-                <div style={{ height: '950px', width: '950px' }}>
+                <div style={{
+                  height: '950px', width: '950px', position: 'relative', left: 270
+                }}>
                   <iframe src="http://m.nmc.cn/publish/precipitation/1-day.html" width="753px" height="1050px"
-                    frameborder="0" scrolling="no" style={{ position: 'relative', top: '-300px' }}></iframe>
+                    frameborder="0" scrolling="no" style={{ position: 'relative', top: '-300px', transform: 'scale(1.3)', }}></iframe>
                 </div>
               </Drawer>
             </TabPane>
@@ -173,17 +198,14 @@ class WeatherPic extends React.PureComponent {
                 onClose={this.onClose}
                 visible={this.state.timesvisible}
                 width={1378}
-              ><div style={{ height: '950px', width: '950px' }}>
+              ><div style={{ height: '950px', width: '950px', position: 'relative', left: 270 }}>
                   <iframe src="http://m.nmc.cn/publish/observations/hourly-precipitation.html" width="753px" height="950px"
                     frameborder="0" scrolling="no" style={{ position: 'relative', top: '-240px' }}></iframe>
                 </div>
               </Drawer>
             </TabPane>
-            <TabPane tab="市降雨量" key="6">
-              <div className="m-pic-div-img">
-                <iframe frameborder="0" scrolling="no" src="http://m.nmc.cn/publish/observations/hourly-precipitation.html" width="400px" height="590px" style={{ position: 'absolute', top: '-175px' }}></iframe>
-
-              </div>
+            <TabPane tab="区县预报" key="6">
+              <Forecast></Forecast>
               <Drawer
                 title="东营市降雨量实况图"
                 placement="left"
@@ -191,14 +213,14 @@ class WeatherPic extends React.PureComponent {
                 onClose={this.onClose}
                 visible={this.state.cityvisible}
                 width={1378}
-              ><div style={{ height: '950px', width: '950px' }}>
+              ><div style={{ height: '950px', width: '950px', position: 'relative', left: 270 }}>
                   <iframe src="http://m.nmc.cn/publish/observations/hourly-precipitation.html" width="753px" height="950px"
                     frameborder="0" scrolling="no" style={{ position: 'relative', top: '-240px' }}></iframe>
                 </div></Drawer>
             </TabPane>
           </Tabs>
         </div>
-      </div>
+      </div >
     );
   }
   componentDidMount() {
@@ -210,7 +232,10 @@ class WeatherPic extends React.PureComponent {
       "entTime": entTime
     })
       .then((result) => {
-        this.setState({ totalData: result.data })
+        this.setState({
+          totalData: result.data,
+          imglourl: result.data[0].img_url
+        })
       })
   }
 }

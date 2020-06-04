@@ -35,14 +35,14 @@ class WeatherTable extends React.PureComponent {
             <TabPane tab="水位站" key="2">
               <WaterLevel></WaterLevel>
             </TabPane>
-            <TabPane tab="视频站点" key="3">
+            <TabPane tab="易涝点" key="3">
+              <EasyFlood></EasyFlood>
+            </TabPane>
+            <TabPane tab="视频站点" key="4">
               <Video></Video>
             </TabPane>
-            <TabPane tab="防汛人员" key="4">
+            <TabPane tab="防汛人员" key="5">
               <FloodPeople></FloodPeople>
-            </TabPane>
-            <TabPane tab="易涝点" key="5">
-                <EasyFlood></EasyFlood>
             </TabPane>
           </Tabs>
         </div>

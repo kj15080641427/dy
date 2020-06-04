@@ -12,6 +12,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import emitter from "@app/utils/emitter.js";
 import { getRainHistory, getBasicsAll } from "@app/data/request";
+import { SpliceSite } from "@app/utils/common";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 import 'echarts';
@@ -53,8 +54,8 @@ class Precipitation extends React.PureComponent {
                 if (result.data.records.length !== 0) {
                     for (var i = result.data.records.length - 1; i >= 0; i--) {
                         xdata.push(result.data.records[i].tm)
-                        ydata.push(result.data.records[i].hourAvg)
-                        ydataByDay.push(result.data.records[i].dayAvg)
+                        ydata.push((result.data.records[i].hourAvg * 1).toFixed(1))
+                        ydataByDay.push((result.data.records[i].dayAvg * 1).toFixed(1))
                     }
                     this.setState({
                         qydataSourceById: result.data.records,
@@ -273,40 +274,47 @@ class Precipitation extends React.PureComponent {
         const qycolumns = [
             {
                 title: '站名',
-                dataIndex: 'name',
-                width: '40%',
+                dataIndex: 'SpliceSiteName',
+                width: 80,
                 className: 'column-money',
                 key: 'riverwaterdataID',
-                ...this.getColumnSearchProps('name'),
+                ...this.getColumnSearchProps('SpliceSiteName'),
                 render:
-                    (name, key) => {
+                    (SpliceSiteName, key) => {
                         return (
-                            <Popover content={name} title="站名全称">
-                                {name.toString().substring(0, 6) + "..."}
+                            <Popover content={SpliceSiteName} title="站名全称">
+                                {SpliceSiteName.toString().substring(0, 4) + "..."}
                             </Popover>
                         )
                     },
             },
             {
-                title: '1小时降水(mm)',
-                dataIndex: 'hourAvg',
-                width: 113,
+                title: '5分钟(mm)',
+                dataIndex: 'minuteAvg',
+                width: 90,
                 className: 'column-money',
-                render: hourAvg => Math.round(hourAvg * 1000) / 1000
+                render: minuteAvg => minuteAvg == '-' ? '-' : (minuteAvg * 1).toFixed(1)
             },
             {
-                title: '日降水量(mm)',
-                dataIndex: 'dayAvg',
-                width: 109,
+                title: '1小时(mm)',
+                dataIndex: 'hourAvg',
+                width: 90,
                 className: 'column-money',
-                render: dayAvg => Math.round(dayAvg * 1000) / 1000
+                render: hourAvg => hourAvg == '-' ? '-' : (hourAvg * 1).toFixed(1)
+            },
+            {
+                title: '24小时(mm)',
+                dataIndex: 'dayAvg',
+                width: 90,
+                className: 'column-money',
+                render: dayAvg => dayAvg == '-' ? '-' : (dayAvg * 1).toFixed(1)
             },
             {
                 title: '更新时间',
                 dataIndex: 'tm',
                 width: 140,
                 className: 'column-money',
-                render: value => moment(value).format("YYYY-MM-DD HH:mm")
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
             }
         ];
         const { loading } = this.state;
@@ -343,7 +351,6 @@ class Precipitation extends React.PureComponent {
                                         {
                                             title: '站名',
                                             dataIndex: 'stnm',
-                                            width: 75,
                                             className: 'column-money',
                                             render:
                                                 stnm => {
@@ -365,23 +372,20 @@ class Precipitation extends React.PureComponent {
                                         {
                                             title: '1小时降水(mm)',
                                             dataIndex: 'hourAvg',
-                                            width: 119,
                                             className: 'column-money',
-                                            render: hourAvg => Math.round(hourAvg * 1000) / 1000
+                                            render: hourAvg => (hourAvg * 1).toFixed(1)
                                         },
                                         {
                                             title: '24小时降水量(mm)',
                                             dataIndex: 'dayAvg',
-                                            width: 130,
                                             className: 'column-money',
-                                            render: dayAvg => Math.round(dayAvg * 1000) / 1000
+                                            render: dayAvg => (dayAvg * 1).toFixed(1)
                                         },
                                         {
                                             title: '更新时间',
                                             dataIndex: 'tm',
-                                            width: 140,
                                             className: 'column-money',
-                                            render: value => moment(value).format("YYYY-MM-DD HH:mm")
+                                            render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
                                         },
                                     ]}
                                     dataSource={this.state.qydataSourceById}
@@ -432,20 +436,7 @@ class Precipitation extends React.PureComponent {
             "type": 1
         })
             .then((result) => {
-                let dataArr = []
-                for (let i = 0; i < result.data.length; i++) {
-                    dataArr.push({
-                        originalName: result.data[i].name,
-                        name: result.data[i].name = "" ? result.data[i].stcd : result.data[i].name + "(" + result.data[i].dataSourceName + ")",
-                        ztm: result.data[i].ztm,
-                        dataSourceName: result.data[i].dataSourceName,
-                        hourAvg: result.data[i].hourAvg,
-                        dayAvg: result.data[i].dayAvg,
-                        stcd: result.data[i].stcd,
-                        lon: result.data[i].lon,
-                        lat: result.data[i].lat,
-                    })
-                }
+                let dataArr = SpliceSite(result)
                 this.setState({ loading: false });
                 this.setState({ qydataSource: dataArr })
 

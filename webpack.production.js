@@ -65,8 +65,8 @@ module.exports = {
             test: /\.(woff|woff2|svg|eot|ttf|png)$/,
             loader: 'file-loader',
             options: {
-                name: ("static/[name].[hash:5].[ext]"),
-                publicPath: "./"
+                name: ("../static/[name].[hash:5].[ext]"),
+                publicPath: "../"
             }
           }
         ]
@@ -160,9 +160,9 @@ module.exports = {
     },
     devServer: {
         contentBase: path.resolve(__dirname, "./dist"),
-        host: "localhost",
+        host: "172.19.112.74",
         compress: true,
-        port: 8888
+        port: 8080
     },
     stats: 'errors-only'
 }

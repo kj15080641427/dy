@@ -15,6 +15,8 @@ import { getWaterHistory, getBasicsAll } from "@app/data/request";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 import 'echarts';
+import { SpliceSite } from "@app/utils/common";
+
 class Precipitation extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
@@ -37,9 +39,9 @@ class Precipitation extends React.PureComponent {
             visible: true,
             mloading: true
         });
-        console.log(obj.warning)
         let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7).format("YY-MM-DD HH:mm:ss")
         let endtm = moment(new Date().getTime()).format("YY-MM-DD HH:mm:ss")
+        console.log(obj)
         getWaterHistory({
             "stcd": obj.stcd,
             "starttm": starttm,
@@ -48,19 +50,18 @@ class Precipitation extends React.PureComponent {
             "size": 10000
         })
             .then((result) => {
+                this.setState({
+                    mloading: false,
+                })
                 var myChart = echarts.init(document.getElementById('mainbysw'));
                 if (result.data.records.length !== 0) {
+                    this.setState({ swdataSourceById: result.data.records, })
                     let xdata = []
                     let ydata = []
                     for (var i = result.data.records.length - 1; i >= 0; i--) {
                         xdata.push(result.data.records[i].tm)
-                        ydata.push(result.data.records[i].z)
+                        ydata.push((result.data.records[i].z * 1).toFixed(2))
                     }
-                    this.setState({
-                        swdataSourceById: result.data.records,
-                        mloading: false,
-                    })
-
                     myChart.setOption({
                         title: {
                             text: obj.name + "-水位站24小时水位变化",
@@ -101,20 +102,23 @@ class Precipitation extends React.PureComponent {
                             type: 'value',
                             name: '水位（m）',
                             max: function (value) {
-                                return value.max + obj.warning * 1;
+                                return value.max > 0 ? value.max + obj.warning * 1 : obj.warning * 1 + 3
                             }
                         },
                         visualMap: {
                             show: true,
                             pieces: [
                                 {
-                                    gt: 0,
+                                    gt: obj.warning > 0 ? -obj.warning : obj.warning,
                                     lte: obj.warning,          //这儿设置基线上下颜色区分 基线下面为绿色
                                     color: '#03d6d6'
                                 }, {
                                     gt: obj.warning,          //这儿设置基线上下颜色区分 基线上面为红色
                                     color: '#e91642',
-                                }]
+                                    // lte: obj.warning,
+                                },
+
+                            ]
                             ,
                         },
                         series: [{
@@ -135,13 +139,13 @@ class Precipitation extends React.PureComponent {
                                 label: {
                                     position: "end",
                                 },
-                                color: '#ffcc33',
+                                // color: '#ffcc33',
                                 data: [
                                     {
                                         silent: false,
                                         label: {
                                             position: 'center',
-                                            formatter: "警戒水位" + obj.warning + "m",
+                                            formatter: "预警" + obj.warning + "m",
                                             itemStyle: {
                                                 left: '100px'
                                             }
@@ -153,9 +157,6 @@ class Precipitation extends React.PureComponent {
                         }],
                     });
                 } else {
-                    this.setState({
-                        mloading: false
-                    });
                     myChart.setOption({
                         tooltip: {
                             trigger: 'axis',
@@ -307,14 +308,14 @@ class Precipitation extends React.PureComponent {
         const swcolumns = [
             {
                 title: '站名',
-                dataIndex: 'name',
+                dataIndex: 'SpliceSiteName',
                 className: 'column-money',
-                ...this.getColumnSearchProps('name'),
+                ...this.getColumnSearchProps('SpliceSiteName'),
                 render:
-                    (name, key) => {
+                    (SpliceSiteName, key) => {
                         return (
-                            <Popover content={name} title="站名全称">
-                                {name.toString().substring(0, 6) + "..."}
+                            <Popover content={SpliceSiteName} title="站名全称">
+                                {SpliceSiteName.toString().substring(0, 6) + "..."}
                             </Popover>
                         )
                     },
@@ -323,14 +324,20 @@ class Precipitation extends React.PureComponent {
                 title: '水位(m)',
                 dataIndex: 'z',
                 className: 'column-money',
-                render: dayAvg => dayAvg = "-" ? dayAvg : Math.round(dayAvg * 1000) / 1000
+                render: dayAvg => dayAvg != "-" ? (dayAvg * 1).toFixed(2) : "-"
+            },
+            {
+                title: '警戒水位(m)',
+                dataIndex: 'warning',
+                className: 'column-money',
+                render: warning => warning != "-" ? (warning * 1).toFixed(2) : "-"
             },
             {
                 title: '更新时间',
                 dataIndex: 'ztm',
                 className: 'column-money',
                 width: 140,
-                render: value => moment(value).format("YYYY-MM-DD HH:mm")
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
             },
         ];
         //根据编号获取信息表头daata
@@ -360,8 +367,14 @@ class Precipitation extends React.PureComponent {
                 title: '水位(m)',
                 dataIndex: 'z',
                 className: 'column-money',
-                render: dayAvg => Math.round(dayAvg * 1000) / 1000
+                render: dayAvg => (dayAvg * 1).toFixed(2)
             },
+            // {
+            //     title: '警戒水位(m)',
+            //     dataIndex: 'warning',
+            //     className: 'column-money',
+            //     render: warning => (warning * 1).toFixed(2)
+            // },
             {
                 title: '更新时间',
                 dataIndex: 'tm',
@@ -395,7 +408,7 @@ class Precipitation extends React.PureComponent {
                         <Col span={12}><Card title="水位数据" bordered={false}>
                             <Table
                                 size="small"
-                                loading={this.state.loading}
+                                loading={this.state.mloading}
                                 columns={swcolumnsById}
                                 dataSource={this.state.swdataSourceById}
                                 scroll={{ y: 500 }}
@@ -415,25 +428,12 @@ class Precipitation extends React.PureComponent {
             "type": 2
         })
             .then((result) => {
-                let dataArr = []
-                for (let i = 0; i < result.data.length; i++) {
-                    dataArr.push({
-                        name: result.data[i].name + "(" + result.data[i].dataSourceName + ")",
-                        ztm: result.data[i].ztm,
-                        z: result.data[i].z,
-                        stcd: result.data[i].stcd,
-                        lon: result.data[i].lon,
-                        lat: result.data[i].lat,
-                        warning: result.data[i].warning,
-                    })
-                }
-                console.log(dataArr)
+                var dataArr = SpliceSite(result)
                 this.setState({ loading: false });
                 this.setState({ qydataSource: dataArr })
             })
     }
     locationClick(e) {
-        console.log(e)
         let lon = e.lon * 1;
         let lat = e.lat * 1;
         if (lon == null && lat == null) return;

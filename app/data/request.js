@@ -1,4 +1,4 @@
-import { fetchData, fetchJSONData, fetchFormData } from "@app/utils/common";
+import { fetchData, fetchJSONData, fetchFormData, fetchOutData } from "@app/utils/common";
 // 获取所有基础数据
 export function getAll() {
   return fetchJSONData("POST", "/station/getAll", {});
@@ -76,4 +76,12 @@ export function getWarehouseMt(data) {
 }//获取防汛人员信息
 export function getfloodUser(data) {
   return fetchJSONData("POST", "/floodUser/getAll", data);
+}
+//获取东营市预警信息
+export function GetEarlyWarnning() {
+  return fetchOutData("GET", "/Forecast/GetEarlyWarnning?cnty=东营", null);
+}
+//获取东营市未来五天天气
+export function GetProductsForecast() {
+  return fetchOutData("GET", "/Forecast/GetProductsForecast", null);
 }

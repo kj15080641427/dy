@@ -36,6 +36,7 @@ class AlarmTable extends React.PureComponent {
   showModal = (value) => {
     this.setState({
       visible: true,
+      mloading: true
     });
     this.setState({ mloading: true });
     let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YY-MM-DD HH:mm:ss")
@@ -46,6 +47,9 @@ class AlarmTable extends React.PureComponent {
       "endtm": endtm,
     })
       .then((result) => {
+        this.setState({
+          mloading: false,
+        })
         let xdata = []
         let ydata = []
         var myChart = echarts.init(document.getElementById('mainbywat'));
@@ -56,7 +60,6 @@ class AlarmTable extends React.PureComponent {
           }
           this.setState({
             dataSourceById: result.data,
-            mloading: false,
           })
 
           myChart.setOption({
@@ -103,13 +106,15 @@ class AlarmTable extends React.PureComponent {
               show: true,
               pieces: [
                 {
-                  gt: 0,
+                  gt: value.baselevel > 0 ? -value.baselevel : value.baselevel,
                   lte: value.baselevel,          //这儿设置基线上下颜色区分 基线下面为绿色
                   color: '#03d6d6'
                 }, {
                   gt: value.baselevel,          //这儿设置基线上下颜色区分 基线上面为红色
                   color: '#e91642',
-                }]
+                  lte: value.warning,
+                }
+              ]
               ,
             },
             series: [{
@@ -135,7 +140,7 @@ class AlarmTable extends React.PureComponent {
                     silent: false,
                     label: {
                       position: 'left',
-                      formatter: "警戒水位" + value.baselevel + "m",
+                      formatter: "预警" + value.baselevel + "m",
                     },
                     yAxis: value.baselevel,
                   }
@@ -144,9 +149,7 @@ class AlarmTable extends React.PureComponent {
             },],
           });
         } else {
-          this.setState({
-            mloading: false
-          });
+
           myChart.setOption({
             tooltip: {
               trigger: 'axis',
@@ -291,8 +294,8 @@ class AlarmTable extends React.PureComponent {
       <div className="m-alm-table">
         <img className="m-alm-img" src={imgURL} alt="" /><div className="m-alm-div">
           <Row className="m-alm-row">
-            <Col span={6}><img className="m-alm-warningImg" src={warningImg}></img></Col>
-            <Col span={18}><Row><Col span={12}>超警戒水位<span className="m-alm-row-warning">{this.state.wacount}</span></Col>
+            <Col span={4}><img className="m-alm-warningImg" src={warningImg}></img></Col>
+            <Col span={20}><Row><Col span={12}>超警戒水位<span className="m-alm-row-warning">{this.state.wacount}</span></Col>
               {/* <Col span={12}>已经处理<span className="m-alm-row-abnormal">2</span></Col> */}
             </Row>
               {/* <Row><Col span={12}>数据异常<span className="m-alm-row-processed">1</span></Col><Col span={12}>等待处理<span className="m-alm-row-pending">4</span></Col>
@@ -318,7 +321,7 @@ class AlarmTable extends React.PureComponent {
               <Col span={12}><Card title="水位数据" bordered={false}>
                 <Table
                   size="small"
-                  loading={this.state.loading}
+                  loading={this.state.mloading}
                   columns={swcolumnsById}
                   dataSource={this.state.dataSourceById}
                   scroll={{ y: 500 }}
