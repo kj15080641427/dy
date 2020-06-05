@@ -16,9 +16,13 @@ class WfsRiver extends Base {
     let { model } = this.props;
     return ( 
       <div className="m-ovl-box m-ovl-wfsRiver" style={{display: "none"}} ref={(node) => { this.container = node;}}>
-        <div className="m-ovl-line">河流名称:{model.name}</div>
-        <div className="m-ovl-line">地址:{model.addresssrs}</div>
-        <div className="m-ovl-line">河长:{model.riverlen||0 +'米'}</div>
+        <div className="m-ovl-line">河流名称：{model.name}</div>
+        <div className="m-ovl-line">流域名称：{model.basin}</div>
+        <div className="m-ovl-line">河流总长：{(model.riverlen || 0) + '公里'}</div>
+        {/* <div className="m-ovl-line">东营境内长度：{(model.Riverlendy || 0) + '公里'}</div> */}
+        <div className="m-ovl-line">河源地址：{model.addresssrs}</div>
+        <div className="m-ovl-line">河口地址：{model.addressdest}</div>
+        
         <span className="iconfont iconcuo m-ovl-close" ></span>
       </div>
     );
