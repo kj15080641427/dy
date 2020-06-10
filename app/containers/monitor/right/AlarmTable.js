@@ -339,9 +339,17 @@ class AlarmTable extends React.PureComponent {
     //获取警戒水位信息
     getWaterWarning({})
       .then((result) => {
+        // console.log(moment(result.data[0].alarmtime).format("DD"))
+        // console.log(moment(new Date()).format("DD"))
         this.setState({ loading: false });
-        this.setState({ wardataSource: result.data })
-        this.setState({ wacount: result.data.length })
+        let arr = []
+        for (let i = 0; i < result.data.length; i++) {
+          if (moment(result.data[i].alarmtime).format("YYYY-MM-DD") === moment(new Date()).format("YYYY-MM-DD")) {
+            arr.push(result.data[i])
+          }
+        }
+        this.setState({ wardataSource: arr })
+        this.setState({ wacount: arr.length })
       })
   }
   locationClick(e) {

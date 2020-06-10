@@ -330,7 +330,7 @@ class Precipitation extends React.PureComponent {
                 title: '警戒水位(m)',
                 dataIndex: 'warning',
                 className: 'column-money',
-                render: warning => warning != "-" ? (warning * 1).toFixed(2) : "-"
+                render: warning => warning != "99" ? (warning * 1).toFixed(2) : "-"
             },
             {
                 title: '更新时间',

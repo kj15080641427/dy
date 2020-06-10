@@ -48,13 +48,22 @@ class PannelBtn extends React.PureComponent {
             <Col span={10}>
               <Row>
                 <Col span={12}><img className="m-btn-flood" src={flood}></img></Col>
-                <Col span={12}><Link to={"/home"}><img className="m-btn-everyday" src={everyday}></img></Link></Col>
+                <Col span={12}>
+                  {/* <Link to={"/home"}> */}
+                    <img className="m-btn-everyday" src={everyday} onClick={this.handle}></img>
+                  {/* </Link> */}
+                  </Col>
               </Row>
             </Col>
           </Row>
         </div>
       </div>
     );
+  }
+  handle() {
+    const w = window.open('about:blank');
+    // w.location.href = "http://172.19.112.74/dist/index.html#/home"
+    w.location.href = "/#/home"
   }
   componentDidMount() {
     this._timer = window.setInterval(() => {

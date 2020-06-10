@@ -6,7 +6,14 @@ import "./style.scss";
 import Menus from "./menu/Menu";
 import Head from "./head/Head";
 import ContentRouter from "./content/ContentRouter";
-import { Layout } from "antd"
+import { Layout, Menu } from "antd";
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 const { Header, Sider, Content } = Layout;
 class Home extends React.PureComponent {
   constructor(props, context) {
@@ -17,16 +24,28 @@ class Home extends React.PureComponent {
     this.onCollapsClick = this.onCollapsClick.bind(this);
     console.log("this.props.match", this.props.match, this.props.location);
   }
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  };
   render() {
     let { collapsed } = this.state;
     let { match } = this.props;
     return (
-      <div className="home">
-        <div className={"h-menu " + (collapsed ? "active" : "")} >
+      <Layout className="home">
+        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+          <div className="logo" />
           <Menus collapsed={collapsed}></Menus>
-        </div>
+        </Sider>
         <Layout className="site-layout">
-          <Head collapsClick={this.onCollapsClick}></Head>
+          {/* <Header className="site-layout-background" style={{ padding: 0 }}>
+            {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+              className: 'trigger',
+              onClick: this.toggle,
+            })}
+          </Header> */}
+          <Head collapsClick={this.onCollapsClick} collapsed={this.state.collapsed}></Head>
           <Content
             className="site-layout-background"
             style={{
@@ -38,8 +57,7 @@ class Home extends React.PureComponent {
             <ContentRouter path={match.path}></ContentRouter>
           </Content>
         </Layout>
-      </div>
-
+      </Layout>
     );
   }
   componentDidMount() { }

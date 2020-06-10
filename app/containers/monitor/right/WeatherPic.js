@@ -93,10 +93,16 @@ class WeatherPic extends React.PureComponent {
   }
   render() {
     let { elements, totalData } = this.state;
-    for (var i = totalData.length - 1; i >= 0; i--) {
+    if (totalData.length === 0) {
       elements.push(
-        <img key={i} className="m-pic-Carousel-img" src={this.state.totalData[i].img_url}></img>
+        <img key={0} className="m-pic-Carousel-img" src={"https://qlfy.sdmsc.net/web/products/sates/SateCut.php?key=a&sateTypes=G&sateKinds=P&StationID=54736&num=2&sateTimeRange=  "}></img>
       )
+    } else {
+      for (var i = totalData.length - 1; i >= 0; i--) {
+        elements.push(
+          <img key={i} className="m-pic-Carousel-img" src={this.state.totalData[i].img_url}></img>
+        )
+      }
     }
     const lunboSetting = {
       dots: true,
@@ -109,7 +115,7 @@ class WeatherPic extends React.PureComponent {
           <Tabs defaultActiveKey="1" animated="true" tabBarGutter={27} tabPosition="left" size="small" onTabClick={this.callback}>
             <TabPane tab="卫星云图" key="1" >
               <div className="m-pic-div-img" >
-                <PlayCircleOutlined className="m-pic-icon" onClick={() => this.slickPlayRoPause(lunboSetting)}/>
+                <PlayCircleOutlined className="m-pic-icon" onClick={() => this.slickPlayRoPause(lunboSetting)} />
                 <Carousel rtl={true} autoplaySpeed={400} speed={1} {...lunboSetting} ref={el => (this.slider = el)}>
                   {elements}
                 </Carousel>
@@ -123,7 +129,8 @@ class WeatherPic extends React.PureComponent {
                 width={1378}
               >
                 <div style={{ height: '970px', width: '970px', position: 'relative', left: 170 }}>
-                  <Carousel height={900} width={900} effect="fade" dots={false} autoplaySpeed={400} speed={1} autoplay>
+                  <PlayCircleOutlined className="m-pic-icon" onClick={() => this.slickPlayRoPause(lunboSetting)} />
+                  <Carousel height={900} width={900} effect="fade" dots={false} autoplaySpeed={400} speed={1} {...lunboSetting} ref={el => (this.slider = el)}>
                     {elements}
                   </Carousel>
                 </div>
@@ -183,7 +190,7 @@ class WeatherPic extends React.PureComponent {
                   height: '950px', width: '950px', position: 'relative', left: 270
                 }}>
                   <iframe src="http://m.nmc.cn/publish/precipitation/1-day.html" width="753px" height="1050px"
-                    frameborder="0" scrolling="no" style={{ position: 'relative', top: '-300px', transform: 'scale(1.3)', }}></iframe>
+                    frameborder="0" scrolling="no" style={{ position: 'relative', top: '-222px', transform: 'scale(1.3)', }}></iframe>
                 </div>
               </Drawer>
             </TabPane>
@@ -200,13 +207,13 @@ class WeatherPic extends React.PureComponent {
                 width={1378}
               ><div style={{ height: '950px', width: '950px', position: 'relative', left: 270 }}>
                   <iframe src="http://m.nmc.cn/publish/observations/hourly-precipitation.html" width="753px" height="950px"
-                    frameborder="0" scrolling="no" style={{ position: 'relative', top: '-240px' }}></iframe>
+                    frameborder="0" scrolling="no" style={{ position: 'relative', top: '-160px', transform: 'scale(1.3)' }}></iframe>
                 </div>
               </Drawer>
             </TabPane>
             <TabPane tab="区县预报" key="6">
               <Forecast></Forecast>
-              <Drawer
+              {/* <Drawer
                 title="东营市降雨量实况图"
                 placement="left"
                 closable={false}
@@ -216,7 +223,7 @@ class WeatherPic extends React.PureComponent {
               ><div style={{ height: '950px', width: '950px', position: 'relative', left: 270 }}>
                   <iframe src="http://m.nmc.cn/publish/observations/hourly-precipitation.html" width="753px" height="950px"
                     frameborder="0" scrolling="no" style={{ position: 'relative', top: '-240px' }}></iframe>
-                </div></Drawer>
+                </div></Drawer> */}
             </TabPane>
           </Tabs>
         </div>
@@ -232,10 +239,12 @@ class WeatherPic extends React.PureComponent {
       "entTime": entTime
     })
       .then((result) => {
+        console.log("weixin", result)
         this.setState({
           totalData: result.data,
           imglourl: result.data[0].img_url
         })
+
       })
   }
 }

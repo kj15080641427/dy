@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import "../style.scss";
-import { Table, Tag, Popover, Modal, Button, Card, Row, Col, message } from 'antd';
+import { Table, Tag, Popover, Modal, Button, Card, Row, Drawer, message } from 'antd';
 import VideoComponent from '@app/components/video/VideoComponent';
 import VideoControl from '@app/components/video/VideoControl';
 import {
@@ -35,7 +35,7 @@ class Precipitation extends React.PureComponent {
             this.setState({
                 visible: true,
                 token: value.strtoken,
-                address: value.sitename
+                address: "摄像头详细地址：" + value.address
             });
         } if (value.isOnline == '1') {
             message.error('视频站点不在线');
@@ -113,17 +113,50 @@ class Precipitation extends React.PureComponent {
                     rowKey={row => row.radioID}
                     onRow={this.onClickRow}
                 />
-                <Modal
+                <Drawer
                     title={this.state.address}
+                    placement="top"
+                    onClose={this.handleCancel}
                     visible={this.state.visible}
-                    footer={null}
-                    onCancel={this.handleCancel}
-                    width={645}
+                    width={"100%"}
+                    height="100%"
+                // style={{
+                //     padding: '8px 0',
+                //     background: '#747575',
+                //     position: 'relative',
+                //     overflow: 'hidden',
+                //     left: 9
+                // }}
                 >
-                    {this.state.videoobj !== null ?
-                        <VideoComponent videoControl={this.state.videoobj} token={this.state.token} style={{ width: 590, height: 350, borderWidth: 0 }} />
-                        : null}
-                </Modal>
+                    {/* <FullScreen ></FullScreen> */}
+                    <div style={{
+                        'overflow-y': "hidden",
+                        padding: '8px 0',
+                        background: '#000000',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        height: 975,
+                        width: 1920,
+                        left: -24,
+                        top: -25
+                    }} scrolling="no"
+                        borderWidth='0'
+                        position='absolute'>
+                        {this.state.videoobj !== null ?
+                            <VideoComponent videoControl={this.state.videoobj} token={this.state.token} style={{
+                                transform: 'scale(3.2)',
+                                width: "1920px",
+                                height: "975px",
+                                // frameborder: 0,
+                                // scrolling: "no",
+                                // borderWidth: 0,
+                                position: 'absolute',
+                                left: 2106,
+                                top: 1028,
+                            }} />
+                            : null}
+                    </div>
+                </Drawer>
             </>
         );
     }
