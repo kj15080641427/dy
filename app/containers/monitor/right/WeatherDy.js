@@ -30,7 +30,9 @@ class WeatherDy extends React.PureComponent {
                         <Row>
                             <Col span={4}><img style={{ height: 80, width: 80 }} src={"http://58.59.29.51:14003/yjicon/" + contentObj[i].yjHissignal + ".jpg"}></img></Col>
                             <Col span={20}>
-                                <Row className="dywtitle" style={coltype === '0' ? { color: '#007ed7' } : coltype === '1' ? { color: '#eee54c' } : coltype === '3' ? { color: '#ec595f' } : { color: '#ec595f' }}>{contentObj[i].cityName + "发布" + contentObj[i].yjTitle + "预警"}</Row>
+                                <Row className="dywtitle"
+                                    style={coltype === '0' ? { color: '#007ed7' } : coltype === '1' ? { color: '#eee54c' } : coltype === '3' ? { color: '#ec595f' } : coltype === '2' ? { color: '#f07b1c' } : { color: '#fe991' }}
+                                >{contentObj[i].cityName + "发布" + contentObj[i].yjTitle + "预警"}</Row>
                                 <Row>{moment(contentObj[i].yjIssuedate).format("YYYY/MM/DD HH:mm:ss")}</Row>
                                 <Row>{contentObj[i].yjContent}</Row>
                             </Col>
@@ -40,7 +42,7 @@ class WeatherDy extends React.PureComponent {
                 )
             }
         } else {
-            elements.push(<Empty description="暂无预警" image={Empty.PRESENTED_IMAGE_SIMPLE} />)
+            elements.push(<Empty description="当前无气象预警" image={Empty.PRESENTED_IMAGE_SIMPLE} />)
         }
         return (
             <div className="m-pannel-WDy">

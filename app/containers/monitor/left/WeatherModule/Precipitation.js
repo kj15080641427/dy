@@ -6,12 +6,12 @@
 import React from 'react';
 import "../style.scss";
 import localimgURL from '../../../../resource/local.png';
-import { Table, Tag, Popover, Modal, Button, Card, Row, Col, Input, Space, Tooltip } from 'antd';
+import { Table, Tag, Popover, Modal, Button, Card, Row, Col, Input, Space, Tabs } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import emitter from "@app/utils/emitter.js";
-import { getRainHistory, getBasicsAll } from "@app/data/request";
+import { getRainHistory, getBasicsAll, getByTimeHour, getByTimeDay } from "@app/data/request";
 import { SpliceSite } from "@app/utils/common";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
@@ -23,21 +23,243 @@ class Precipitation extends React.PureComponent {
         this.state = {
             qydataSource: [],//雨量站数据源
             loading: false,//雨量站数据源加载
-            qydataSourceById: [],//单个站点雨量数据源
+            qydataSourceByHour: [],//单个站点雨量数据源
+            qydataSourceByDay: [],//单个站点雨量数据源
+            qydataSourceBySeven: [],//单个站点雨量数据源
             visible: false,//模态框
             mloading: false,//模态框表格加载动画
             searchText: '',
             searchedColumn: '',
+            stid: ""
         };
+    }
+    //画图
+    showTu = (data, value, starttm, endtm, id) => {
+        let xdata = []
+        let ydata = []
+        var myChart = echarts.init(document.getElementById(id));
+        if (data.length !== 0) {
+            for (var i = data.length - 1; i >= 0; i--) {
+                xdata.push(data[i].tm)
+                ydata.push((data[i].hourAvg * 1).toFixed(1))
+            }
+
+            myChart.setOption({
+                title: {
+                    text: value.name + '-雨量站雨量变化',
+                    subtext: starttm + '至' + endtm,
+                    // left: 'center',
+                },
+                grid: {
+                    top: 90,
+                },
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        show: true,
+                        xAxisIndex: [0],
+                    },
+                ],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {// 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataView: { show: true, readOnly: true },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true },
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xdata,
+                    name: '时间',
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '雨量（mm）'
+                },
+                legend: {
+                    right: 'center',
+                    x: '190px',
+                    y: '50px',
+                    // data: ['1小时降水', '24小时降水'],
+                },
+                series: [{
+                    // name: '1小时降水',
+                    data: ydata,
+                    type: 'line',
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: '最大值' },
+                            { type: 'min', name: '最小值' }
+                        ]
+                    },
+
+                },],
+            });
+        } else {
+            // this.setState({
+            //     mloading: false
+            // });
+            myChart.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {// 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                grid: {
+                    top: 90,
+                },
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        show: true,
+                        xAxisIndex: [0],
+                    },
+                ],
+                title: {
+                    text: "暂无数据",
+                    subtext: '暂无数据',
+                },
+                xAxis: {
+                    type: 'category',
+                    data: [],
+                    name: '时间',
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '雨量（mm）'
+                },
+                series: [{
+                    data: [],
+                    type: 'line',
+                }]
+            })
+        }
+    }
+    //画图
+    showTu2 = (data, value, starttm, endtm, id) => {
+        let xdata = []
+        let ydata = []
+        var myChart = echarts.init(document.getElementById(id));
+        if (data.length !== 0) {
+            for (var i = data.length - 1; i >= 0; i--) {
+                xdata.push(data[i].endTime)
+                ydata.push((data[i].avgDrp * 1).toFixed(1))
+            }
+
+            myChart.setOption({
+                title: {
+                    text: value.name + '-雨量站雨量变化',
+                    subtext: starttm + '至' + endtm,
+                    // left: 'center',
+                },
+                grid: {
+                    top: 90,
+                },
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        show: true,
+                        xAxisIndex: [0],
+                    },
+                ],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {// 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataView: { show: true, readOnly: true },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true },
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xdata,
+                    name: '时间',
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '雨量（mm）'
+                },
+                legend: {
+                    right: 'center',
+                    x: '190px',
+                    y: '50px',
+                    // data: ['1小时降水', '24小时降水'],
+                },
+                series: [{
+                    // name: '1小时降水',
+                    data: ydata,
+                    type: 'line',
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: '最大值' },
+                            { type: 'min', name: '最小值' }
+                        ]
+                    },
+
+                },],
+            });
+        } else {
+            // this.setState({
+            //     mloading: false
+            // });
+            myChart.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {// 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                grid: {
+                    top: 90,
+                },
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        show: true,
+                        xAxisIndex: [0],
+                    },
+                ],
+                title: {
+                    text: "暂无数据",
+                    subtext: '暂无数据',
+                },
+                xAxis: {
+                    type: 'category',
+                    data: [],
+                    name: '时间',
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '雨量（mm）'
+                },
+                series: [{
+                    data: [],
+                    type: 'line',
+                }]
+            })
+        }
     }
     //模态框
     showModal = (value) => {
-        this.setState({
-            visible: true,
-            mloading: true
-        });
-        let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7).format("YY-MM-DD HH:mm:ss")
-        let endtm = moment(new Date().getTime()).format("YY-MM-DD HH:mm:ss")
+        this.callback(value)
+        let starttm = moment(new Date().getTime() - 60 * 60 * 1000).format("YYYY-MM-DD HH:mm")
+        let endtm = moment(new Date().getTime()).format("YYYY-MM-DD HH:mm")
         getRainHistory({
             "stcd": value.stcd,
             "starttm": starttm,
@@ -47,150 +269,62 @@ class Precipitation extends React.PureComponent {
         })
             .then((result) => {
                 console.log(result)
-                let xdata = []
-                let ydata = []
-                let ydataByDay = []
-                var myChart = echarts.init(document.getElementById('mainbyqy'));
-                if (result.data.records.length !== 0) {
-                    for (var i = result.data.records.length - 1; i >= 0; i--) {
-                        xdata.push(result.data.records[i].tm)
-                        ydata.push((result.data.records[i].hourAvg * 1).toFixed(1))
-                        ydataByDay.push((result.data.records[i].dayAvg * 1).toFixed(1))
-                    }
-                    this.setState({
-                        qydataSourceById: result.data.records,
-                        mloading: false,
-                    })
-                    myChart.setOption({
-                        title: {
-                            text: value.name + '-雨量站七天雨量变化',
-                            subtext: starttm + '至' + endtm,
-                            // left: 'center',
-                        },
-                        grid: {
-                            top: 90,
-                        },
-                        dataZoom: [
-                            {
-                                type: 'slider',
-                                show: true,
-                                xAxisIndex: [0],
-                            },
-                        ],
-                        tooltip: {
-                            trigger: 'axis',
-                            axisPointer: {// 坐标轴指示器，坐标轴触发有效
-                                type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
-                            }
-                        },
-                        toolbox: {
-                            show: true,
-                            feature: {
-                                dataView: { show: true, readOnly: true },
-                                magicType: { show: true, type: ['line', 'bar'] },
-                                restore: { show: true },
-                                saveAsImage: { show: true },
-                            }
-                        },
-                        xAxis: {
-                            type: 'category',
-                            data: xdata,
-                            name: '时间',
-                        },
-                        yAxis: {
-                            type: 'value',
-                            name: '雨量（mm）'
-                        },
-                        legend: {
-                            right: 'center',
-                            x: '190px',
-                            y: '50px',
-                            data: ['1小时降水', '24小时降水'],
-                        },
-                        series: [{
-                            name: '1小时降水',
-                            data: ydata,
-                            type: 'line',
-                            markPoint: {
-                                data: [
-                                    { type: 'max', name: '最大值' },
-                                    { type: 'min', name: '最小值' }
-                                ]
-                            },
+                this.setState({
+                    qydataSourceByHour: result.data.records,
+                    mloading: false,
+                })
+                this.showTu(result.data.records, value, starttm, endtm, 'mainbyqyByHour')
 
-                        }, {
-                            name: '24小时降水',
-                            type: 'line',
-                            data: ydataByDay,
-                            markPoint: {
-                                data: [
-                                    { type: 'max', name: '最大值' },
-                                    { type: 'min', name: '最小值' }
-                                ]
-                            },
-                        },],
-                    });
-                } else {
-                    this.setState({
-                        mloading: false
-                    });
-                    myChart.setOption({
-                        tooltip: {
-                            trigger: 'axis',
-                            axisPointer: {// 坐标轴指示器，坐标轴触发有效
-                                type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
-                            }
-                        },
-                        grid: {
-                            top: 90,
-                        },
-                        dataZoom: [
-                            {
-                                type: 'slider',
-                                show: true,
-                                xAxisIndex: [0],
-                            },
-                        ],
-                        title: {
-                            text: "暂无数据",
-                            subtext: '暂无数据',
-                        },
-                        xAxis: {
-                            type: 'category',
-                            data: [],
-                            name: '时间',
-                        },
-                        yAxis: {
-                            type: 'value',
-                            name: '雨量（mm）'
-                        },
-                        series: [{
-                            data: [],
-                            type: 'line',
-                        }]
-                    })
-                }
             })
+        getByTimeHour({
+            "stcd": value.stcd,
+            "starttm": moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YYYY-MM-DD HH:mm:ss"),
+            "endtm": moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss"),
+        })
+            .then((result) => {
+                console.log(result)
+                this.setState({
+                    qydataSourceByDay: result.data,
+                    mloading: false,
+                })
+                this.showTu2(result.data, value, moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YYYY-MM-DD HH:mm:ss"), endtm, 'mainbyqyByDay')
+            })
+        getByTimeDay({
+            "stcd": value.stcd,
+            "starttm": moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7).format("YYYY-MM-DD HH:mm:ss"),
+            "endtm": moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss"),
+        })
+            .then((result) => {
+                this.setState({
+                    qydataSourceBySeven: result.data,
+                    mloading: false,
+                })
+                this.showTu2(result.data, value, moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7).format("YYYY-MM-DD HH:mm:ss"), endtm, 'mainbyqyBySeven')
+            })
+        this.setState({
+            visible: true,
+            mloading: true
+        });
     };
     //关闭模态框
     handleCancel = () => {
         this.setState({
             visible: false,
-            qydataSourceById: []
+            qydataSourceByHour: []
         })
-        var myChart = echarts.init(document.getElementById('mainbyqy'));
-        myChart.setOption({
-            title: {
-                text: "暂无数据",
-                subtext: '暂无数据',
-            },
-            xAxis: {
-                data: []
-            },
-            series: [{
-                data: [],
-            }]
-        })
+        // var myChart = echarts.init(document.getElementById('mainbyqy'));
+        // myChart.setOption({
+        //     title: {
+        //         text: "暂无数据",
+        //         subtext: '暂无数据',
+        //     },
+        //     xAxis: {
+        //         data: []
+        //     },
+        //     series: [{
+        //         data: [],
+        //     }]
+        // })
     }
     //检索数据搜索
     getColumnSearchProps = dataIndex => ({
@@ -317,6 +451,112 @@ class Precipitation extends React.PureComponent {
                 render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
             }
         ];
+        const columnsByHour = [
+            {
+                title: '站名',
+                dataIndex: 'stnm',
+                className: 'column-money',
+                render:
+                    stnm => {
+                        if (stnm !== null || stnm !== "") {
+                            return (
+                                <span>
+                                    {stnm}
+                                </span>
+                            )
+                        } else {
+                            return (
+                                <span>
+                                    {"暂无数据"}
+                                </span>
+                            )
+                        }
+                    }
+            },
+            {
+                title: '5分钟(mm)',
+                dataIndex: 'drp',
+                width: 90,
+                className: 'column-money',
+                render: drp => drp == '-' ? '-' : (drp * 1).toFixed(1)
+            },
+            {
+                title: '更新时间',
+                dataIndex: 'tm',
+                className: 'column-money',
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
+            },
+        ]
+        const columnsByDay = [
+            {
+                title: '站名',
+                dataIndex: 'stnm',
+                className: 'column-money',
+                render:
+                    stnm => {
+                        if (stnm !== null || stnm !== "") {
+                            return (
+                                <span>
+                                    {stnm}
+                                </span>
+                            )
+                        } else {
+                            return (
+                                <span>
+                                    {"暂无数据"}
+                                </span>
+                            )
+                        }
+                    }
+            },
+            {
+                title: '1小时降水(mm)',
+                dataIndex: 'avgDrp',
+                className: 'column-money',
+                render: avgDrp => (avgDrp * 1).toFixed(1)
+            },
+            {
+                title: '更新时间',
+                dataIndex: 'endTime',
+                className: 'column-money',
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
+            },
+        ]
+        const columnsBySeven = [
+            {
+                title: '站名',
+                dataIndex: 'stnm',
+                className: 'column-money',
+                render:
+                    stnm => {
+                        if (stnm !== null || stnm !== "") {
+                            return (
+                                <span>
+                                    {stnm}
+                                </span>
+                            )
+                        } else {
+                            return (
+                                <span>
+                                    {"暂无数据"}
+                                </span>
+                            )
+                        }
+                    }
+            },
+            {
+                title: '24小时降水量(mm)',
+                dataIndex: 'avgDrp',
+                className: 'column-money',
+                render: avgDrp => (avgDrp * 1).toFixed(1)
+            },
+            {
+                title: '更新时间',
+                dataIndex: 'endTime',
+                className: 'column-money',
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
+            },
+        ]
         const { loading } = this.state;
         return (
             <>
@@ -336,66 +576,62 @@ class Precipitation extends React.PureComponent {
                     footer={null}
                     onCancel={this.handleCancel}
                     width={1300}>
-                    <Row>
-                        <Col span={12}>
-                            <Card title="雨量走势" bordered={false}>
-                                <div id="mainbyqy" style={{ width: 600, height: 500 }}></div>
-                            </Card></Col>
-                        <Col span={12}>
-                            <Card title="数据详情" bordered={false}>
-                                <Table
-                                    size="small"
-                                    loading={this.state.mloading}
-                                    rowKey={row => row.stcd}
-                                    columns={[
-                                        {
-                                            title: '站名',
-                                            dataIndex: 'stnm',
-                                            className: 'column-money',
-                                            render:
-                                                stnm => {
-                                                    if (stnm !== null || stnm !== "") {
-                                                        return (
-                                                            <span>
-                                                                {stnm}
-                                                            </span>
-                                                        )
-                                                    } else {
-                                                        return (
-                                                            <span>
-                                                                {"暂无数据"}
-                                                            </span>
-                                                        )
-                                                    }
-                                                }
-                                        },
-                                        {
-                                            title: '1小时降水(mm)',
-                                            dataIndex: 'hourAvg',
-                                            className: 'column-money',
-                                            render: hourAvg => (hourAvg * 1).toFixed(1)
-                                        },
-                                        {
-                                            title: '24小时降水量(mm)',
-                                            dataIndex: 'dayAvg',
-                                            className: 'column-money',
-                                            render: dayAvg => (dayAvg * 1).toFixed(1)
-                                        },
-                                        {
-                                            title: '更新时间',
-                                            dataIndex: 'tm',
-                                            className: 'column-money',
-                                            render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
-                                        },
-                                    ]}
-                                    dataSource={this.state.qydataSourceById}
-                                    scroll={{ y: 500 }}
-                                />
-                            </Card></Col>
-                    </Row>
+                    <Tabs onChange={this.callback}>
+                        <Tabs.TabPane tab="一小时" key="1" forceRender={true}>
+                            <Row>
+                                <Col span={12}>
+                                    <div id="mainbyqyByHour" style={{ width: 600, height: 500 }}></div>
+                                </Col>
+                                <Col span={12}>
+                                    <Table
+                                        size="small"
+                                        loading={this.state.mloading}
+                                        rowKey={row => row.stcd}
+                                        columns={columnsByHour}
+                                        dataSource={this.state.qydataSourceByHour}
+                                        scroll={{ y: 500 }}
+                                    />
+                                </Col>
+                            </Row>
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="24小时" key="2" forceRender={true}>
+                            <Row>
+                                <Col span={12}>
+                                    <div id="mainbyqyByDay" style={{ width: 600, height: 500 }}></div>
+                                </Col>
+                                <Col span={12}>
+                                    <Table
+                                        size="small"
+                                        loading={this.state.mloading}
+                                        rowKey={row => row.stcd}
+                                        columns={columnsByDay}
+                                        dataSource={this.state.qydataSourceByDay}
+                                        scroll={{ y: 500 }}
+                                    /></Col>
+                            </Row></Tabs.TabPane>
+                        <Tabs.TabPane tab="7天" key="3" forceRender={true}>
+                            <Row>
+                                <Col span={12}>
+                                    <div id="mainbyqyBySeven" style={{ width: 600, height: 500 }}></div>
+                                </Col>
+                                <Col span={12}>
+                                    <Table
+                                        size="small"
+                                        loading={this.state.mloading}
+                                        rowKey={row => row.stcd}
+                                        columns={columnsBySeven}
+                                        dataSource={this.state.qydataSourceBySeven}
+                                        scroll={{ y: 500 }}
+                                    />  </Col>
+                            </Row></Tabs.TabPane>
+                    </Tabs>
+
                 </Modal>
             </>
         );
+    }
+    callback(key) {
+        console.log(key);
     }
     // //切换每页数量
     // onShowSizeChange(current, pageSize) {

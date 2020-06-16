@@ -3,40 +3,51 @@
  */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Test from "./subpages/test/Test";
 import Video from "./subpages/media/Video";
+import MaterialsMange from "./subpages/materials/MaterialsMange";
+import StoreManage from "./subpages/materials/StoreManage";
+import Expert from "./subpages/personnel/Expert";
+import FloodPrevention from "./subpages/personnel/FloodPrevention";
+import rainCondition from "./subpages/rainCondition/rain";
+import waterCondition from "./subpages/waterCondition/water";
 const EmptyContent = () => {
-  return (
-    <div>
-      内容为空,请点击菜单
-    </div>
-  );
+    return (
+        <div>
+            内容为空,请点击菜单
+        </div>
+    );
 };
 const NoMatch = () => {
-  return (
-    <div>
-      没有找到该路由
-    </div>
-  );
+    return (
+        <div>
+            没有找到该路由
+        </div>
+    );
 };
 class ContentRouter extends React.PureComponent {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {};
-  }
-  render() {
-    // path现在就是 /home
-    let { path } = this.props;
-    return (
-        <Switch>
-          <Route exact path={path} component={EmptyContent} />
-          <Route path={path + "/test"} component={Test} />
-          <Route path={path + "/video"} component={Video} />
-          <Route component={NoMatch} />
-        </Switch>
+    constructor(props, context) {
+        super(props, context);
+        this.state = {};
+    }
+    render() {
+        // path现在就是 /home
+        let { path } = this.props;
+        return (
+            <Switch>
+                <Route exact path={path} component={EmptyContent} />
+                {/* <Route path={path + "/test"} component={Test} /> */}
+                <Route path={path + "/video"} component={Video} />
+                <Route path={path + "/storemanage"} component={StoreManage} />
+                <Route path={path + "/materialsmange"} component={MaterialsMange} />
+                <Route path={path + "/expert"} component={Expert} />
+                <Route path={path + "/floodprevention"} component={FloodPrevention} />
+                <Route path={path + "/rain"} component={rainCondition} />
+                <Route path={path + "/water"} component={waterCondition} />
+                <Route component={NoMatch} />
+            </Switch>
 
-    );
-  }
-  componentDidMount() { }
+        );
+    }
+    componentDidMount() { }
 }
 export default ContentRouter;

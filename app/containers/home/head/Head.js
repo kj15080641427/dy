@@ -4,30 +4,41 @@
 import React from 'react';
 import "./style.scss";
 import { BrowserRouter, Route, Link } from 'react-router-dom'
-import { Button } from 'antd';
+import { Button, Layout, Header, Tags ,Icon} from 'antd';
 import {
-  MenuFoldOutlined, HomeOutlined
+  MenuFoldOutlined, HomeOutlined, MenuUnfoldOutlined,SettingFilled
 } from '@ant-design/icons';
-import FullScreen from './FullScreen'
+import FullScreen from '../components/FullScreen';
+import BasicDrawer from '../components/BasicDrawer';
+
 class Head extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+    this.state = {
+      collapsed: false,
+      visible: false
+    };
     this.btnClick = this.btnClick.bind(this);
   }
   render() {
+    const { tags } = this.props;
     return (
       <div className="top-header">
         <div className="top-header-inner">
-          <MenuFoldOutlined className="trigger" onClick={this.btnClick} />
+          <Layout.Header className="site-layout-background" style={{ padding: 0 }}>
+            {React.createElement(this.props.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+              className: 'trigger',
+              onClick: this.btnClick,
+            })}
+          </Layout.Header>
           <div className="header-title">后台管理系统</div>
           <div className="header-right">
             <div className="full-screen">
               <FullScreen />
             </div>
             <div className="setting">
-              <Link to={"/"}><HomeOutlined style={{ fontSize: '20px', color: '#08c' }}/></Link>
-              {/* <Icon style={{ fontSize: '21px', cursor: 'pointer' }} type="setting" onClick={this.setting} /> */}
+              <Link to={"/"}><HomeOutlined style={{ fontSize: '20px', color: '#08c' }} /></Link>
+              <SettingFilled style={{ fontSize: '21px', cursor: 'pointer' }} onClick={this.setting} />
             </div>
             <div className="news-wrap">
               {/* <Badge count={3}>
@@ -44,11 +55,32 @@ class Head extends React.PureComponent {
             </div>
           </div>
         </div>
-        {/* {tags.show ? <Tags /> : null}
-      <BasicDrawer title="系统设置" closable onClose={this.onClose} visible={this.state.visible} onChangeTags={this.onChangeTags} onChangeBreadCrumb={this.onChangeBreadCrumb} onChangeTheme={this.onChangeTheme} {...this.props} /> */}
+        {/* {tags.show ? <Tags /> : null} */}
+        <BasicDrawer title="系统设置" closable onClose={this.onClose} visible={this.state.visible} onChangeTags={this.onChangeTags} onChangeBreadCrumb={this.onChangeBreadCrumb} onChangeTheme={this.onChangeTheme} {...this.props} />
       </div>
     );
   }
+  setting = () => {
+		this.setState({ visible: true });
+	};
+  onClose = () => {
+    this.setState({ visible: false });
+  };
+  onChangeTags = checked => {
+    this.props.setTags({ show: checked });
+    // localStorage.setItem('tags', JSON.stringify({ show: checked }));
+    this.onClose();
+  };
+  onChangeBreadCrumb = checked => {
+    this.props.setBreadCrumb({ show: checked });
+    // localStorage.setItem('breadCrumb', JSON.stringify({ show: checked }));
+    this.onClose();
+  };
+  onChangeTheme = checked => {
+    this.props.setTheme({ type: checked ? 'dark' : 'light' });
+    // localStorage.setItem('theme', JSON.stringify({ type: checked ? 'dark' : 'light' }));
+    this.onClose();
+  };
   componentDidMount() { }
   btnClick() {
     if (this.props.collapsClick) {

@@ -33,19 +33,19 @@ class Monitor extends React.PureComponent {
       layerVisible: {
         tiandi: true, // 天地图底图
         tiandi2: true, // 天地图标注
-        wfsRiver: false, // wfs河道图
+        wfsRiver: true, // wfs河道图
         river40: true, //40条河图片 用于解决河道标注很多的问题
-        flood: true, // 洪水图层
+        flood: false, // 洪水图层
         river: true, // 水系图
         heatmap: true, // 热力图
         traffic: true, // 交通图层
         person: true, // 防汛人员
-        video: true, // 视频站点
-        rain: true, // 雨量站
+        video: false, // 视频站点
+        rain: false, // 雨量站
         water: true, // 水位站
         gate: false, // 水闸
         pump: false, // 水泵
-        ponding: true, // 积水
+        ponding: false, // 积水
       }
     };
     this.onChecked = this.onChecked.bind(this)
