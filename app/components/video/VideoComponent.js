@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class VideoComponent extends Component{
   constructor(props){
@@ -8,6 +8,7 @@ class VideoComponent extends Component{
     this.state = {
       session: videoControl.getLoginStatus()=== true ? videoControl.getSession() : null,
       token: props.token,
+      type: props.type
     }
   }
 
@@ -25,7 +26,7 @@ class VideoComponent extends Component{
       <div>
         {this.state.session !== null ?
           <iframe
-            src={`http://172.19.112.74/video/index.html?sessionId=${this.state.session}&token=${this.state.token}`}
+            src={`http://172.19.112.74/video/index.html?sessionId=${this.state.session}&token=${this.state.token}&type=${this.state.type}`}
             style={this.props.style}
           /> : null}
       </div>

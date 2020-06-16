@@ -147,15 +147,15 @@ class Map extends React.PureComponent {
     //   zIndex: 11,
     //   key: "river40"
     // });
-    // this.map.addGeo({
-    //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
-    //   params: {
-    //     'LAYERS': 'dy:河流',
-    //     'TILED': true
-    //   },
-    //   zIndex: 10,
-    //   key: "river2"
-    // });
+    this.map.addGeo({
+      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
+      params: {
+        'LAYERS': 'dy:河流40',
+        'TILED': true
+      },
+      zIndex: 10,
+      key: "river2"
+    });
 
     this.flood = new FloodAnimation({
       map: this.map.getMap(),

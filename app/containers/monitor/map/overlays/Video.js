@@ -20,6 +20,7 @@ class Video extends Base {
     let { model } = this.props;
     let { videoControl } = model;
     let token = model.strtoken;
+    let type = model.dataSource;
     return ( 
       <div className="m-ovl-box m-ovl-video" style={{display: "none", width: 620, height: 420}} ref={(node) => { this.container = node;}}>
         <span className="iconfont iconcuo m-ovl-close"></span>
@@ -27,8 +28,12 @@ class Video extends Base {
           <span>视频站点: {model.sitename}</span>
         </div>
         <div className="m-ovl-vc">
-          <VideoComponent videoControl={videoControl} token={token} style={{width: 590 , height: 380 , borderWidth: 0}} />
-      
+          <VideoComponent
+            videoControl={videoControl}
+            token={token}
+            type={type}
+            style={{ width: 590, height: 380, borderWidth: 0 }}
+          />
         </div>
       </div>
     );
