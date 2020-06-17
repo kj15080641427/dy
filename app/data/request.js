@@ -3,6 +3,11 @@ import { fetchData, fetchJSONData, fetchFormData, fetchOutData } from "@app/util
 export function getAll() {
   return fetchJSONData("POST", "/station/getAll", {});
 }
+//用户登录
+export function login(data) {
+  return fetchJSONData("POST", "/users/login", data);
+}
+//获取所有视频站点信息
 export function getAllVideo() {
   return fetchJSONData("POST", "/radio/getAll", {});
 }
@@ -146,4 +151,71 @@ export function getByTimeHour(data) {
 //获取日降雨量
 export function getByTimeDay(data) {
   return fetchJSONData("POST", "/raindataDay/getByTime", data);
+}
+//统计各来源的站点数
+export function getCountStation(data) {
+  return fetchJSONData("POST", "/count/getCountStation", data);
+}
+
+//==============================================================系统设置=======================================================================
+
+//分页查询用户
+export function queryUser(data) {
+  return fetchJSONData("POST", "/users/query", data);
+}
+//删除用户
+export function deleteUser(data) {
+  return fetchJSONData("POST", "/users/delete", data);
+}
+//更新用户
+export function updateUser(data) {
+  return fetchJSONData("POST", "/users/update", data);
+}
+//保存用户
+export function saveUser(data) {
+  return fetchJSONData("POST", "/users/save", data);
+}
+//分页查询权限
+export function queryPermission(data) {
+  return fetchJSONData("POST", "/permission/query", data);
+}
+//删除权限
+export function deletePermission(data) {
+  return fetchJSONData("POST", "/permission/delete", data);
+}
+//更新权限
+export function updatePermission(data) {
+  return fetchJSONData("POST", "/permission/update", data);
+}
+//保存权限
+export function savePermission(data) {
+  return fetchJSONData("POST", "/permission/save", data);
+}
+//分页查询角色
+export function queryRole(data) {
+  return fetchJSONData("POST", "/role/query", data);
+}
+//删除角色
+export function deleteRole(data) {
+  return fetchJSONData("POST", "/role/delete", data);
+}
+//更新角色
+export function updateRole(data) {
+  return fetchJSONData("POST", "/role/update", data);
+}
+//保存角色
+export function saveRole(data) {
+  return fetchJSONData("POST", "/role/save", data);
+}
+//给角色授权
+export function rolePermission(data) {
+  return fetchJSONData("POST", "/role/rolePermission", data);
+}
+//根据角色ID查询权限
+export function queryByRoleId(data) {
+  return fetchJSONData("POST", "/permission/queryByRoleId", data);
+}
+//分页查询用户登录日志
+export function usersLoginLog(data) {
+  return fetchJSONData("POST", "/usersLoginLog/query", data);
 }

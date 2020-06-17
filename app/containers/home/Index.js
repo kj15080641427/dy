@@ -7,13 +7,6 @@ import Menus from "./menu/Menu";
 import Head from "./head/Head";
 import ContentRouter from "./content/ContentRouter";
 import { Layout, Menu } from "antd";
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
 const { Header, Sider, Content } = Layout;
 class Home extends React.PureComponent {
   constructor(props, context) {

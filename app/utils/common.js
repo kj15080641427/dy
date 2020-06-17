@@ -2,6 +2,10 @@
 const host = "http://172.19.112.74:8080/";
 //const host = "http://10.1.4.187:8080/";
 // element判断是否含有className
+//拿到token值
+const token = localStorage.getItem("token")
+
+
 export function hasClassName(obj, name) {
   let tmpName = obj.className;
   let tmpReg = new RegExp(name, 'g');
@@ -21,6 +25,7 @@ export function fetchOutData(method, url, data) {
     headers: {
       'Accept': 'application/json, text/plain, */*',
       'Content-Type': 'application/json',
+      'token': token
     },
     // 注意 post 时候参数的形式
     body: data ? JSON.stringify(data) : null
@@ -40,6 +45,7 @@ export function fetchData(method, url, data) {
     headers: {
       'Accept': 'application/json, text/plain, */*',
       'Content-Type': 'application/x-www-form-urlencoded',
+      'token': token
     },
     // 注意 post 时候参数的形式
     body: data ? appendParam(data) : null
@@ -55,11 +61,16 @@ export function fetchJSONData(method, url, data) {
     headers: {
       'Accept': 'application/json, text/plain, */*',
       'Content-Type': 'application/json',
+      'token': token
     },
     // 注意 post 时候参数的形式
     body: data ? JSON.stringify(data) : null
   }).then((res) => {
-    return res.ok ? res.json() : Promise.reject("接口出错");
+    if (url === '/api/users/login') {
+      return res.ok ? res : Promise.reject("接口出错");
+    } else {
+      return res.ok ? res.json() : Promise.reject("接口出错");
+    }
   });
 }
 /*

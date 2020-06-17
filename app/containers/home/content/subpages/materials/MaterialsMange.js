@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '@app/redux/actions/home';
 import { queryMaterial, getWarehouse, saveMaterial, deleteMaterial } from '@app/data/request';
 import { Table, Row, Modal, Input, Button, Select, Form, Radio, DatePicker, Switch, Popconfirm, message } from 'antd';
+import { SearchOutlined, RedoOutlined, PlusCircleOutlined, CloseCircleOutlined, FormOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { FormInstance } from 'antd/lib/form';
 import { add } from 'ol/coordinate';
@@ -27,20 +28,8 @@ class MaterialsMange extends React.PureComponent {
       confirmLoading: false,//模态框提交动画
       selectObj: {
         value: "",
-        ckId: 32
+        ckId: ""
       },//条件查询对象
-      addObj: {
-        company: "1",
-        expireDate: null,
-        isShow: 0,
-        manufactureDate: null,
-        materialWarehouseId: 1,
-        money: 0,
-        name: "1",
-        saveTotal: "",
-        spec: "",
-        warningNumber: ""
-      },//单个对象,
       isShow: 0
     };
     this.formRef = React.createRef(<FormInstance></FormInstance>);//查询form表单
@@ -51,12 +40,12 @@ class MaterialsMange extends React.PureComponent {
     console.log("MaterialsMange this.props.match", this.props.match, this.props.location);
     const { dataSource, loading, ckdataSource, total, current, pageSize, modalvisible, confirmLoading, addObj } = this.state;
     const ckcolumns = [
-      {
-        title: '物资id',
-        dataIndex: 'materialId',
-        className: 'column-money',
-        fixed: 'left',
-      },
+      // {
+      //   title: '物资id',
+      //   dataIndex: 'materialId',
+      //   className: 'column-money',
+      //   fixed: 'left',
+      // },
       {
         title: '名称',
         dataIndex: 'name',
@@ -79,39 +68,48 @@ class MaterialsMange extends React.PureComponent {
         className: 'column-money',
       },
       {
-        title: '价值',
+        title: '价值(元)',
         dataIndex: 'money',
         className: 'column-money',
+        sorter: (a, b) => a.money - b.money,
       },
       {
         title: '创建时间',
         dataIndex: 'createTime',
         className: 'column-money',
+        width: 170,
+        sorter: true
       },
-      {
-        title: '仓库ID',
-        dataIndex: 'materialWarehouseId',
-        className: 'column-money',
-      },
+      // {
+      //   title: '仓库ID',
+      //   dataIndex: 'materialWarehouseId',
+      //   className: 'column-money',
+      // },
       {
         title: '过期时间',
         dataIndex: 'expireDate',
         className: 'column-money',
+        width: 160,
+        render: expireDate => { return (expireDate === null ? "暂无数据" : expireDate) }
       },
       {
         title: '出厂日期',
         dataIndex: 'manufactureDate',
         className: 'column-money',
+        width: 160,
+        render: manufactureDate => { return (manufactureDate === null ? "暂无数据" : manufactureDate) }
       },
       {
         title: '预警数量',
         dataIndex: 'warningNumber',
         className: 'column-money',
+        render: warningNumber => { return (warningNumber === null ? "暂无数据" : warningNumber) }
       },
       {
         title: '是否显示',
         dataIndex: 'isShow',
         className: 'column-money',
+        render: isShow => { return (isShow === "0" ? "是" : "否") }
       },
       {
         title: '操作',
@@ -129,9 +127,9 @@ class MaterialsMange extends React.PureComponent {
                 okText="Yes"
                 cancelText="No"
               >
-                <Button>删除</Button>
+                <Button icon={<CloseCircleOutlined />}>删除</Button>
               </Popconfirm>
-              <Button onClick={() => SelectById(row)}>修改</Button>
+              <Button onClick={() => SelectById(row)} icon={<FormOutlined />}>修改</Button>
             </Radio.Group>
           )
         }
@@ -277,7 +275,7 @@ class MaterialsMange extends React.PureComponent {
     return (
       <>
         {/* 条件查询行 */}
-        <Row style={{ height: 100 }}>
+        <Row style={{ height: 60 }}>
           <Form
             ref={this.formRef}
             name="basic"
@@ -291,14 +289,15 @@ class MaterialsMange extends React.PureComponent {
               label="物资名称："
               name="value"
             >
-              <Input />
+              <Input size="large" />
             </Form.Item>
 
             <Form.Item
               label="物资仓库："
               name="ckId"
             >
-              <Select style={{ width: 250 }} defaultValue={32}>
+              <Select style={{ width: 250 }} defaultValue={null} size="large">
+                <option key={null} value={null}>所有</option>
                 {
                   ckdataSource.map((item, i) => {
                     return (
@@ -310,15 +309,15 @@ class MaterialsMange extends React.PureComponent {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button size="large" type="primary" htmlType="submit" icon={<SearchOutlined />}>
                 查询
         </Button>
             </Form.Item>
             <Form.Item>
-              <Button htmlType="button" onClick={onReset}>重置</Button>
+              <Button size="large" htmlType="button" onClick={onReset} icon={<RedoOutlined />}>重置</Button>
             </Form.Item>
             <Form.Item>
-              <Button htmlType="button" onClick={this.showModal}>添加</Button>
+              <Button size="large" htmlType="button" onClick={this.showModal} icon={<PlusCircleOutlined />}>添加</Button>
             </Form.Item>
           </Form>
         </Row>
@@ -398,10 +397,22 @@ class MaterialsMange extends React.PureComponent {
           scroll={{ y: 700 }}
           rowKey={row => row.materialId}
           pagination={pagination}
+          onChange={this.handleTableChange}
         ></Table>
       </>
     );
   }
+  //排序
+  handleTableChange = (pagination, filters, sorter) => {
+    this.setState({
+      filteredInfo: filters,
+      sortedInfo: sorter,
+    });
+    console.log(pagination)
+    console.log(filters)
+    console.log(sorter)
+  }
+
   //根据id删除
   confirm(row) {
     console.log(row)

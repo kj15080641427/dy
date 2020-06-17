@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '@app/redux/actions/home';
 import { queryFloodUser, saveFloodUser, deleteFloodUser, updateFloodUser } from '@app/data/request';
 import { Table, Row, Modal, Input, Button, Select, Form, Radio, DatePicker, Switch, Popconfirm, message } from 'antd';
+import { SearchOutlined, RedoOutlined, PlusCircleOutlined, CloseCircleOutlined, FormOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { FormInstance } from 'antd/lib/form';
 
@@ -36,12 +37,12 @@ class FloodPrevention extends React.PureComponent {
     console.log("FloodPrevention this.props.match", this.props.match, this.props.location);
     const { dataSource, loading, ckdataSource, total, current, pageSize, modalvisible, confirmLoading, selectObj } = this.state;
     const ckcolumns = [
-      {
-        title: '防汛人员ID',
-        dataIndex: 'floodId',
-        className: 'column-money',
-        fixed: 'left',
-      },
+      // {
+      //   title: '防汛人员ID',
+      //   dataIndex: 'floodId',
+      //   className: 'column-money',
+      //   fixed: 'left',
+      // },
       {
         title: '姓名',
         dataIndex: 'name',
@@ -50,13 +51,15 @@ class FloodPrevention extends React.PureComponent {
       },
       {
         title: '性别',
-        dataIndex: 'sex	',
+        dataIndex: 'sex',
         className: 'column-money',
+        render: sex => { return (sex === "1" ? "男" : "女") }
       },
       {
         title: '年龄',
         dataIndex: 'age',
         className: 'column-money',
+        sorter: (a, b) => a.age - b.age,
       },
       {
         title: '单位',
@@ -73,25 +76,28 @@ class FloodPrevention extends React.PureComponent {
         dataIndex: 'remark',
         className: 'column-money',
       },
-      {
-        title: '上一级',
-        dataIndex: 'parent',
-        className: 'column-money',
-      },
+      // {
+      //   title: '上一级',
+      //   dataIndex: 'parent',
+      //   className: 'column-money',
+      // },
       {
         title: '是否显示',
         dataIndex: 'isShow',
         className: 'column-money',
+        render: isShow => { return (isShow === "0" ? "是" : "否") }
       },
       {
         title: '创建时间',
         dataIndex: 'createTime',
         className: 'column-money',
+        width: 170,
       },
       {
         title: '等级',
         dataIndex: 'grade',
         className: 'column-money',
+        render: grade => { return (grade === "1" ? "队长" : grade === "2" ? "副队长" : grade === "3" ? "组长" : grade === "4" ? "组员" : "未知") }
       },
       {
         title: '操作',
@@ -109,9 +115,9 @@ class FloodPrevention extends React.PureComponent {
                 okText="Yes"
                 cancelText="No"
               >
-                <Button>删除</Button>
+                <Button icon={<CloseCircleOutlined />}>删除</Button>
               </Popconfirm>
-              <Button onClick={() => SelectById(row)}>修改</Button>
+              <Button onClick={() => SelectById(row)} icon={<FormOutlined />}>修改</Button>
             </Radio.Group>
           )
         }
@@ -236,7 +242,7 @@ class FloodPrevention extends React.PureComponent {
     return (
       <>
         {/* 条件查询行 */}
-        <Row style={{ height: 100 }}>
+        <Row style={{ height: 60 }}>
           <Form
             ref={this.formRef}
             name="basic"
@@ -250,14 +256,14 @@ class FloodPrevention extends React.PureComponent {
               label="人员名称："
               name="value"
             >
-              <Input />
+              <Input size="large"/>
             </Form.Item>
 
             <Form.Item
               label="等级"
               name="grade"
             >
-              <Select style={{ width: 250 }} defaultValue={null}>
+              <Select size="large" style={{ width: 250 }} defaultValue={null}>
                 <Select.Option value={null}>所有</Select.Option>
                 <Select.Option value={1}>队长</Select.Option>
                 <Select.Option value={2}>副队长</Select.Option>
@@ -267,15 +273,15 @@ class FloodPrevention extends React.PureComponent {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button size="large" type="primary" htmlType="submit" icon={<SearchOutlined />}>
                 查询
         </Button>
             </Form.Item>
             <Form.Item>
-              <Button htmlType="button" onClick={onReset}>重置</Button>
+              <Button size="large" htmlType="button" onClick={onReset} icon={<RedoOutlined />}>重置</Button>
             </Form.Item>
             <Form.Item>
-              <Button htmlType="button" onClick={this.showModal}>增加</Button>
+          <Button htmlType="button" size="large" onClick={this.showModal} icon={<PlusCircleOutlined />}>增加</Button>
             </Form.Item>
           </Form>
         </Row>
@@ -449,6 +455,9 @@ class FloodPrevention extends React.PureComponent {
   componentDidMount() {
     this.selectPage()
   }
+  componentDidUpdate() {
+    // this.addform.current.setFieldsValue(this.props.rowObj)
+}
 }
 function mapStateToProps(state) {
   return {

@@ -4,7 +4,7 @@
  * 全屏按钮
  */
 import React from 'react';
-import { FullscreenOutlined } from '@ant-design/icons';
+import { FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 
 export default class FullScreen extends React.Component {
 	state = { isFullScreen: false };
@@ -64,8 +64,15 @@ export default class FullScreen extends React.Component {
 			false
 		);
 	};
-
 	render() {
-		return <FullscreenOutlined style={{ fontSize: '20px', cursor: 'pointer' }} type="fullscreen" onClick={this.handleFullScrren} />;
+		return (
+			<>
+				{React.createElement(this.state.isFullScreen ? FullscreenExitOutlined : FullscreenOutlined, {
+					type: "fullscreen",
+					style: { fontSize: '20px', cursor: 'pointer' },
+					onClick: this.handleFullScrren,
+				})}
+			</>
+		)
 	}
 }

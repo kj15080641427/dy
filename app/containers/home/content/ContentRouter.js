@@ -8,8 +8,14 @@ import MaterialsMange from "./subpages/materials/MaterialsMange";
 import StoreManage from "./subpages/materials/StoreManage";
 import Expert from "./subpages/personnel/Expert";
 import FloodPrevention from "./subpages/personnel/FloodPrevention";
-import rainCondition from "./subpages/rainCondition/rain";
 import waterCondition from "./subpages/waterCondition/water";
+import rwvData from "./subpages/dataMonitoring/rwvData";
+import LoginLog from "./subpages/System/LoginLog";
+import User from "./subpages/System/User";
+import Login from "../Login";
+import Jurisdiction from "./subpages/System/Jurisdiction"
+import Role from "./subpages/System/Role"
+import Model from "./subpages/media/Model"
 const EmptyContent = () => {
     return (
         <div>
@@ -36,13 +42,24 @@ class ContentRouter extends React.PureComponent {
             <Switch>
                 <Route exact path={path} component={EmptyContent} />
                 {/* <Route path={path + "/test"} component={Test} /> */}
-                <Route path={path + "/video"} component={Video} />
-                <Route path={path + "/storemanage"} component={StoreManage} />
-                <Route path={path + "/materialsmange"} component={MaterialsMange} />
-                <Route path={path + "/expert"} component={Expert} />
-                <Route path={path + "/floodprevention"} component={FloodPrevention} />
-                <Route path={path + "/rain"} component={rainCondition} />
-                <Route path={path + "/water"} component={waterCondition} />
+                <Route path={"/#/"} component={Login} />
+                {localStorage.getItem("token") === null ? null :
+                    <>
+                        <Route path={path + "/video"} component={Video} />
+                        <Route path={path + "/storemanage"} component={StoreManage} />
+                        <Route path={path + "/materialsmange"} component={MaterialsMange} />
+                        <Route path={path + "/expert"} component={Expert} />
+                        <Route path={path + "/floodprevention"} component={FloodPrevention} />
+                        <Route path={path + "/water"} component={waterCondition} />
+                        <Route path={path + "/loginlog"} component={LoginLog} />
+                        <Route path={path + "/user"} component={User} />
+                        <Route path={path + "/role"} component={Role} />
+                        <Route path={path + "/jurisdiction"} component={Jurisdiction} />
+                        <Route path={path + "/rwvdata"} component={rwvData} />
+                        <Route path={path + "/model"} component={Model} />
+
+                    </>
+                }
                 <Route component={NoMatch} />
             </Switch>
 

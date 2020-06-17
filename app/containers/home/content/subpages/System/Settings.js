@@ -1,13 +1,13 @@
 /**
- * water 2020-06-7
+ * water 2020-06-12
  * zdl
- * 水情信息
+ * 个人设置
  */
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '@app/redux/actions/home';
-class water extends React.PureComponent {
+class Setting extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {};
@@ -16,8 +16,7 @@ class water extends React.PureComponent {
     console.log("Test this.props.match",this.props.match,this.props.location);
     return (
       <>
-        <div style={{height: '30px'}}>water</div>
-
+        <div style={{height: '30px'}}>Setting</div>
       </>
     );
   }
@@ -37,4 +36,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(water);
+)(Setting);

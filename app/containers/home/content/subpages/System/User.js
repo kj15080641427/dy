@@ -1,22 +1,24 @@
 /**
- * StoreManage 2020-06-04
+ * Authority 2020-06-12
  * zdl
- * 仓库管理
+ * 用户设置
  */
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '@app/redux/actions/home';
-import { QueryMaterialWarehouse, saveMaterialWarehouse, deleteMaterialWarehouse, updateMaterialWarehouse } from '@app/data/request';
 import { Table, Row, Modal, Input, Button, Select, Form, Radio, DatePicker, Switch, Popconfirm, message } from 'antd';
 import { SearchOutlined, RedoOutlined, PlusCircleOutlined, CloseCircleOutlined, FormOutlined } from '@ant-design/icons';
-class StoreManage extends React.PureComponent {
+// import Form from 'antd/lib/form/Form';
+import UserForm from "./SystemForm/UserForm"
+import { queryUser, deleteUser, updateUser, saveUser } from '@app/data/request';
 
+class User extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      dataSource: [],//仓库数据源
-      loading: false,//仓库数据源加载
+      dataSource: [],//数据源
+      loading: false,//数据源加载
       total: 0,
       current: 1,
       pageSize: 10,
@@ -25,44 +27,43 @@ class StoreManage extends React.PureComponent {
       selectObj: {
         name: ""
       },//条件查询对象
-      addObj: {
-
-      }//单个对象
+      rowObj: null,//修改打开模态框带走行值,
+      form: {}
     };
     this.formRef = React.createRef();
-    this.addform = React.createRef();
+    this.saveRef = React.createRef();
   }
-
   render() {
-    console.log("StoreManage this.props.match", this.props.match, this.props.location);
-    const { dataSource, loading, total, current, pageSize, modalvisible, confirmLoading, selectObj } = this.state;
-
-
+    // const [form] = Form.useForm();
+    this.formRef = React.createRef();
+    console.log("Test this.props.match", this.props.match, this.props.location);
+    const { dataSource, loading, total, current, pageSize, modalvisible, rowObj } = this.state;
     const ckcolumns = [
-      // {
-      //   title: '防汛物质仓库ID',
-      //   dataIndex: 'materialWarehouseId',
-      //   className: 'column-money',
-      // },
-      // {
-      //   title: '仓库编码',
-      //   dataIndex: 'code',
-      //   className: 'column-money',
-      // },
       {
-        title: '仓库名称',
-        dataIndex: 'name',
+        title: '用户名',
+        dataIndex: 'username',
         className: 'column-money',
       },
       {
-        title: '仓库经度',
-        dataIndex: 'lon',
+        title: '用户姓名',
+        dataIndex: 'realname',
         className: 'column-money',
       },
       {
-        title: '仓库纬度',
-        dataIndex: 'lat',
+        title: '状态',
+        dataIndex: 'state',
         className: 'column-money',
+        render: (state) => {
+          if (state === "0") {
+            return (
+              <a>正常</a>
+            )
+          } else {
+            return (
+              <a style={{ color: "red" }}>冻结</a>
+            )
+          }
+        }
       },
       {
         title: '创建时间',
@@ -121,7 +122,7 @@ class StoreManage extends React.PureComponent {
       console.log(this.formRef.current)
       this.setState({ loading: true });
       this.formRef.current.resetFields();
-      QueryMaterialWarehouse({
+      queryUser({
         "current": 1,
         "size": 10,
       })
@@ -151,67 +152,31 @@ class StoreManage extends React.PureComponent {
       })
       this.selectPage()
     };
-    //表单验证
-    const validateMessages = {
-      required: '${label} 不能为空！',
-    };
-    //模态框提交
-    const onFinishmodal = values => {
-      console.log("提交", values)
-      this.setState({
-        confirmLoading: true,
-      });
-      if (values.materialWarehouseId === undefined) {
-        saveMaterialWarehouse(values).then((result) => {
-          console.log(result)
-          if (result.data) {
-            this.setState({
-              modalvisible: false,
-              confirmLoading: false,
-            });
-            this.selectPage()
-            this.addform.current.resetFields();
-            message.success('新增成功！');
-          } else {
-            console.log(result.msg)
-          }
-        })
-      } else {
-        updateMaterialWarehouse(values).then((result) => {
-          console.log(result)
-          if (result.data) {
-            this.setState({
-              modalvisible: false,
-              confirmLoading: false,
-            });
-            this.selectPage()
-            this.addform.current.resetFields();
-            message.success('更新成功！');
-          } else {
-            console.log(result.msg)
-
-          }
-        })
-      }
-    };
     //打开添加模态框
-    const showModal = () => {
+    const showModal = (event) => {
+      console.log(event)
       this.setState({
         modalvisible: true,
       });
+      // this.setState({
+      //   form: form
+      // })
+      // console.log("form------", event.target.value)
     };
     //根据id查询并打开模态框
     const SelectById = (row) => {
       this.setState({
-        modalvisible: true
+        modalvisible: true,
+        rowObj: row
       })
-      console.log(row)
-      this.addform.current.setFieldsValue({
-        name: row.name,
-        lon: row.lon,
-        lat: row.lat,
-        materialWarehouseId: row.materialWarehouseId
-      })
+      this.saveRef.current.setFieldsValue(row)
+      // console.log(row)
+      // this.addform.current.setFieldsValue({
+      //   name: row.name,
+      //   lon: row.lon,
+      //   lat: row.lat,
+      //   materialWarehouseId: row.materialWarehouseId
+      // })
     }
     return (
       <>
@@ -227,7 +192,7 @@ class StoreManage extends React.PureComponent {
             onFinish={onFinish}
           >
             <Form.Item
-              label="仓库名称："
+              label="用户名"
               name="name"
             >
               <Input size="large" />
@@ -245,40 +210,8 @@ class StoreManage extends React.PureComponent {
             </Form.Item>
           </Form>
         </Row>
-        {/* 模态框 */}
-        <Modal
-          title="Title"
-          visible={modalvisible}
-          confirmLoading={confirmLoading}
-          onCancel={this.handleCancel}
-          footer={null}
-        >
-          {/* 模态框面板 */}
-          <Form name="save" onFinish={onFinishmodal} validateMessages={validateMessages} ref={this.addform}
-            initialValues={{
-              remember: true,
-            }}>
-            <Form.Item name={'materialWarehouseId'}>
-            </Form.Item>
-            <Form.Item name={'name'} label="仓库名称" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item name={'lon'} label="经度" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item name={'lat'} label="纬度" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                确定
-        </Button>
-              <Button onClick={this.handleCancel}>
-                取消
-        </Button>
-            </Form.Item>
-          </Form>
-        </Modal>
+
+
         <Table
           loading={loading}
           columns={ckcolumns}
@@ -287,6 +220,14 @@ class StoreManage extends React.PureComponent {
           rowKey={row => row.materialWarehouseId}
           pagination={pagination}
         ></Table>
+        <UserForm
+          visible={modalvisible}
+          onCancel={this.handleCancel}
+          rowObj={rowObj}
+          form={this.saveRef}
+          selectPage={this.selectPage}
+        ></UserForm>
+        {/* 模态框面板 */}
       </>
     );
   }
@@ -294,8 +235,8 @@ class StoreManage extends React.PureComponent {
   //根据id删除
   confirm(row) {
     console.log(row);
-    deleteMaterialWarehouse({
-      "materialWarehouseId": row.materialWarehouseId
+    deleteUser({
+      "userId": row.userId
     }).then((result) => {
       this.selectPage()
       message.success('删除成功！');
@@ -307,16 +248,17 @@ class StoreManage extends React.PureComponent {
   handleCancel = () => {
     this.setState({
       modalvisible: false,
-    });
-    this.addform.current.resetFields();
+      rowObj: null
+    })
+    this.saveRef.current.resetFields()
   };
   //切换每页数量
   onShowSizeChange(current, pageSize) {
     this.setState({ loading: true });
-    QueryMaterialWarehouse({
+    queryUser({
       "current": current,
       "size": pageSize,
-      "name": this.state.selectObj.name
+      "username": this.state.selectObj.name
     })
       .then((result) => {
         this.setState({
@@ -332,10 +274,10 @@ class StoreManage extends React.PureComponent {
   changePage(current) {
     console.log(current)
     this.setState({ loading: true });
-    QueryMaterialWarehouse({
+    queryUser({
       "current": current,
       "size": this.state.pageSize,
-      "name": this.state.selectObj.name
+      "username": this.state.selectObj.name
     })
       .then((result) => {
         this.setState({
@@ -347,14 +289,14 @@ class StoreManage extends React.PureComponent {
         })
       })
   }
-  selectPage() {
+  selectPage = () => {
     this.setState({
       loading: true
     })
-    QueryMaterialWarehouse({
+    queryUser({
       "current": this.state.current,
       "size": this.state.pageSize,
-      "name": this.state.selectObj.name
+      "username": this.state.selectObj.name
     }).then((result) => {
       console.log(result)
       this.setState({
@@ -367,6 +309,7 @@ class StoreManage extends React.PureComponent {
   }
   componentDidMount() {
     this.selectPage()
+
   }
 }
 function mapStateToProps(state) {
@@ -383,4 +326,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(StoreManage);
+)(User);

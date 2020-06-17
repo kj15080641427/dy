@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '@app/redux/actions/home';
 import { getFloodControlExpertAll } from '@app/data/request';
 import { Table, Row, Modal, Input, Button, Select, Form, Radio, DatePicker, Switch } from 'antd';
+import { SearchOutlined, RedoOutlined, PlusCircleOutlined, CloseCircleOutlined, FormOutlined } from '@ant-design/icons';
 import { FormInstance } from 'antd/lib/form';
 
 class Expert extends React.PureComponent {
@@ -29,7 +30,18 @@ class Expert extends React.PureComponent {
         title: '姓名',
         dataIndex: 'name',
         className: 'column-money',
-        fixed: 'left',
+      },
+      {
+        title: '性别',
+        dataIndex: 'sex',
+        className: 'column-money',
+        render: sex => { return (sex === "1" ? "男" : "女") }
+      },
+      {
+        title: '专业特长',
+        dataIndex: 'major',
+        className: 'column-money',
+        width: 300
       },
       {
         title: '熟悉流域（河道）',
@@ -38,38 +50,8 @@ class Expert extends React.PureComponent {
         fixed: 'left',
       },
       {
-        title: '状态',
-        dataIndex: 'state',
-        className: 'column-money',
-      },
-      {
-        title: '类型',
-        dataIndex: 'type',
-        className: 'column-money',
-      },
-      {
-        title: '创建时间',
-        dataIndex: 'createTime',
-        className: 'column-money',
-      },
-      {
-        title: '性别',
-        dataIndex: 'sex',
-        className: 'column-money',
-      },
-      {
         title: '工作单位',
         dataIndex: 'unit',
-        className: 'column-money',
-      },
-      {
-        title: '专业特长',
-        dataIndex: 'major',
-        className: 'column-money',
-      },
-      {
-        title: '防汛专家表ID',
-        dataIndex: 'floodControlExpertId',
         className: 'column-money',
       },
       {
@@ -77,6 +59,30 @@ class Expert extends React.PureComponent {
         dataIndex: 'phone',
         className: 'column-money',
       },
+      {
+        title: '状态',
+        dataIndex: 'state',
+        className: 'column-money',
+        render: state => { return (state === "0" ? "显示" : "不显示") }
+      },
+      {
+        title: '类型',
+        dataIndex: 'type',
+        className: 'column-money',
+        render: type => { return (type === "1" ? "市级专家" : type === "2" ? "区县专家" : type === "3" ? "乡镇专家" : "未知") }
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'createTime',
+        className: 'column-money',
+        width: 170,
+        render: createTime => { return (createTime === null ? "暂无数据" : createTime) }
+      },
+      // {
+      //   title: '防汛专家表ID',
+      //   dataIndex: 'floodControlExpertId',
+      //   className: 'column-money',
+      // },
       // {
       //   title: '操作',
       //   dataIndex: 'isShow',
@@ -130,7 +136,7 @@ class Expert extends React.PureComponent {
     return (
       <>
         {/* 条件查询行 */}
-        <Row style={{ height: 100 }}>
+        <Row style={{ height: 60 }}>
           <Form
             ref={this.formRef}
             name="basic"
@@ -144,20 +150,21 @@ class Expert extends React.PureComponent {
               label="专家名称："
               name="name"
             >
-              <Input />
+              <Input size="large"/>
             </Form.Item>
             <Form.Item
               label="电话："
               name="phone"
             >
-              <Input />
+              <Input size="large"/>
             </Form.Item>
             <Form.Item
               label="类型"
               name="type"
               defaultValue={1}
             >
-              <Select style={{ width: 250 }} defaultValue={1}>
+              <Select size="large" style={{ width: 250 }} defaultValue={0}>
+              <Select.Option value={0}>所有</Select.Option>
                 <Select.Option value={1}>市级专家</Select.Option>
                 <Select.Option value={2}>区县专家</Select.Option>
                 <Select.Option value={3}>乡镇专家</Select.Option>
@@ -165,12 +172,12 @@ class Expert extends React.PureComponent {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" size="large" icon={<SearchOutlined />}>
                 查询
         </Button>
             </Form.Item>
             <Form.Item>
-              <Button htmlType="button" onClick={onReset}>重置</Button>
+              <Button htmlType="button" onClick={onReset} size="large" icon={<RedoOutlined />}>重置</Button>
             </Form.Item>
             {/* <Form.Item>
               <Button htmlType="button" onClick={this.showModal}>增加</Button>

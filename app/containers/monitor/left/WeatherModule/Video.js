@@ -5,11 +5,12 @@
  */
 import React from 'react';
 import "../style.scss";
-import { Table, Tag, Popover, Modal, Button, Card, Row, Drawer, message } from 'antd';
+import { Table, Space, Popover, Modal, Button, Card, Input, Drawer, message } from 'antd';
 import VideoComponent from '@app/components/video/VideoComponent';
 import VideoControl from '@app/components/video/VideoControl';
+import Highlighter from 'react-highlight-words';
 import {
-    CaretRightOutlined
+    CaretRightOutlined, SearchOutlined
 } from '@ant-design/icons';
 import { getRadioAll } from "@app/data/request";
 import emitter from "@app/utils/emitter.js";
@@ -22,12 +23,14 @@ class Precipitation extends React.PureComponent {
             visible: false,//模态框
             token: "",
             videoobj: null,
-            address: ""
+            address: "",
+            type: "",
         };
         this.videoControl = new VideoControl();
     }
 
     playV = (value) => {
+        console.log(value)
         if (value.isOnline == '0') {
             this.videoControl.login().then((rest) => {
                 this.setState({ videoobj: this.videoControl });
@@ -35,6 +38,7 @@ class Precipitation extends React.PureComponent {
             this.setState({
                 visible: true,
                 token: value.strtoken,
+                type: value.dataSource,
                 address: "摄像头详细地址：" + value.address
             });
         } if (value.isOnline == '1') {
@@ -49,6 +53,71 @@ class Precipitation extends React.PureComponent {
             address: ""
         })
     }
+    //检索数据搜索
+    getColumnSearchProps = dataIndex => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 8 }}>
+                <Input
+                    ref={node => {
+                        this.searchInput = node;
+                    }}
+                    placeholder={`请输入要搜索的站名`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                    style={{ width: 188, marginBottom: 8, display: 'block' }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        搜索
+              </Button>
+                    <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                        关闭
+              </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilter: (value, record) =>
+            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => this.searchInput.select());
+            }
+        },
+        render: text =>
+            this.state.searchedColumn === dataIndex ? (
+                <Popover content={text.toString()} title="站名全称">
+                    <Highlighter
+                        highlightStyle={{ backgroundColor: 'red', padding: 0 }}
+                        searchWords={[this.state.searchText]}
+                        autoEscape
+                        textToHighlight={text.toString().length > 8 ? text.toString().substring(0, 8) + "..." : text.toString()}
+                    />
+                </Popover>
+            ) : (
+                    text
+                ),
+    });
+
+    handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        this.setState({
+            searchText: selectedKeys[0],
+            searchedColumn: dataIndex,
+        });
+    };
+
+    handleReset = clearFilters => {
+        clearFilters();
+        this.setState({ searchText: '' });
+    };
     render() {
         const qycolumns = [
             {
@@ -56,6 +125,7 @@ class Precipitation extends React.PureComponent {
                 dataIndex: 'sitename',
                 className: 'column-money',
                 key: 'riverwaterdataID',
+                ...this.getColumnSearchProps('sitename'),
             },
             {
                 title: '位置',
@@ -65,7 +135,7 @@ class Precipitation extends React.PureComponent {
                     address => {
                         return (
                             <Popover content={address} title="视频地址全称">
-                                {address.substring(0, 10) + '...'}
+                                {address === "-" ? address : address.substring(0, 10) + '...'}
                             </Popover>
                         )
                     }
@@ -83,7 +153,7 @@ class Precipitation extends React.PureComponent {
                             )
                         } else {
                             return (
-                                <a style={{ color: 'red' }}>不在线</a>
+                                <a style={{ color: 'red' }}>离线</a>
                             )
                         }
                     },
@@ -153,7 +223,7 @@ class Precipitation extends React.PureComponent {
                                 position: 'absolute',
                                 left: 2106,
                                 top: 1028,
-                            }} />
+                            }} type={this.state.type} />
                             : null}
                     </div>
                 </Drawer>

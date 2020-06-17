@@ -63,6 +63,7 @@ class PannelBtn extends React.PureComponent {
   handle() {
     const w = window.open('about:blank');
     // w.location.href = "http://172.19.112.74/dist/index.html#/home"
+    //  w.location.href = "http://localhost/dist/index.html#/home"
     w.location.href = "/#/home"
   }
   componentDidMount() {
