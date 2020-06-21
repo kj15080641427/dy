@@ -9,6 +9,7 @@ import { Table, Tag, Popover, Modal, Button, Card, Row, Col } from 'antd';
 import moment from 'moment';
 import { getfloodUser } from "@app/data/request";
 import emitter from "@app/utils/emitter.js";
+import { setTime } from "@app/utils/common"
 
 class FloodPeople extends React.PureComponent {
     constructor(props, context) {
@@ -56,14 +57,20 @@ class FloodPeople extends React.PureComponent {
             </>
         );
     }
-    //初始化数据
-    componentDidMount() {
+    selectInit() {
         this.setState({ loading: true });
         getfloodUser({})
             .then((result) => {
                 this.setState({ loading: false });
                 this.setState({ qydataSource: result.data })
             })
+    }
+    //初始化数据
+    componentDidMount() {
+        this.selectInit()
+        window.setInterval(() => {
+            this.selectInit()
+        }, 1000 * 5 * 60)
     }
 }
 export default FloodPeople;

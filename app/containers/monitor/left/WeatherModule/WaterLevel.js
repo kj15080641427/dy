@@ -175,8 +175,8 @@ class Precipitation extends React.PureComponent {
                             },
                         ],
                         title: {
-                            text: "暂无数据",
-                            subtext: '暂无数据',
+                            text: obj.name + "-水位站24小时水位变化",
+                            subtext: starttm + '至' + endtm,
                         },
                         xAxis: {
                             type: 'category',
@@ -298,9 +298,9 @@ class Precipitation extends React.PureComponent {
                 this.locationClick(record)
             },
             //双击打开历史水位
-            onDoubleClick: () => {
-                this.showModal(record)
-            },
+            // onDoubleClick: () => {
+            //     this.showModal(record)
+            // },
         };
     }
     render() {
@@ -324,20 +324,23 @@ class Precipitation extends React.PureComponent {
                 title: '水位(m)',
                 dataIndex: 'z',
                 className: 'column-money',
-                render: dayAvg => dayAvg != "-" ? (dayAvg * 1).toFixed(2) : "-"
+                render: z => z != "-" ? (z * 1).toFixed(2) : "-",
+                sorter: (a, b) => a.z - b.z,
             },
             {
                 title: '警戒水位(m)',
                 dataIndex: 'warning',
                 className: 'column-money',
-                render: warning => warning != "99" ? (warning * 1).toFixed(2) : "-"
+                render: warning => warning != "99" ? (warning * 1).toFixed(2) : "-",
+                sorter: (a, b) => a.warning - b.warning,
             },
             {
                 title: '更新时间',
                 dataIndex: 'ztm',
                 className: 'column-money',
                 width: 140,
-                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
+                sorter: (a, b) => new Date(a.ztm).getTime() - new Date(b.ztm).getTime(),
             },
         ];
         //根据编号获取信息表头daata
@@ -421,17 +424,24 @@ class Precipitation extends React.PureComponent {
 
         );
     }
-    //初始化加载数据
-    componentDidMount() {
+    selectInit() {
         this.setState({ loading: true });
         getBasicsAll({
             "type": 2
         })
             .then((result) => {
-                var dataArr = SpliceSite(result)
+                let dataArr = SpliceSite(result)
                 this.setState({ loading: false });
                 this.setState({ qydataSource: dataArr })
             })
+    }
+    //初始化数据
+    componentDidMount() {
+        this.selectInit()
+        window.setInterval(() => {
+            this.selectInit()
+        }, 1000 * 5 * 60);
+
     }
     locationClick(e) {
         let lon = e.lon * 1;

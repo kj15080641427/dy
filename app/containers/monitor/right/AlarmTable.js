@@ -291,8 +291,8 @@ class AlarmTable extends React.PureComponent {
     ];
     const { loading } = this.state;
     return (
-      <div className="m-alm-table">
-        <img className="m-alm-img" src={imgURL} alt="" /><div className="m-alm-div">
+      <div className="m-alm-tablealarm">
+        <img className="m-alm-img" src={imgURL} alt="" /><div className="m-alm-divalarm">
           <Row className="m-alm-row">
             <Col span={4}><img className="m-alm-warningImg" src={warningImg}></img></Col>
             <Col span={20}><Row><Col span={12}>超警戒水位<span className="m-alm-row-warning">{this.state.wacount}</span></Col>
@@ -302,7 +302,7 @@ class AlarmTable extends React.PureComponent {
               </Row> */}
             </Col>
           </Row>
-          <Table className="m-alm-div-table" size="small" loading={loading} columns={columns} dataSource={this.state.wardataSource} scroll={{ y: 320 }}
+          <Table className="m-alm-div-tablealarm" size="small" loading={loading} columns={columns} dataSource={this.state.wardataSource} scroll={{ y: 320 }}
             rowKey={row => row.stcd}
             onRow={this.onClickRow}
           // pagination={pagination}
@@ -334,7 +334,7 @@ class AlarmTable extends React.PureComponent {
       </div>
     );
   }
-  componentDidMount() {
+  selectInit() {
     this.setState({ loading: true });
     //获取警戒水位信息
     getWaterWarning({})
@@ -351,6 +351,12 @@ class AlarmTable extends React.PureComponent {
         this.setState({ wardataSource: arr })
         this.setState({ wacount: arr.length })
       })
+  }
+  componentDidMount() {
+    this.selectInit()
+    window.setInterval(() => {
+      this.selectInit()
+    }, 1000 * 5 * 60)
   }
   locationClick(e) {
     let lon = e.lon * 1;

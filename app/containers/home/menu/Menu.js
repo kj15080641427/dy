@@ -28,7 +28,7 @@ class Menus extends React.PureComponent {
     return (
       <div className={"hm-menu"}>
         <div className="hm-logo">
-          logo
+          东营水务
           </div >
         <div className="hm-content">
           <Menu
@@ -36,13 +36,14 @@ class Menus extends React.PureComponent {
             theme="dark"
             inlineCollapsed={collapsed}
             onClick={this.onMenuClick}
+            defaultOpenKeys={['sub1', 'sub2', 'sub3']}
           >
             <Menu.Item key="/" icon={<ContainerOutlined />}>
               首页
             </Menu.Item>
-            <SubMenu key="sub1" icon={<FundViewOutlined />} title="监测数据">
-              <Menu.Item title={"水文数据"} key="/rwvdata">
-                水文数据
+            <SubMenu key="sub1" icon={<FundViewOutlined />} title="监测数据" inlineCollapsed={false}>
+              <Menu.Item title={"站点数据"} key="/rwvdata">
+                站点数据
               </Menu.Item>
               {/* <Menu.Item title={"雨情信息"} key="/rain">
                 雨情信息

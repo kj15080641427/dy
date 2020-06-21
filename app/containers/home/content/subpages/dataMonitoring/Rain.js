@@ -11,6 +11,9 @@ import { Table, Input, Button, Select, Tabs, Form, Row, Space, Popover } from 'a
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
+// 引入 ECharts 主模块
+import echarts from 'echarts/lib/echarts';
+import 'echarts';
 import { getBasicsAll, getCountStation } from '@app/data/request';
 class Rain extends React.PureComponent {
   constructor(props, context) {
@@ -20,16 +23,19 @@ class Rain extends React.PureComponent {
       loading: false,
       searchText: '',
       searchedColumn: '',
+      count: 0,
+      raincount: [],
     };
   }
   render() {
     console.log("Test this.props.match", this.props.match, this.props.location);
-    let { dataSource, loading } = this.state;
+    let { dataSource, loading, raincount, count } = this.state;
     const columns = [
       {
         title: '站名',
         dataIndex: 'name',
-        width: 80,
+        // width: 80,
+        ellipsis: true,
         className: 'column-money',
         key: 'riverwaterdataID',
         ...this.getColumnSearchProps('name'),
@@ -45,38 +51,40 @@ class Rain extends React.PureComponent {
       },
       {
         title: '数据来源',
+        width: 110,
         dataIndex: 'dataSourceDesc',
         ...this.getColumnSearchProps('dataSourceDesc'),
         render: value => value === null ? '-' : value,
       },
       {
         title: '地址',
+        ellipsis: true,
         dataIndex: 'address',
         // ...this.getColumnSearchProps('address'),
         render: value => value === null ? '-' : value,
       },
-      {
-        title: '集水面积(k㎡)',
-        dataIndex: 'areawatercoll',
-        render: value => value === null ? '-' : value,
-        sorter: (a, b) => a.areawatercoll - b.areawatercoll,
-      },
-      {
-        title: '测站监测类型名称',
-        dataIndex: 'indname',
-        render: value => value === null ? '-' : value,
-      },
+      // {
+      //   title: '集水面积(k㎡)',
+      //   dataIndex: 'areawatercoll',
+      //   render: value => value === null ? '-' : value,
+      //   sorter: (a, b) => a.areawatercoll - b.areawatercoll,
+      // },
+      // {
+      //   title: '测站监测类型名称',
+      //   dataIndex: 'indname',
+      //   render: value => value === null ? '-' : value,
+      // },
       {
         title: '流域名称',
         dataIndex: 'flowarea',
         render: value => value === null ? '-' : value,
       },
-      {
-        title: '至河口距离',
-        dataIndex: 'distancetoport',
-        render: value => value === null ? '-' : value,
-        sorter: (a, b) => a.distancetoport - b.distancetoport,
-      },
+      // {
+      //   title: '至河口距离',
+      //   dataIndex: 'distancetoport',
+      //   render: value => value === null ? '-' : value,
+      //   sorter: (a, b) => a.distancetoport - b.distancetoport,
+      // },
       {
         title: '河流名称',
         dataIndex: 'rivername',
@@ -93,36 +101,59 @@ class Rain extends React.PureComponent {
         render: value => value === null ? '-' : value,
       },
       {
-        title: '5分钟(mm)',
+        title: '雨量(mm)',
         dataIndex: 'minuteAvg',
-        width: 90,
+        width: 140,
         className: 'column-money',
         render: minuteAvg => minuteAvg == '-' ? '-' : (minuteAvg * 1).toFixed(1),
         sorter: (a, b) => a.minuteAvg - b.minuteAvg,
       },
-      {
-        title: '1小时(mm)',
-        dataIndex: 'hourAvg',
-        width: 90,
-        className: 'column-money',
-        render: hourAvg => hourAvg == '-' ? '-' : (hourAvg * 1).toFixed(1),
-        sorter: (a, b) => a.hourAvg - b.hourAvg,
-      },
-      {
-        title: '24小时(mm)',
-        dataIndex: 'dayAvg',
-        width: 90,
-        className: 'column-money',
-        render: dayAvg => dayAvg == '-' ? '-' : (dayAvg * 1).toFixed(1),
-        sorter: true
-      },
+      // {
+      //   title: '1小时(mm)',
+      //   dataIndex: 'hourAvg',
+      //   width: 90,
+      //   className: 'column-money',
+      //   render: hourAvg => hourAvg == '-' ? '-' : (hourAvg * 1).toFixed(1),
+      //   sorter: (a, b) => a.hourAvg - b.hourAvg,
+      // },
+      // {
+      //   title: '24小时(mm)',
+      //   dataIndex: 'dayAvg',
+      //   width: 90,
+      //   className: 'column-money',
+      //   render: dayAvg => dayAvg == '-' ? '-' : (dayAvg * 1).toFixed(1),
+      //   sorter: true
+      // },
       {
         title: '更新时间',
         dataIndex: 'tm',
-        width: 140,
+        width: 160,
         className: 'column-money',
         sorter: (a, b) => new Date(b.tm).getTime() - new Date(a.tm).getTime(),
         render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
+      },
+      {
+        title: '更新状态',
+        dataIndex: 'tm',
+        width: 160,
+        className: 'column-money',
+        render: (value) => {
+          let startdata = new Date().getTime();
+          var date = new Date(value).getTime();
+          if (value == null) {
+            return (
+              <a style={{ color: 'red' }}>离线</a>
+            )
+          } else if (startdata - date >= 1000 * 60 * 60 * 24 * 3) {
+            return (
+              <a style={{ color: 'orange' }}>三天前</a>
+            )
+          } else {
+            return (
+              <a >最近更新</a>
+            )
+          }
+        }
       }
     ]
     //分页设置
@@ -141,36 +172,49 @@ class Rain extends React.PureComponent {
       // },
       // showTotal: () => `雨量站共计：184个雨量站已流入数据站点：158个有站点从未流入数据：26个其中水文局和基础防汛占多数  气象局占少数`,
     }
+    let element = []
+    for (let i = 0; i < raincount.length; i++) {
+      element.push(
+        <>
+          < a > {raincount[i].dataSourceDesc}共计：{raincount[i].number}个</a >&nbsp;
+        </>
+      )
+
+    }
     return (
-      <>
+      <div>
+        <Row>
+          <div className="div-left-echarts">
+            <div className="echarts-isOnline" id="rainisOnline"></div>
+            <div className="echarts-count" id="raincount"></div>
+          </div>
+          <div className="div-right-table">
+            <Table
+              title={() => (
+                <>
+                  {/* <Demo></Demo> */}
+                </>
+              )}
+              size="large"
+              loading={loading}
+              columns={columns}
+              dataSource={dataSource}
+              rowKey={row => row.stcd}
+              scroll={{ y: 600 }}
+              // pagination={pagination}
+              // onRow={this.onClickRow}
+              // pagination={pagination} 
+              footer={() => (
+                <>
+                  <a>雨量站共计：{count}个</a>&nbsp;其中：&nbsp;
+              {element}
+                </>
+              )}
 
-        <Table
-          title={() => (
-            <>
-              {/* <Demo></Demo> */}
-            </>
-          )}
-          size="large"
-          loading={loading}
-          columns={columns}
-          dataSource={dataSource}
-          rowKey={row => row.stcd}
-          scroll={{ y: 550 }}
-          pagination={pagination}
-          // onRow={this.onClickRow}
-          // pagination={pagination} 
-          footer={() => (
-            <>
-              <a>雨量站共计：184个</a>
-              <a>雨量站已流入数据站点：158个</a>
-              <a>有站点从未流入数据：26个</a>
-              <a>其中水文局和基础防汛占多数  气象局占少数</a>
-            </>
-          )}
-
-        />
-
-      </>
+            />
+          </div>
+        </Row>
+      </div>
     );
   }
   //检索数据搜索
@@ -236,22 +280,154 @@ class Rain extends React.PureComponent {
     clearFilters();
     this.setState({ searchText: '' });
   };
-  componentDidMount() {
+  //获取雨量站点来源
+  selectRainSource = () => {
+    getCountStation({
+    }).then((result) => {
+      console.log(result)
+      this.setState({
+        count: result.data[0].number,
+        raincount: result.data[0].list
+      })
+      let nameArr = [];
+      let data = [];
+      for (let i = 0; i < result.data[0].list.length; i++) {
+        nameArr.push(result.data[0].list[i].dataSourceDesc === null ? "暂无数据" : result.data[0].list[i].dataSourceDesc)
+        data.push({
+          'name': result.data[0].list[i].dataSourceDesc === null ? "暂无数据" : result.data[0].list[i].dataSourceDesc,
+          'value': result.data[0].list[i].number
+        })
+      }
+      var myChart = echarts.init(document.getElementById("raincount"));
+      myChart.setOption({
+        title: {
+          text: '雨量站点来源统计图',
+          // subtext: '纯属虚构',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          show: true,
+          left: 'center',
+          top: 'bottom',
+          data: nameArr
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: { show: true },
+            dataView: { show: true, readOnly: false },
+            magicType: {
+              show: true,
+              // type: ['pie', 'funnel']
+            },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
+        series: [
+          {
+            name: '共计',
+            type: 'pie',
+            radius: '50%',
+            center: ['50%', '50%'],
+            // roseType: 'area',
+            data: data,
+            label: {
+              formatter: '{b}: {@2012}'
+            }
+          }
+        ]
+      })
+    })
+  }
+  //获取雨量站点数据更新状态/查询所有
+  selectRainStatus = () => {
     this.setState({ loading: true });
     getBasicsAll({
       "type": 1
     })
       .then((result) => {
-        console.log(result)
-        this.setState({ loading: false });
-        this.setState({ dataSource: result.data })
-        // this.setState({ searchedColumn: resultdata. })
+        this.setState({ loading: false, dataSource: result.data });
+        let okcount = 0;
+        let nocount = 0;
+        let thday = 0;
+        let startdata = new Date().getTime();
+        for (let i = 0; i < result.data.length; i++) {
+          if (result.data[i].tm === null) {
+            nocount++;
+          } else if (startdata - new Date(result.data[i].tm).getTime() >= 1000 * 60 * 60 * 24 * 3) {
+            thday++;
+          } else {
+            okcount++;
+          }
+        }
+        console.log(okcount)
+        console.log(nocount)
+        console.log(thday)
+        var myChartcount = echarts.init(document.getElementById("rainisOnline"));
+        myChartcount.setOption({
+          title: {
+            text: '雨量站点在线统计图',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+          legend: {
+            left: 'center',
+            top: 'bottom',
+            data: ["最近更新", "三天前", "离线"]
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              mark: { show: true },
+              dataView: { show: true, readOnly: false },
+              magicType: {
+                show: true,
+                type: ['pie', 'funnel']
+              },
+              restore: { show: true },
+              saveAsImage: { show: true }
+            }
+          },
+          series: [
+            {
+              showval: true,
+              name: '共计',
+              type: 'pie',
+              radius: '50%',
+              center: ['50%', '50%'],
+              // roseType: 'area',
+              label: {
+                formatter: '{b}: {@2012}'
+              },
+              data: [
+                {
+                  value: okcount,
+                  name: '最近更新',
+                },
+                {
+                  value: thday,
+                  name: '三天前',
+                }, {
+                  value: nocount,
+                  name: '离线',
+                }
+              ],
+            }
+          ]
+        })
       })
-    // getCountStation({
-
-    // }).then((result) => {
-    //   console.log(result)
-    // })
+  }
+  componentDidMount() {
+    this.selectRainStatus()
+    this.selectRainSource()
   }
 }
 function mapStateToProps(state) {

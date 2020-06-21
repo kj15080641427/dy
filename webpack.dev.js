@@ -146,7 +146,7 @@ module.exports = {
                 changeOrigin: true,
             },
             '/api/*': {
-                target: isTao ? "http://2287ym5502.51mypc.cn/" : 'http://172.19.112.74:8080',
+                target: isTao ? "http://2287ym5502.51mypc.cn/" : 'http://172.19.112.76:8080',
                 // pathRewrite: {'^/api' : ''},
                 secure: true,
                 changeOrigin: true,

@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, compose } from 'redux';
 import * as actions from '@app/redux/actions/monitor';
 import Map from "./map/map";
 import "./style.scss";
@@ -15,30 +15,32 @@ import PannelBtn from "./right/PannelBtn";
 import AlarmTable from "./right/AlarmTable";
 import WeatherPic from "./right/WeatherPic";
 import WeatherDy from "./right/WeatherDy";
-import CheckBox from "./bottom/CheckBox";
+import CheckBoxs from "./bottom/CheckBox";
 import setImg from "@app/resource/setsys.png"
-import { Drawer, Switch, Row } from 'antd';
+import { Drawer, Switch, Row, Divider, Checkbox } from 'antd';
+import { none } from 'ol/centerconstraint';
+import FullScreen from '../home/components/FullScreen'
 
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
       showLeft: true,
-      showRight: true,
-      showBottom: true,
+      showRight: false,
+      // showBottom: true,
       visible: false,
       dispalyLeft: 'block',
-      dispalyRight: 'block',
-      dispalyBottom: 'block',
+      displayRight: 'none',
+      // dispalyBottom: 'block',
       layerVisible: {
         tiandi: true, // 天地图底图
         tiandi2: true, // 天地图标注
-        wfsRiver: true, // wfs河道图
+        wfsRiver: false, // wfs河道图
         river40: true, //40条河图片 用于解决河道标注很多的问题
         flood: false, // 洪水图层
         river: true, // 水系图
         heatmap: true, // 热力图
-        traffic: true, // 交通图层
+        traffic: false, // 交通图层
         person: true, // 防汛人员
         video: false, // 视频站点
         rain: false, // 雨量站
@@ -57,74 +59,83 @@ class Monitor extends React.PureComponent {
     });
   };
   render() {
-    let { layerVisible } = this.state;
+    let { layerVisible, displayRight, displayLeft } = this.state;
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible}></Map>
         <Head></Head>
-        <div style={{ display: this.state.displayLeft }}>
+        <div style={{ display: displayLeft }}>
           <div className="m-left">
             <WeatherBox></WeatherBox>
             <WeatherChart></WeatherChart>
             <WeatherTable></WeatherTable>
           </div>
         </div>
-        <div style={{ display: this.state.displayRight }}>
+        {this.state.showRight ? <div style={{ display: displayRight }}>
           <div className="m-right">
-            <PannelBtn></PannelBtn>
+            <PannelBtn style={{ display: "block" }}></PannelBtn>
             <WeatherDy></WeatherDy>
             <AlarmTable></AlarmTable>
             <WeatherPic></WeatherPic>
           </div>
-        </div>
-        <div style={{ display: this.state.displayBottom }}>
+        </div> :
+          <div className="m-right-one">
+            <PannelBtn></PannelBtn>
+          </div>
+        }
+        {/* <div style={{ display: this.state.displayBottom }}>
           <div className="m-bottom" >
             <CheckBox layerVisible={layerVisible} onChecked={this.onChecked}></CheckBox>
           </div>
-        </div>
+        </div> */}
         <img onClick={() => {
           this.setState({
             visible: true,
           });
         }} className="m-set-img" src={setImg}></img>
         <Drawer
-          title="设置"
+          title={<><a style={{ fontSize: 18, color: '#000000fd', fontWeight: 'bold ' }}>设置</a><sapn style={{ position: 'relative', left: 200 }}><FullScreen></FullScreen></sapn></>}
           placement="right"
           closable={false}
           onClose={this.onClose}
           visible={this.state.visible}
+          width={320}
         >
+          <a style={{ fontSize: 18, color: '#000000fd', fontWeight: 'bold ' }}>主界面</a>
+          <Divider />
           <Row>
-            <Switch checkedChildren="开" checked={this.state.showLeft} onClick={() => {
+            <div><Checkbox checked={this.state.showLeft} onClick={() => {
               this.setState({
                 showLeft: !this.state.showLeft,
                 displayLeft: this.state.showLeft ? 'none' : 'block'
               });
-            }} unCheckedChildren="关" defaultChecked />左侧栏
+            }} defaultChecked />&nbsp;&nbsp;<a style={{ fontSize: 15, color: '#000000fd' }}>左侧栏</a></div>
           </Row>
           <br />
           <Row>
-            <Switch checkedChildren="开" checked={this.state.showRight} onClick={() => {
+            <div><Checkbox checked={this.state.showRight} onClick={() => {
               this.setState({
                 showRight: !this.state.showRight,
                 displayRight: this.state.showRight ? 'none' : 'block'
               });
-            }} unCheckedChildren="关" defaultChecked />右侧栏
+            }} defaultChecked />&nbsp;&nbsp;<a style={{ fontSize: 15, color: '#000000fd' }}>右侧栏</a></div>
           </Row>
-          <br />
-          <Row>
+
+          {/* <br /> */}
+          {/* <Row>
             <Switch checkedChildren="开" unCheckedChildren="关" checked={this.state.showBottom} onClick={() => {
               this.setState({
                 showBottom: !this.state.showBottom,
                 displayBottom: this.state.showBottom ? 'none' : 'block'
               });
             }} defaultChecked />下栏目
-          </Row>
+          </Row> */}
+          <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked}></CheckBoxs>
         </Drawer>
       </div>
     );
   }
-  componentDidMount() { 
+  componentDidMount() {
   }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;

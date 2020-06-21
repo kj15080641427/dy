@@ -66,7 +66,7 @@ class easyFlood extends React.PureComponent {
                         title: {
                             text: value.name + "-易涝点24小时水位变化",
                             subtext: starttm + '至' + endtm,
-                            left: 'center',
+                            // left: 'center',
                         },
                         grid: {
                             top: 90,
@@ -172,8 +172,8 @@ class easyFlood extends React.PureComponent {
                             },
                         ],
                         title: {
-                            text: "暂无数据",
-                            subtext: '暂无数据',
+                            text: value.name + "-易涝点24小时水位变化",
+                            subtext: starttm + '至' + endtm,
                         },
                         xAxis: {
                             type: 'category',
@@ -296,9 +296,9 @@ class easyFlood extends React.PureComponent {
                 this.locationClick(record)
             },
             //双击打开历史水位
-            onDoubleClick: () => {
-                this.showModal(record)
-            },
+            // onDoubleClick: () => {
+            //     this.showModal(record)
+            // },
         };
     }
     // 回调函数，切换下一页
@@ -327,14 +327,16 @@ class easyFlood extends React.PureComponent {
                 title: '水位(m)',
                 dataIndex: 'z',
                 className: 'column-money',
-                render: dayAvg => dayAvg != "-" ? (dayAvg * 1).toFixed(2) : "-"
+                render: dayAvg => dayAvg != "-" ? (dayAvg * 1).toFixed(2) : "-",
+                sorter: (a, b) => a.z - b.z,
             },
             {
                 title: '更新时间',
                 dataIndex: 'ztm',
                 className: 'column-money',
                 width: 140,
-                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
+                sorter: (a, b) => new Date(a.ztm).getTime() - new Date(b.ztm).getTime(),
             },
         ];
         //根据编号获取信息表头daata
@@ -413,8 +415,7 @@ class easyFlood extends React.PureComponent {
 
         );
     }
-    //初始化加载数据
-    componentDidMount() {
+    selectInit() {
         this.setState({ loading: true });
         getBasicsAll({
             "type": 3
@@ -424,6 +425,14 @@ class easyFlood extends React.PureComponent {
                 this.setState({ loading: false });
                 this.setState({ qydataSource: dataArr })
             })
+    }
+    //初始化数据
+    componentDidMount() {
+        this.selectInit()
+        window.setInterval(() => {
+            this.selectInit()
+        }, 1000 * 5 * 60);
+
     }
     locationClick(e) {
         let lon = e.lon * 1;

@@ -24,14 +24,15 @@ class Role extends React.PureComponent {
                 name: ""
             },//条件查询对象
             createPlanModalVisible: false,
-            rowObj: {}
+            rowObj: {},//角色对象
+            jurisdicArr: [],//单个角色权限集合
         };
         this.formRef = React.createRef();
         this.saveRef = React.createRef();
     }
     render() {
         console.log("Test this.props.match", this.props.match, this.props.location);
-        const { dataSource, loading, total, current, pageSize, rowObj } = this.state;
+        const { dataSource, loading, total, current, pageSize, rowObj, jurisdicArr } = this.state;
         const ckcolumns = [
             {
                 title: '角色名',
@@ -137,7 +138,21 @@ class Role extends React.PureComponent {
                 rowObj: row
             })
             this.saveRef.current.setFieldsValue(row)
-            // this.saveRef.current.
+            if (row.roleId !== undefined) {
+                queryByRoleId({
+                    "roleId": row.roleId
+                }).then((result) => {
+                    let idall = []
+                    if (result.data[0] !== null) {
+                        result.data.forEach(element => {
+                            idall.push(element.permissionId)
+                        });
+                        this.setState({
+                            jurisdicArr: idall
+                        })
+                    }
+                })
+            }
         }
         return (
             <>
@@ -153,7 +168,7 @@ class Role extends React.PureComponent {
                         onFinish={onFinish}
                     >
                         <Form.Item
-                            label="权限名"
+                            label="角色名"
                             name="name"
                         >
                             <Input size="large" />
@@ -189,13 +204,15 @@ class Role extends React.PureComponent {
                     rowObj={rowObj}
                     form={this.saveRef}
                     selectPage={this.selectPage}
+                    jurisdicArr={jurisdicArr}
                 ></RoleForm>
             </>
         );
     }
     handleCancel = () => {
         this.setState({
-            createPlanModalVisible: false
+            createPlanModalVisible: false,
+            jurisdicArr: null
         })
         this.saveRef.current.resetFields()
     }

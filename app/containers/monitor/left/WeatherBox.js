@@ -51,14 +51,20 @@ class WeatherBox extends React.PureComponent {
     return Math.round(num * Math.pow(10, pos)) / Math.pow(10, pos);
   }
   //初始化数据
-  componentDidMount() {
+  selectInit() {
     getCityAvgRaindata({})
-      .then((result) => { 
+      .then((result) => {
         if (result.data.length > 5) {
           this.setState({ weatherCount: (result.data * 1).toFixed(1) })
         }
       })
-
+  }
+  //初始化数据
+  componentDidMount() {
+    this.selectInit()
+    window.setInterval(() => {
+      this.selectInit()
+    }, 1000 * 5 * 60)
   }
 }
 export default WeatherBox;

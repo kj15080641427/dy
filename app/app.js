@@ -7,6 +7,9 @@ import './style.scss';
 const AsyncHome = AsyncComp(() => import(/*webpackChunkName:'home'*/"@app/containers/home/Index").then((res) => { removeLoading(); return res; }));
 const AsyncLogin = AsyncComp(() => import(/*webpackChunkName:'home'*/"@app/containers/home/Login").then((res) => { removeLoading(); return res; }));
 const AsyncMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/monitor/Monitor").then((res) => { removeLoading(); return res; }));
+const rainMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/rain/rain").then((res) => { removeLoading(); return res; }));
+const videoMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/video/video").then((res) => { removeLoading(); return res; }));
+const floodWarningMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/floodWarning/floodWarning").then((res) => { removeLoading(); return res; }));
 
 export class App extends React.Component {
   render() {
@@ -19,6 +22,9 @@ export class App extends React.Component {
             <>
               <Route path="/index" component={AsyncMonitor} />
               <Route path={`/home`} component={AsyncHome} />
+              <Route path={`/rain`} component={rainMonitor} />
+              <Route path={`/video`} component={videoMonitor} />
+              <Route path={`/floodwarning`} component={floodWarningMonitor} />
             </>}
           <Route component={AsyncLogin} />
         </Switch>

@@ -1,5 +1,7 @@
 @import "@app/variable.scss";
 .m-pannel-btns {
+  position: relative;
+  top: -14px;
   height: 83px;
   background: rgba(255, 255, 255, 0);
 }
@@ -33,6 +35,7 @@
 .m-btn-flood {
   position: relative;
   bottom: 13px;
+  left: 10px;
 }
 //dy天气
 .m-pannel-WDy {
@@ -66,21 +69,14 @@
   padding: 30px 50px;
   margin: 20px 0;
 }
-.m-alm-div {
+.m-alm-divalarm {
   width: 514px;
   height: 300px;
   border: 1px solid #007ed7;
   position: relative;
   bottom: 22px;
 }
-.m-alm-div {
-  width: 514px;
-  height: 300px;
-  border: 1px solid #007ed7;
-  position: relative;
-  bottom: 22px;
-}
-.m-alm-div-table {
+.m-alm-div-tablealarm {
   width: 484px;
   height: 20px;
   position: relative;
@@ -89,7 +85,7 @@
   right: 15px;
 }
 
-.m-alm-table {
+.m-alm-tablealarm {
   height: 300px;
   background: rgb(255, 255, 255);
 }
@@ -105,11 +101,11 @@
 }
 .m-alm-row {
   font-size: 18px;
-  left: 10px;
+  // left: 10px;
   width: 514px;
   height: 50px;
   position: relative;
-  left: 15px;
+  left: 0px;
   top: 15px;
   bottom: 15px;
   right: 15px;

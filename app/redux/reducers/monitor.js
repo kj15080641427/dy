@@ -18,10 +18,11 @@ const defaultState = {
     wfsRiver: {},
     ponding: {},
     warehouse: {}, // 防汛物资详情(即仓库物资)
-  }
+  },
+  userinfo: {}
 };
 
-export default function main (state = defaultState, action) {
+export default function main(state = defaultState, action) {
   let newState = Object.assign({}, state);
   switch (action.type) {
     case actionTypes.INIT_BASE_DATA: {
@@ -36,7 +37,7 @@ export default function main (state = defaultState, action) {
       if (value && value[detailIdKey]) {
         let oldV = newState.details[key][value[detailIdKey]];
         if (oldV) {
-          newState.details[key][value[detailIdKey]] = {...oldV, ...value};
+          newState.details[key][value[detailIdKey]] = { ...oldV, ...value };
         } else {
           newState.details[key][value[detailIdKey]] = value;
         }
@@ -51,7 +52,7 @@ export default function main (state = defaultState, action) {
           if (value && value.stcd) {
             let oldV = newState.details[key][value.stcd];
             if (oldV) {
-              newState.details[key][value.stcd] = {...oldV, ...value};
+              newState.details[key][value.stcd] = { ...oldV, ...value };
             } else {
               newState.details[key][value.stcd] = value;
             }
@@ -88,9 +89,16 @@ export default function main (state = defaultState, action) {
       }
       break;
     }
+    case actionTypes.SET_USERINFO: {
+      let data = action.data;
+      if (data && data.length) {
+        newState.userinfo = data;
+      }
+      break;
+    }
     default:
       return state;
   }
-  
+
   return newState;
 }

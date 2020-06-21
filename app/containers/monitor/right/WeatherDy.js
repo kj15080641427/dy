@@ -57,13 +57,19 @@ class WeatherDy extends React.PureComponent {
             </div>
         );
     }
-    componentDidMount() {
+    selectInit() {
         this.setState({ loading: true, })
         GetEarlyWarnning().then((res) => {
             console.log(res.data.content)
             this.setState({ loading: false, contentObj: res.data.content })
         })
 
+    }
+    componentDidMount() {
+        this.selectInit()
+        window.setInterval(() => {
+            this.selectInit()
+        }, 1000 * 5 * 60)
     }
 }
 export default WeatherDy;

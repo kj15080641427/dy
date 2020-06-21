@@ -230,7 +230,7 @@ class WeatherPic extends React.PureComponent {
       </div >
     );
   }
-  componentDidMount() {
+  selectInit() {
     let startTime = moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YYYY-MM-DD")
     let entTime = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("YYYY-MM-DD")
     //获取卫星云图
@@ -246,6 +246,12 @@ class WeatherPic extends React.PureComponent {
         })
 
       })
+  }
+  componentDidMount() {
+    this.selectInit()
+    window.setInterval(() => {
+      this.selectInit()
+    }, 1000 * 5 * 60)
   }
 }
 

@@ -8,8 +8,8 @@ export function login(data) {
   return fetchJSONData("POST", "/users/login", data);
 }
 //获取所有视频站点信息
-export function getAllVideo() {
-  return fetchJSONData("POST", "/radio/getAll", {});
+export function getAllVideo(data) {
+  return fetchJSONData("POST", "/radio/getAll", data);
 }
 // 获取雨晴实时信息
 export function getRainRealTime(data) {
@@ -155,6 +155,10 @@ export function getByTimeDay(data) {
 //统计各来源的站点数
 export function getCountStation(data) {
   return fetchJSONData("POST", "/count/getCountStation", data);
+}
+//统计各来源的视频站点数
+export function getCountRadio(data) {
+  return fetchJSONData("POST", "/count/getCountRadio", data);
 }
 
 //==============================================================系统设置=======================================================================

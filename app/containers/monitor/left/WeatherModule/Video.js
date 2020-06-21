@@ -230,10 +230,11 @@ class Precipitation extends React.PureComponent {
             </>
         );
     }
-    //初始化数据
-    componentDidMount() {
+    selectInit() {
         this.setState({ loading: true });
-        getRadioAll({})
+        getRadioAll({
+            "isShow": "0"
+        })
             .then((result) => {
                 this.setState({ loading: false });
                 this.setState({ qydataSource: result.data });
@@ -241,6 +242,13 @@ class Precipitation extends React.PureComponent {
         this.videoControl.login().then((rest) => {
             this.setState({ videoobj: this.videoControl });
         })
+    }
+    //初始化数据
+    componentDidMount() {
+        this.selectInit()
+        window.setInterval(() => {
+            this.selectInit()
+        }, 10000 * 5 * 60);
 
     }
     // 选中行
@@ -250,6 +258,10 @@ class Precipitation extends React.PureComponent {
             onClick: () => {
                 this.locationClick(record)
             },
+            // //双击放大
+            // onDoubleClick: () => {
+            //     this.playV(record)
+            // },
         };
     }
     locationClick(e) {

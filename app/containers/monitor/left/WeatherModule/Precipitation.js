@@ -37,14 +37,14 @@ class Precipitation extends React.PureComponent {
     showTu = (data, value, starttm, endtm, id) => {
         let xdata = []
         let ydata = []
-        var myChart = echarts.init(document.getElementById(id));
+        var myChart1 = echarts.init(document.getElementById(id));
         if (data.length !== 0) {
             for (var i = data.length - 1; i >= 0; i--) {
                 xdata.push(data[i].tm)
                 ydata.push((data[i].hourAvg * 1).toFixed(1))
             }
 
-            myChart.setOption({
+            myChart1.setOption({
                 title: {
                     text: value.name + '-雨量站雨量变化',
                     subtext: starttm + '至' + endtm,
@@ -107,7 +107,7 @@ class Precipitation extends React.PureComponent {
             // this.setState({
             //     mloading: false
             // });
-            myChart.setOption({
+            myChart1.setOption({
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {// 坐标轴指示器，坐标轴触发有效
@@ -125,8 +125,8 @@ class Precipitation extends React.PureComponent {
                     },
                 ],
                 title: {
-                    text: "暂无数据",
-                    subtext: '暂无数据',
+                    text: value.name + '-雨量站雨量变化',
+                    subtext: starttm + '至' + endtm,
                 },
                 xAxis: {
                     type: 'category',
@@ -236,8 +236,8 @@ class Precipitation extends React.PureComponent {
                     },
                 ],
                 title: {
-                    text: "暂无数据",
-                    subtext: '暂无数据',
+                    text: value.name + '-雨量站雨量变化',
+                    subtext: starttm + '至' + endtm,
                 },
                 xAxis: {
                     type: 'category',
@@ -258,8 +258,8 @@ class Precipitation extends React.PureComponent {
     //模态框
     showModal = (value) => {
         this.callback(value)
-        let starttm = moment(new Date().getTime() - 60 * 60 * 1000).format("YYYY-MM-DD HH:mm")
-        let endtm = moment(new Date().getTime()).format("YYYY-MM-DD HH:mm")
+        let starttm = moment(new Date().getTime() - 60 * 60 * 1000).format("YYYY-MM-DD HH:mm:ss")
+        let endtm = moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss")
         getRainHistory({
             "stcd": value.stcd,
             "starttm": starttm,
@@ -274,7 +274,6 @@ class Precipitation extends React.PureComponent {
                     mloading: false,
                 })
                 this.showTu(result.data.records, value, starttm, endtm, 'mainbyqyByHour')
-
             })
         getByTimeHour({
             "stcd": value.stcd,
@@ -399,9 +398,9 @@ class Precipitation extends React.PureComponent {
                 this.locationClick(record)
             },
             //双击打开历史雨量
-            onDoubleClick: () => {
-                this.showModal(record)
-            },
+            // onDoubleClick: () => {
+            //     this.showModal(record)
+            // },
         };
     }
     render() {
@@ -425,30 +424,34 @@ class Precipitation extends React.PureComponent {
             {
                 title: '5分钟(mm)',
                 dataIndex: 'minuteAvg',
-                width: 90,
+                width: 88,
                 className: 'column-money',
-                render: minuteAvg => minuteAvg == '-' ? '-' : (minuteAvg * 1).toFixed(1)
+                render: minuteAvg => minuteAvg == '-' ? '-' : (minuteAvg * 1).toFixed(1),
+                sorter: (a, b) => a.minuteAvg - b.minuteAvg,
             },
             {
                 title: '1小时(mm)',
                 dataIndex: 'hourAvg',
-                width: 90,
+                width: 88,
                 className: 'column-money',
-                render: hourAvg => hourAvg == '-' ? '-' : (hourAvg * 1).toFixed(1)
+                render: hourAvg => hourAvg == '-' ? '-' : (hourAvg * 1).toFixed(1),
+                sorter: (a, b) => a.hourAvg - b.hourAvg,
             },
             {
                 title: '24小时(mm)',
                 dataIndex: 'dayAvg',
                 width: 90,
                 className: 'column-money',
-                render: dayAvg => dayAvg == '-' ? '-' : (dayAvg * 1).toFixed(1)
+                render: dayAvg => dayAvg == '-' ? '-' : (dayAvg * 1).toFixed(1),
+                sorter: (a, b) => a.dayAvg - b.dayAvg,
             },
             {
                 title: '更新时间',
                 dataIndex: 'tm',
                 width: 140,
                 className: 'column-money',
-                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
+                sorter: (a, b) => new Date(a.tm).getTime() - new Date(b.tm).getTime(),
             }
         ];
         const columnsByHour = [
@@ -478,13 +481,15 @@ class Precipitation extends React.PureComponent {
                 dataIndex: 'drp',
                 width: 90,
                 className: 'column-money',
-                render: drp => drp == '-' ? '-' : (drp * 1).toFixed(1)
+                render: drp => drp == '-' ? '-' : (drp * 1).toFixed(1),
+                sorter: (a, b) => a.drp - b.drp,
             },
             {
                 title: '更新时间',
                 dataIndex: 'tm',
                 className: 'column-money',
-                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
+                sorter: (a, b) => new Date(a.tm).getTime() - new Date(b.tm).getTime(),
             },
         ]
         const columnsByDay = [
@@ -513,13 +518,15 @@ class Precipitation extends React.PureComponent {
                 title: '1小时降水(mm)',
                 dataIndex: 'avgDrp',
                 className: 'column-money',
-                render: avgDrp => (avgDrp * 1).toFixed(1)
+                render: avgDrp => (avgDrp * 1).toFixed(1),
+                sorter: (a, b) => a.avgDrp - b.avgDrp,
             },
             {
                 title: '更新时间',
                 dataIndex: 'endTime',
                 className: 'column-money',
-                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
+                sorter: (a, b) => new Date(a.endTime).getTime() - new Date(b.endTime).getTime(),
             },
         ]
         const columnsBySeven = [
@@ -548,13 +555,15 @@ class Precipitation extends React.PureComponent {
                 title: '24小时降水量(mm)',
                 dataIndex: 'avgDrp',
                 className: 'column-money',
-                render: avgDrp => (avgDrp * 1).toFixed(1)
+                render: avgDrp => (avgDrp * 1).toFixed(1),
+                sorter: (a, b) => a.avgDrp - b.avgDrp,
             },
             {
                 title: '更新时间',
                 dataIndex: 'endTime',
                 className: 'column-money',
-                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm")
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
+                sorter: (a, b) => new Date(a.endTime).getTime() - new Date(b.endTime).getTime(),
             },
         ]
         const { loading } = this.state;
@@ -665,8 +674,7 @@ class Precipitation extends React.PureComponent {
     //             this.setState({ current: result.data.current })
     //         })
     // }
-    //初始化数据
-    componentDidMount() {
+    selectInit() {
         this.setState({ loading: true });
         getBasicsAll({
             "type": 1
@@ -675,8 +683,15 @@ class Precipitation extends React.PureComponent {
                 let dataArr = SpliceSite(result)
                 this.setState({ loading: false });
                 this.setState({ qydataSource: dataArr })
-
             })
+    }
+    //初始化数据
+    componentDidMount() {
+        this.selectInit()
+        window.setInterval(() => {
+            this.selectInit()
+        }, 1000 * 5 * 60);
+
     }
     locationClick(e) {
         console.log(e)

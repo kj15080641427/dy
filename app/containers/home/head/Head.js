@@ -55,7 +55,7 @@ class Head extends React.PureComponent {
               onClick: this.btnClick,
             })}
           </Layout.Header>
-          <div className="header-title">后台管理系统</div>
+          <div className="header-title">东营市智慧水务系统</div>
           <div className="header-right">
             <div className="full-screen">
               <FullScreen />

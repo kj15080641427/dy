@@ -18,6 +18,22 @@
     padding-left: $monitor_left_pd_left;
     padding-bottom: $monitor_left_pd_bottom;
   }
+  .m-right-one {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: $monitor_right_w;
+    z-index: 10;
+    padding-top: $monitor_right_pd_top;
+    padding-right: $monitor_right_pd_right;
+    padding-bottom: $monitor_right_pd_bottom;
+  }
   .m-right {
     display: flex;
     flex-direction: column;
@@ -45,8 +61,8 @@
   }
 }
 .m-set-img {
-  position:absolute;
-  z-index:999;
+  position: absolute;
+  z-index: 999;
   top: 12px;
   right: 29px;
   width: 25px;
@@ -83,4 +99,4 @@
 }
 .tooltip-static:before {
   border-top-color: #ffcc33;
-} 
+}

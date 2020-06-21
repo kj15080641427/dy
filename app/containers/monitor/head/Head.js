@@ -33,17 +33,24 @@ class Head extends React.PureComponent {
       </div>
     );
   }
+  selectInit() {
+
+    //获取天气信息
+    getWeatherdata()
+      .then(result => {
+        this.setState({ weatherData: result.data })
+      })
+  }
   componentDidMount() {
     this._timer = window.setInterval(() => {
       if (this.time) {
         this.time.innerHTML = moment().format("YYYY-MM-DD HH:mm:ss dddd");
       }
     }, 1000);
-    //获取天气信息
-    getWeatherdata()
-      .then(result => {
-        this.setState({ weatherData: result.data })
-      })
+    this.selectInit()
+    window.setInterval(() => {
+      this.selectInit()
+    }, 1000 * 5 * 60)
   }
   componentWillUnmount() {
     clearTimeout(this.time);

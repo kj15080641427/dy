@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import { Form, Input, Button, Select, Modal, message, Table } from 'antd';
-import { queryByRoleId, updateRole, saveRole, queryPermission } from '@app/data/request';
+import { queryByRoleId, updateRole, saveRole, queryPermission, rolePermission } from '@app/data/request';
 
 
 const { Option } = Select;
@@ -30,8 +30,7 @@ class JurisdicForm extends React.Component {
             permissionData: [],//权限集合
             selectedRowKeys: [], //选中集合
             loading: false,
-            jurisdicArr: [],//查询到的所有权限集合
-            jurisdic: [],//查询到的角色权限集合
+            jurisdicAll: [],//查询到的角色权限集合
         };
         this.formRef = this.props.form
     }
@@ -76,14 +75,35 @@ class JurisdicForm extends React.Component {
             });
         }, 1000);
     };
-
+    saverolePermission = () => {
+        rolePermission({
+            "roleId": this.props.rowObj.roleId,
+            "permissionIdList": this.state.selectedRowKeys
+        }).then((res) => {
+            if (res.data) {
+                message.success('修改权限成功！');
+                this.props.selectPage();
+                this.onCancel();
+            } else {
+                console.log(res.msg)
+            }
+        })
+    }
     onSelectChange = selectedRowKeys => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
+        console.log("值", this.state.selectedRowKeys)
     };
+    renderCell = (record, selected, selectedRows, nativeEvent) => {
+        console.log(record)
+        console.log(selected)
+        console.log(selectedRows)
+        console.log(nativeEvent)
+    }
     render() {
         console.log("Test this.props.match", this.props.match, this.props.location);
         console.log(this.props.rowObj.roleId)
+        console.log(this.props.jurisdicArr)
 
         const { loading, selectedRowKeys, permissionData } = this.state;
         const columns = [
@@ -104,6 +124,8 @@ class JurisdicForm extends React.Component {
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
+            renderCell: this.renderAll,
+            // value:
         };
         const hasSelected = selectedRowKeys.length > 0;
         return (
@@ -143,8 +165,9 @@ class JurisdicForm extends React.Component {
                             name="roleId"
                         >
                         </Form.Item>
-                        <Button type="primary" onClick={this.start} disabled={!hasSelected} loading={loading}>
 
+                        <Button type="primary" onClick={this.saverolePermission} disabled={!hasSelected} loading={loading}>
+                            提交
                         </Button>
                         <span style={{ marginLeft: 8 }}>
                             {hasSelected ? `已选中 ${selectedRowKeys.length} 个` : ''}
@@ -172,7 +195,7 @@ class JurisdicForm extends React.Component {
             let arr = []
             for (let index = 0; index < result.data.records.length; index++) {
                 arr.push({
-                    key: result.data.records[index].permissionId,
+                    key: result.data.records[index].permissionId + "",
                     permName: result.data.records[index].permName,
                     url: result.data.records[index].url,
                     permTag: result.data.records[index].permTag,
@@ -182,16 +205,6 @@ class JurisdicForm extends React.Component {
                 permissionData: arr
             })
         })
-        if (this.props.rowObj.roleId !== undefined) {
-            queryByRoleId({
-                "roleId": this.props.rowObj.roleId
-            }).then((result) => {
-                console.log(result)
-                this.setState({
-                    jurisdicArr: result.data
-                })
-            })
-        }
     }
     componentDidUpdate() {
 
