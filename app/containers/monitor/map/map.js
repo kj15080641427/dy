@@ -583,7 +583,7 @@ class Map extends React.PureComponent {
       message.error('获取基础资料失败');
     });
     // 加载视频数据
-    getAllVideo().then((res) => {
+    getAllVideo({}).then((res) => {
       if (res.code === 200) {
         this.props.actions.addVideos(res.data);
         this.map.addFeatures("video", res.data.map((item) => {
