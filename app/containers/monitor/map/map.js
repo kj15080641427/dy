@@ -157,6 +157,17 @@ class Map extends React.PureComponent {
       key: "river2"
     });
 
+    //加入交通实况图
+    this.map.addGeo({
+      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
+      params: {
+        'LAYERS': 'dy:traffic',
+        'TILED': true
+      },
+      zIndex: 11,
+      key: 'traffic'
+    });
+
     this.flood = new FloodAnimation({
       map: this.map.getMap(),
       url: 'http://code.tuhuitech.cn:10012/geoserver/dy/ows?service=WFS',
