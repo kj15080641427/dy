@@ -497,6 +497,7 @@ class Map extends React.PureComponent {
       if (feature) {
         console.log('onFeatureClicked', this._isClickInfoBox);
         this._isClickInfoBox = true;
+        
         this.addWindowCloseEvent();
       }
       // 下一次事件循环去掉
@@ -509,6 +510,18 @@ class Map extends React.PureComponent {
       this.mapViewChanged();
     });
     this.mapViewChanged(); // 初始化完成调一下,根据zoom隐藏相关图层
+    // 地图拖动事件
+    this.map.getMap().on("movestart", () => {
+      this._isMapMoved = true;
+      // this.mapViewChanged();
+    });
+    this.map.getMap().on("moveend", () => {
+      window.setTimeout(() => {
+        this._isMapMoved = false;
+      },0)
+      
+      // this.mapViewChanged();
+    });
   }
   mapViewChanged() {
     let zoom = this.map.getView().getZoom();
@@ -612,8 +625,10 @@ class Map extends React.PureComponent {
     if (this._clickToken) {
       this._clickToken.remove();
     }
+    
     this._clickToken = addEventListener(window, "click", () => {
       if (!this._windowCloseFlag) return;
+      if (this._isMapMoved) return;
       let obj = {};
       this.type.forEach((Ovl) => {obj[Ovl.type] = {};});
       this.setState({
