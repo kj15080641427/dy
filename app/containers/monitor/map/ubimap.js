@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 
 // import { formatDegree } from "../../../../../util/common.js";
 import {fromLonLat, get, transform} from 'ol/proj.js';
@@ -72,7 +73,12 @@ export default (function(window) {
         this.controls = {};
         this.hlLayers = []; // 启用高亮
         this.sfLayers = [] ; // 启用的点击交互图层
+        this.tagLayers = []; // 开启有tag的layer
+        this.tagLayerEvent = {} // 
         this.clusterLayer = {};
+        this.callbacks = {
+          onFeatureClicked: null,
+        };
         this._init.call(this, opt);
     };
     //初始化map
@@ -85,7 +91,17 @@ export default (function(window) {
                 minZoom: opt.minZoom ? opt.minZoom: 0
             }),
             target: this.target,
-            controls: [],
+            controls: [
+              new MousePosition({
+                coordinateFormat:  (cood) => {
+                  cood = transform(cood, 'EPSG:3857', 'EPSG:4326');
+                  if (this._format) {
+                      return formatDegree(cood[0])+ ',' + formatDegree(cood[1]);
+                  }
+                  return cood[0].toFixed(6) + ',' + cood[1].toFixed(6);
+                }
+              })
+            ],
             // controls: defaults().extend([new MousePosition({
             //     coordinateFormat:  (cood) => {
             //         cood = transform(cood, 'EPSG:3857', 'EPSG:4326');
@@ -204,6 +220,9 @@ export default (function(window) {
         var nowStyle = obj.style || this.layerStyle[key];
         if (nowStyle) {
             var style = this._createPointStyle(nowStyle, obj);
+            // 放入text
+            let text = feature.getStyle().getText();
+            style.setText(text);
             feature.setStyle(style);
         }
     };
@@ -556,31 +575,35 @@ export default (function(window) {
         // 
       });
       var cachFeature = null;
-      this._pointermoveWFSKey = this.map.on('pointermove', function(e) {
-          var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
-              if (feature && layer) {
-                if (cachFeature) {
-                  cachFeature.set("mEnter", false);
+      // 等到下一次事件循环再加
+      window.setTimeout(() => {
+        this._pointermoveWFSKey = this.map.on('pointermove', function(e) {
+            var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+                if (feature && layer) {
+                  if (cachFeature) {
+                    cachFeature.set("mEnter", false);
+                  }
+                  feature.set("mEnter", true);
+                  cachFeature = feature;
                 }
-                feature.set("mEnter", true);
-                cachFeature = feature;
-              }
-          }.bind(this), {hitTolerance:5, layerFilter: function(layer) {
-            return layer === vectorLayer;
-          }});
-      });
-      this._pointermoveWFSKey = this.map.on('click', function(e) {
-          var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
-              if (feature && layer) {
-                let coord = this.getCoordinateFromPixel(e.pixel);
-                let lonlat = coord;
-                lonlat = transform(lonlat, projection, sprojection);
-                param.onClick && param.onClick({...feature.getProperties(), lonlat });
-              }
-          }.bind(this), {hitTolerance:5, layerFilter: function(layer) {
-            return layer === vectorLayer;
-          }});
-      });
+            }.bind(this), {hitTolerance:5, layerFilter: function(layer) {
+              return layer === vectorLayer;
+            }});
+        });
+        this._pointermoveWFSKey = this.map.on('click', function(e) {
+            var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+                if (feature && layer) {
+                  let coord = this.getCoordinateFromPixel(e.pixel);
+                  let lonlat = coord;
+                  lonlat = transform(lonlat, projection, sprojection);
+                  param.onClick && param.onClick({...feature.getProperties(), lonlat });
+                }
+            }.bind(this), {hitTolerance:5, layerFilter: function(layer) {
+              return layer === vectorLayer;
+            }});
+        });
+      }, 0)
+      
       vectorLayer.set("key", param.key);
       this.map.addLayer(vectorLayer);
       this.layers[param.key] = vectorLayer;
@@ -687,8 +710,9 @@ export default (function(window) {
     //添加矢量图
     Map.prototype.addVector = function(param) {
         if (!param || !param.key) return;
+        let source = new VectorSource()
         var vectorLayer = new VectorLayer({
-            source: new VectorSource(),
+            source: source,
             visible: param.visible == null ? true : param.visible,
             zIndex: param.zIndex ? param.zIndex : 0,
             style: typeof param.style === "function" ? param.style : undefined
@@ -699,6 +723,26 @@ export default (function(window) {
         if (param.style && typeof param.style !== "function") {
             this.layerStyle[param.key] = param.style;
         }
+        // source.on("addfeature", (e) => {
+        //   if (param.key === "water") {
+        //     let feature = e.feature;
+        //     let featureStyle = feature.getStyle();
+        //     var nowStyle = feature.get("attr").style || this.layerStyle[vectorLayer.get("key")];
+        //     var font = this.layerStyle[param.key] && this.layerStyle[param.key].font || "14px";
+        //     var text = new Text({
+        //         text: typeof nowStyle.fontText === "function" ? nowStyle.fontText(feature.get("attr")) : nowStyle.fontText,
+        //         offsetX: nowStyle.fontOffset && nowStyle.fontOffset[0] != null ? nowStyle.fontOffset[0] : 10,
+        //         offsetY: nowStyle.fontOffset && nowStyle.fontOffset[1] != null ? nowStyle.fontOffset[1] : -10,
+        //         textAlign: "left",
+        //         fill: new Fill({
+        //             color: nowStyle.fontColor
+        //         }),
+        //         font: font
+        //     });
+        //     featureStyle.setText(text);
+        //     feature.setStyle(featureStyle);
+        //   }
+        // })
     };
     //删除矢量图层
     Map.prototype.removeVector = function(key) {
@@ -729,6 +773,9 @@ export default (function(window) {
     };
     Map.prototype.getOverlay = function(id) {
       return this.overlay[id];
+    };
+    Map.prototype.getAllOverlays = function() {
+      return Object.values(this.overlay);
     };
     Map.prototype.addOverlayClass = function(id, clazz) {
         if (!id || !this.overlay[id]) return;
@@ -765,6 +812,15 @@ export default (function(window) {
         stopEvent: false,
       }, div);
     };
+    Map.prototype.removeAlarmByString = function(str) {
+      let overlays = this.overlay;
+      let removeKeys = Object.keys(overlays).filter((olKey) => {
+        return olKey.indexOf(str) > -1;
+      });
+      removeKeys.forEach((key) => {
+        this.removeOverlay(key);
+      })
+    }
     //添加目标
     Map.prototype.addFeature = function(key, obj) {
         if (!this.layers[key] || obj == null) return;
@@ -945,6 +1001,7 @@ export default (function(window) {
         this._pointermoveEKey = this.map.on('pointermove', function(e) {
             var flag = false;
             var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+                if (this.tagLayers.indexOf(layer) > -1 && feature.getStyle().getText() && feature.getStyle().getText().getText() !== "") return;
                 if (hlFeature) {
                     var hlfeatureStyle = hlFeature.getStyle();
                     hlfeatureStyle.setText(null);
@@ -956,23 +1013,29 @@ export default (function(window) {
 
                     var featureStyle = feature.getStyle();
                     var nowStyle = feature.get("attr").style || this.layerStyle[layer.get("key")];
-                    var text = new Text({
-                        text: typeof nowStyle.fontText === "function" ? nowStyle.fontText(feature.get("attr")) : nowStyle.fontText,
-                        offsetX: nowStyle.fontOffset && nowStyle.fontOffset[0] != null ? nowStyle.fontOffset[0] : 10,
-                        offsetY: nowStyle.fontOffset && nowStyle.fontOffset[1] != null ? nowStyle.fontOffset[1] : -10,
-                        textAlign: "left",
-                        fill: new Fill({
-                            color: nowStyle.fontColor
-                        }),
-                        font: font
-                    });
-                    featureStyle.setText(text);
+                    let textWord = typeof nowStyle.fontText === "function" ? nowStyle.fontText(feature.get("attr")) : nowStyle.fontText;
+                    if (featureStyle.getText()) {
+                      featureStyle.getText().setText(textWord);
+                    }else {
+                      var text = new Text({
+                          text: textWord,
+                          offsetX: nowStyle.fontOffset && nowStyle.fontOffset[0] != null ? nowStyle.fontOffset[0] : 10,
+                          offsetY: nowStyle.fontOffset && nowStyle.fontOffset[1] != null ? nowStyle.fontOffset[1] : -10,
+                          textAlign: "left",
+                          fill: new Fill({
+                              color: nowStyle.fontColor
+                          }),
+                          font: font
+                      });
+                      featureStyle.setText(text);
+                    }
+                    
                     feature.setStyle(featureStyle);
                     hlFeature = feature;
                     flag = true;
                     return;
                 }
-                
+
             }.bind(_this), {hitTolerance:5, layerFilter: function(layer) {
               if (_this.hlLayers && _this.hlLayers.indexOf(layer) > -1) {
                 return true;
@@ -1000,6 +1063,74 @@ export default (function(window) {
             this._pointermoveEKey = null;
         }
     };
+    Map.prototype.startTagOnLayer = function(key) {
+      if (!this.layers[key]) return;
+      this.tagLayers.push(this.layers[key]);
+      
+      let layer = this.layers[key];
+      let func = (e) => {
+      // layer.getSource().getFeatures().forEach((feature) => {
+        let feature = e.feature;
+        var featureStyle = feature.getStyle();
+        var nowStyle = feature.get("attr").style || this.layerStyle[layer.get("key")];
+        var font = this.layerStyle[key] && this.layerStyle[key].font || "14px";
+        var text = new Text({
+            // text: typeof nowStyle.fontText === "function" ? nowStyle.fontText(feature.get("attr")) : nowStyle.fontText,
+            text: "",
+            offsetX: nowStyle.fontOffset && nowStyle.fontOffset[0] != null ? nowStyle.fontOffset[0] : 10,
+            offsetY: nowStyle.fontOffset && nowStyle.fontOffset[1] != null ? nowStyle.fontOffset[1] : -10,
+            textAlign: "left",
+            fill: new Fill({
+                color: nowStyle.fontColor
+            }),
+            font: font
+        });
+        featureStyle.setText(text);
+        feature.setStyle(featureStyle);
+      }
+      this.tagLayerEvent[key] = layer.getSource().on('addfeature', func);
+      // layer.getSource().on('changefeature', func);
+    }
+    Map.prototype.hideTagOnLayer = function(key) {
+      if (!this.layers[key]) return;
+      var index = this.tagLayers.indexOf(this.layers[key]);
+      if (index > -1) {
+        this.layers[key].getSource().getFeatures().forEach((feature) => {
+          let style = feature.getStyle();
+          if (style.getText()) {
+            style.getText().setText("");
+          }
+          feature.setStyle(style);
+        });
+      }
+    };
+    Map.prototype.showTagOnLayer = function(key) {
+      if (!this.layers[key]) return;
+      var index = this.tagLayers.indexOf(this.layers[key]);
+      if (index > -1) {
+        this.layers[key].getSource().getFeatures().forEach((feature) => {
+          var nowStyle = feature.get("attr").style || this.layerStyle[key];
+          var style = feature.getStyle();
+          if (style.getText()) {
+            style.getText().setText(typeof nowStyle.fontText === "function" ? nowStyle.fontText(feature.get("attr")) : nowStyle.fontText);
+          }
+          feature.setStyle(style);
+        });
+      }
+    };
+    Map.prototype.stopTagOnLayer = function(key) {
+      if (!this.layers[key]) return;
+      var index = this.tagLayers.indexOf(this.layers[key]);
+      if (index > -1) {
+          this.tagLayers.splice(index, 1);
+      }
+      this.layers[key].getSource().getFeatures().forEach((feature) => {
+        let style = feature.getStyle();
+        style.setText(null);
+        feature.setStyle(style);
+      });
+      unByKey(this.tagLayerEvent[key]);
+    }
     Map.prototype.showTextonLayer = function(key, isShow) {
         if (!this.layers[key]) return;
         if (this.showTextLayer[key] === isShow) return;
@@ -1087,6 +1218,9 @@ export default (function(window) {
               return false;
               
             }});
+            if (_this.callbacks.onFeatureClicked) {
+              _this.callbacks.onFeatureClicked.call(_this, feature);
+            }
             if (!feature) return;
             for (var i = 0; i < _this.sfLayers.length; i++) {
                 var sflayer = _this.sfLayers[i];
@@ -1719,7 +1853,10 @@ export default (function(window) {
     };
     Map.prototype.getMap = function() {
       return this.map;
-  };
+    };
+    Map.prototype.onFeatureClicked = function(callback) {
+      this.callbacks.onFeatureClicked = callback;
+    }
     
     return Map;
 })(window);

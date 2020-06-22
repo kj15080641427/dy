@@ -22,6 +22,7 @@ yarn.lock
 
 /src/assets
 /public
+/static
 
 /dist
 

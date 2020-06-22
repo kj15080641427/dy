@@ -50,7 +50,8 @@ class Monitor extends React.PureComponent {
         ponding: false, // 积水
       }
     };
-    this.onChecked = this.onChecked.bind(this)
+    this.onChecked = this.onChecked.bind(this);
+    this.onZoomChanged = this.onZoomChanged.bind(this);
   };
   //设置抽屉页
   onClose = () => {
@@ -62,7 +63,7 @@ class Monitor extends React.PureComponent {
     let { layerVisible, displayRight, displayLeft } = this.state;
     return (
       <div className="monitor">
-        <Map layerVisible={layerVisible}></Map>
+        <Map layerVisible={layerVisible} onZoomChanged={this.onZoomChanged}></Map>
         <Head></Head>
         <div style={{ display: displayLeft }}>
           <div className="m-left">
@@ -135,8 +136,6 @@ class Monitor extends React.PureComponent {
       </div>
     );
   }
-  componentDidMount() {
-  }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
     if (layerVisible[layerKey] === checked) return;
@@ -144,6 +143,22 @@ class Monitor extends React.PureComponent {
     this.setState({
       layerVisible: { ...layerVisible }
     });
+  }
+  onZoomChanged(zoom) {
+    if (this._zoomToken) {
+      clearTimeout(this._zoomToken);
+    }
+    this._zoomToken = window.setTimeout(() => {
+      let { layerVisible } = this.state;
+      let { water, rain, ponding, video} = layerVisible;
+      if (zoom < 8) {
+        if (water === true || rain === true || ponding === true || video === true) {
+          this.setState({
+            layerVisible: {...layerVisible, water: false, rain: false, ponding: false, video: false}
+          });
+        }
+      }
+    }, 500);
   }
 }
 // -------------------redux react 绑定--------------------

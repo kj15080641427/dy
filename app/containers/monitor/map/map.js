@@ -48,6 +48,7 @@ class Map extends React.PureComponent {
     // eslint-disable-next-line react/no-direct-mutation-state
     this.type.forEach((Ovl) => {this.state.overlays[Ovl.type] = {};});
     this.mapKey = "b032247838f51a57717f172c55d25894";
+    this._windowCloseFlag = true; // window关闭事件是否开启
     this.onOverlayClose = this.onOverlayClose.bind(this);
     this.videoControl = new VideoControl();
   }
@@ -96,6 +97,7 @@ class Map extends React.PureComponent {
     }
     this._mapMove && this._mapMove.remove();
     this.flood && this.flood.destroy();
+    this._clickToken.remove();
   }
   createMap() {
     this.map = new UbiMap({
@@ -188,7 +190,11 @@ class Map extends React.PureComponent {
       typename: "dy:河流40",
       onClick: (props) => {
         if (props && props.NAME) {
+          // 下2次事件循环
+          console.log('addwfs',this._isClickInfoBox);
+          if (this._isClickInfoBox) return;
           this.onWfsRiverClick(props);
+          
         }
       }
     });
@@ -374,8 +380,10 @@ class Map extends React.PureComponent {
     this.map.startHighlightFeatureonLayer("ponding");
     this.map.startHighlightFeatureonLayer("gate");
     this.map.startHighlightFeatureonLayer("pump");
-    this.map.startHighlightFeatureonLayer("wfsRiver");
+    // this.map.startHighlightFeatureonLayer("wfsRiver");
     this.map.startHighlightFeatureonLayer("warehouse");
+    this.map.startTagOnLayer("water");
+    this.map.startTagOnLayer("rain");
     this.map.startSelectFeature("person", (param) => {
       this.addOverlay(Person.type, param);
       // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
@@ -484,6 +492,41 @@ class Map extends React.PureComponent {
       let a = this.map.getView().calculateExtent();
       // console.log(a);
     })
+    this.map.onFeatureClicked((feature) => {
+      // console.log("featureclick", feature);
+      if (feature) {
+        console.log('onFeatureClicked', this._isClickInfoBox);
+        this._isClickInfoBox = true;
+        this.addWindowCloseEvent();
+      }
+      // 下一次事件循环去掉
+      window.setTimeout(() => {
+        this._isClickInfoBox = false;
+      }, 0);
+    });
+    // 缩放事件
+    this.map.onView("change:resolution", () => {
+      this.mapViewChanged();
+    });
+    this.mapViewChanged(); // 初始化完成调一下,根据zoom隐藏相关图层
+  }
+  mapViewChanged() {
+    let zoom = this.map.getView().getZoom();
+    let { onZoomChanged } = this.props;
+    onZoomChanged && onZoomChanged(zoom);
+    console.log(zoom);
+    if (zoom > 14) {
+      if (this._zoom && this._zoom > 14) return;
+      console.log("show")
+      this.map.showTagOnLayer("water");
+      this.map.showTagOnLayer("rain");
+    } else {
+      if ( this._zoom && this._zoom <= 14) return;
+      console.log("hide")
+      this.map.hideTagOnLayer("water");
+      this.map.hideTagOnLayer("rain");
+    }
+    this._zoom = zoom;
   }
   onWfsRiverClick(props) {
     props.id = props.NAME;
@@ -561,7 +604,26 @@ class Map extends React.PureComponent {
         onMoveEnd && onMoveEnd();
       });
     });
+    
 
+  }
+  addWindowCloseEvent() {
+    this._windowCloseFlag = false;
+    if (this._clickToken) {
+      this._clickToken.remove();
+    }
+    this._clickToken = addEventListener(window, "click", () => {
+      if (!this._windowCloseFlag) return;
+      let obj = {};
+      this.type.forEach((Ovl) => {obj[Ovl.type] = {};});
+      this.setState({
+        overlays: obj
+      });
+      this._clickToken.remove();
+    });
+    setTimeout(() => {
+      this._windowCloseFlag = true;
+    }, 0)
   }
   loadData() {
     // 加载雨量站和水位站,水位站报警信息
@@ -574,7 +636,7 @@ class Map extends React.PureComponent {
         this.props.actions.initBaseData(data);
         this.props.actions.setMutiDetailData({
           key: "water",
-          value: res[1] && res[1].data && res[1].data.records || []
+          value: res[1] && res[1].data || []
         });
         this.drawFeatures(data);
       }
@@ -655,20 +717,21 @@ class Map extends React.PureComponent {
       console.log(e);
     })
     // 轮询预警更新
-    window.setTimeout(() => {
+    window.setInterval(() => {
       getWaterWarning({})
       .then((res) => {
         if (res.code === 200) {
           //res.data.records[0].stcd = "31106670";
           this.props.actions.setMutiDetailData({
             key: "water",
-            value: res && res.data && res.data.records || []
+            value: res && res.data || []
           });
           let { water, details } = this.props;
           this.map.updateFeatures("water", templateWater(water, details.water));
+          this.addWaterWaring(res.data);
         }
       });
-    }, 3000);
+    }, 30000);
     
     // 模拟洪水
     setInterval(() => {
@@ -679,7 +742,7 @@ class Map extends React.PureComponent {
       }
       this.flood.updateData(data)
     }, 1000);
-    //this.map.addAlarm("alarm001", [118.67, 37.43]);
+    // this.map.addAlarm("alarm001", [118.67, 37.43]);
     this.map.addFeatures("person", [
         {
             type: "Point",
@@ -704,10 +767,19 @@ class Map extends React.PureComponent {
     }
     if (water && water.length) {
       this.map.addFeatures("water", templateWater(water, details.water));
+      this.addWaterWaring(Object.values(details.water));
+      // this.map.startTagOnLayer("water");
     }
     if (ponding && ponding.length) {
       this.map.addFeatures("ponding", templatePonding(ponding, details.water));
     }
+  }
+  addWaterWaring(warningWater) {
+    if (!warningWater || !warningWater.length) return;
+    this.map.removeAlarmByString("alarm_water_");
+    warningWater.forEach((w) => {
+      this.map.addAlarm("alarm_water_" + w.stcd, [w.lon, w.lat]);
+    });
   }
   transformData(data) {
     if (!data || !data.length) return {};
