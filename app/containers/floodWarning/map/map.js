@@ -242,7 +242,7 @@ class Map extends React.PureComponent {
       zIndex: 20,
       style: {
         src: function(featureObj) { //
-            return require("../../../resource/icon/rain.svg")["default"];
+          return require("../../../resource/icon/1.svg")["default"];
         },
         anchor: [0.5, 0.5],
         strokeColor: "#1890ff",
