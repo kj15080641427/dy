@@ -5,15 +5,22 @@
  */
 import React from 'react';
 import "../style.scss";
-import { Table, Space, Popover, Modal, Button, Card, Input, Drawer, message } from 'antd';
+import { Table, Space, Popover, Modal, Button, Row, Input, Drawer, message, Col } from 'antd';
 import VideoComponent from '@app/components/video/VideoComponent';
 import VideoControl from '@app/components/video/VideoControl';
 import Highlighter from 'react-highlight-words';
 import {
-    CaretRightOutlined, SearchOutlined
+    CaretRightOutlined, SearchOutlined, ZoomInOutlined, ArrowUpOutlined, ZoomOutOutlined, ArrowDownOutlined, ArrowRightOutlined, ArrowLeftOutlined
 } from '@ant-design/icons';
-import { getRadioAll } from "@app/data/request";
+import { getRadioAll, getRotateRadio } from "@app/data/request";
 import emitter from "@app/utils/emitter.js";
+import left from "../../../../resource/video/left.png"
+import up from "../../../../resource/video/up.png"
+import down from "../../../../resource/video/down.png"
+import right from "../../../../resource/video/right.png"
+import zoomin from "../../../../resource/video/zoomin.png"
+import zoomout from "../../../../resource/video/zoomout.png"
+
 class Precipitation extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
@@ -118,6 +125,36 @@ class Precipitation extends React.PureComponent {
         clearFilters();
         this.setState({ searchText: '' });
     };
+    setVideo = (value) => {
+        // window.setInterval(() => {
+        //     console.log(value)
+        // }, 1000)
+        console.log(value)
+        getRotateRadio({
+            "token": this.state.token,
+            "action": value
+        }).then((rest) => {
+            console.log(rest)
+            this.setStopVideo()
+        })
+    }
+    setTimeVideo = (value) => {
+        getRotateRadio({
+            "token": this.state.token,
+            "action": value
+        }).then((rest) => {
+            console.log(rest)
+        })
+    }
+    setStopVideo = (value) => {
+        console.log(value)
+        getRotateRadio({
+            "token": this.state.token,
+            "action": "stop"
+        }).then((rest) => {
+            console.log(rest)
+        })
+    }
     render() {
         const qycolumns = [
             {
@@ -140,24 +177,24 @@ class Precipitation extends React.PureComponent {
                         )
                     }
             },
-            {
-                title: '状态',
-                dataIndex: 'isOnline',
-                className: 'column-money',
-                width: 70,
-                render:
-                    isOnline => {
-                        if (isOnline == 0) {
-                            return (
-                                <a>在线</a>
-                            )
-                        } else {
-                            return (
-                                <a style={{ color: 'red' }}>离线</a>
-                            )
-                        }
-                    },
-            },
+            // {
+            //     title: '状态',
+            //     dataIndex: 'isOnline',
+            //     className: 'column-money',
+            //     width: 70,
+            //     render:
+            //         isOnline => {
+            //             if (isOnline == 0) {
+            //                 return (
+            //                     <a>在线</a>
+            //                 )
+            //             } else {
+            //                 return (
+            //                     <a style={{ color: 'red' }}>离线</a>
+            //                 )
+            //             }
+            //         },
+            // },
             {
                 title: '操作',
                 dataIndex: 'isOnline',
@@ -172,6 +209,7 @@ class Precipitation extends React.PureComponent {
             }
         ];
         const { loading } = this.state;
+
         return (
             <>
                 <Table className="m-div-tablevideo"
@@ -202,32 +240,51 @@ class Precipitation extends React.PureComponent {
                 // }}
                 >
                     {/* <FullScreen ></FullScreen> */}
-                    <div style={{
-                        'overflow-y': "hidden",
-                        padding: '8px 0',
-                        background: '#000000',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        height: 975,
-                        width: 1920,
-                        left: -24,
-                        top: -25
-                    }} scrolling="no"
-                        borderWidth='0'
-                        position='absolute'>
-                        {this.state.videoobj !== null ?
-                            <VideoComponent videoControl={this.state.videoobj} token={this.state.token} style={{
-                                transform: 'scale(3.2)',
-                                width: "1920px",
-                                height: "975px",
-                                // frameborder: 0,
-                                // scrolling: "no",
-                                // borderWidth: 0,
-                                position: 'absolute',
-                                left: 2106,
-                                top: 1028,
-                            }} type={this.state.type} />
-                            : null}
+                    <div>
+                        <div style={{
+                            'overflow-y': "hidden",
+                            padding: '8px 0',
+                            background: '#000000',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            height: 975,
+                            width: 1920,
+                            left: -24,
+                            top: -25
+                        }} scrolling="no"
+                            borderWidth='0'
+                            position='absolute'>
+                            {this.state.videoobj !== null ?
+                                <VideoComponent videoControl={this.state.videoobj} token={this.state.token} style={{
+                                    transform: 'scale(3.2)',
+                                    width: "1920px",
+                                    height: "975px",
+                                    // frameborder: 0,
+                                    // scrolling: "no",
+                                    // borderWidth: 0,
+                                    position: 'absolute',
+                                    left: 2106,
+                                    top: 1028,
+                                }} type={this.state.type} />
+                                : null}
+                        </div>
+                        <div className="set-rotate-radio">
+                            <img src={up} className="img-size-up" onClick={() => this.setVideo("up")} 
+                            onMouseDown={() => this.setTimeVideo("up")} onMouseUp={() => this.setStopVideo()}
+                            ></img>
+                            <img src={left} className="img-size-left" onClick={() => this.setVideo("left")}
+                            onMouseDown={() => this.setTimeVideo("left")} onMouseUp={() => this.setStopVideo()}></img>
+                            <img src={right} className="img-size-right" onClick={() => this.setVideo("right")}
+                            onMouseDown={() => this.setTimeVideo("right")} onMouseUp={() => this.setStopVideo()}></img>
+                            <img src={down} className="img-size-down" onClick={() => this.setVideo("down")}
+                            onMouseDown={() => this.setTimeVideo("down")} onMouseUp={() => this.setStopVideo()}></img>
+                            <div className="img-radio-zoo">
+                                <img src={zoomin} className="img-size-zoomin" onClick={() => this.setVideo("zoomin")}
+                                onMouseDown={() => this.setTimeVideo("zoomin")} onMouseUp={() => this.setStopVideo()}></img>
+                                <img src={zoomout} className="img-size-zoomout" onClick={() => this.setVideo("zoomout")}
+                                onMouseDown={() => this.setTimeVideo("zoomout")} onMouseUp={() => this.setStopVideo()}></img>
+                            </div>
+                        </div>
                     </div>
                 </Drawer>
             </>
@@ -240,7 +297,13 @@ class Precipitation extends React.PureComponent {
         })
             .then((result) => {
                 this.setState({ loading: false });
-                this.setState({ qydataSource: result.data });
+                let arr = []
+                for (let i = 0; i < result.data.length; i++) {
+                    if (result.data[i].isOnline === "0") {
+                        arr.push(result.data[i])
+                    }
+                }
+                this.setState({ qydataSource: arr });
             })
         this.videoControl.login().then((rest) => {
             this.setState({ videoobj: this.videoControl });
@@ -251,7 +314,7 @@ class Precipitation extends React.PureComponent {
         this.selectInit()
         window.setInterval(() => {
             this.selectInit()
-        }, 10000 * 5 * 60);
+        }, 1000 * 5 * 60);
 
     }
     // 选中行

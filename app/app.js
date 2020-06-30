@@ -10,6 +10,8 @@ const AsyncMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/
 const rainMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/rain/rain").then((res) => { removeLoading(); return res; }));
 const videoMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/video/video").then((res) => { removeLoading(); return res; }));
 const floodWarningMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/floodWarning/floodWarning").then((res) => { removeLoading(); return res; }));
+const AsyncNoLogin = AsyncComp(() => import(/*webpackChunkName:'home'*/"@app/containers/home/NoLogin").then((res) => { removeLoading(); return res; }));
+
 
 export class App extends React.Component {
   render() {
@@ -17,11 +19,14 @@ export class App extends React.Component {
     return (
       <HashRouter>
         <Switch>
+          <Route exact path={`/login`} component={AsyncNoLogin} />
           <Route exact path={`/`} component={AsyncLogin} />
           {localStorage.getItem("token") === null ? null :
             <>
+              {localStorage.getItem("username") === "admin1" ? null :
+                <Route path={`/home`} component={AsyncHome} />
+              }
               <Route path="/index" component={AsyncMonitor} />
-              <Route path={`/home`} component={AsyncHome} />
               <Route path={`/rain`} component={rainMonitor} />
               <Route path={`/video`} component={videoMonitor} />
               <Route path={`/floodwarning`} component={floodWarningMonitor} />
