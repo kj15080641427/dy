@@ -459,7 +459,34 @@ class Map extends React.PureComponent {
       }
     });
     this.map.startSelectFeature("ponding", (param) => {
-      getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 })
+      let queryWater = getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 });
+        let queryVideo = getVideosByCode({ code: param.code});
+        //getWaterRealTime({stcd: param.stcd, current: 1, size: 1})
+        //let endTime = new moment().format('YYYY-MM-DD HH:mm:ss');
+        //let beginTime = moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
+        //getWaterHistory({ stcd: param.stcd, current: 1, size: 10000, starttm: beginTime, endtm: endTime })
+        Promise.all([queryWater, queryVideo])
+          .then((result) => {
+            let res = result[0];
+            if (res.code === 200) {
+              let records = res.data.records && res.data.records[0] || null;
+              this.props.actions.setDetailData({
+                key: "water",
+                value: records
+              });
+              let videoObject = result[1].data;
+              let newParam = records ? { ...param, ...records } : param;
+              newParam = videoObject ? { ...newParam, videos: [...videoObject] } : newParam;
+              newParam.videoControl = this.videoControl;
+            this.addOverlay(Water.type, newParam);
+          } else {
+            return Promise.reject(res.msg || "未知错误");
+          }
+        })
+          .catch((e) => {
+          message.error("获取水位详情失败");
+        });
+      /*getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 })
         .then((res) => { 
           if (res.code == 200) {
             let record = res.data.records && res.data.records[0] || null;
@@ -474,7 +501,7 @@ class Map extends React.PureComponent {
         })
         .catch((e) => {
           message.error("获取积水点数据失败");
-         });
+         });*/
         
     });
     this.map.startSelectFeature("video", (param) => {
