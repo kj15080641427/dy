@@ -9,11 +9,12 @@ import UbiMap from "./ubimap";
 import  FloodAnimation from "./FloodAnimation";
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
 import emitter from "@app/utils/emitter.js";
+import moment from 'moment';
 
 import "./style.scss";
 import { templateWater, templateRain, templatePonding, templateWareHouse } from "./template";
 import { getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning, getGate,
-  getPump, getWfsRiver, getWarehouse, getWarehouseMt } from "@app/data/request";
+  getPump, getWfsRiver, getWarehouse, getWarehouseMt,getVideosByCode } from "@app/data/request";
 import VideoControl from '@app/components/video/VideoControl';
 
 import Person from "./overlays/Person";
@@ -27,6 +28,7 @@ import WfsRiver from "./overlays/WfsRiver";
 import Warehouse from "./overlays/Warehouse";
 import { message } from 'antd';
 import TileSource from 'ol/source/Tile';
+import { getWaterHistory } from '../../../data/request';
 class Map extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -426,27 +428,54 @@ class Map extends React.PureComponent {
       //phz 修改，所有的水位都从接口获取
       if(false){
         this.addOverlay(Water.type, {...param, ...details.water[param.stcd]});
-      }else {
-        getWaterRealTime({stcd: param.stcd, current: 1, size: 1})
-        .then((res) => {
-          if (res.code === 200) {
-            let record = res.data.records && res.data.records[0] || null;
-            this.props.actions.setDetailData({
-              key: "water",
-              value: record
-            });
-            this.addOverlay(Water.type, record ? {...param, ...record} : param);
+      } else {
+        let queryWater = getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 });
+        let queryVideo = getVideosByCode({ code: param.code});
+        //getWaterRealTime({stcd: param.stcd, current: 1, size: 1})
+        //let endTime = new moment().format('YYYY-MM-DD HH:mm:ss');
+        //let beginTime = moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
+        //getWaterHistory({ stcd: param.stcd, current: 1, size: 10000, starttm: beginTime, endtm: endTime })
+        Promise.all([queryWater, queryVideo])
+          .then((result) => {
+            let res = result[0];
+            if (res.code === 200) {
+              let records = res.data.records && res.data.records[0] || null;
+              this.props.actions.setDetailData({
+                key: "water",
+                value: records
+              });
+              let videoObject = result[1].data;
+              let newParam = records ? { ...param, ...records } : param;
+              newParam = videoObject ? { ...newParam, videos: [...videoObject] } : newParam;
+              newParam.videoControl = this.videoControl;
+            this.addOverlay(Water.type, newParam);
           } else {
             return Promise.reject(res.msg || "未知错误");
           }
         })
-        .catch((e) => {
+          .catch((e) => {
           message.error("获取水位详情失败");
         });
       }
     });
     this.map.startSelectFeature("ponding", (param) => {
-        this.addOverlay(Ponding.type, {...param});
+      getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 })
+        .then((res) => { 
+          if (res.code == 200) {
+            let record = res.data.records && res.data.records[0] || null;
+            this.props.actions.setDetailData({
+              key: "ponding",
+              value: record
+            });
+
+            this.addOverlay(Ponding.type, record ? {...param, ...record} : param);
+          }
+          //this.addOverlay(Ponding.type, {...param});
+        })
+        .catch((e) => {
+          message.error("获取积水点数据失败");
+         });
+        
     });
     this.map.startSelectFeature("video", (param) => {
       //this.addOverlay(Video.type, param);
