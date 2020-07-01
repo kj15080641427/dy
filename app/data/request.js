@@ -11,6 +11,9 @@ export function login(data) {
 export function getAllVideo(data) {
   return fetchJSONData("POST", "/radio/getAll", data);
 }
+export function getVideosByCode(data) {
+  return fetchJSONData("POST", "/station/code", data);
+}
 // 获取雨晴实时信息
 export function getRainRealTime(data) {
   return fetchJSONData("POST", "/raindata/realTime", data);
