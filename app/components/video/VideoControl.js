@@ -1,8 +1,13 @@
+import { getRotateRadio } from "@app/data/request";
+
 //视频站点服务器的地址
 const videoSvrUrl = 'http://172.19.112.74:8888/';
 /**
  * 登录请求
  * @type {string}
+ * 默认账号：admin
+ * 默认密码：12345
+ * 请勿修改H5Stream中的密码
  */
 const loginUrl = `${videoSvrUrl}api/v1/Login?user=admin&password=827ccb0eea8a706c4c34a16891f84e7b`;
 
@@ -53,6 +58,19 @@ export default class VideoControl{
    */
   getLoginStatus(){
     return this.isLogin;
+  }
+
+  /** 
+   * 操作摄像头
+   * token 摄像头的token值
+   * action ： up/down/left/right/zoomin/zoomout
+  */
+  Ptz({ token, action }) {
+    return new Promise(function (resolve, reject) {
+      getRotateRadio({ token, action })
+        .then(result => resolve(result))
+        .catch(e => reject(e));
+     });
   }
 
   /**
