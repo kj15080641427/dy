@@ -8,6 +8,7 @@ import moment from 'moment';
 import VideoComponent from '@app/components/video/VideoComponent';
 import Holder from "@app/components/video/Holder"
 import { hasClassName } from "@app/utils/common.js";
+import {transform} from "ol/proj";
 // import echarts from 'echarts/lib/echarts';
 // import 'echarts/lib/chart/line';
 // import moment from 'moment';
@@ -67,14 +68,6 @@ class Water extends Base {
             <div className="m-ovl-line">时间：{udpTm}</div>
 
           </div>
-          {/* <div>
-            <input type='button' value='上' onClick={() => this.onRotateCamera({ token, action: 'up' })} />
-            <input type='button' value='下' onClick={() => this.onRotateCamera({ token, action: 'down' })} />
-            <input type='button' value='左' onClick={() => this.onRotateCamera({ token, action: 'left' })} />
-            <input type='button' value='右' onClick={() => this.onRotateCamera({ token, action: 'right' })} />
-            <input type='button' value='+' onClick={() => this.onRotateCamera({ token, action: 'zoomin' })} />
-            <input type='button' value='-' onClick={() => this.onRotateCamera({ token, action: 'zoomout' })} />
-          </div> */}
 
         </div>
         <span className="iconfont iconcuo m-ovl-close" ></span>
@@ -101,7 +94,16 @@ class Water extends Base {
 
   }
   componentDidMount() {
-    super.componentDidMount();
+    //super.componentDidMount();
+    let { map, model } = this.props;
+    if (!map || !model) return;
+    let nowNode = this.container.cloneNode(true);
+    nowNode.style.display = "block";
+    this.installEvent(nowNode);
+    let id = this.getType() + "_" + model.id;
+    let map_center = map.getView().getCenter();
+    let center = transform(map_center, 'EPSG:3857', 'EPSG:4326');
+    map.addOverlay(id, { Coordinate: center, offset: [-325, -240] }, nowNode);
     // let { model } = this.props;
     // let category = [];
     // let values = [];
