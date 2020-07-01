@@ -72,18 +72,18 @@ class Monitor extends React.PureComponent {
             <WeatherTable></WeatherTable>
           </div>
         </div>
-        {this.state.showRight ? <div style={{ display: displayRight }}>
+        {/* {this.state.showRight ? <div style={{ display: displayRight }}>
           <div className="m-right">
             <PannelBtn style={{ display: "block" }}></PannelBtn>
             <WeatherDy></WeatherDy>
             <AlarmTable></AlarmTable>
             <WeatherPic></WeatherPic>
           </div>
-        </div> :
+        </div> : */}
           <div className="m-right-one">
             <PannelBtn></PannelBtn>
           </div>
-        }
+        {/* } */}
         {/* <div style={{ display: this.state.displayBottom }}>
           <div className="m-bottom" >
             <CheckBox layerVisible={layerVisible} onChecked={this.onChecked}></CheckBox>
@@ -112,7 +112,7 @@ class Monitor extends React.PureComponent {
               });
             }} defaultChecked />&nbsp;&nbsp;<a style={{ fontSize: 15, color: '#000000fd' }}>左侧栏</a></div>
           </Row>
-          <br />
+          {/* <br />
           <Row>
             <div><Checkbox checked={this.state.showRight} onClick={() => {
               this.setState({
@@ -120,7 +120,7 @@ class Monitor extends React.PureComponent {
                 displayRight: this.state.showRight ? 'none' : 'block'
               });
             }} defaultChecked />&nbsp;&nbsp;<a style={{ fontSize: 15, color: '#000000fd' }}>右侧栏</a></div>
-          </Row>
+          </Row> */}
 
           {/* <br /> */}
           {/* <Row>

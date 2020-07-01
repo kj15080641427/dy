@@ -32,6 +32,10 @@ class Water extends React.PureComponent {
     console.log("Test this.props.match", this.props.match, this.props.location);
     let { dataSource, loading, count, vodeocount } = this.state;
     const columns = [
+      // {
+      //   title: 'id',
+      //   dataIndex: 'radioID'
+      // },
       {
         title: '站点名称',
         dataIndex: 'sitename',
@@ -231,7 +235,7 @@ class Water extends React.PureComponent {
       "isShow": 1
     })
       .then((result) => {
-        console.log(result)
+        console.log('视频站点',result)
         this.setState({ loading: false });
         this.setState({ dataSource: result.data })
         // this.setState({ searchedColumn: resultdata. })

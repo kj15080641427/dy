@@ -6,6 +6,8 @@ import "./style.scss";
 import Base from "./Base";
 import moment from 'moment';
 import VideoComponent from '@app/components/video/VideoComponent';
+import Holder from "@app/components/video/Holder"
+import { hasClassName } from "@app/utils/common.js";
 // import echarts from 'echarts/lib/echarts';
 // import 'echarts/lib/chart/line';
 // import moment from 'moment';
@@ -14,6 +16,7 @@ class Water extends Base {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      token: ""
     };
     this.onClose = this.onClose.bind(this);
   }
@@ -25,9 +28,10 @@ class Water extends Base {
     let videoControl = model.videoControl;
     let videos = model.videos;
     let token = videos && videos.length != 0 ? videos[0].strtoken : '';
+    this.setState({ token: token })
     let type = videos && videos.length != 0 ? videos[0].datasource : '';
-    return ( 
-      <div className="m-ovl-box m-ovl-water" style={{display: "none", width: 900, height: 500}} ref={(node) => { this.container = node;}}>
+    return (
+      <div className="m-ovl-box m-ovl-water" style={{ display: "none", width: 900, height: 450 }} ref={(node) => { this.container = node; }}>
         {/* <div>水位站点：{model.stnm || model.name}</div> */}
         {/* <div className="m-ovl-line">水位站点：{model.stnm || model.name}</div> */}
         {/* <div className="m-ovl-line">站点编号：{model.stcd}</div> */}
@@ -44,7 +48,14 @@ class Water extends Base {
             videoControl={videoControl}
             token={token}
             type={type}
-            style={{ width: 650, height: 480 }}
+            style={{
+              width: 600,
+              height: 346,
+              transform: 'scale(1.1)',
+              position: 'relative',
+              left: 30,
+              top: 30,
+            }}
           />
         </div>
         <div style={{ float: 'right', overflow: 'hidden', width: 200 }}>
@@ -54,18 +65,20 @@ class Water extends Base {
             <div className="m-ovl-line">来源：{model.dataSourceDesc}</div>
             <div className="m-ovl-line">警戒：{warningLevel}</div>
             <div className="m-ovl-line">时间：{udpTm}</div>
+
           </div>
-          <div>
+          {/* <div>
             <input type='button' value='上' onClick={() => this.onRotateCamera({ token, action: 'up' })} />
             <input type='button' value='下' onClick={() => this.onRotateCamera({ token, action: 'down' })} />
             <input type='button' value='左' onClick={() => this.onRotateCamera({ token, action: 'left' })} />
             <input type='button' value='右' onClick={() => this.onRotateCamera({ token, action: 'right' })} />
             <input type='button' value='+' onClick={() => this.onRotateCamera({ token, action: 'zoomin' })} />
             <input type='button' value='-' onClick={() => this.onRotateCamera({ token, action: 'zoomout' })} />
-          </div>
+          </div> */}
+
         </div>
-     
         <span className="iconfont iconcuo m-ovl-close" ></span>
+        <Holder token={token} divStyle={{ top: 200, right: -35 }}></Holder>
       </div>
     );
   }
@@ -77,8 +90,9 @@ class Water extends Base {
     if (videoControl) {
       videoControl.Ptz({ token, action })
         .then((result) => {
+          videoControl.Ptz({ token, action: 'stop' })
           console.log(result);
-         })
+        })
         .catch(e => message.error(e));
     }
   }
@@ -125,7 +139,22 @@ class Water extends Base {
     return Water.type;
   }
   onCustomClick(e) {
-
+    if (hasClassName(e.target, "img-size-up")) {
+      this.onRotateCamera({ token: this.state.token, action: 'up' })
+    }
+    else if (hasClassName(e.target, "img-size-left")) {
+      this.onRotateCamera({ token: this.state.token, action: 'left' })
+    }
+    else if (hasClassName(e.target, "img-size-right")) {
+      this.onRotateCamera({ token: this.state.token, action: 'right' })
+    }
+    else if (hasClassName(e.target, "img-size-down")) {
+      this.onRotateCamera({ token: this.state.token, action: 'down' })
+    } else if (hasClassName(e.target, "img-size-zoomin")) {
+      this.onRotateCamera({ token: this.state.token, action: 'zoomin' })
+    } else if (hasClassName(e.target, "img-size-zoomout")) {
+      this.onRotateCamera({ token: this.state.token, action: 'zoomout' })
+    }
   }
   onClose() {
     let { onClose, model } = this.props;

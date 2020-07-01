@@ -28,9 +28,14 @@ class Rain extends React.PureComponent {
     };
   }
   render() {
-    console.log("Test this.props.match", this.props.match, this.props.location);
+    console.log("Test this.props.", this.props, this.props.location);
+
     let { dataSource, loading, raincount, count } = this.state;
     const columns = [
+      // {
+      //   title: 'id',
+      //   dataIndex: 'stcd'
+      // },
       {
         title: '站名',
         dataIndex: 'name',
@@ -432,7 +437,7 @@ class Rain extends React.PureComponent {
 }
 function mapStateToProps(state) {
   return {
-    test: state.home.test,
+    userinfo: state.home.userinfo,
   };
 }
 

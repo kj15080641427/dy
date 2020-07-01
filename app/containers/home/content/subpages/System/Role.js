@@ -131,7 +131,7 @@ class Role extends React.PureComponent {
                 createPlanModalVisible: true
             })
         }
-        //查询打开对话框并传走数据
+        //修改时查询并打开对话框并传走数据
         const SelectById = (row) => {
             this.setState({
                 createPlanModalVisible: true,

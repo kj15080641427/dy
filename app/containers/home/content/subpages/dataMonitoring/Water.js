@@ -31,6 +31,10 @@ class Water extends React.PureComponent {
     console.log("Test this.props.match", this.props.match, this.props.location);
     let { dataSource, loading, watercount, count } = this.state;
     const columns = [
+      // {
+      //   title: 'id',
+      //   dataIndex: 'stcd'
+      // },
       {
         title: '站名',
         dataIndex: 'name',

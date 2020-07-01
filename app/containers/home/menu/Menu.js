@@ -51,9 +51,9 @@ class Menus extends React.PureComponent {
               <Menu.Item title={"水情信息"} key="/water">
                 水情信息
               </Menu.Item> */}
-              <Menu.Item key="/video">
+              {/* <Menu.Item key="/video">
                 视频站点
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item key="/model">
                 模型演示
               </Menu.Item>

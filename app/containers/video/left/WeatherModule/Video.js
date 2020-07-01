@@ -14,6 +14,7 @@ import {
 } from '@ant-design/icons';
 import { getRadioAll, getRotateRadio } from "@app/data/request";
 import emitter from "@app/utils/emitter.js";
+import Holder from "@app/components/video/Holder"
 import left from "../../../../resource/video/left.png"
 import up from "../../../../resource/video/up.png"
 import down from "../../../../resource/video/down.png"
@@ -125,36 +126,6 @@ class Precipitation extends React.PureComponent {
         clearFilters();
         this.setState({ searchText: '' });
     };
-    setVideo = (value) => {
-        // window.setInterval(() => {
-        //     console.log(value)
-        // }, 1000)
-        console.log(value)
-        getRotateRadio({
-            "token": this.state.token,
-            "action": value
-        }).then((rest) => {
-            console.log(rest)
-            this.setStopVideo()
-        })
-    }
-    setTimeVideo = (value) => {
-        getRotateRadio({
-            "token": this.state.token,
-            "action": value
-        }).then((rest) => {
-            console.log(rest)
-        })
-    }
-    setStopVideo = (value) => {
-        console.log(value)
-        getRotateRadio({
-            "token": this.state.token,
-            "action": "stop"
-        }).then((rest) => {
-            console.log(rest)
-        })
-    }
     render() {
         const qycolumns = [
             {
@@ -263,28 +234,13 @@ class Precipitation extends React.PureComponent {
                                     // scrolling: "no",
                                     // borderWidth: 0,
                                     position: 'absolute',
+                                    overflow: '-Scroll', "overflow- y": 'hidden',
                                     left: 2106,
                                     top: 1028,
                                 }} type={this.state.type} />
                                 : null}
                         </div>
-                        <div className="set-rotate-radio">
-                            <img src={up} className="img-size-up" onClick={() => this.setVideo("up")} 
-                            onMouseDown={() => this.setTimeVideo("up")} onMouseUp={() => this.setStopVideo()}
-                            ></img>
-                            <img src={left} className="img-size-left" onClick={() => this.setVideo("left")}
-                            onMouseDown={() => this.setTimeVideo("left")} onMouseUp={() => this.setStopVideo()}></img>
-                            <img src={right} className="img-size-right" onClick={() => this.setVideo("right")}
-                            onMouseDown={() => this.setTimeVideo("right")} onMouseUp={() => this.setStopVideo()}></img>
-                            <img src={down} className="img-size-down" onClick={() => this.setVideo("down")}
-                            onMouseDown={() => this.setTimeVideo("down")} onMouseUp={() => this.setStopVideo()}></img>
-                            <div className="img-radio-zoo">
-                                <img src={zoomin} className="img-size-zoomin" onClick={() => this.setVideo("zoomin")}
-                                onMouseDown={() => this.setTimeVideo("zoomin")} onMouseUp={() => this.setStopVideo()}></img>
-                                <img src={zoomout} className="img-size-zoomout" onClick={() => this.setVideo("zoomout")}
-                                onMouseDown={() => this.setTimeVideo("zoomout")} onMouseUp={() => this.setStopVideo()}></img>
-                            </div>
-                        </div>
+                        <Holder token={this.state.token}></Holder>
                     </div>
                 </Drawer>
             </>

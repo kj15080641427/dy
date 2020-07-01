@@ -5,10 +5,14 @@ import React from 'react';
 import "./style.scss";
 import { withRouter, BrowserRouter, Route, Link } from 'react-router-dom'
 import { Button, Layout, Header, Tags, Icon, Dropdown, Avatar, Menu } from 'antd';
-import setsys from "@app/resource/setsys.png"
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '@app/redux/actions/home';
+import setsys from "@app/resource/setsys.png";
+import UserMenu from './UserMenu';
 
 import {
-  MenuFoldOutlined, HomeOutlined, MenuUnfoldOutlined, SettingFilled,UserOutlined
+  MenuFoldOutlined, HomeOutlined, MenuUnfoldOutlined, SettingFilled, UserOutlined
 } from '@ant-design/icons';
 import FullScreen from '../components/FullScreen';
 // import BasicDrawer from '../components/BasicDrawer';
@@ -32,20 +36,23 @@ class Head extends React.PureComponent {
     const goback = () => {
       props.history.push('/login');
     };
+    console.log("11", actions)
     console.log("11", this.props.history.push)
     const DropdownList = (
-      <Menu className="drop-list">
-        <Menu.Item key="user">
-          <Icon type="user" />
-          {"admin"}
-        </Menu.Item>
-        <Menu.Item key="logout" onClick={() => { localStorage.removeItem("token"); this.props.history.push('/'); window.location.reload() }}>
-          <Icon type="logout" />
-					退出登录
-				</Menu.Item>
-      </Menu>
+      <UserMenu></UserMenu>
+//       <Menu className="drop-list">
+//         <Menu.Item key="user">
+//           <Icon type="user" />
+//           {/* {localStorage.getItem("userInfo").username} */}
+//           admin
+//         </Menu.Item>
+//         <Menu.Item key="logout" onClick={() => { localStorage.removeItem("token"); window.location.reload() }}>
+//           <Icon type="logout" />
+// 退出登录
+// </Menu.Item>
+//       </Menu>
     );
-
+    console.log(localStorage.getItem("userInfo"))
     return (
       <div className="top-header">
         <div className="top-header-inner">
@@ -72,7 +79,7 @@ class Head extends React.PureComponent {
             <div className="dropdown-wrap" id="dropdown-wrap" style={{ cursor: 'pointer' }}>
               <Dropdown getPopupContainer={() => document.getElementById('dropdown-wrap')} overlay={DropdownList}>
                 <div>
-                  <Avatar size="large" icon={<UserOutlined />}/>
+                  <Avatar size="large" icon={<UserOutlined />} />
                   <Icon style={{ color: 'rgba(0,0,0,.3)', cursor: 'pointer' }} type="caret-down" />
                 </div>
               </Dropdown>

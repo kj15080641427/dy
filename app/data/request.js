@@ -163,7 +163,10 @@ export function getCountStation(data) {
 export function getCountRadio(data) {
   return fetchJSONData("POST", "/count/getCountRadio", data);
 }
-
+//视频旋转接口
+export function getRotateRadio(data) {
+  return fetchJSONData("POST", "/radio/rotate", data);
+}
 //==============================================================系统设置=======================================================================
 
 //分页查询用户

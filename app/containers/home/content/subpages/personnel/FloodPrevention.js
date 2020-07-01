@@ -11,7 +11,6 @@ import { queryFloodUser, saveFloodUser, deleteFloodUser, updateFloodUser } from 
 import { Table, Row, Modal, Input, Button, Select, Form, Radio, DatePicker, Switch, Popconfirm, message } from 'antd';
 import { SearchOutlined, RedoOutlined, PlusCircleOutlined, CloseCircleOutlined, FormOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { FormInstance } from 'antd/lib/form';
 
 class FloodPrevention extends React.PureComponent {
   constructor(props, context) {
@@ -30,8 +29,8 @@ class FloodPrevention extends React.PureComponent {
         query: ""
       },//条件查询对象
     };
-    this.formRef = React.createRef(<FormInstance></FormInstance>);
-    this.addform = React.createRef(<FormInstance></FormInstance>);
+    this.formRef = React.createRef();
+    this.addform = React.createRef();
   }
   render() {
     console.log("FloodPrevention this.props.match", this.props.match, this.props.location);

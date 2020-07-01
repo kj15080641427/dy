@@ -41,7 +41,7 @@ class Precipitation extends React.PureComponent {
         if (data.length !== 0) {
             for (var i = data.length - 1; i >= 0; i--) {
                 xdata.push(data[i].tm)
-                ydata.push((data[i].hourAvg * 1).toFixed(1))
+                ydata.push((data[i].drp * 1).toFixed(1))
             }
 
             myChart1.setOption({
@@ -150,7 +150,7 @@ class Precipitation extends React.PureComponent {
         let ydata = []
         var myChart = echarts.init(document.getElementById(id));
         if (data.length !== 0) {
-            for (var i = data.length - 1; i >= 0; i--) {
+            for (var i = 0; i < data.length; i++) {
                 xdata.push(data[i].endTime)
                 ydata.push((data[i].avgDrp * 1).toFixed(1))
             }
@@ -479,7 +479,6 @@ class Precipitation extends React.PureComponent {
             {
                 title: '5分钟(mm)',
                 dataIndex: 'drp',
-                width: 90,
                 className: 'column-money',
                 render: drp => drp == '-' ? '-' : (drp * 1).toFixed(1),
                 sorter: (a, b) => a.drp - b.drp,

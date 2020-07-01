@@ -99,7 +99,7 @@ class Map extends React.PureComponent {
     }
     this._mapMove && this._mapMove.remove();
     this.flood && this.flood.destroy();
-    this._clickToken.remove();
+    // this._clickToken.remove();
   }
   createMap() {
     this.map = new UbiMap({

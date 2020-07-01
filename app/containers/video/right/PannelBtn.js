@@ -80,12 +80,14 @@ class PannelBtn extends React.PureComponent {
 
             <Col span={6}>
               {/* <Link to={"/home"}> */}
+              {localStorage.getItem("username") === "admin1" ? null :
               <img
                 // className="m-btn-everyday"
                 className="m-btn-flood"
                 src={sjgl}
               onClick={this.handle}
               ></img>
+            }
               {/* </Link> */}
             </Col>
             {/* </Row> */}
@@ -103,7 +105,8 @@ class PannelBtn extends React.PureComponent {
   }
   handle() {
     const w = window.open('about:blank');
-    w.location.href = "http://172.19.112.74/new/dist/index.html#/home"
+    // w.location.href = "http://172.19.112.74/new/dist/index.html#/home/rwvdata"
+    w.location.href = "http://172.19.112.74/dist/index.html#/home/rwvdata"
     //  w.location.href = "http://localhost/dist/index.html#/home"
     // w.location.href = "/#/home"
   }

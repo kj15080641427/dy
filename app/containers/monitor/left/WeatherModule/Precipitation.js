@@ -8,6 +8,9 @@ import "../style.scss";
 import localimgURL from '../../../../resource/local.png';
 import { Table, Tag, Popover, Modal, Button, Card, Row, Col, Input, Space, Tabs } from 'antd';
 import Highlighter from 'react-highlight-words';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '@app/redux/actions/monitor';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import emitter from "@app/utils/emitter.js";
@@ -30,7 +33,6 @@ class Precipitation extends React.PureComponent {
             mloading: false,//模态框表格加载动画
             searchText: '',
             searchedColumn: '',
-            stid: ""
         };
     }
     //画图
@@ -150,7 +152,7 @@ class Precipitation extends React.PureComponent {
         let ydata = []
         var myChart = echarts.init(document.getElementById(id));
         if (data.length !== 0) {
-            for (var i = data.length - 1; i >= 0; i--) {
+            for (var i = 0; i < data.length; i++) {
                 xdata.push(data[i].endTime)
                 ydata.push((data[i].avgDrp * 1).toFixed(1))
             }
@@ -377,7 +379,7 @@ class Precipitation extends React.PureComponent {
                     text
                 ),
     });
-
+    //搜索提交。
     handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
         this.setState({
@@ -385,7 +387,7 @@ class Precipitation extends React.PureComponent {
             searchedColumn: dataIndex,
         });
     };
-
+    //清空
     handleReset = clearFilters => {
         clearFilters();
         this.setState({ searchText: '' });
@@ -404,6 +406,7 @@ class Precipitation extends React.PureComponent {
         };
     }
     render() {
+        console.log(this.propsg)
         const qycolumns = [
             {
                 title: '站名',
@@ -701,4 +704,18 @@ class Precipitation extends React.PureComponent {
         emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
     }
 }
-export default Precipitation;
+function mapStateToProps(state) {
+    return {
+        rain: state.monitor.rain,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(actions, dispatch),
+    };
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Precipitation);

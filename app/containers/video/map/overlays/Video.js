@@ -4,6 +4,7 @@
 import React from 'react';
 import "./style.scss";
 import Base from "./Base";
+import {transform} from 'ol/proj.js';
 import VideoComponent from '@app/components/video/VideoComponent';
 class Video extends Base {
   static type = "video";
@@ -42,7 +43,18 @@ class Video extends Base {
 
   }
   componentDidMount() {
-    super.componentDidMount();
+    //super.componentDidMount();
+    let { map, model } = this.props;
+    if (!map || !model) return;
+    let nowNode = this.container.cloneNode(true);
+    nowNode.style.display = "block";
+    this.installEvent(nowNode);
+    let id = this.getType() + "_" + model.id;
+    let map_center = map.getView().getCenter();
+    let center = transform(map_center, 'EPSG:3857', 'EPSG:4326');
+    map.addOverlay(id, { Coordinate: center, offset: [-290, -140] }, nowNode);
+    
+
   }
   componentWillUnmount() {
     super.componentWillUnmount();

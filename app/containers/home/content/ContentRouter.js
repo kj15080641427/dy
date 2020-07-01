@@ -16,13 +16,8 @@ import Login from "../Login";
 import Jurisdiction from "./subpages/System/Jurisdiction"
 import Role from "./subpages/System/Role"
 import Model from "./subpages/media/Model"
-const EmptyContent = () => {
-    return (
-        <div>
-            内容为空,请点击菜单
-        </div>
-    );
-};
+import Home from "./subpages/Home/Home"
+
 const NoMatch = () => {
     return (
         <div>
@@ -40,24 +35,27 @@ class ContentRouter extends React.PureComponent {
         let { path } = this.props;
         return (
             <Switch>
-                <Route exact path={path} component={EmptyContent} />
+                <Route exact path={path} component={Home} />
                 {/* <Route path={path + "/test"} component={Test} /> */}
                 <Route path={"/#/"} component={Login} />
                 {localStorage.getItem("token") === null ? null :
                     <>
-                        <Route path={path + "/video"} component={Video} />
-                        <Route path={path + "/storemanage"} component={StoreManage} />
-                        <Route path={path + "/materialsmange"} component={MaterialsMange} />
-                        <Route path={path + "/expert"} component={Expert} />
-                        <Route path={path + "/floodprevention"} component={FloodPrevention} />
-                        <Route path={path + "/water"} component={waterCondition} />
-                        <Route path={path + "/loginlog"} component={LoginLog} />
-                        <Route path={path + "/user"} component={User} />
-                        <Route path={path + "/role"} component={Role} />
-                        <Route path={path + "/jurisdiction"} component={Jurisdiction} />
-                        <Route path={path + "/rwvdata"} component={rwvData} />
-                        <Route path={path + "/model"} component={Model} />
-
+                        {localStorage.getItem("username") === "admin1" ? null :
+                            <>
+                                <Route path={path + "/video"} component={Video} />
+                                <Route path={path + "/storemanage"} component={StoreManage} />
+                                <Route path={path + "/materialsmange"} component={MaterialsMange} />
+                                <Route path={path + "/expert"} component={Expert} />
+                                <Route path={path + "/floodprevention"} component={FloodPrevention} />
+                                <Route path={path + "/water"} component={waterCondition} />
+                                <Route path={path + "/loginlog"} component={LoginLog} />
+                                <Route path={path + "/user"} component={User} />
+                                <Route path={path + "/role"} component={Role} />
+                                <Route path={path + "/jurisdiction"} component={Jurisdiction} />
+                                <Route path={path + "/rwvdata"} component={rwvData} />
+                                <Route path={path + "/model"} component={Model} />
+                            </>
+                        }
                     </>
                 }
                 <Route component={NoMatch} />

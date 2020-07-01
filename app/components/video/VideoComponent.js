@@ -28,6 +28,8 @@ class VideoComponent extends Component{
           <iframe
             src={`http://172.19.112.74/video/index.html?sessionId=${this.state.session}&token=${this.state.token}&type=${this.state.type}`}
             style={this.props.style}
+            scrolling="no"
+            frameborder="0"
           /> : null}
       </div>
     );
