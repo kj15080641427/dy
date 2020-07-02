@@ -584,13 +584,13 @@ class Map extends React.PureComponent {
     let { onZoomChanged } = this.props;
     onZoomChanged && onZoomChanged(zoom);
     console.log(zoom);
-    if (zoom > 14) {
-      if (this._zoom && this._zoom > 14) return;
+    if (zoom > 11) {
+      if (this._zoom && this._zoom > 11) return;
       console.log("show")
       this.map.showTagOnLayer("water");
       this.map.showTagOnLayer("rain");
     } else {
-      if ( this._zoom && this._zoom <= 14) return;
+      if ( this._zoom && this._zoom <= 11) return;
       console.log("hide")
       this.map.hideTagOnLayer("water");
       this.map.hideTagOnLayer("rain");
