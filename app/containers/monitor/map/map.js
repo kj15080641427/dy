@@ -110,7 +110,7 @@ class Map extends React.PureComponent {
       maxZoom: 18,
       mouseControl: false
     });
-    
+
     this.map.addTile({
       // url: "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}",
       url: `https://t0.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
@@ -196,7 +196,7 @@ class Map extends React.PureComponent {
           console.log('addwfs',this._isClickInfoBox);
           if (this._isClickInfoBox) return;
           this.onWfsRiverClick(props);
-          
+
         }
       }
     });
@@ -343,9 +343,9 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [0, 0],
-        src: function(featureObj) { 
+        src: function(featureObj) {
           return require("../../../resource/pump.svg")["default"];
-          
+
         },
         fontText: function(featureObj) {
             return featureObj.name + "";
@@ -363,7 +363,7 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [20, 0],
-        src: function(featureObj) { 
+        src: function(featureObj) {
           return require("../../../resource/icon/warehouse.svg")["default"];
         },
         fontText: function(featureObj) {
@@ -420,7 +420,7 @@ class Map extends React.PureComponent {
           message.error("获取雨晴详情失败");
         });
       }
-      
+
     });
     this.map.startSelectFeature("water", (param) => {
       let { details } = this.props;
@@ -429,13 +429,16 @@ class Map extends React.PureComponent {
       if(false){
         this.addOverlay(Water.type, {...param, ...details.water[param.stcd]});
       } else {
+        //查询实时水位
         let queryWater = getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 });
+        //查询站点视频信息
         let queryVideo = getVideosByCode({ code: param.code});
         //getWaterRealTime({stcd: param.stcd, current: 1, size: 1})
-        //let endTime = new moment().format('YYYY-MM-DD HH:mm:ss');
-        //let beginTime = moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
-        //getWaterHistory({ stcd: param.stcd, current: 1, size: 10000, starttm: beginTime, endtm: endTime })
-        Promise.all([queryWater, queryVideo])
+        let endTime = new moment().format('YYYY-MM-DD HH:mm:ss');
+        let beginTime = moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
+        //查询24小时水位
+        let queryWaterHistory = getWaterHistory({ stcd: param.stcd, current: 1, size: 10000, starttm: beginTime, endtm: endTime })
+        Promise.all([queryWater, queryVideo, queryWaterHistory])
           .then((result) => {
             let res = result[0];
             if (res.code === 200) {
@@ -445,8 +448,10 @@ class Map extends React.PureComponent {
                 value: records
               });
               let videoObject = result[1].data;
+              let waterLevels = result[2].data;
               let newParam = records ? { ...param, ...records } : param;
               newParam = videoObject ? { ...newParam, videos: [...videoObject] } : newParam;
+              newParam = waterLevels ? {...newParam, waters: [...waterLevels]} : newParam;
               newParam.videoControl = this.videoControl;
             this.addOverlay(Water.type, newParam);
           } else {
@@ -462,10 +467,10 @@ class Map extends React.PureComponent {
       let queryWater = getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 });
         let queryVideo = getVideosByCode({ code: param.code});
         //getWaterRealTime({stcd: param.stcd, current: 1, size: 1})
-        //let endTime = new moment().format('YYYY-MM-DD HH:mm:ss');
-        //let beginTime = moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
-        //getWaterHistory({ stcd: param.stcd, current: 1, size: 10000, starttm: beginTime, endtm: endTime })
-        Promise.all([queryWater, queryVideo])
+        let endTime = new moment().format('YYYY-MM-DD HH:mm:ss');
+        let beginTime = moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
+        let queryWaterHistory = getWaterHistory({ stcd: param.stcd, current: 1, size: 10000, starttm: beginTime, endtm: endTime })
+        Promise.all([queryWater, queryVideo, queryWaterHistory])
           .then((result) => {
             let res = result[0];
             if (res.code === 200) {
@@ -475,8 +480,10 @@ class Map extends React.PureComponent {
                 value: records
               });
               let videoObject = result[1].data;
+              let waterLevels = result[2].data;
               let newParam = records ? { ...param, ...records } : param;
               newParam = videoObject ? { ...newParam, videos: [...videoObject] } : newParam;
+              newParam = waterLevels ? {...newParam, waters: [...waterLevels]} : newParam;
               newParam.videoControl = this.videoControl;
             this.addOverlay(Water.type, newParam);
           } else {
@@ -487,7 +494,7 @@ class Map extends React.PureComponent {
           message.error("获取水位详情失败");
         });
       /*getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 })
-        .then((res) => { 
+        .then((res) => {
           if (res.code == 200) {
             let record = res.data.records && res.data.records[0] || null;
             this.props.actions.setDetailData({
@@ -502,7 +509,7 @@ class Map extends React.PureComponent {
         .catch((e) => {
           message.error("获取积水点数据失败");
          });*/
-        
+
     });
     this.map.startSelectFeature("video", (param) => {
       //this.addOverlay(Video.type, param);
@@ -553,7 +560,7 @@ class Map extends React.PureComponent {
       if (feature) {
         console.log('onFeatureClicked', this._isClickInfoBox);
         this._isClickInfoBox = true;
-        
+
         this.addWindowCloseEvent();
       }
       // 下一次事件循环去掉
@@ -575,7 +582,7 @@ class Map extends React.PureComponent {
       window.setTimeout(() => {
         this._isMapMoved = false;
       },0)
-      
+
       // this.mapViewChanged();
     });
   }
@@ -628,7 +635,7 @@ class Map extends React.PureComponent {
     let elements = overlays[key];
     if (elements[id]) return;
     // 查询该key是否只能显示一个overlay
-    let isSingle = this.type.some((Overlay) => { 
+    let isSingle = this.type.some((Overlay) => {
       if (Overlay.type === key) {
         return Overlay.single;
       }
@@ -673,7 +680,7 @@ class Map extends React.PureComponent {
         onMoveEnd && onMoveEnd();
       });
     });
-    
+
 
   }
   addWindowCloseEvent() {
@@ -681,7 +688,7 @@ class Map extends React.PureComponent {
     if (this._clickToken) {
       this._clickToken.remove();
     }
-    
+
     this._clickToken = addEventListener(window, "click", () => {
       if (!this._windowCloseFlag) return;
       if (this._isMapMoved) return;
@@ -725,7 +732,7 @@ class Map extends React.PureComponent {
             type: "Point",
             id: item.radioID + "",
             lonlat: [item.lon, item.lat],
-            
+
           };
         })) ;
       }
@@ -751,7 +758,7 @@ class Map extends React.PureComponent {
             lonlats: [item.lon, item.lat],
             coords: [
               [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0],[0, 100], [300, 0],[0, 0], [300, 100]]
-              
+
             ]
           };
         })) ;
@@ -803,7 +810,7 @@ class Map extends React.PureComponent {
         }
       });
     }, 30000);
-    
+
     // 模拟洪水
     setInterval(() => {
       let data = [];
@@ -828,7 +835,7 @@ class Map extends React.PureComponent {
             heading: 0
         },
     ]);
-    
+
   }
   drawFeatures(data) {
     let { rain, water, details, ponding } = this.props;
@@ -866,7 +873,7 @@ class Map extends React.PureComponent {
         obj.water.push(item);
       } else if ([9].indexOf(item.indtype) > -1) {
         obj.ponding.push(item);
-      } 
+      }
     });
     return obj;
   }
@@ -882,7 +889,7 @@ class Map extends React.PureComponent {
   onFloodClick(featureProp) {
     console.log(featureProp);
   }
-  
+
 }
 function mapStateToProps(state) {
   return {
