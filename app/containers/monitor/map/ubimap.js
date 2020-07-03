@@ -821,6 +821,38 @@ export default (function(window) {
         this.removeOverlay(key);
       })
     }
+    Map.prototype.addTagBox = function(id, coordinate, model) {
+      let div = document.createElement("div");
+      div.className = "ol-tag-container " + model.prefix;
+      let item1 = document.createElement("div");
+      item1.className = "ol-tag-item";
+      item1.innerHTML = model.title;
+      let item2 = document.createElement("div");
+      item2.className = "ol-tag-item";
+      item2.innerHTML = model.subTitle;
+      div.appendChild(item1);
+      div.appendChild(item2);
+      this.addOverlay(id, {
+        Coordinate: coordinate,
+        positioning: "top-left",
+        offset: [14, -10],
+        stopEvent: false,
+      }, div);
+    }
+    Map.prototype.showTagBox = function(prefix) {
+      let tags = document.querySelectorAll(".ol-tag-container." + prefix);
+      for(let i = 0; i < tags.length; i++) {
+        let tg = tags[i];
+        tg.classList.add("active");
+      }
+    }
+    Map.prototype.hideTagBox = function(prefix) {
+      let tags = document.querySelectorAll(".ol-tag-container." + prefix);
+      for(let i = 0; i < tags.length; i++) {
+        let tg = tags[i];
+        tg.classList.remove("active");
+      }
+    }
     //添加目标
     Map.prototype.addFeature = function(key, obj) {
         if (!this.layers[key] || obj == null) return;

@@ -84,6 +84,10 @@ class Map extends React.PureComponent {
     if (layerVisible !== prevProps.layerVisible) {
       this.setVisible();
     }
+    if (layerVisible.water !== prevProps.layerVisible.water || layerVisible.rain !== prevProps.layerVisible.rain) {
+      this._zoom = null;
+      this.toggleTagByMapZoom();
+    }
   }
   componentDidMount() {
     this.createMap();
@@ -261,7 +265,22 @@ class Map extends React.PureComponent {
       zIndex: 20,
       style: {
         src: function(featureObj) { //
+          let num = parseInt(featureObj.minuteAvg*1);
+          if (num == 0) {
             return require("../../../resource/icon/1.svg")["default"];
+          }else if (num >0 && num <= 10) {
+            return require("../../../resource/icon/2.svg")["default"];
+          }else if (num >10 && num <= 25) {
+            return require("../../../resource/icon/3.svg")["default"];
+          }else if (num >25 && num <= 50) {
+            return require("../../../resource/icon/4.svg")["default"];
+          }else if (num >50 && num <= 100) {
+            return require("../../../resource/icon/5.svg")["default"];
+          }else if (num >100 && num <= 250) {
+            return require("../../../resource/icon/6.svg")["default"];
+          }else if (num >250) {
+            return require("../../../resource/icon/7.svg")["default"];
+          }
         },
         anchor: [0.5, 0.5],
         strokeColor: "#1890ff",
@@ -384,8 +403,8 @@ class Map extends React.PureComponent {
     this.map.startHighlightFeatureonLayer("pump");
     // this.map.startHighlightFeatureonLayer("wfsRiver");
     this.map.startHighlightFeatureonLayer("warehouse");
-    this.map.startTagOnLayer("water");
-    this.map.startTagOnLayer("rain");
+    // this.map.startTagOnLayer("water");
+    // this.map.startTagOnLayer("rain");
     this.map.startSelectFeature("person", (param) => {
       this.addOverlay(Person.type, param);
       // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
@@ -591,16 +610,34 @@ class Map extends React.PureComponent {
     let { onZoomChanged } = this.props;
     onZoomChanged && onZoomChanged(zoom);
     console.log(zoom);
-    if (zoom > 11) {
-      if (this._zoom && this._zoom > 11) return;
+    this.toggleTagByMapZoom();
+    
+  }
+  toggleTagByMapZoom() {
+    let zoom = this.map.getView().getZoom();
+    let { layerVisible } = this.props;
+    if (zoom >= 10) {
+      if (this._zoom && this._zoom >= 10) return;
       console.log("show")
-      this.map.showTagOnLayer("water");
-      this.map.showTagOnLayer("rain");
+      if(layerVisible.water) {
+        this.map.showTagBox("water_tag");
+      }else {
+        this.map.hideTagBox("water_tag");
+      }
+      if(layerVisible.rain) {
+        this.map.showTagBox("rain_tag");
+      }else{
+        this.map.hideTagBox("rain_tag");
+      }
+      
+      // this.map.showTagOnLayer("water");
+      // this.map.showTagOnLayer("rain");
     } else {
-      if ( this._zoom && this._zoom <= 11) return;
+      if ( this._zoom && this._zoom < 10) return;
       console.log("hide")
-      this.map.hideTagOnLayer("water");
-      this.map.hideTagOnLayer("rain");
+      this.map.hideTagBox("water_tag");
+      this.map.hideTagBox("rain_tag");
+      
     }
     this._zoom = zoom;
   }
@@ -842,14 +879,33 @@ class Map extends React.PureComponent {
     if (!data) return;
     if (rain && rain.length) {
       this.map.addFeatures("rain", templateRain(rain, details.rain));
+      this.addRainTagBox(rain);
     }
     if (water && water.length) {
       this.map.addFeatures("water", templateWater(water, details.water));
       this.addWaterWaring(Object.values(details.water));
+      this.addWaterTagBox(water);
       // this.map.startTagOnLayer("water");
     }
     if (ponding && ponding.length) {
       this.map.addFeatures("ponding", templatePonding(ponding, details.water));
+    }
+    // 计算是或否显示tagbox
+    this._zoom = null;
+    this.toggleTagByMapZoom();
+  }
+  addRainTagBox(rain) {
+    if (rain && rain.length) {
+      rain.forEach((r) => {
+        this.map.addTagBox("rain_tag_"+r.stcd, [r.lon, r.lat], {title: r.name, subTitle:(r.minuteAvg*1).toFixed(2) + "mm", prefix: "rain_tag"});
+      });
+    }
+  }
+  addWaterTagBox(water) {
+    if (water && water.length) {
+      water.forEach((r) => {
+        this.map.addTagBox("water_tag_"+r.stcd, [r.lon, r.lat], {title: r.name, subTitle:(r.z*1).toFixed(2) + "mm", prefix: "water_tag"});
+      });
     }
   }
   addWaterWaring(warningWater) {

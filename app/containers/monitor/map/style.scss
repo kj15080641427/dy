@@ -109,3 +109,33 @@ $ol-duration : 4s;
   z-index: 1;
   opacity: 0;
 }
+.ol-tag-container {
+  display: none;
+  position: relative;
+  width: 58px;
+  border: 2px solid #3179C2;
+  background: rgba(196, 232, 255, 0.81);
+  border-color: #3179C2;
+  color: #3179C2;
+  font-size: 12px;
+}
+.ol-tag-container.active {
+  display: block;
+}
+.ol-tag-container:before {
+  position: absolute;
+  left: -16px;
+  top: 0;
+  content: " ";
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: #3179C2;
+}
+.ol-tag-item {
+  height: 21px;
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}

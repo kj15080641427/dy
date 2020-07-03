@@ -139,9 +139,10 @@ class Monitor extends React.PureComponent {
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
     if (layerVisible[layerKey] === checked) return;
+    layerVisible = { ...layerVisible };
     layerVisible[layerKey] = checked;
     this.setState({
-      layerVisible: { ...layerVisible }
+      layerVisible: layerVisible
     });
   }
   onZoomChanged(zoom) {
@@ -155,6 +156,12 @@ class Monitor extends React.PureComponent {
         if (water === true || rain === true || ponding === true || video === true) {
           this.setState({
             layerVisible: {...layerVisible, water: false, rain: false, ponding: false, video: false}
+          });
+        }
+      } else {
+        if (water === false || rain === false || ponding === false || video === false) {
+          this.setState({
+            layerVisible: {...layerVisible, water: true, rain: true, ponding: true, video: true}
           });
         }
       }
