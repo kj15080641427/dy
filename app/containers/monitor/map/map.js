@@ -611,13 +611,13 @@ class Map extends React.PureComponent {
     onZoomChanged && onZoomChanged(zoom);
     console.log(zoom);
     this.toggleTagByMapZoom();
-    
+
   }
   toggleTagByMapZoom() {
     let zoom = this.map.getView().getZoom();
     let { layerVisible } = this.props;
-    if (zoom >= 10) {
-      if (this._zoom && this._zoom >= 10) return;
+    if (zoom >= 12) {
+      if (this._zoom && this._zoom >= 12) return;
       console.log("show")
       if(layerVisible.water) {
         this.map.showTagBox("water_tag");
@@ -629,15 +629,15 @@ class Map extends React.PureComponent {
       }else{
         this.map.hideTagBox("rain_tag");
       }
-      
+
       // this.map.showTagOnLayer("water");
       // this.map.showTagOnLayer("rain");
     } else {
-      if ( this._zoom && this._zoom < 10) return;
+      if ( this._zoom && this._zoom < 12) return;
       console.log("hide")
       this.map.hideTagBox("water_tag");
       this.map.hideTagBox("rain_tag");
-      
+
     }
     this._zoom = zoom;
   }
@@ -904,7 +904,7 @@ class Map extends React.PureComponent {
   addWaterTagBox(water) {
     if (water && water.length) {
       water.forEach((r) => {
-        this.map.addTagBox("water_tag_"+r.stcd, [r.lon, r.lat], {title: r.name, subTitle:(r.z*1).toFixed(2) + "mm", prefix: "water_tag"});
+        this.map.addTagBox("water_tag_"+r.stcd, [r.lon, r.lat], {title: r.name, subTitle:(r.z*1).toFixed(2) + "m", prefix: "water_tag"});
       });
     }
   }
