@@ -162,7 +162,7 @@ class Map extends React.PureComponent {
         'TILED': true
       },
       zIndex: 10,
-      key: "river2"
+      key: "river40"
     });
 
     //加入交通实况图
