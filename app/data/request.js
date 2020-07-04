@@ -11,6 +11,10 @@ export function login(data) {
 export function getAllVideo(data) {
   return fetchJSONData("POST", "/radio/getAll", data);
 }
+//分区获取视频站点
+export function getAllAreaVideo(data) {
+  return fetchJSONData("POST", "/radio/getAllArea", data);
+}
 export function getVideosByCode(data) {
   return fetchJSONData("POST", "/station/code", data);
 }
@@ -41,6 +45,10 @@ export function getPump(data) {
 // 获取河流
 export function getWfsRiver(data) {
   return fetchJSONData("POST", "/river/getAll", data);
+}
+// 获取河流下面的基础站点
+export function getWfsRiverByName(data) {
+  return fetchJSONData("POST", "/river/getByName", data);
 }
 // 获取实时天气信息
 export function getWeatherdata() {

@@ -12,22 +12,9 @@
   bottom: 0;
   width: 300px;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.712);
+  background: rgba(255, 255, 255, 0.568);
   border-radius: 150px;
   border: 2px solid #000000;
-  // background: #7f7fd5; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    rgba(127, 127, 213, 0.233),
-    rgb(134, 168, 231),
-    rgb(145, 234, 228)
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    rgb(127, 127, 213),
-    rgb(134, 168, 231),
-    rgb(145, 234, 228)
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .img-size-up {
   height: 75px;
@@ -53,25 +40,9 @@
   bottom: 72px;
   width: 150px;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.712);
+  background: rgba(255, 255, 255, 0.603);
   border-radius: 150px;
-  background: #e6dada; /* fallback for old browsers */
   border: 1px solid #000000;
-  background: -webkit-linear-gradient(to right,rgb(140, 164, 170) rgb(230, 218, 218), rgb(140, 164, 170)); /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to top,rgb(140, 164, 170) rgb(230, 218, 218), rgb(140, 164, 170)); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    rgba(140, 164, 170, 0.534),
-    rgba(230, 218, 218, 0.486),
-    rgba(140, 164, 170, 0.514)
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(
-    to top,
-    rgba(140, 164, 170, 0.534),
-    rgba(230, 218, 218, 0.486),
-    rgba(140, 164, 170, 0.514)
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  
 }
 .img-size-zoomin {
   height: 50px;

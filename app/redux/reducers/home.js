@@ -4,20 +4,22 @@
 import * as actionTypes from '../constants/home';
 
 const defaultState = {
-  
+  userinfo: {}//用户登录信息
 };
 
-export default function main (state = defaultState, action) {
+export default function main(state = defaultState, action) {
   let newState = Object.assign({}, state);
   switch (action.type) {
-    case actionTypes.INIT_BASE_DATA: {
+    case actionTypes.SET_USERINFO: {
       let data = action.data;
-      newState = Object.assign({}, newState, data);
+      if (data && data.length) {
+        newState.userinfo = data;
+      }
       break;
     }
     default:
       return state;
   }
-  
+
   return newState;
 }

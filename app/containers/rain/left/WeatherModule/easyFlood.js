@@ -27,7 +27,8 @@ class easyFlood extends React.PureComponent {
             mloading: false,//模态框表格加载动画
             searchText: '',
             searchedColumn: '',
-            pageNum: 1
+            pageNum: 1,
+            qxdataSource:[]
         };
     }
     //模态框控制
@@ -36,7 +37,7 @@ class easyFlood extends React.PureComponent {
             visible: true,
             mloading: true
         });
-        let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7).format("YY-MM-DD HH:mm:ss")
+        let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YY-MM-DD HH:mm:ss")
         let endtm = moment(new Date().getTime()).format("YY-MM-DD HH:mm:ss")
         getWaterHistory({
             "stcd": value.stcd,
@@ -307,38 +308,7 @@ class easyFlood extends React.PureComponent {
         this.setState({ current: current })
     }
     render() {
-        //水位data
-        const swcolumns = [
-            {
-                title: '站名',
-                dataIndex: 'SpliceSiteName',
-                className: 'column-money',
-                ...this.getColumnSearchProps('SpliceSiteName'),
-                render:
-                    (SpliceSiteName, key) => {
-                        return (
-                            <Popover content={SpliceSiteName} title="站名全称">
-                                {SpliceSiteName.toString().substring(0, 6) + "..."}
-                            </Popover>
-                        )
-                    },
-            },
-            {
-                title: '水位(m)',
-                dataIndex: 'z',
-                className: 'column-money',
-                render: dayAvg => dayAvg != "-" ? (dayAvg * 1).toFixed(2) : "-",
-                sorter: (a, b) => a.z - b.z,
-            },
-            {
-                title: '更新时间',
-                dataIndex: 'ztm',
-                className: 'column-money',
-                width: 140,
-                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
-                sorter: (a, b) => new Date(a.ztm).getTime() - new Date(b.ztm).getTime(),
-            },
-        ];
+        const { loading } = this.state;
         //根据编号获取信息表头daata
         const swcolumnsById = [
             {
@@ -376,19 +346,82 @@ class easyFlood extends React.PureComponent {
             },
 
         ];
+        const qxcolumns = [
+            {
+                title: "区县名称",
+                dataIndex: "regionName",
+                key: 'regionName',
+                childrenColumnName: "list"
+            },
+        ];
+        const expandedRowRendertype = (record, index, indent, expanded) => {
+            console.log(record)
+          //水位data
+        const swcolumns = [
+            {
+                title: '站名',
+                dataIndex: 'SpliceSiteName',
+                className: 'column-money',
+                ...this.getColumnSearchProps('SpliceSiteName'),
+                render:
+                    (SpliceSiteName, key) => {
+                        return (
+                            <Popover content={SpliceSiteName} title="站名全称">
+                                {SpliceSiteName.toString().substring(0, 6) + "..."}
+                            </Popover>
+                        )
+                    },
+            },
+            {
+                title: '水位(m)',
+                dataIndex: 'z',
+                className: 'column-money',
+                render: dayAvg => dayAvg != "-" ? (dayAvg * 1).toFixed(2) : "-",
+                sorter: (a, b) => a.z - b.z,
+            },
+            {
+                title: '更新时间',
+                dataIndex: 'ztm',
+                className: 'column-money',
+                width: 140,
+                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
+                sorter: (a, b) => new Date(a.ztm).getTime() - new Date(b.ztm).getTime(),
+            },
+        ];
+            return <Table
+                size="small"
+                loading={loading}
+                columns={swcolumns}
+                dataSource={record.list}
+                scroll={{ y: 830 }}
+                rowKey={row => row.stcd}
+                onRow={this.onClickRow}
+                pagination={{
+                    defaultPageSize: 50
+                }}
+                pagination={{
+                    showTotal: () => `共${record.list.length}条`,
+                }}
+            />
+        };
         return (
             <>
-                <Table className="m-div-tablerain"
-                    size="small"
-                    loading={this.state.loading}
-                    columns={swcolumns}
-                    dataSource={this.state.qydataSource}
-                    scroll={{ y: 830 }}
-                    rowKey={row => row.stcd}
-                    onRow={this.onClickRow}
-                    pagination={{
-                        defaultPageSize: 50
+               <Table
+                    expandable={{
+                        expandedRowRender: expandedRowRendertype,
+                        defaultExpandedRowKeys: ["1"]
                     }}
+                    size="small"
+                    loading={loading}
+                    columns={qxcolumns}
+                    dataSource={this.state.qxdataSource}
+                    rowKey={row => row.regionName}
+                    scroll={{ y: 900 }}
+                    pagination={{
+                        defaultPageSize: 50,
+                    }}
+                    pagination={false}
+                    showHeader={false}
                 />
                 <Modal
                     title="24小时易涝点详情"
@@ -425,8 +458,33 @@ class easyFlood extends React.PureComponent {
         })
             .then((result) => {
                 let dataArr = SpliceSite(result)
+                let dyarr = [];
+                let klarr = [];
+                let ljarr = [];
+                let grarr = [];
+                let hkarr = [];
+                for (let i = 0; i < dataArr.length; i++) {
+                    if (dataArr[i].region === "370502") {
+                        dyarr.push(dataArr[i])
+                    } if (dataArr[i].region === "370523") {
+                        grarr.push(dataArr[i])
+                    } if (dataArr[i].region === "370522") {
+                        ljarr.push(dataArr[i])
+                    } if (dataArr[i].region === "370503") {
+                        hkarr.push(dataArr[i])
+                    } if (dataArr[i].region === "370521") {
+                        klarr.push(dataArr[i])
+                    }
+                }
+                let data = [
+                    { regionName: "东营区", list: dyarr },
+                    // { regionName: "广饶县", list: grarr },
+                    // { regionName: "利津县", list: ljarr },
+                    // { regionName: "河口区", list: hkarr },
+                    // { regionName: "垦利区", list: klarr },
+                ]
                 this.setState({ loading: false });
-                this.setState({ qydataSource: dataArr })
+                this.setState({ qxdataSource: data })
             })
     }
     //初始化数据

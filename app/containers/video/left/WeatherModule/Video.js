@@ -10,17 +10,11 @@ import VideoComponent from '@app/components/video/VideoComponent';
 import VideoControl from '@app/components/video/VideoControl';
 import Highlighter from 'react-highlight-words';
 import {
-    CaretRightOutlined, SearchOutlined, ZoomInOutlined, ArrowUpOutlined, ZoomOutOutlined, ArrowDownOutlined, ArrowRightOutlined, ArrowLeftOutlined
+    CaretRightOutlined, SearchOutlined
 } from '@ant-design/icons';
-import { getRadioAll, getRotateRadio } from "@app/data/request";
+import { getRadioAll, getAllVideo } from "@app/data/request";
 import emitter from "@app/utils/emitter.js";
 import Holder from "@app/components/video/Holder"
-import left from "../../../../resource/video/left.png"
-import up from "../../../../resource/video/up.png"
-import down from "../../../../resource/video/down.png"
-import right from "../../../../resource/video/right.png"
-import zoomin from "../../../../resource/video/zoomin.png"
-import zoomout from "../../../../resource/video/zoomout.png"
 
 class Precipitation extends React.PureComponent {
     constructor(props, context) {
@@ -33,26 +27,28 @@ class Precipitation extends React.PureComponent {
             videoobj: null,
             address: "",
             type: "",
+            qxdataSource: [],
         };
         this.videoControl = new VideoControl();
     }
-
+    //打开视频
     playV = (value) => {
         console.log(value)
         if (value.isOnline == '0') {
-            this.videoControl.login().then((rest) => {
-                this.setState({ videoobj: this.videoControl });
-            })
-            this.setState({
-                visible: true,
-                token: value.strtoken,
-                type: value.dataSource,
-                address: "摄像头详细地址：" + value.address
-            });
+        this.videoControl.login().then((rest) => {
+            this.setState({ videoobj: this.videoControl });
+        })
+        this.setState({
+            visible: true,
+            token: value.strtoken,
+            type: value.dataSource,
+            address: "摄像头详细地址：" + value.address
+        });
         } if (value.isOnline == '1') {
             message.error('视频站点不在线');
         }
     }
+    //关闭视频
     handleCancel = () => {
         this.setState({
             visible: false,
@@ -113,7 +109,7 @@ class Precipitation extends React.PureComponent {
                     text
                 ),
     });
-
+    //搜索提交
     handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
         this.setState({
@@ -121,79 +117,133 @@ class Precipitation extends React.PureComponent {
             searchedColumn: dataIndex,
         });
     };
-
+    //表单清空
     handleReset = clearFilters => {
         clearFilters();
         this.setState({ searchText: '' });
     };
-    render() {
-        const qycolumns = [
-            {
-                title: '站名',
-                dataIndex: 'sitename',
-                className: 'column-money',
-                key: 'riverwaterdataID',
-                ...this.getColumnSearchProps('sitename'),
-            },
-            {
-                title: '位置',
-                dataIndex: 'address',
-                className: 'column-money',
-                render:
-                    address => {
-                        return (
-                            <Popover content={address} title="视频地址全称">
-                                {address === "-" ? address : address.substring(0, 10) + '...'}
-                            </Popover>
-                        )
-                    }
-            },
-            // {
-            //     title: '状态',
-            //     dataIndex: 'isOnline',
-            //     className: 'column-money',
-            //     width: 70,
-            //     render:
-            //         isOnline => {
-            //             if (isOnline == 0) {
-            //                 return (
-            //                     <a>在线</a>
-            //                 )
-            //             } else {
-            //                 return (
-            //                     <a style={{ color: 'red' }}>离线</a>
-            //                 )
-            //             }
-            //         },
-            // },
-            {
-                title: '操作',
-                dataIndex: 'isOnline',
-                width: 50,
-                className: 'column-money',
-                render:
-                    (isOnline, key) => {
-                        return (
-                            <Button type="primary" shape="circle" icon={<CaretRightOutlined style={{ fontSize: 20 }} />} onClick={() => this.playV(key)} />
-                        )
-                    },
-            }
-        ];
-        const { loading } = this.state;
 
+
+    render() {
+        const qxcolumns = [
+            {
+                title: "区县名称",
+                dataIndex: "regionName",
+                key: 'regionName',
+                childrenColumnName: "list"
+            },
+        ]
+        const { loading } = this.state;
+        const expandedRowRendertype = (record, index, indent, expanded) => {
+            console.log(record)
+            const qycolumns = [
+                {
+                    title: '站名',
+                    dataIndex: 'name',
+                    key: 'name',
+                },
+            ];
+            return <Table
+                showHeader={false}
+                size="small"
+                loading={loading}
+                columns={qycolumns}
+                dataSource={record.list}
+                rowKey={row => row.name}
+                // onRow={this.onClickRow}
+                scroll={{ y: 830 }}
+                expandable={{
+                    expandedRowRender,
+                    defaultExpandedRowKeys: ["1"]
+                }}
+                pagination={false}
+            />;
+        };
+        const expandedRowRender = (record, index, indent, expanded) => {
+            const qycolumns = [
+                {
+                    title: '站名',
+                    dataIndex: 'sitename',
+                    key: 'riverwaterdataID',
+                    ellipsis: true,
+                    ...this.getColumnSearchProps('sitename'),
+                },
+                // {
+                //     title: '位置',
+                //     dataIndex: 'address',
+                //     className: 'column-money',
+                //     render:
+                //         address => {
+                //             return (
+                //                 <Popover content={address} title="视频地址全称">
+                //                     {address === "-" ? address : address.substring(0, 10) + '...'}
+                //                 </Popover>
+                //             )
+                //         }
+                // },
+                {
+                    title: '状态',
+                    dataIndex: 'isOnline',
+                    className: 'column-money',
+                    // width: 70,
+                    render:
+                        isOnline => {
+                            if (isOnline == 0) {
+                                return (
+                                    <a>在线</a>
+                                )
+                            } else {
+                                return (
+                                    <a style={{ color: 'red' }}>离线</a>
+                                )
+                            }
+                        },
+                    sorter: (a, b) => parseInt(+a.isOnline) - parseInt(+b.isOnline),
+                    defaultSortOrder: 'ascend'
+                },
+                {
+                    title: '操作',
+                    dataIndex: 'isOnline',
+                    width: 100,
+                    render:
+                        (isOnline, key) => {
+                            return (
+                                <Button type="primary" shape="circle" icon={<CaretRightOutlined style={{ fontSize: 20 }} />} onClick={() => this.playV(key)} />
+                            )
+                        },
+                }
+            ];
+            return <Table
+                size="small"
+                loading={loading}
+                columns={qycolumns}
+                dataSource={record.list}
+                rowKey={row => row.radioID}
+                onRow={this.onClickRow}
+                scroll={{ y: 830 }}
+                pagination={{
+                    showTotal: () => `共${record.list.length}条`,
+                }}
+            />;
+        };
         return (
             <>
-                <Table className="m-div-tablevideo"
+                <Table
+                    expandable={{
+                        expandedRowRender: expandedRowRendertype,
+                        defaultExpandedRowKeys: ["1"]
+                    }}
                     size="small"
                     loading={loading}
-                    columns={qycolumns}
-                    dataSource={this.state.qydataSource}
-                    rowKey={row => row.radioID}
-                    onRow={this.onClickRow}
-                    scroll={{ y: 830 }}
+                    columns={qxcolumns}
+                    dataSource={this.state.qxdataSource}
+                    rowKey={row => row.regionName}
+                    scroll={{ y: 900 }}
                     pagination={{
-                        defaultPageSize: 50
+                        defaultPageSize: 50,
                     }}
+                    pagination={false}
+                    showHeader={false}
                 />
                 <Drawer
                     title={this.state.address}
@@ -248,19 +298,71 @@ class Precipitation extends React.PureComponent {
     }
     selectInit() {
         this.setState({ loading: true });
-        getRadioAll({
-            "isShow": "0"
-        })
-            .then((result) => {
-                this.setState({ loading: false });
-                let arr = []
-                for (let i = 0; i < result.data.length; i++) {
-                    if (result.data[i].isOnline === "0") {
-                        arr.push(result.data[i])
+        getAllVideo({
+            "isShow": "1"
+        }).then((result) => {
+            console.log(result)
+            let dyfloodarr = [];
+            let dycatyarr = [];
+            let klfloodarr = [];
+            let klcatyarr = [];
+            let ljfloodarr = [];
+            let ljcatyarr = [];
+            let grfloodarr = [];
+            let grcatyarr = [];
+            let hkfloodarr = [];
+            let hkcatyarr = [];
+            this.setState({ loading: false });
+            for (let i = 0; i < result.data.length; i++) {
+                console.log(result.data[i].dataSource)
+                if (result.data[i].regionName === "东营区") {
+                    if (result.data[i].dataSource === "3" || result.data[i].dataSource === "9") {
+                        dyfloodarr.push(result.data[i])
+                    } else {
+                        dycatyarr.push(result.data[i])
+                    }
+                } if (result.data[i].regionName === "广饶县") {
+                    if (result.data[i].dataSource === "3") {
+                        grfloodarr.push(result.data[i])
+                    } else {
+                        grcatyarr.push(result.data[i])
+                    }
+                } if (result.data[i].regionName === "利津县") {
+                    if (result.data[i].dataSource === "3") {
+                        ljfloodarr.push(result.data[i])
+                    } else {
+                        ljcatyarr.push(result.data[i])
+                    }
+                } if (result.data[i].regionName === "河口区") {
+                    if (result.data[i].dataSource === "3") {
+                        hkfloodarr.push(result.data[i])
+                    } else {
+                        hkcatyarr.push(result.data[i])
+                    }
+                } if (result.data[i].regionName === "垦利区") {
+                    if (result.data[i].dataSource === "3") {
+                        klfloodarr.push(result.data[i])
+                    } else {
+                        klcatyarr.push(result.data[i])
                     }
                 }
-                this.setState({ qydataSource: arr });
-            })
+            }
+            let dyarr = [{ name: "河道", list: dycatyarr }, { name: "积水点", list: dyfloodarr }];
+            let klarr = [{ name: "河道", list: klcatyarr }];
+            let ljarr = [{ name: "河道", list: ljcatyarr }];
+            let grarr = [{ name: "河道", list: grcatyarr }];
+            let hkarr = [{ name: "河道", list: hkcatyarr }];
+            let data = [
+                { regionName: "东营区", list: dyarr },
+                { regionName: "广饶县", list: grarr },
+                { regionName: "利津县", list: ljarr },
+                { regionName: "河口区", list: hkarr },
+                { regionName: "垦利区", list: klarr },
+            ]
+            console.log(data)
+            this.setState({ qxdataSource: data });
+            console.log(this.state.qxdataSource)
+        })
         this.videoControl.login().then((rest) => {
             this.setState({ videoobj: this.videoControl });
         })
@@ -271,7 +373,6 @@ class Precipitation extends React.PureComponent {
         window.setInterval(() => {
             this.selectInit()
         }, 1000 * 5 * 60);
-
     }
     // 选中行
     onClickRow = (record) => {

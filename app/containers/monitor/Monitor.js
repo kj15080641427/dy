@@ -139,33 +139,26 @@ class Monitor extends React.PureComponent {
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
     if (layerVisible[layerKey] === checked) return;
-    layerVisible = { ...layerVisible };
     layerVisible[layerKey] = checked;
     this.setState({
-      layerVisible: layerVisible
+      layerVisible: { ...layerVisible }
     });
   }
   onZoomChanged(zoom) {
-    // if (this._zoomToken) {
-    //   clearTimeout(this._zoomToken);
-    // }
-    // this._zoomToken = window.setTimeout(() => {
-    //   let { layerVisible } = this.state;
-    //   let { water, rain, ponding, video} = layerVisible;
-    //   if (zoom < 8) {
-    //     if (water === true || rain === true || ponding === true || video === true) {
-    //       this.setState({
-    //         layerVisible: {...layerVisible, water: false, rain: false, ponding: false, video: false}
-    //       });
-    //     }
-    //   } else {
-    //     if (water === false || rain === false || ponding === false || video === false) {
-    //       this.setState({
-    //         layerVisible: {...layerVisible, water: true, rain: true, ponding: true, video: true}
-    //       });
-    //     }
-    //   }
-    // }, 500);
+    if (this._zoomToken) {
+      clearTimeout(this._zoomToken);
+    }
+    this._zoomToken = window.setTimeout(() => {
+      let { layerVisible } = this.state;
+      let { water, rain, ponding, video} = layerVisible;
+      if (zoom < 8) {
+        if (water === true || rain === true || ponding === true || video === true) {
+          this.setState({
+            layerVisible: {...layerVisible, water: false, rain: false, ponding: false, video: false}
+          });
+        }
+      }
+    }, 500);
   }
 }
 // -------------------redux react 绑定--------------------

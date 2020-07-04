@@ -48,13 +48,13 @@ class PannelBtn extends React.PureComponent {
                 </Row>
               </div> */}
             {/* <Row> */}
-            <Col span={6}><Link to={"/index"}><img
+            <Col span={4}><Link to={"/index"}><img
               className="m-btn-flood"
               src={zhjk}
             // onClick={this.handleindex}
             ></img>
             </Link></Col>
-            <Col span={6}>
+            <Col span={4}>
               <Link to={"/floodWarning"}>
                 <img
                   className="m-btn-flood"
@@ -63,7 +63,7 @@ class PannelBtn extends React.PureComponent {
                 ></img>
               </Link>
             </Col>
-            <Col span={6}>
+            <Col span={4}>
               <Link to={"/rain"}>
                 <img
                   // className="m-btn-everyday"
@@ -78,7 +78,7 @@ class PannelBtn extends React.PureComponent {
             {/* <Col span={12}> */}
             {/* <Row> */}
 
-            <Col span={6}>
+            <Col span={4}>
               {/* <Link to={"/home"}> */}
               {localStorage.getItem("username") === "admin1" ? null :
               <img
@@ -90,6 +90,8 @@ class PannelBtn extends React.PureComponent {
             }
               {/* </Link> */}
             </Col>
+            <Col span={4}></Col>
+            <Col span={4}></Col>
             {/* </Row> */}
             {/* </Col> */}
           </Row>

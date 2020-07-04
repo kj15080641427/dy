@@ -12,9 +12,10 @@ import Highlighter from 'react-highlight-words';
 import {
     CaretRightOutlined, SearchOutlined
 } from '@ant-design/icons';
-import { getRadioAll } from "@app/data/request";
+import { getRadioAll, getAllAreaVideo } from "@app/data/request";
 import emitter from "@app/utils/emitter.js";
-class Precipitation extends React.PureComponent {
+import { data } from 'autoprefixer';
+class Video extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -236,8 +237,11 @@ class Precipitation extends React.PureComponent {
             "isShow": "0"
         })
             .then((result) => {
-                this.setState({ loading: false });
-                this.setState({ qydataSource: result.data });
+                console.log(result)
+                this.setState({
+                    loading: false,
+                    qydataSource: result.data
+                });
             })
         this.videoControl.login().then((rest) => {
             this.setState({ videoobj: this.videoControl });
@@ -249,7 +253,7 @@ class Precipitation extends React.PureComponent {
         window.setInterval(() => {
             this.selectInit()
         }, 10000 * 5 * 60);
-
+        
     }
     // 选中行
     onClickRow = (record) => {
@@ -271,4 +275,4 @@ class Precipitation extends React.PureComponent {
         emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
     }
 }
-export default Precipitation;
+export default Video;

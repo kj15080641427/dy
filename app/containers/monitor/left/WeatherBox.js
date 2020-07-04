@@ -20,27 +20,27 @@ class WeatherBox extends React.PureComponent {
       <div className="m-wth-box">
         <div className="m-box-table">
           <Row>
-            <Col span={6}>
+            <Col span={7}>
               <Row>
                 <Col><span className="m-box-value">{this.state.weatherCount}</span>mm</Col></Row>
-              <Row>全市日降水量</Row>
+              <Row><span className="m-box-title">全市日降水量</span></Row>
             </Col>
-            <Col span={3}>
+            <Col span={6}>
               <Row><span className="m-box-value">40</span></Row>
-              <Row>河流数</Row>
+              <Row><span className="m-box-title">河流数</span></Row>
             </Col>
-            <Col span={4}>
-              <Row><span className="m-box-value">15</span></Row>
-              <Row>大中型水库</Row>
+            <Col span={6}>
+              <Row><span className="m-box-value">14</span></Row>
+              <Row><span className="m-box-title">大中型水库</span></Row>
             </Col>
             <Col span={5}>
               <Row><span style={{ position: 'relative', right: '2px' }} className="m-box-value">109</span></Row>
-              <Row>水闸数</Row>
+              <Row><span className="m-box-title">水闸数</span></Row>
             </Col>
-            <Col span={6}>
+            {/* <Col span={6}>
               <Row><Col> <span className="m-box-value">3.11</span>亿m³</Col></Row>
               <Row>水库蓄水量</Row>
-            </Col>
+            </Col> */}
           </Row>
         </div>
       </div>

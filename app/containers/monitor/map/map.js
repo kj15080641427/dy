@@ -467,7 +467,7 @@ class Map extends React.PureComponent {
                 value: records
               });
               let videoObject = result[1].data;
-              let waterLevels = result[2].data;
+              let waterLevels = result[2].data.records;
               let newParam = records ? { ...param, ...records } : param;
               newParam = videoObject ? { ...newParam, videos: [...videoObject] } : newParam;
               newParam = waterLevels ? {...newParam, waters: [...waterLevels]} : newParam;

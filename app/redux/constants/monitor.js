@@ -6,4 +6,4 @@ export const ADD_VIDEOS = 'ADD_VIDEOS';
 export const ADD_GATES = 'ADD_GATES';
 export const ADD_PUMPS = 'ADD_PUMPS';
 export const ADD_WAREHOUSE = 'ADD_WAREHOUSE';
-export const SET_USERINFO = 'SET_USERINFO';
+

@@ -79,11 +79,9 @@ class Monitor extends React.PureComponent {
             <WeatherPic></WeatherPic> */}
           </div>
         </div>
-        {/* <div style={{ display: this.state.displayBottom }}>
-          <div className="m-bottom" >
-            <CheckBox layerVisible={layerVisible} onChecked={this.onChecked}></CheckBox>
-          </div>
-        </div> */}
+        <div className="m-bottom" >
+          <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked}></CheckBoxs>
+        </div>
         <img onClick={() => {
           this.setState({
             visible: true,

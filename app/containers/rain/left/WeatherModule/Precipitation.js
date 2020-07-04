@@ -30,7 +30,8 @@ class Precipitation extends React.PureComponent {
             mloading: false,//模态框表格加载动画
             searchText: '',
             searchedColumn: '',
-            stid: ""
+            stid: "",
+            qxdataSource:[]
         };
     }
     //画图
@@ -404,56 +405,7 @@ class Precipitation extends React.PureComponent {
         };
     }
     render() {
-        const qycolumns = [
-            {
-                title: '站名',
-                dataIndex: 'SpliceSiteName',
-                width: 80,
-                className: 'column-money',
-                key: 'riverwaterdataID',
-                ...this.getColumnSearchProps('SpliceSiteName'),
-                render:
-                    (SpliceSiteName, key) => {
-                        return (
-                            <Popover content={SpliceSiteName} title="站名全称">
-                                {SpliceSiteName.toString().substring(0, 4) + "..."}
-                            </Popover>
-                        )
-                    },
-            },
-            {
-                title: '5分钟(mm)',
-                dataIndex: 'minuteAvg',
-                width: 88,
-                className: 'column-money',
-                render: minuteAvg => minuteAvg == '-' ? '-' : (minuteAvg * 1).toFixed(1),
-                sorter: (a, b) => a.minuteAvg - b.minuteAvg,
-            },
-            {
-                title: '1小时(mm)',
-                dataIndex: 'hourAvg',
-                width: 88,
-                className: 'column-money',
-                render: hourAvg => hourAvg == '-' ? '-' : (hourAvg * 1).toFixed(1),
-                sorter: (a, b) => a.hourAvg - b.hourAvg,
-            },
-            {
-                title: '24小时(mm)',
-                dataIndex: 'dayAvg',
-                width: 90,
-                className: 'column-money',
-                render: dayAvg => dayAvg == '-' ? '-' : (dayAvg * 1).toFixed(1),
-                sorter: (a, b) => a.dayAvg - b.dayAvg,
-            },
-            {
-                title: '更新时间',
-                dataIndex: 'tm',
-                width: 140,
-                className: 'column-money',
-                render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
-                sorter: (a, b) => new Date(a.tm).getTime() - new Date(b.tm).getTime(),
-            }
-        ];
+        
         const columnsByHour = [
             {
                 title: '站名',
@@ -565,20 +517,101 @@ class Precipitation extends React.PureComponent {
                 sorter: (a, b) => new Date(a.endTime).getTime() - new Date(b.endTime).getTime(),
             },
         ]
+        const qxcolumns = [
+            {
+                title: "区县名称",
+                dataIndex: "regionName",
+                key: 'regionName',
+                childrenColumnName: "list"
+            },
+        ];
+        const expandedRowRendertype = (record, index, indent, expanded) => {
+            console.log(record)
+            const qycolumns = [
+                {
+                    title: '站名',
+                    dataIndex: 'SpliceSiteName',
+                    width: 80,
+                    className: 'column-money',
+                    key: 'riverwaterdataID',
+                    ...this.getColumnSearchProps('SpliceSiteName'),
+                    render:
+                        (SpliceSiteName, key) => {
+                            return (
+                                <Popover content={SpliceSiteName} title="站名全称">
+                                    {SpliceSiteName.toString().substring(0, 4) + "..."}
+                                </Popover>
+                            )
+                        },
+                },
+                // {
+                //     title: '5分钟(mm)',
+                //     dataIndex: 'minuteAvg',
+                //     width: 88,
+                //     className: 'column-money',
+                //     render: minuteAvg => minuteAvg == '-' ? '-' : (minuteAvg * 1).toFixed(1),
+                //     sorter: (a, b) => a.minuteAvg - b.minuteAvg,
+                // },
+                {
+                    title: '1小时(mm)',
+                    dataIndex: 'hourAvg',
+                    width: 88,
+                    className: 'column-money',
+                    render: hourAvg => hourAvg == '-' ? '-' : (hourAvg * 1).toFixed(1),
+                    sorter: (a, b) => a.hourAvg - b.hourAvg,
+                },
+                {
+                    title: '24小时(mm)',
+                    dataIndex: 'dayAvg',
+                    width: 95,
+                    className: 'column-money',
+                    render: dayAvg => dayAvg == '-' ? '-' : (dayAvg * 1).toFixed(1),
+                    sorter: (a, b) => a.dayAvg - b.dayAvg,
+                },
+                {
+                    title: '更新时间',
+                    dataIndex: 'tm',
+                    width: 140,
+                    className: 'column-money',
+                    render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
+                    sorter: (a, b) => new Date(a.tm).getTime() - new Date(b.tm).getTime(),
+                }
+            ];
+            return <Table
+                size="small"
+                loading={loading}
+                columns={qycolumns}
+                dataSource={record.list}
+                scroll={{ y: 830 }}
+                rowKey={row => row.stcd}
+                onRow={this.onClickRow}
+                pagination={{
+                    defaultPageSize: 50
+                }}
+                pagination={{
+                    showTotal: () => `共${record.list.length}条`,
+                }}
+            />
+        };
         const { loading } = this.state;
         return (
             <>
-                <Table className="m-div-tablerain"
+                <Table
+                    expandable={{
+                        expandedRowRender: expandedRowRendertype,
+                        defaultExpandedRowKeys: ["1"]
+                    }}
                     size="small"
                     loading={loading}
-                    columns={qycolumns}
-                    dataSource={this.state.qydataSource}
-                    scroll={{ y: 830 }}
-                    rowKey={row => row.stcd}
-                    onRow={this.onClickRow}
+                    columns={qxcolumns}
+                    dataSource={this.state.qxdataSource}
+                    rowKey={row => row.regionName}
+                    scroll={{ y: 900 }}
                     pagination={{
-                        defaultPageSize: 50
+                        defaultPageSize: 50,
                     }}
+                    pagination={false}
+                    showHeader={false}
                 />
                 <Modal
                     title="7天雨量详情"
@@ -681,9 +714,35 @@ class Precipitation extends React.PureComponent {
             "type": 1
         })
             .then((result) => {
+                console.log(result)
                 let dataArr = SpliceSite(result)
+                let dyarr = [];
+                let klarr = [];
+                let ljarr = [];
+                let grarr = [];
+                let hkarr = [];
+                for (let i = 0; i < dataArr.length; i++) {
+                    if (dataArr[i].region === "370502") {
+                        dyarr.push(dataArr[i])
+                    } if (dataArr[i].region === "370523") {
+                        grarr.push(dataArr[i])
+                    } if (dataArr[i].region === "370522") {
+                        ljarr.push(dataArr[i])
+                    } if (dataArr[i].region === "370503") {
+                        hkarr.push(dataArr[i])
+                    } if (dataArr[i].region === "370521") {
+                        klarr.push(dataArr[i])
+                    }
+                }
+                let data = [
+                    { regionName: "东营区", list: dyarr },
+                    { regionName: "广饶县", list: grarr },
+                    { regionName: "利津县", list: ljarr },
+                    { regionName: "河口区", list: hkarr },
+                    { regionName: "垦利区", list: klarr },
+                ]
                 this.setState({ loading: false });
-                this.setState({ qydataSource: dataArr })
+                this.setState({ qxdataSource: data })
             })
     }
     //初始化数据

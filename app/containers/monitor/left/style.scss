@@ -10,14 +10,17 @@
   position: relative;
   left: 15px;
   right: 15px;
-  top: 15px;
-  bottom: 15px;
+  // top: 15px;
+  // bottom: 15px;
 }
 .m-box-value {
   color: #007ed7;
-  font-size: 40px;
+  font-size: 50px;
   font-weight: bold;
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+.m-box-title {
+  font-size: 20px;
 }
 .m-wth-chart {
   height: $monitor_left_wthChart_height;
@@ -85,16 +88,7 @@
   background: transparent;
   left: 15px;
 }
-.ant-tabs .ant-tabs-top .ant-tabs-nav-container .ant-tabs-large .ant-tabs-card{
-  height: 365px;
-  width: 460px;
-   text-align: center;
-  height: 380px;
-  line-height: 380px;
-  background: rgba(204, 51, 51, 0.27);
-  overflow: hidden;
-}
-.ant-tabs-content .ant-tabs-content-animated .ant-tabs-top-content .ant-tabs-card-content{
+.ant-tabs .ant-tabs-top .ant-tabs-nav-container .ant-tabs-large .ant-tabs-card {
   height: 365px;
   width: 460px;
   text-align: center;
@@ -103,7 +97,16 @@
   background: rgba(204, 51, 51, 0.27);
   overflow: hidden;
 }
-.ant-tabs-tabpane .ant-tabs-tabpane-active{
+.ant-tabs-content .ant-tabs-content-animated .ant-tabs-top-content .ant-tabs-card-content {
+  height: 365px;
+  width: 460px;
+  text-align: center;
+  height: 380px;
+  line-height: 380px;
+  background: rgba(204, 51, 51, 0.27);
+  overflow: hidden;
+}
+.ant-tabs-tabpane .ant-tabs-tabpane-active {
   height: 365px;
   width: 460px;
   text-align: center;

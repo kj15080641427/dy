@@ -8,10 +8,10 @@ import moment from 'moment';
 import VideoComponent from '@app/components/video/VideoComponent';
 import Holder from "@app/components/video/Holder"
 import { hasClassName } from "@app/utils/common.js";
-import {transform} from "ol/proj";
-// import echarts from 'echarts/lib/echarts';
-// import 'echarts/lib/chart/line';
-// import moment from 'moment';
+import { transform } from "ol/proj";
+import echarts from 'echarts/lib/echarts';
+import 'echarts/lib/chart/line';
+import { Button, Radio } from "antd"
 class Water extends Base {
   static type = "water";
   constructor(props, context) {
@@ -31,8 +31,20 @@ class Water extends Base {
     let token = videos && videos.length != 0 ? videos[0].strtoken : '';
     this.setState({ token: token })
     let type = videos && videos.length != 0 ? videos[0].datasource : '';
+    const onChange = (e) => {
+      console.log(`radio checked:${e.target.value}`);
+      if (e.target.value === "a") {
+        this.setState({
+          waterWar: true
+        })
+      } else {
+        this.setState({
+          waterWar: false
+        })
+      }
+    }
     return (
-      <div className="m-ovl-box m-ovl-water" style={{ display: "none", width: 900, height: 450 }} ref={(node) => { this.container = node; }}>
+      <div className="m-ovl-box m-ovl-water" style={{ display: "none", width: 900, height: 680 }} ref={(node) => { this.container = node; }}>
         {/* <div>水位站点：{model.stnm || model.name}</div> */}
         {/* <div className="m-ovl-line">水位站点：{model.stnm || model.name}</div> */}
         {/* <div className="m-ovl-line">站点编号：{model.stcd}</div> */}
@@ -44,7 +56,10 @@ class Water extends Base {
         {/* <div style={{width: 660, height: 420}} id='echartsDiv'> */}
         {/* </div> */}
 
-        <div style={{ float: 'left', width: 650, height: 480 }}>
+        <div style={{
+          float: 'left', width: 650, height: 400, position: 'relative',
+          top: 275
+        }}>
           <VideoComponent
             videoControl={videoControl}
             token={token}
@@ -55,10 +70,11 @@ class Water extends Base {
               transform: 'scale(1.1)',
               position: 'relative',
               left: 30,
-              top: 30,
+              top: 25,
             }}
           />
         </div>
+
         <div style={{ float: 'right', overflow: 'hidden', width: 200 }}>
           <div>
             <div className="m-ovl-line" style={{ width: 180 }}>名称：{model.stnm || model.name}</div>
@@ -66,12 +82,15 @@ class Water extends Base {
             <div className="m-ovl-line">来源：{model.dataSourceDesc}</div>
             <div className="m-ovl-line">警戒：{warningLevel}</div>
             <div className="m-ovl-line">时间：{udpTm}</div>
-
           </div>
-
         </div>
         <span className="iconfont iconcuo m-ovl-close" ></span>
-        <Holder token={token} divStyle={{ top: 200, right: -35 }}></Holder>
+        <Holder token={token} divStyle={{ top: 330, right: -30, transform: 'scale(0.7)', }}></Holder>
+        <div style={{
+          float: 'left', width: 660, height: 315, position: 'relative',
+          left: -15,
+          top: -405
+        }} id='echartsDiv'></div>
       </div>
     );
   }
@@ -116,22 +135,41 @@ class Water extends Base {
     // category = category.reverse();
     // values = values.reverse();
 
-
-    // let chars = echarts.init(document.getElementById('echartsDiv'));
-    // const option = {
-    //   xAxis: {
-    //     type: 'category',
-    //     data: category
-    //   },
-    //   yAxis: {
-    //     type: 'value'
-    //   },
-    //   series: [{
-    //     data: values,
-    //     type: 'line'
-    //   }]
-    // };
-    // chars.setOption(option);
+    console.log(model.waters)
+    let xdata = [];
+    let ydata = [];
+    for (let i = 0; i < model.waters.length; i++) {
+      xdata.push(moment(model.waters[i].tm).format('MM-DD HH:mm'))
+      ydata.push(model.waters[i].z)
+    }
+    let chars = echarts.init(document.getElementById('echartsDiv'));
+    const option = {
+      title: {
+        text: model.waters[0].stnm + '24小时水位变化',
+        // left: 'center',
+      },
+      xAxis: {
+        type: 'category',
+        data: xdata
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          crossStyle: {
+            color: '#999'
+          }
+        }
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [{
+        data: ydata,
+        type: 'line'
+      }]
+    };
+    chars.setOption(option);
   }
   componentWillUnmount() {
     super.componentWillUnmount();
@@ -152,7 +190,8 @@ class Water extends Base {
     }
     else if (hasClassName(e.target, "img-size-down")) {
       this.onRotateCamera({ token: this.state.token, action: 'down' })
-    } else if (hasClassName(e.target, "img-size-zoomin")) {
+    }
+    else if (hasClassName(e.target, "img-size-zoomin")) {
       this.onRotateCamera({ token: this.state.token, action: 'zoomin' })
     } else if (hasClassName(e.target, "img-size-zoomout")) {
       this.onRotateCamera({ token: this.state.token, action: 'zoomout' })

@@ -89,13 +89,6 @@ export default function main(state = defaultState, action) {
       }
       break;
     }
-    case actionTypes.SET_USERINFO: {
-      let data = action.data;
-      if (data && data.length) {
-        newState.userinfo = data;
-      }
-      break;
-    }
     default:
       return state;
   }
