@@ -16,7 +16,8 @@ import PannelBtn from "./right/PannelBtn";
 import AlarmTable from "./right/AlarmTable";
 import WeatherPic from "./right/WeatherPic";
 import WeatherDy from "./right/WeatherDy";
-import CheckBoxs from "./bottom/CheckBox";
+import CheckBoxs from "../monitor/bottom/CheckBox";
+import RainLegend from "./bottom/RainLegend";
 import setImg from "@app/resource/setsys.png"
 import { Drawer, Switch, Row, Divider, Checkbox } from 'antd';
 import { none } from 'ol/centerconstraint';
@@ -36,11 +37,11 @@ class Monitor extends React.PureComponent {
         tiandi: true, // 天地图底图
         tiandi2: true, // 天地图标注
         wfsRiver: false, // wfs河道图
-        river40: true, //40条河图片 用于解决河道标注很多的问题
+        river40: false, //40条河图片 用于解决河道标注很多的问题
         flood: false, // 洪水图层
         river: true, // 水系图
         heatmap: true, // 热力图
-        traffic: true, // 交通图层
+        traffic: false, // 交通图层
         person: true, // 防汛人员
         video: false, // 视频站点
         rain: true, // 雨量站
@@ -80,7 +81,7 @@ class Monitor extends React.PureComponent {
           </div>
         </div>
         <div className="m-bottom" >
-          <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked}></CheckBoxs>
+          <RainLegend></RainLegend>
         </div>
         <img onClick={() => {
           this.setState({

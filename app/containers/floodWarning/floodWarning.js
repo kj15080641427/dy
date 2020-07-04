@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
 import * as actions from '@app/redux/actions/monitor';
-import Map from "./map/map";
+import Map from "@app/containers/monitor/map/map.js";
 import "./style.scss";
 import Head from "./head/Head";
 import WeatherBox from "./left/WeatherBox";
@@ -15,7 +15,7 @@ import PannelBtn from "./right/PannelBtn";
 import AlarmTable from "./right/AlarmTable";
 import WeatherPic from "./right/WeatherPic";
 import WeatherDy from "./right/WeatherDy";
-import CheckBoxs from "./bottom/CheckBox";
+import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png"
 import { Drawer, Switch, Row, Divider, Checkbox } from 'antd';
 import { none } from 'ol/centerconstraint';
@@ -39,7 +39,7 @@ class Monitor extends React.PureComponent {
         flood: false, // 洪水图层
         river: true, // 水系图
         heatmap: true, // 热力图
-        traffic: true, // 交通图层
+        traffic: false, // 交通图层
         person: true, // 防汛人员
         video: false, // 视频站点
         rain: false, // 雨量站

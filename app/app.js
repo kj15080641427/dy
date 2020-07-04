@@ -8,6 +8,8 @@ const AsyncHome = AsyncComp(() => import(/*webpackChunkName:'home'*/"@app/contai
 const AsyncLogin = AsyncComp(() => import(/*webpackChunkName:'home'*/"@app/containers/home/Login").then((res) => { removeLoading(); return res; }));
 const AsyncMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/monitor/Monitor").then((res) => { removeLoading(); return res; }));
 const rainMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/rain/rain").then((res) => { removeLoading(); return res; }));
+const waterMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/water/water").then((res) => { removeLoading(); return res; }));
+const easyFloodMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/easyFlood/easyFlood").then((res) => { removeLoading(); return res; }));
 const videoMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/video/video").then((res) => { removeLoading(); return res; }));
 const floodWarningMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/floodWarning/floodWarning").then((res) => { removeLoading(); return res; }));
 const AsyncNoLogin = AsyncComp(() => import(/*webpackChunkName:'home'*/"@app/containers/home/NoLogin").then((res) => { removeLoading(); return res; }));
@@ -28,6 +30,8 @@ export class App extends React.Component {
               }
               <Route path="/index" component={AsyncMonitor} />
               <Route path={`/rain`} component={rainMonitor} />
+              <Route path={`/easyFlood`} component={easyFloodMonitor} />
+              <Route path={`/water`} component={waterMonitor} />
               <Route path={`/video`} component={videoMonitor} />
               <Route path={`/floodwarning`} component={floodWarningMonitor} />
             </>}

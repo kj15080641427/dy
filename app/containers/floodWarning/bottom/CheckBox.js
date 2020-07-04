@@ -17,7 +17,9 @@ const { SubMenu } = Menu;
 class CheckBox extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+    this.state = {
+      
+    };
     this.onChange = this.onChange.bind(this);
   }
   onChange(e) {
@@ -81,6 +83,9 @@ class CheckBox extends React.PureComponent {
             </Row> */}
           <Row className="m-checkbox-col-row">
             <Checkbox layer={"wfsRiver"} checked={layerVisible.wfsRiver != null ? layerVisible.wfsRiver : true} onChange={this.onChange}><span className="m-col-checkbox-span">河流</span></Checkbox>
+          </Row>
+          <Row className="m-checkbox-col-row">
+            <Checkbox layer={"traffic"} checked={layerVisible.traffic != null ? layerVisible.traffic : true} onChange={this.onChange}><span className="m-col-checkbox-span">交通实况</span></Checkbox>
           </Row>
           {/* <Menu mode="vertical">
               <SubMenu key="sub1" title="其他设置">

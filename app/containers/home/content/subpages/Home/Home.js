@@ -5,7 +5,7 @@
 import React from 'react';
 import "./style.scss";
 import FutureWeather from "./FutureWeather"
-import WaterCourse from "./WaterCourse"
+// import WaterCourse from "./WaterCourse"
 class Home extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
@@ -21,8 +21,8 @@ class Home extends React.PureComponent {
     render() {
         return (
             <>
-            {/* <FutureWeather weatherData={this.state.weatherData}></FutureWeather> */}
-            <WaterCourse></WaterCourse>
+            <FutureWeather weatherData={this.state.weatherData}></FutureWeather>
+            {/* <WaterCourse></WaterCourse> */}
             </>
         )
     }

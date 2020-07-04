@@ -16,7 +16,7 @@ import PannelBtn from "./right/PannelBtn";
 import AlarmTable from "./right/AlarmTable";
 import WeatherPic from "./right/WeatherPic";
 import WeatherDy from "./right/WeatherDy";
-import CheckBoxs from "./bottom/CheckBox";
+import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png"
 import { Drawer, Switch, Row, Divider, Checkbox } from 'antd';
 import { none } from 'ol/centerconstraint';

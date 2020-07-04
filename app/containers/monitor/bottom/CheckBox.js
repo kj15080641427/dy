@@ -80,7 +80,7 @@ class CheckBox extends React.PureComponent {
               <Checkbox layer={"flood"} checked={layerVisible.flood != null ? layerVisible.flood : true} onChange={this.onChange}><span className="m-col-checkbox-span">洪水河流</span></Checkbox>
             </Row> */}
           <Row className="m-checkbox-col-row">
-            <Checkbox layer={"wfsRiver"} checked={layerVisible.wfsRiver != null ? layerVisible.wfsRiver : true} onChange={this.onChange}><span className="m-col-checkbox-span">河流</span></Checkbox>
+            <Checkbox layer={"river40"} checked={layerVisible.river40 != null ? layerVisible.river40 : true} onChange={this.onChange}><span className="m-col-checkbox-span">河流</span></Checkbox>
           </Row>
           <Row className="m-checkbox-col-row">
             <Checkbox layer={"traffic"} checked={layerVisible.traffic != null ? layerVisible.traffic : true} onChange={this.onChange}><span className="m-col-checkbox-span">交通实况</span></Checkbox>

@@ -32,12 +32,12 @@ class WeatherTable extends React.PureComponent {
             <TabPane tab="雨量站" key="1">
               <Precipitation></Precipitation>
             </TabPane>
-            <TabPane tab="水位站" key="2">
+            {/* <TabPane tab="水位站" key="2">
               <WaterLevel></WaterLevel>
             </TabPane>
             <TabPane tab="易涝点" key="3">
               <EasyFlood></EasyFlood>
-            </TabPane>
+            </TabPane> */}
             {/* <TabPane tab="视频站点" key="4">
               <Video></Video>
             </TabPane>

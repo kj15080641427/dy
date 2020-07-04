@@ -10,8 +10,8 @@ import { Row, Col } from 'antd';
 import fxyj from '../../../resource/fxyj.png';
 import sjgl from '../../../resource/sjgl.png';
 import spjk from '../../../resource/spjk.png';
-import ysgq from '../../../resource/ysgq.png';
-import ybmx from '../../../resource/ybmx.png';
+import sqjk from '../../../resource/sqjk.png';
+import yld from '../../../resource/yld.png';
 import zhjk from '../../../resource/zhjk.png';
 import moment from "moment";
 import { getWeatherdata } from "@app/data/request";
@@ -59,6 +59,24 @@ class PannelBtn extends React.PureComponent {
               </Link>
             </Col>
             <Col span={4}>
+              <Link to={'/water'}>
+                <img
+                  className="m-btn-flood"
+                  src={sqjk}
+                // onClick={this.handleindex}
+                ></img>
+              </Link>
+            </Col>
+            <Col span={4}>
+              <Link to={'/easyFlood'}>
+                <img
+                  className="m-btn-flood"
+                  src={yld}
+                // onClick={this.handleindex}
+                ></img>
+              </Link>
+            </Col>
+            <Col span={4}>
               <Link to={'floodWarning'}>
                 <img
                   className="m-btn-flood"
@@ -87,8 +105,7 @@ class PannelBtn extends React.PureComponent {
               onClick={this.handlesjgl}
               ></img>}
             </Col>
-            <Col span={4}></Col>
-            <Col span={4}></Col>
+           
             {/* </Row> */}
             {/* </Col> */}
           </Row>
