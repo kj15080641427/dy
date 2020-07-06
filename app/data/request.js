@@ -18,6 +18,10 @@ export function getAllAreaVideo(data) {
 export function getVideosByCode(data) {
   return fetchJSONData("POST", "/station/code", data);
 }
+//根据视频站点唯一编码获取关联的水位站点
+export function getWaterStationByVideoCode(data){
+  return fetchJSONData("POST", "/station/radioCode", data);
+}
 // 获取雨晴实时信息
 export function getRainRealTime(data) {
   return fetchJSONData("POST", "/raindata/realTime", data);
