@@ -1,7 +1,7 @@
 @import "@app/variable.scss";
 .m-pannel-btns {
   position: relative;
-  top: -14px;
+  // top: -14px;
   height: 83px;
   background: rgba(255, 255, 255, 0);
 }
@@ -32,7 +32,7 @@
   position: relative;
   bottom: 13px;
 }
-.m-btn-flood {
+.m-btn-flood-video {
   border-radius:7px;
   position: relative;
   bottom: 13px;
@@ -107,13 +107,13 @@
   width: 70px;
   height: 40px;
 }
-.m-alm-row {
+.m-alm-row-video {
   font-size: 18px;
   // left: 10px;
-  width: 514px;
-  height: 50px;
+  width: 570px;
+  height: 80px;
   position: relative;
-  left: 0px;
+  left: -60px;
   top: 15px;
   bottom: 15px;
   right: 15px;

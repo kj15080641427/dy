@@ -81,8 +81,8 @@ class Water extends Base {
             <div className="m-ovl-line">水位：{water}</div>
             <div className="m-ovl-line">来源：{model.dataSourceDesc}</div>
             <div className="m-ovl-line">河流：{model.rivername}</div>
-            <div className="m-ovl-line">县区：{udpTm.region}</div>
-            <div className="m-ovl-line">警戒：{warningLevel}</div>
+            <div className="m-ovl-line">县区：{model.regionName}</div>
+            <div className="m-ovl-line">警戒：{model.z}</div>
             <div className="m-ovl-line">时间：{udpTm}</div>
 
           </div>

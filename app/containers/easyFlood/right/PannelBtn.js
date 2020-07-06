@@ -6,14 +6,17 @@
 import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import "./style.scss";
+import "@app/containers/monitor/right/style.scss";
 import { Row, Col } from 'antd';
 import fxyj from '../../../resource/fxyj.png';
 import sjgl from '../../../resource/sjgl.png';
 import spjk from '../../../resource/spjk.png';
 import yqjk from '../../../resource/yqjk.png';
+import yld from '../../../resource/yld.png';
 import sqjk from '../../../resource/sqjk.png';
 import zhjk from '../../../resource/zhjk.png';
 import moment from "moment";
+import TowBtn from "@app/containers/monitor/right/Module/TowBtn"
 import { getWeatherdata } from "@app/data/request";
 class PannelBtn extends React.PureComponent {
   constructor(props, context) {
@@ -28,87 +31,48 @@ class PannelBtn extends React.PureComponent {
     return (
       <div className="m-pannel-btns">
         <div>
-          <Row className="m-alm-row">
-            {/* <Col span={12}> */}
-            {/* <div className="m-btn-weather">
-                <Row>
-                  <Col span={6}><img className="m-btn-sunny" src={weatherData.state1MaxIco}></img></Col>
-                  <Col span={18}>
-                    <div className="m-btn-weather-data">
-                      <Row>
-                        天气预报:<span ref={(node) => { this.time = node; }}>{moment().format("MM月DD日")}</span>,
-                      </Row>
-                      <Row>
-                        {weatherData.stateDetailed},{weatherData.temNow}℃,
-                      </Row>
-                      <Row>
-                        {weatherData.windState}
-                      </Row>
-                    </div>
-                  </Col>
-                </Row>
-              </div> */}
-            {/* <Row> */}
-            <Col span={4}>
-              <Link to={'/index'}>
-                <img
-                  className="m-btn-flood"
-                  src={zhjk}
-                // onClick={this.handleindex}
-                ></img>
-              </Link>
-            </Col>
-            <Col span={4}>
-              <Link to={'/rain'}>
-                <img
-                  className="m-btn-flood"
-                  src={yqjk}
-                // onClick={this.handleindex}
-                ></img>
-              </Link>
-            </Col>
-            <Col span={4}>
-              <Link to={'/water'}>
-                <img
-                  className="m-btn-flood"
+        <Row className="m-alm-row-index" >
+              <Col span={4}>  <Link to={'/index'} ><img
+                className="m-btn-flood-index"
+               
+                src={zhjk}
+              // onClick={this.handlefxyj}
+              ></img>
+              </Link></Col>
+              <Col span={4}><Link to={"/rain"}><img
+                className="m-btn-flood-index"
+                src={yqjk}
+              // onClick={this.handleysgq}
+              ></img>
+              </Link></Col>
+              <Col span={4}>
+                <Link to={'/water'} ><img
+                  className="m-btn-flood-index"
                   src={sqjk}
-                // onClick={this.handleindex}
-                ></img>
-              </Link>
-            </Col>
-            <Col span={4}>
-              <Link to={'floodWarning'}>
-                <img
-                  className="m-btn-flood"
-                  src={fxyj}
                 // onClick={this.handlefxyj}
                 ></img>
-              </Link>
-            </Col>
-            {/* </Row> */}
-            {/* </Col> */}
-            {/* <Col span={12}> */}
-            {/* <Row> */}
-            <Col span={4} >
-              <Link to={'/video'}>
-                <img
-                  className="m-btn-flood"
-                  src={spjk}
-                // onClick={this.handlespjk}
+                </Link></Col>
+              <Col span={4}>
+                <Link to={"/easyFlood"}><img
+                  className="m-btn-flood-index"
+                  src={yld}
+                // onClick={this.handleysgq}
+                style={{ border: '3px solid #007ed7', height: 79 }}
                 ></img>
+                </Link></Col>
+              <Col span={4}>  <Link to={"/video"}><img
+                className="m-btn-flood-index"
+                src={spjk}
+              // onClick={this.handlespjk}
+              ></img></Link></Col>
+              <Col span={4}><Link to={'/floodWarning'} ><img
+                className="m-btn-flood-index"
+                src={fxyj}
+              // onClick={this.handlefxyj}
+              ></img>
               </Link></Col>
-            <Col span={4}>
-            {localStorage.getItem("username") === "admin1" ? null :
-              <img
-                className="m-btn-flood"
-                src={sjgl}
-              onClick={this.handlesjgl}
-              ></img>}
-            </Col>
-           
-            {/* </Row> */}
-            {/* </Col> */}
-          </Row>
+            </Row>
+            <TowBtn></TowBtn>
         </div >
       </div >
     );

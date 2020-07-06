@@ -1,5 +1,5 @@
 /**
- * Precipitation 2020-05-18
+ * WaterLevel 2020-05-18
  * zdl
  * 水位站
  */
@@ -17,7 +17,7 @@ import echarts from 'echarts/lib/echarts';
 import 'echarts';
 import { SpliceSite } from "@app/utils/common";
 
-class Precipitation extends React.PureComponent {
+class WaterLevel extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -510,4 +510,4 @@ class Precipitation extends React.PureComponent {
         emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
     }
 }
-export default Precipitation;
+export default WaterLevel;

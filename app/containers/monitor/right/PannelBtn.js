@@ -10,10 +10,14 @@ import { Row, Col, Drawer } from 'antd';
 import fxyj from '../../../resource/fxyj.png';
 import sjgl from '../../../resource/sjgl.png';
 import spjk from '../../../resource/spjk.png';
-import ysgq from '../../../resource/ysgq.png';
-import hhsq from '../../../resource/hhsq.png';
 import hyyb from '../../../resource/hyyb.png';
+import hhsq from '../../../resource/hhsq.png';
+import zhjk from '../../../resource/zhjk.png';
+import sqjk from '../../../resource/sqjk.png';
+import yqjk from '../../../resource/yqjk.png';
+import yld from '../../../resource/yld.png';
 import moment from "moment";
+import TowBtn from "@app/containers/monitor/right/Module/TowBtn"
 import { getWeatherdata } from "@app/data/request";
 class PannelBtn extends React.PureComponent {
   constructor(props, context) {
@@ -51,110 +55,83 @@ class PannelBtn extends React.PureComponent {
   render() {
     const { weatherData } = this.state;
     return (
-      <div className="m-pannel-btns">
-        <Drawer
-          title="黄河水情"
-          placement="top"
-          onClose={this.handleCancel}
-          visible={this.state.visible}
-          width={"100%"}
-          height="100%"
-        >
-          <div style={{ height: '950px', width: '1060px' }}>
-            <iframe src="http://61.163.88.227:8006/hwsq.aspx" width="1870px" height="950px"
-              frameborder="0" scrolling="no" style={{ position: 'relative' }}></iframe>
-          </div>
-        </Drawer>
-        <Drawer
-          title="海洋预警"
-          placement="top"
-          onClose={this.hyhandleCancel}
-          visible={this.state.hyvisible}
-          width={"100%"}
-          height="100%"
-        >
-          <div style={{ height: '950px', width: '1060px' }}>
-            <iframe src="http://hsdy.dongying.gov.cn/col/col36593/index.html" width="1870px" height="1225px"
-              frameborder="0" scrolling="no" style={{ position: 'relative', top: -340 }}></iframe>
-          </div>
-        </Drawer>
-        <div>
-          <Row className="m-alm-row">
-            <Col span={4}><img
-              className="m-btn-flood"
-              src={hhsq}
-              onClick={this.showModal}
-            ></img>
-            </Col>
-            <Col span={4}><img
-              className="m-btn-flood"
-              src={hyyb}
-              onClick={this.hyshowModal}
-            ></img>
-            </Col>
-            <Col span={4}>
-              <Link to={'/floodWarning'} ><img
-                className="m-btn-flood"
-                src={fxyj}
+      <>
+        <div className="m-pannel-btns">
+          <Drawer
+            title="黄河水情"
+            placement="top"
+            onClose={this.handleCancel}
+            visible={this.state.visible}
+            width={"100%"}
+            height="100%"
+          >
+            <div style={{ height: '950px', width: '1060px' }}>
+              <iframe src="http://61.163.88.227:8006/hwsq.aspx" width="1870px" height="950px"
+                frameborder="0" scrolling="no" style={{ position: 'relative' }}></iframe>
+            </div>
+          </Drawer>
+          <Drawer
+            title="海洋预警"
+            placement="top"
+            onClose={this.hyhandleCancel}
+            visible={this.state.hyvisible}
+            width={"100%"}
+            height="100%"
+          >
+            <div style={{ height: '950px', width: '1060px' }}>
+              <iframe src="http://hsdy.dongying.gov.cn/col/col36593/index.html" width="1870px" height="1225px"
+                frameborder="0" scrolling="no" style={{ position: 'relative', top: -340 }}></iframe>
+            </div>
+          </Drawer>
+          <div>
+            <Row className="m-alm-row-index" >
+              <Col span={4}>  <Link to={'/index'} ><img
+                className="m-btn-flood-index"
+                style={{ border: '3px solid #007ed7', height: 79 ,
+                '-webkit-filter': 'opacity(0.5)'}}
+                src={zhjk}
               // onClick={this.handlefxyj}
               ></img>
-              </Link>
-            </Col>
-            <Col span={4}>
-              <Link to={"/rain"}><img
-                className="m-btn-flood"
-                src={ysgq}
+              </Link></Col>
+              <Col span={4}><Link to={"/rain"}><img
+                className="m-btn-flood-index"
+                src={yqjk}
               // onClick={this.handleysgq}
               ></img>
-              </Link>
-            </Col>
-            <Col span={4}>
-              <Link to={"/video"}><img
-                className="m-btn-flood"
+              </Link></Col>
+              <Col span={4}>
+                <Link to={'/water'} ><img
+                  className="m-btn-flood-index"
+                  src={sqjk}
+                // onClick={this.handlefxyj}
+                ></img>
+                </Link></Col>
+              <Col span={4}>
+                <Link to={"/easyFlood"}><img
+                  className="m-btn-flood-index"
+                  src={yld}
+                // onClick={this.handleysgq}
+                ></img>
+                </Link></Col>
+              <Col span={4}>  <Link to={"/video"}><img
+                className="m-btn-flood-index"
                 src={spjk}
               // onClick={this.handlespjk}
               ></img></Link></Col>
+              <Col span={4}><Link to={'/floodWarning'} ><img
+                className="m-btn-flood-index"
+                src={fxyj}
+              // onClick={this.handlefxyj}
+              ></img>
+              </Link></Col>
+            </Row>
+            <TowBtn></TowBtn>
+          </div>
 
-            <Col span={4}>
-              {/* <Link to={"/home"}> */}
-              {localStorage.getItem("username") === "admin1" ? null :
-                <img
-                  className="m-btn-flood"
-                  src={sjgl}
-                  onClick={this.handlesjgl}
-                ></img>
-              }
-              {/* </Link> */}
-            </Col>
-          </Row>
         </div>
-      </div>
+
+      </>
     );
-  }
-  handlespjk() {
-    const w = window.open('about:blank');
-    w.location.href = "http://172.19.112.74/new/dist/index.html#/video"
-    //  w.location.href = "http://localhost/dist/index.html#/home"
-    // w.location.href = "/#/video"
-  }
-  handlesjgl() {
-    const w = window.open('about:blank');
-    // w.location.href = "http://172.19.112.74/new/dist/index.html#/home/rwvdata"
-    w.location.href = "http://172.19.112.74/dist/index.html#/home/rwvdata"
-    //  w.location.href = "http://localhost/dist/index.html#/home"
-    // w.location.href = "/#/home"
-  }
-  handleysgq() {
-    const w = window.open('about:blank');
-    w.location.href = "http://172.19.112.74/new/dist/index.html#/rain"
-    //  w.location.href = "http://localhost/dist/index.html#/rain"
-    // w.location.href = "/#/rain"
-  }
-  handlefxyj() {
-    const w = window.open('about:blank');
-    w.location.href = "http://172.19.112.74/new/dist/index.html#/floodWarning"
-    //  w.location.href = "http://localhost/dist/index.html#/floodWarning"
-    // w.location.href = "/#/floodWarning"
   }
   componentDidMount() {
     // this._timer = window.setInterval(() => {

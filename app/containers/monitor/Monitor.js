@@ -80,7 +80,7 @@ class Monitor extends React.PureComponent {
             <WeatherPic></WeatherPic>
           </div>
         </div> : */}
-          <div className="m-right-one">
+          <div className="m-right">
             <PannelBtn></PannelBtn>
           </div>
         {/* } */}

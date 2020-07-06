@@ -35,15 +35,15 @@ class Precipitation extends React.PureComponent {
     playV = (value) => {
         console.log(value)
         if (value.isOnline == '0') {
-        this.videoControl.login().then((rest) => {
-            this.setState({ videoobj: this.videoControl });
-        })
-        this.setState({
-            visible: true,
-            token: value.strtoken,
-            type: value.dataSource,
-            address: "摄像头详细地址：" + value.address
-        });
+            this.videoControl.login().then((rest) => {
+                this.setState({ videoobj: this.videoControl });
+            })
+            this.setState({
+                visible: true,
+                token: value.strtoken,
+                type: value.dataSource,
+                address: "摄像头详细地址：" + value.address
+            });
         } if (value.isOnline == '1') {
             message.error('视频站点不在线');
         }
@@ -314,7 +314,6 @@ class Precipitation extends React.PureComponent {
             let hkcatyarr = [];
             this.setState({ loading: false });
             for (let i = 0; i < result.data.length; i++) {
-                console.log(result.data[i].dataSource)
                 if (result.data[i].regionName === "东营区") {
                     if (result.data[i].dataSource === "3" || result.data[i].dataSource === "9") {
                         dyfloodarr.push(result.data[i])

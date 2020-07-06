@@ -11,6 +11,7 @@ import Precipitation from './WeatherModule/Precipitation';
 import WaterLevel from './WeatherModule/WaterLevel';
 import Video from './WeatherModule/Video';
 import EasyFlood from './WeatherModule/easyFlood';
+import RiverWater from './WeatherModule/RiverWater';
 import emitter from "@app/utils/emitter.js";
 import FloodPeople from './WeatherModule/FloodPeople';
 
@@ -32,9 +33,10 @@ class WeatherTable extends React.PureComponent {
             <TabPane tab="雨量站" key="1">
               <Precipitation></Precipitation>
             </TabPane>
-            {/* <TabPane tab="水位站" key="2">
-              <WaterLevel></WaterLevel>
-            </TabPane>
+             {/* <TabPane tab="河道" key="2">
+              <RiverWater></RiverWater>
+            </TabPane> */}
+            {/*
             <TabPane tab="易涝点" key="3">
               <EasyFlood></EasyFlood>
             </TabPane> */}

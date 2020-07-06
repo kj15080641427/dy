@@ -8,6 +8,7 @@ import "../style.scss";
 import { Table, Space, Popover, Modal, Button, Card, Input, Drawer, message } from 'antd';
 import VideoComponent from '@app/components/video/VideoComponent';
 import VideoControl from '@app/components/video/VideoControl';
+import Holder from "@app/components/video/Holder"
 import Highlighter from 'react-highlight-words';
 import {
     CaretRightOutlined, SearchOutlined
@@ -227,6 +228,7 @@ class Video extends React.PureComponent {
                             }} type={this.state.type} />
                             : null}
                     </div>
+                    <Holder token={this.state.token}></Holder>
                 </Drawer>
             </>
         );

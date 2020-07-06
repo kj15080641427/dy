@@ -64,7 +64,7 @@ class Precipitation extends React.PureComponent {
                     }
                     myChart.setOption({
                         title: {
-                            text: obj.name + "-水位站24小时水位变化",
+                            text: obj.name + "-24小时水位曲线",
                             subtext: starttm + '至' + endtm,
                             // left: 'center',
                         },
@@ -175,7 +175,7 @@ class Precipitation extends React.PureComponent {
                             },
                         ],
                         title: {
-                            text: obj.name + "-水位站24小时水位变化",
+                            text: obj.name + "-24小时水位曲线",
                             subtext: starttm + '至' + endtm,
                         },
                         xAxis: {

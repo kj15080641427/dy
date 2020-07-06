@@ -5,16 +5,20 @@
  */
 import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom'
-import "./style.scss";
+import "@app/containers/monitor/right/style.scss";
 import { Row, Col, Drawer, Table, Button, Modal } from 'antd';
 import fxyj from '../../../resource/fxyj.png';
 import sjgl from '../../../resource/sjgl.png';
 import spjk from '../../../resource/spjk.png';
 import ysgq from '../../../resource/ysgq.png';
 import ybmx from '../../../resource/ybmx.png';
+import sqjk from '../../../resource/sqjk.png';
+import yqjk from '../../../resource/yqjk.png';
+import yld from '../../../resource/yld.png';
 import zhjk from '../../../resource/zhjk.png';
 import ddfa from '../../../resource/ddfa.png';
 import moment from "moment";
+import TowBtn from "@app/containers/monitor/right/Module/TowBtn"
 import { getWeatherdata, getWaterRealTime } from "@app/data/request";
 
 class PannelBtn extends React.PureComponent {
@@ -22,7 +26,7 @@ class PannelBtn extends React.PureComponent {
     super(props, context);
     this.state = {
       weatherData: {},//天气信息
-      visible: false,
+      visibleyb: false,
       visibleScheme: false,
       visibleDuty: false,
       water: []
@@ -31,13 +35,13 @@ class PannelBtn extends React.PureComponent {
   //打开预报模型
   showModal = () => {
     this.setState({
-      visible: true,
+      visibleyb: true,
     });
   };
   //关闭预报模型
   handleCancel = e => {
     this.setState({
-      visible: false,
+      visibleyb: false,
     });
   };
   //打开调度
@@ -452,60 +456,56 @@ class PannelBtn extends React.PureComponent {
     return (
       <div className="m-pannel-btns">
         <div>
-          <Row className="m-alm-row">
+          <Row className="m-alm-row-index" >
+            <Col span={4}>  <Link to={'/index'} ><img
+              className="m-btn-flood-index"
+
+              src={zhjk}
+            // onClick={this.handlefxyj}
+            ></img>
+            </Link></Col>
+            <Col span={4}><Link to={"/rain"}><img
+              className="m-btn-flood-index"
+              src={yqjk}
+            // onClick={this.handleysgq}
+            ></img>
+            </Link></Col>
             <Col span={4}>
-              <Link to={'/index'}>
-                <img
-                  className="m-btn-flood"
-                  src={zhjk}
-                // onClick={this.handleindex}
-                ></img></Link>
-            </Col>
-            <Col span={4}>
-              <img
-                className="m-btn-flood"
-                src={ybmx}
-                onClick={this.showModal}
+              <Link to={'/water'} ><img
+                className="m-btn-flood-index"
+                src={sqjk}
+              // onClick={this.handlefxyj}
               ></img>
-            </Col>
+              </Link></Col>
             <Col span={4}>
-              <img
-                className="m-btn-flood"
-                src={ddfa}
-                onClick={this.showSchemeModal}
+              <Link to={"/easyFlood"}><img
+                className="m-btn-flood-index"
+                src={yld}
+              // onClick={this.handleysgq}
+
               ></img>
-            </Col>
-            <Col span={4}>
-              <Link to={'/rain'}>
-                <img
-                  className="m-btn-flood"
-                  src={ysgq}
-                // onClick={this.handleysgq}
-                ></img>
-              </Link>
-            </Col>
-            <Col span={4}>
-              <Link to={'/video'}><img
-                className="m-btn-flood"
-                src={spjk}
-              // onClick={this.handlespjk}
-              ></img></Link></Col>
-            <Col span={4}>
-              {localStorage.getItem("username") === "admin1" ? null :
-                <img
-                  className="m-btn-flood"
-                  src={sjgl}
-                  onClick={this.handlesjgl}
-                ></img>
-              }
-            </Col>
+              </Link></Col>
+            <Col span={4}>  <Link to={"/video"}><img
+              className="m-btn-flood-index"
+              src={spjk}
+            // onClick={this.handlespjk}
+            ></img></Link></Col>
+            <Col span={4}><Link to={'/floodWarning'} ><img
+              style={{ border: '3px solid #007ed7', height: 79 ,
+              '-webkit-filter': 'opacity(0.5)',}}
+              className="m-btn-flood-index"
+              src={fxyj}
+            // onClick={this.handlefxyj}
+            ></img>
+            </Link></Col>
           </Row>
+          <TowBtn></TowBtn>
         </div>
         <Drawer
           title="预报模型"
           placement="top"
           onClose={this.handleCancel}
-          visible={this.state.visible}
+          visible={this.state.visibleyb}
           width={"100%"}
           height="100%"
         >
@@ -554,7 +554,7 @@ class PannelBtn extends React.PureComponent {
             />
           </Modal>
         </Drawer>
-      </div>
+      </div >
     );
   }
   handlesjgl() {

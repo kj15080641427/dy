@@ -1,7 +1,7 @@
 @import "@app/variable.scss";
 .m-pannel-btns {
   position: relative;
-  top: -14px;
+  // top: -14px;
   height: 83px;
   background: rgba(255, 255, 255, 0);
 }
@@ -32,8 +32,8 @@
   position: relative;
   bottom: 13px;
 }
-.m-btn-flood {
-  border-radius:7px;
+.m-btn-flood-easy {
+  border-radius: 7px;
   position: relative;
   bottom: 13px;
   left: 10px;
@@ -107,16 +107,11 @@
   width: 70px;
   height: 40px;
 }
-.m-alm-row {
-  font-size: 18px;
-  // left: 10px;
-  width: 514px;
-  height: 50px;
+.m-alm-row-easy {
+  width: 500px;
+  height: 82px;
   position: relative;
-  left: 0px;
-  top: 15px;
-  bottom: 15px;
-  right: 15px;
+  top: 10px;
 }
 .m-alm-row-warning {
   font-size: 25px;

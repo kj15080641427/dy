@@ -320,7 +320,8 @@ class AlarmTable extends React.PureComponent {
 
             </Col>
             <Col span={10}>
-              <Radio.Group onChange={onChange} defaultValue="a">
+              <Radio.Group onChange={onChange} defaultValue="a" style={{position: 'relative',
+    top: 10,}}>
                 <Radio.Button value="a">水位告警</Radio.Button>
                 <Radio.Button value="b">气象预警</Radio.Button>
               </Radio.Group></Col>

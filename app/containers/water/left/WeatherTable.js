@@ -13,7 +13,7 @@ import Video from './WeatherModule/Video';
 import EasyFlood from './WeatherModule/easyFlood';
 import emitter from "@app/utils/emitter.js";
 import FloodPeople from './WeatherModule/FloodPeople';
-
+import RiverWater from './WeatherModule/RiverWater';
 class WeatherTable extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -35,9 +35,9 @@ class WeatherTable extends React.PureComponent {
             <TabPane tab="水位站" key="2">
               <WaterLevel></WaterLevel>
             </TabPane>
-            {/* <TabPane tab="易涝点" key="3">
-              <EasyFlood></EasyFlood>
-            </TabPane> */}
+            <TabPane tab="河道" key="3">
+              <RiverWater></RiverWater>
+            </TabPane>
             {/* <TabPane tab="视频站点" key="4">
               <Video></Video>
             </TabPane>

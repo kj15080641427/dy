@@ -111,22 +111,27 @@ class WeatherChart extends React.PureComponent {
               type: 'bar',
               barWidth: '15%',
               data: hourData == 0 ? null : hourData,
-              markPoint: {
-                data: [
-                  {
-                    type: 'max',
-                    label: {
-                      show: hourData,
-                      // position: 'top'
-                    },
-                    symbolSize: 1,
-                  },
-                  // {
-                  //   type: 'min', name: '最小值', itemStyle: {
-                  //     color: '#03d6d6'
-                  //   }
-                  // }
-                ],
+              // markPoint: {
+              //   data: [
+              //     {
+              //       type: 'max',
+              //       label: {
+              //         show: hourData,
+              //         // position: 'top'
+              //       },
+              //       symbolSize: 1,
+              //     },
+              //     // {
+              //     //   type: 'min', name: '最小值', itemStyle: {
+              //     //     color: '#03d6d6'
+              //     //   }
+              //     // }
+              //   ],
+
+              // },
+              label: {
+                show: true,
+                position: 'bottom'
 
               },
             },
@@ -164,21 +169,26 @@ class WeatherChart extends React.PureComponent {
                 {
                   name: '24小时',
                   data: dayData,
-                  markPoint: {
-                    data: [
-                      {
-                        type: 'max',
-                        name: '最大值',
-                        label: {
-                          show: true,
-                          // position: 'Right'
-
-                        },
-                        symbolSize: 1,
-                      }
-                    ],
+                  label: {
+                    show: true,
+                    position: 'bottom'
 
                   },
+                  // markPoint: {
+                  //   data: [
+                  //     {
+                  //       type: 'max',
+                  //       name: '最大值',
+                  //       label: {
+                  //         show: true,
+                  //         // position: 'Right'
+
+                  //       },
+                  //       symbolSize: 1,
+                  //     }
+                  //   ],
+
+                  // },
                 },
 
               ]
@@ -195,20 +205,24 @@ class WeatherChart extends React.PureComponent {
                 {
                   name: '近三天',
                   data: thDayData,
-
-                  markPoint: {
-                    data: [
-                      {
-                        type: 'max', name: '最大值',
-                        label: {
-                          show: thDayData = 0 ? false : true,
-                          // position: 'Right'
-                        },
-                        symbolSize: 1,
-                      }
-                    ],
+                  label: {
+                    show: true,
+                    position: 'bottom'
 
                   },
+                  // markPoint: {
+                  //   data: [
+                  //     {
+                  //       type: 'max', name: '最大值',
+                  //       label: {
+                  //         show: thDayData = 0 ? false : true,
+                  //         // position: 'Right'
+                  //       },
+                  //       symbolSize: 1,
+                  //     }
+                  //   ],
+
+                  // },
                 },
               ]
             })
@@ -223,19 +237,24 @@ class WeatherChart extends React.PureComponent {
                 {
                   name: '近一周',
                   data: seDayData,
-                  markPoint: {
-                    data: [
-                      {
-                        type: 'max', name: '最大值',
-                        label: {
-                          show: seDayData = 0 ? false : true,
-                          position: 'bottom'
-                        },
-                        symbolSize: 1,
-                      }
-                    ],
+                  label: {
+                    show: true,
+                    position: 'bottom'
 
                   },
+                  // markPoint: {
+                  //   data: [
+                  //     {
+                  //       type: 'max', name: '最大值',
+                  //       label: {
+                  //         show: seDayData = 0 ? false : true,
+                  //         position: 'bottom'
+                  //       },
+                  //       symbolSize: 1,
+                  //     }
+                  //   ],
+
+                  // },
                 },
               ]
             })
@@ -250,17 +269,22 @@ class WeatherChart extends React.PureComponent {
                 {
                   name: '近一年以来',
                   data: yearData,
-                  markPoint: {
-                    data: [
-                      {
-                        type: 'max', name: '最大值',
-                        label: {
-                          show: yearData = 0 ? false : true,
-                          position: 'bottom'
-                        },
-                        symbolSize: 1,
-                      }
-                    ],
+                  // markPoint: {
+                  //   data: [
+                  //     {
+                  //       type: 'max', name: '最大值',
+                  //       label: {
+                  //         show: yearData = 0 ? false : true,
+                  //         position: 'bottom'
+                  //       },
+                  //       symbolSize: 1,
+                  //     }
+                  //   ],
+                  // },
+                  label: {
+                    show: true,
+                    position: 'bottom'
+
                   },
                 },
               ]
