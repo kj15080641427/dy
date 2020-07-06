@@ -80,8 +80,11 @@ class Water extends Base {
             <div className="m-ovl-line" style={{ width: 180 }}>名称：{model.stnm || model.name}</div>
             <div className="m-ovl-line">水位：{water}</div>
             <div className="m-ovl-line">来源：{model.dataSourceDesc}</div>
+            <div className="m-ovl-line">河流：{model.rivername}</div>
+            <div className="m-ovl-line">县区：{udpTm.region}</div>
             <div className="m-ovl-line">警戒：{warningLevel}</div>
             <div className="m-ovl-line">时间：{udpTm}</div>
+
           </div>
         </div>
         <span className="iconfont iconcuo m-ovl-close" ></span>
@@ -135,41 +138,77 @@ class Water extends Base {
     // category = category.reverse();
     // values = values.reverse();
 
-    console.log(model.waters)
+    console.log(model)
+    let chars = echarts.init(document.getElementById('echartsDiv'));
     let xdata = [];
     let ydata = [];
-    for (let i = 0; i < model.waters.length; i++) {
-      xdata.push(moment(model.waters[i].tm).format('MM-DD HH:mm'))
-      ydata.push(model.waters[i].z)
-    }
-    let chars = echarts.init(document.getElementById('echartsDiv'));
-    const option = {
-      title: {
-        text: model.waters[0].stnm + '24小时水位变化',
-        // left: 'center',
-      },
-      xAxis: {
-        type: 'category',
-        data: xdata
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-          crossStyle: {
-            color: '#999'
+    if (model.waters.length === 0) {
+      const option = {
+        title: {
+          text: "暂无水位数据",
+          // left: 'center',
+        },
+        xAxis: {
+          type: 'category',
+          data: [],
+          name: '时间',
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
+            }
           }
-        }
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [{
-        data: ydata,
-        type: 'line'
-      }]
-    };
-    chars.setOption(option);
+        },
+        yAxis: {
+          type: 'value',
+          name: '水位(m)'
+        },
+        series: [{
+          data: [],
+          type: 'line'
+        }]
+      };
+      chars.setOption(option);
+    } else {
+      for (var i = model.waters.length - 1; i >= 0; i--) {
+        xdata.push(moment(model.waters[i].tm).format('MM-DD HH:mm'))
+        ydata.push(model.waters[i].z)
+      }
+
+      const option = {
+        title: {
+          text: model.waters[0].stnm + '24小时水位曲线',
+          // left: 'center',
+        },
+        xAxis: {
+          type: 'category',
+          data: xdata,
+          name: '时间',
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
+            }
+          }
+        },
+        yAxis: {
+          type: 'value',
+          name: '水位(m)'
+        },
+        series: [{
+          data: ydata,
+          type: 'line'
+        }]
+      };
+      chars.setOption(option);
+    }
+
   }
   componentWillUnmount() {
     super.componentWillUnmount();

@@ -6,6 +6,7 @@ import "./style.scss";
 import Base from "./Base";
 import {transform} from 'ol/proj.js';
 import VideoComponent from '@app/components/video/VideoComponent';
+
 class Video extends Base {
   static type = "video";
   static single = true; // 仅能弹出最近一个,其他关闭
