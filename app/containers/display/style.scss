@@ -1,0 +1,23 @@
+.display {
+  position: relative;
+  width: 3840px;
+  height: 1080px;
+}
+.dis-left {
+  position: absolute;
+  display: flex;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  padding-left: 20px;
+  > div {
+    justify-content: stretch;
+  }
+}
+.dis-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding-right: 20px;
+}
