@@ -10,7 +10,14 @@ class OverView extends React.PureComponent {
   }
   render() {
     return ( 
-      <div className="dis-overview">OverView</div>
+      <div className="dis-overview">
+        <div className="dis-ov-board">
+          dis-ov-board
+        </div>
+        <div className="dis-ov-table">
+          dis-ov-table
+        </div>
+      </div>
     );
   }
   componentDidMount() {}

@@ -4,8 +4,21 @@
   background: rgba(255,0,0,.3);
 }
 .dis-overview {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 832px;
   height: 100%;
   margin-left: 42px;
+  padding-bottom: 15px;
+  padding-top: 65px;
   background: rgba(0,255,0,.3);
+  .dis-ov-board {
+    height: 277px;
+    background: rgba(133,0,0,.4);
+  }
+  .dis-ov-table {
+    height: 687px;
+    background: rgba(0,133,0,.4);
+  }
 }

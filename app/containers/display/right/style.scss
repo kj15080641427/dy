@@ -1,5 +1,54 @@
 .dis-tables {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 1226px;
   height: 100%;
   background: rgba(0,0,0,.3);
+  padding-bottom: 15px;
+  .dis-table-btns {
+    height: 50px;
+    background: rgba(155,0,0,.3);
+  }
+  .dis-table-con {
+    height: 900px;
+    background: rgba(0,0,155,.3);
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    justify-content: space-between;
+  }
+  .dis-table-wrap {
+    width: 600px;
+    height: 426px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background: rgba(0,87,255, .3);
+    .dis-table-head {
+      position: relative;
+      height: 45px;
+      .dis-table-head-title {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: inline-block;
+        height: 58px;
+        width: 213px;
+        background: url(../../../resource/display/table_desc.png) center no-repeat;
+        background-size: cover;
+        color: white;
+        overflow: hidden;
+        line-height: 75px;
+        font-size: 18px;
+        padding-left: 30px;
+      }
+      .dis-table-head-extra {
+        float: right;
+        padding-right: 20px;
+        line-height: 45px;
+        color: white;
+        font-size: 16px;
+      }
+    }
+  }
 }
