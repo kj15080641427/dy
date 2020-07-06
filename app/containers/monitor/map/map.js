@@ -14,7 +14,7 @@ import moment from 'moment';
 import "./style.scss";
 import { templateWater, templateRain, templatePonding, templateWareHouse } from "./template";
 import { getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning, getGate,
-  getPump, getWfsRiver, getWarehouse, getWarehouseMt,getVideosByCode } from "@app/data/request";
+  getPump, getWfsRiver, getWarehouse, getWarehouseMt,getVideosByCode, getWaterStationByVideoCode } from "@app/data/request";
 import VideoControl from '@app/components/video/VideoControl';
 
 import Person from "./overlays/Person";
@@ -531,10 +531,46 @@ class Map extends React.PureComponent {
 
     });
     this.map.startSelectFeature("video", (param) => {
-      //this.addOverlay(Video.type, param);
-      let newParam = { ...param };
-      newParam.videoControl = this.videoControl;
-      this.addOverlay(Video.type, newParam);
+      //查询站点的水位
+      getWaterStationByVideoCode({code: param.code})
+        .then(result => {
+          //查询失败
+          if(result.code !== 200){
+            message.error('查询水位站点失败');
+          } else if(!result.data || result.data.length === 0){
+            //没有水位信息时，仅显示视频
+            let newParam = { ...param };
+            newParam.videoControl = this.videoControl;
+            this.addOverlay(Video.type, newParam);
+          } else {
+            //有水位站点，则查询该水位站点24小时水位数据
+            let waterStation = result.data[0];
+            let stcd = waterStation.stcd;
+            let endTime = new moment().format('YYYY-MM-DD HH:mm:ss');
+            let beginTime = moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
+            getWaterHistory({ stcd: stcd, current: 1, size: 10000, starttm: beginTime, endtm: endTime })
+              .then(res => {
+                if(res.code === 200){
+                  let newParam = { ...waterStation };
+                  newParam.videoControl = this.videoControl;
+                  newParam.videos = [param];
+                  newParam.waters = res.data.records;
+                  this.addOverlay(Water.type, newParam);
+                }
+              })
+              .catch(e => {
+                message.error('查询历史水位数据错误');
+              });
+          }
+        })
+        .catch(e => {
+          message.error('查询水位站点数据错误');
+          //没有水位信息时，仅显示视频
+          let newParam = { ...param };
+          newParam.videoControl = this.videoControl;
+          this.addOverlay(Video.type, newParam);
+        });
+
     });
     this.map.startSelectFeature("gate", (param) => {
       let newParam = { ...param };
