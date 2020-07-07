@@ -26,6 +26,8 @@ class Water extends Base {
     let water = (model.z !== null && model.z !== undefined) ? (model.z + 'm') : '--';
     let udpTm = model.tm ? moment(model.tm).format('MM-DD HH:mm') : '--';
     let warningLevel = (model.warning && model.warning !== 99) ? (model.warning + 'm') : '--';
+    let rivername = (model.rivername !== null) ? model.rivername : '--';
+    let regionName = (model.regionName !== null) ? model.regionName : '--';
     let videoControl = model.videoControl;
     let videos = model.videos;
     let token = videos && videos.length != 0 ? videos[0].strtoken : '';
@@ -80,9 +82,9 @@ class Water extends Base {
             <div className="m-ovl-line" style={{ width: 180 }}>名称：{model.stnm || model.name}</div>
             <div className="m-ovl-line">水位：{water}</div>
             <div className="m-ovl-line">来源：{model.dataSourceDesc}</div>
-            <div className="m-ovl-line">河流：{model.rivername}</div>
-            <div className="m-ovl-line">县区：{model.regionName}</div>
-            <div className="m-ovl-line">警戒：{model.z}</div>
+            <div className="m-ovl-line">河流：{rivername}</div>
+            <div className="m-ovl-line">县区：{regionName}</div>
+            <div className="m-ovl-line">警戒：{warningLevel}</div>
             <div className="m-ovl-line">时间：{udpTm}</div>
 
           </div>

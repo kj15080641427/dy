@@ -21,7 +21,7 @@ class Home extends React.PureComponent {
     render() {
         return (
             <>
-            <FutureWeather weatherData={this.state.weatherData}></FutureWeather>
+            {/* <FutureWeather weatherData={this.state.weatherData}></FutureWeather> */}
             {/* <WaterCourse></WaterCourse> */}
             </>
         )

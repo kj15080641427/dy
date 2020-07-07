@@ -72,7 +72,7 @@ class CheckBox extends React.PureComponent {
                             </Row>
                             <Row>
                                 <Col span={12}><img src={seven}></img><span>&nbsp;特大暴雨(&gt;250)</span></Col>
-                                <Col span={12}><img src={eight}></img><span>&nbsp;段历时强降雨</span></Col>
+                                {/* <Col span={12}><img src={eight}></img><span>&nbsp;段历时强降雨</span></Col> */}
                             </Row>
                         </div>
                     </div>

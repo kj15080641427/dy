@@ -51,14 +51,14 @@
   width: 107px;
   height: 8px;
   position: relative;
-  bottom: 17px;
+  bottom: 16px;
 }
 .m-divflood {
   width: 514px;
   height: 300px;
   border: 1px solid #007ed7;
   position: relative;
-  bottom: 23px;
+  bottom: 22px;
 }
 .m-div-table {
   width: 500px;
@@ -88,6 +88,7 @@
 .ant-tabs .ant-tabs-top .ant-tabs-nav-container .ant-tabs-large .ant-tabs-card{
   height: 365px;
   width: 460px;
+  margin-bottom: -3px;
    text-align: center;
   height: 380px;
   line-height: 380px;
