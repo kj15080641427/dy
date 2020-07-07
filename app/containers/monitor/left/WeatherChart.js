@@ -12,7 +12,6 @@ class WeatherChart extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      address: []
     };
   }
   render() {
@@ -36,7 +35,6 @@ class WeatherChart extends React.PureComponent {
         let addData = [];
         let yearData = [];
         var myChart = echarts.init(document.getElementById('main'));
-
         for (var i = result.data.length - 1; i >= 0; i--) {
           hourData.push((result.data[i].prd * 1).toFixed(1))
           addData.push(result.data[i].areaName)

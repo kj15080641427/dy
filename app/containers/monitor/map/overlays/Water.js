@@ -16,8 +16,8 @@ class Water extends Base {
   static type = "water";
   constructor(props, context) {
     super(props, context);
-    const {model} = props;
-    const {videos} = model;
+    const { model } = props;
+    const { videos } = model;
     let token = videos && videos.length !== 0 ? videos[0].strtoken : '';
     this.state = {
       token: token
@@ -26,9 +26,11 @@ class Water extends Base {
   }
   render() {
     let { model } = this.props;
+    console.log(model)
     //let water = (model.z !== null && model.z !== undefined) ? (model.z + 'm') : '--';
     let water = model.z ? parseFloat(model.z) : NaN;
     let waterString = isNaN(water) ? '--' : (water.toFixed(2) + 'm');
+    let flow = (model.q !== null) ? (model.q + "m³/s") : '--';
     let tm = model.ztm ? model.ztm : model.tm;
     let udpTm = tm ? moment(tm).format('MM-DD HH:mm') : '--';
     let warningLevel = (model.warning && model.warning !== 99) ? (model.warning + 'm') : '--';
@@ -75,16 +77,17 @@ class Water extends Base {
           <div>
             <div className="m-ovl-line" style={{ width: 180 }}>名称：{model.stnm || model.name}</div>
             <div className="m-ovl-line">水位：{waterString}</div>
+            <div className="m-ovl-line">流量：{flow}</div>
+            <div className="m-ovl-line">警戒：{warningLevel}</div>
             <div className="m-ovl-line">来源：{model.dataSourceDesc}</div>
             <div className="m-ovl-line">河流：{rivername}</div>
             <div className="m-ovl-line">县区：{regionName}</div>
-            <div className="m-ovl-line">警戒：{warningLevel}</div>
             <div className="m-ovl-line">时间：{udpTm}</div>
 
           </div>
         </div>
         <span className="iconfont iconcuo m-ovl-close" ></span>
-        <Holder token={this.state.token} divStyle={{ top: 330, right: -30, transform: 'scale(0.7)', }}></Holder>
+        <Holder token={this.state.token} divStyle={{ top: 420, right: -30, transform: 'scale(0.6)', }}></Holder>
         <div style={{
           float: 'left', width: 660, height: 315, position: 'relative',
           left: -15,
