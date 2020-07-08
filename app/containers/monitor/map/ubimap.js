@@ -427,10 +427,12 @@ export default (function(window) {
 
         var oneurl = urlFunc ? urlFunc() : param.url;
         var tilelayer = new TileLayer({
+            className: param.className || undefined,
             visible: param.visible == null ? true : param.visible,
             opacity:param.opacity == null ? 1: param.opacity,
             source: new XYZ({
-                url: oneurl,
+                tileLoadFunction: param.tileLoadFunction ? param.tileLoadFunction: undefined,
+                url: oneurl ? oneurl: undefined,
                 projection: param.projection ? sprojection : projection,
                 transition: param.transition || 0
             })
@@ -853,6 +855,7 @@ export default (function(window) {
         tg.classList.remove("active");
       }
     }
+    
     //添加目标
     Map.prototype.addFeature = function(key, obj) {
         if (!this.layers[key] || obj == null) return;

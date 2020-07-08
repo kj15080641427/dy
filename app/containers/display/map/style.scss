@@ -1,3 +1,29 @@
 #map {
   height: 100%;
+  
+}
+.display-map {
+  background: rgb(1,2,59);
+}
+.ol-layer-tiandi {
+  opacity: 0.3;
+}
+.ol-rain-container {
+  display: none;
+  width: 160px;
+  height: 160px;
+  border-radius: 80px;
+  
+  flex-direction: column;
+  align-items: center;
+  background:url(../../../resource/display/rain.png) center no-repeat ;
+  background-size: cover;
+  padding-top: 80px;
+  &.active {
+    display: flex;
+  }
+  > div {
+    color: white;
+    font-size: 20px;
+  }
 }
