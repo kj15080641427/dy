@@ -609,7 +609,7 @@ class Map extends React.PureComponent {
     this.map.on("moveend", () => {
       let a = this.map.getView().calculateExtent();
       // console.log(a);
-    })
+    });
     this.map.onFeatureClicked((feature) => {
       // console.log("featureclick", feature);
       if (feature) {
@@ -654,7 +654,7 @@ class Map extends React.PureComponent {
     let { layerVisible } = this.props;
     if (zoom >= 12) {
       if (this._zoom && this._zoom >= 12) return;
-      console.log("show")
+      //console.log("show")
       if(layerVisible.water) {
         this.map.showTagBox("water_tag");
       }else {
@@ -666,13 +666,20 @@ class Map extends React.PureComponent {
         this.map.hideTagBox("rain_tag");
       }
 
+      if(layerVisible.ponding){
+        this.map.showTagBox('ponding_tag');
+      }else {
+        this.map.hideTagBox('ponding_tag');
+      }
+
       // this.map.showTagOnLayer("water");
       // this.map.showTagOnLayer("rain");
     } else {
       if ( this._zoom && this._zoom < 12) return;
-      console.log("hide")
+      //console.log("hide");
       this.map.hideTagBox("water_tag");
       this.map.hideTagBox("rain_tag");
+      this.map.hideTagBox("ponding_tag");
 
     }
     this._zoom = zoom;
@@ -925,6 +932,7 @@ class Map extends React.PureComponent {
     }
     if (ponding && ponding.length) {
       this.map.addFeatures("ponding", templatePonding(ponding, details.water));
+      this.addPondingTagBox(ponding);
     }
     // 计算是或否显示tagbox
     this._zoom = null;
@@ -933,14 +941,25 @@ class Map extends React.PureComponent {
   addRainTagBox(rain) {
     if (rain && rain.length) {
       rain.forEach((r) => {
-        this.map.addTagBox("rain_tag_"+r.stcd, [r.lon, r.lat], {title: r.name, subTitle:(r.minuteAvg*1).toFixed(2) + "mm", prefix: "rain_tag"});
+        let name = r.aliasNme ? r.aliasNme : r.name;
+        this.map.addTagBox("rain_tag_"+r.stcd, [r.lon, r.lat], {title: name, subTitle:(r.minuteAvg*1).toFixed(2) + "mm", prefix: "rain_tag"});
       });
     }
   }
   addWaterTagBox(water) {
     if (water && water.length) {
       water.forEach((r) => {
-        this.map.addTagBox("water_tag_"+r.stcd, [r.lon, r.lat], {title: r.name, subTitle:(r.z*1).toFixed(2) + "m", prefix: "water_tag"});
+        let name = r.aliasNme ? r.aliasNme : r.name;
+        this.map.addTagBox("water_tag_"+r.stcd, [r.lon, r.lat], {title: name, subTitle:(r.z*1).toFixed(2) + "m", prefix: "water_tag"});
+      });
+    }
+  }
+
+  addPondingTagBox(water){
+    if (water && water.length) {
+      water.forEach((r) => {
+        let name = r.aliasNme ? r.aliasNme : r.name;
+        this.map.addTagBox("ponding_tag_"+r.stcd, [r.lon, r.lat], {title: name, subTitle:(r.z*1).toFixed(2) + "m", prefix: "ponding_tag"});
       });
     }
   }
