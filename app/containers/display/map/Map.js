@@ -13,7 +13,7 @@ class Map extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      
+
     };
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.areaLonlatMap = {
@@ -26,7 +26,7 @@ class Map extends React.PureComponent {
     }
   }
   render() {
-    
+
     return (
       <>
         <div id="map" className='display-map'></div>
@@ -34,14 +34,14 @@ class Map extends React.PureComponent {
     );
   }
   componentDidUpdate(prevProps, prevState) {
-    
+
   }
   componentDidMount() {
     this.createMap();
     this.loadData();
   }
   componentWillUnmount() {
-   
+
   }
   createMap() {
     let coverImageUrl = require("../../../resource/tile2.png")["default"];
@@ -63,9 +63,10 @@ class Map extends React.PureComponent {
       key: "tiandi",
       projection: true
     });
-    
+
     this.map.addTile({
       url: `https://t0.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
+      className:"ol-layer-tiandi",
       visible: true,
       opacity: 1,
       key: "tiandi2",
@@ -118,7 +119,7 @@ class Map extends React.PureComponent {
     }).catch(() => {
       console.log("获取区县降水量失败");
     })
-    
+
     this.toggleRainBox();
   }
   addRainBoxes(data) {
@@ -128,7 +129,7 @@ class Map extends React.PureComponent {
         this.addRainBox("rain_box_" +rain.areaId, this.areaLonlatMap[rain.areaId], {title: rain.areaName,subtitle: (rain.prd *1).toFixed(2)+"mm" });
       }
     });
-    
+
   }
   toggleRainBox() {
     let zoom = this.map.getView().getZoom();
