@@ -978,13 +978,16 @@ class Map extends React.PureComponent {
       ponding: [],
     };
     data.forEach((item) => {
-      if ([3, 5, 6].indexOf(item.indtype) > -1) {
+      //雨量站点
+      if ([3, 5, 6, 10].indexOf(item.indtype) > -1) {
         obj.rain.push(item);
       }
-      if ([1, 2, 7, 8, 10].indexOf(item.indtype) > -1) {
+      //水位站点
+      if ([1, 2, 7, 8, 11].indexOf(item.indtype) > -1) {
         obj.water.push(item);
       }
-      if ([9, 10].indexOf(item.indtype) > -1) {
+      //积水点站点
+      if ([9, 11].indexOf(item.indtype) > -1) {
         obj.ponding.push(item);
       }
     });
