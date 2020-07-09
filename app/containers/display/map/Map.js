@@ -9,6 +9,13 @@ import UbiMap from "../../monitor/map/ubimap";
 import { getFiveCitydata } from "../../../data/request";
 import "./style.scss";
 
+const areaNameMap = {
+  '370502': '东营区(开发区）',
+  "370503":'河口区(东营港)',
+  '370522': '垦利区',
+  "370521": '利津县',
+  "370523": '广饶县(省农高区)',
+};
 class Map extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -22,7 +29,6 @@ class Map extends React.PureComponent {
         '370522': [118.35, 37.65],
         "370521": [118.84, 37.63],
         "370523": [118.54, 37.12],
-
     }
   }
   render() {
@@ -108,7 +114,7 @@ class Map extends React.PureComponent {
     this.toggleRainBox();
   }
   loadData() {
-    getFiveCitydata({type:1}).then((res) => {
+    getFiveCitydata({type:2}).then((res) => {
       if (res.code === 200) {
         this._zoom = null;
         this.addRainBoxes(res.data);
@@ -126,7 +132,12 @@ class Map extends React.PureComponent {
     if (!data || !data.length) return;
     data.forEach((rain) => {
       if (this.areaLonlatMap[rain.areaId]) {
-        this.addRainBox("rain_box_" +rain.areaId, this.areaLonlatMap[rain.areaId], {title: rain.areaName,subtitle: (rain.prd *1).toFixed(1)+"mm" });
+        let areaName = areaNameMap[rain.areaId];
+
+        if(!areaName){
+          areaName = rain.areaName;
+        }
+        this.addRainBox("rain_box_" +rain.areaId, this.areaLonlatMap[rain.areaId], {title: areaName,subtitle: (rain.prd *1).toFixed(1)+"mm" });
       }
     });
 
