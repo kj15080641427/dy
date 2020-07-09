@@ -126,7 +126,7 @@ class Map extends React.PureComponent {
     if (!data || !data.length) return;
     data.forEach((rain) => {
       if (this.areaLonlatMap[rain.areaId]) {
-        this.addRainBox("rain_box_" +rain.areaId, this.areaLonlatMap[rain.areaId], {title: rain.areaName,subtitle: (rain.prd *1).toFixed(2)+"mm" });
+        this.addRainBox("rain_box_" +rain.areaId, this.areaLonlatMap[rain.areaId], {title: rain.areaName,subtitle: (rain.prd *1).toFixed(1)+"mm" });
       }
     });
 
