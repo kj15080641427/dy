@@ -53,8 +53,8 @@ class Map extends React.PureComponent {
     let coverImageUrl = require("../../../resource/tile2.png")["default"];
     this.map = new UbiMap({
       target: 'map',
-      center: [118.67, 37.43],
-      zoom: 11,
+      center: [118.57, 37.53],
+      zoom: 9,
       minZoom: 3,
       maxZoom: 18,
       mouseControl: false
