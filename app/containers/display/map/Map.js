@@ -17,11 +17,11 @@ class Map extends React.PureComponent {
     };
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.areaLonlatMap = {
-      '370502': [118.67, 37.43],
-      "370503": [118.54, 37.99],
-      '370522': [118.35, 37.65],
-      "370521": [118.84, 37.63],
-      "370523": [118.54, 37.12],
+        '370502': [118.67, 37.43],
+        "370503": [118.54, 37.99],
+        '370522': [118.35, 37.65],
+        "370521": [118.84, 37.63],
+        "370523": [118.54, 37.12],
 
     }
   }
@@ -81,15 +81,15 @@ class Map extends React.PureComponent {
       zIndex: 10,
       key: "river"
     });
-    // this.map.addImageTile({
-    //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
-    //   params: {
-    //     'LAYERS': 'dy:河流40',
-    //     'TILED': false
-    //   },
-    //   zIndex: 11,
-    //   key: "river40"
-    // });
+    this.map.addImageTile({
+      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
+      params: {
+        'LAYERS': 'dy:河流40',
+        'TILED': false
+      },
+      zIndex: 11,
+      key: "river40"
+    });
     // this.map.addGeo({
     //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
     //   params: {
@@ -118,7 +118,7 @@ class Map extends React.PureComponent {
       }
     }).catch(() => {
       console.log("获取区县降水量失败");
-    })
+    });
 
     this.toggleRainBox();
   }
@@ -135,13 +135,11 @@ class Map extends React.PureComponent {
     let zoom = this.map.getView().getZoom();
     if (zoom >= 9) {
       if (this._zoom && this._zoom >= 9) return;
-      console.log("show")
       this.showRainBox();
       // this.map.showTagOnLayer("water");
       // this.map.showTagOnLayer("rain");
     } else {
       if ( this._zoom && this._zoom < 9) return;
-      console.log("hide")
       this.hideRainBox();
     }
     this._zoom = zoom;
