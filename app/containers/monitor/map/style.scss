@@ -75,7 +75,7 @@
       transform: scale(2);
       opacity: 0;
   }
-}           
+}
 .ol-alarm-container {
   position: relative;
   width: 50px;
@@ -85,19 +85,19 @@ $ol-duration : 4s;
 .ol-alarm-water1 {
   -webkit-animation: wateranimate $ol-duration 3s ease-out infinite;
   animation: wateranimate $ol-duration 3s ease-out infinite;
-}           
+}
 .ol-alarm-water2 {
   -webkit-animation: wateranimate $ol-duration 2s ease-out infinite;
   animation: wateranimate $ol-duration 2s ease-out infinite;
-}           
+}
 .ol-alarm-water3 {
   -webkit-animation: wateranimate $ol-duration 1s ease-out infinite;
   animation: wateranimate $ol-duration 1s ease-out infinite;
-}           
+}
 .ol-alarm-water4 {
   -webkit-animation: wateranimate $ol-duration 0s ease-out infinite;
   animation: wateranimate $ol-duration 0s ease-out infinite;
-}           
+}
 .ol-alarm-water1, .ol-alarm-water2, .ol-alarm-water3, .ol-alarm-water4 {
   padding: 40%;
   position: absolute;
@@ -112,12 +112,12 @@ $ol-duration : 4s;
 .ol-tag-container {
   display: none;
   position: relative;
-  width: 58px;
+  //width: 68px;
   border: 2px solid #3179C2;
   background: rgba(196, 232, 255, 0.81);
-  border-color: #3179C2;
   color: #3179C2;
   font-size: 12px;
+  padding: 2px;
 }
 .ol-tag-container.active {
   display: block;
