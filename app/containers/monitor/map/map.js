@@ -299,11 +299,12 @@ class Map extends React.PureComponent {
       zIndex: 20,
       style: {
         src: function(featureObj) { //
-          if (featureObj.warningOver) {
-            return require("../../../resource/icon/water_warning.svg")["default"];
-          } else {
-            return require("../../../resource/icon/water.svg")["default"];
-          }
+          // if (featureObj.warningOver) {
+          //   return require("../../../resource/icon/water_warning.svg")["default"];
+          // } else {
+          //   return require("../../../resource/icon/water.svg")["default"];
+          // }
+          return require("../../../resource/icon/water.svg")["default"];
         },
         anchor: [0.5, 0.5],
         strokeColor: "#1890ff",
