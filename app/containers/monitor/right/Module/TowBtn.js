@@ -536,17 +536,33 @@ class TowBtn extends React.PureComponent {
                     </Drawer>
                     {/* 调度方案 */}
                     <Drawer
-                        title="调度方案"
+                        title={"调 度 方 案"}
                         placement="top"
                         onClose={this.handleSchemeCancel}
                         visible={this.state.visibleScheme}
                         width="100%"
                         height="100%"
                     >
-                        <Row><Col span={12}></Col><Col span={6}><span className="title-scheme">工程布置图</span></Col>
-                            <Col span={2}><Button onClick={this.showDutyModal}>责任安排</Button></Col>
-                            <Col span={2}><Button onClick={this.showpumpModal}>泵站列表</Button></Col>
-                            <Col span={2}><Button onClick={this.showsluiceModal}>水闸列表</Button></Col></Row>
+                        <Row><Col span={24}></Col>
+                            <Col span={24} style={{alignItems: 'center'}}>
+                                <div style={{textAlign: 'center'}}>
+                                    <div style={{fontSize: 40, fontFamily: '黑体'}}>调度方案</div>
+                                    {/*<span className="title-scheme"><h2>东营市智慧水务系统-调度方案</h2></span>*/}
+                                </div>
+                            </Col>
+                            <Col span={24}>
+                                <div style={{textAlign:'right', paddingBottom: 15}}>
+                                    <Button onClick={this.showDutyModal}>责任安排</Button>
+                                    <Button onClick={this.showpumpModal}>泵站列表</Button>
+                                    <Button onClick={this.showsluiceModal}>水闸列表</Button>
+                                </div>
+                                {/*<Col span={2}><Button onClick={this.showDutyModal}>责任安排</Button></Col>*/}
+                                {/*<Col span={2}><Button onClick={this.showpumpModal}>泵站列表</Button></Col>*/}
+                                {/*<Col span={2}><Button onClick={this.showsluiceModal}>水闸列表</Button></Col>*/}
+                                {/*<span className="title-scheme">东营市智慧水务系统-调度方案</span>*/}
+                                {/*<span className="title-scheme">东营市智慧水务系统-调度方案</span>*/}
+                            </Col>
+                        </Row>
                         <PhotoProvider>
                             <PhotoConsumer key={1} src={"http://172.19.112.74/list/%E4%B8%AD%E5%BF%83%E5%9F%8E.png"}>
                                 <img className="zxc-img1" src={"http://172.19.112.74/list/%E4%B8%AD%E5%BF%83%E5%9F%8Esml.jpg"} alt="" />
