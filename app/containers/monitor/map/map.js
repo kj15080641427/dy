@@ -265,7 +265,16 @@ class Map extends React.PureComponent {
       zIndex: 20,
       style: {
         src: function(featureObj) { //
-          let num = parseInt(featureObj.minuteAvg*1);
+          //let num = parseInt(featureObj.minuteAvg*1);
+          let num = 0.0;
+          try{
+            num = parseFloat(featureObj.dayAvg * 1);
+          }
+          catch (e) {
+            num = 0.0;
+          }
+
+
           if (num == 0) {
             return require("../../../resource/icon/1.svg")["default"];
           }else if (num >0 && num <= 10) {
