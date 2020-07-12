@@ -34,7 +34,6 @@ class Head extends React.PureComponent {
     );
   }
   selectInit() {
-
     //获取天气信息
     getWeatherdata()
       .then(result => {

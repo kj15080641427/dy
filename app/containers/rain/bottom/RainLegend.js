@@ -52,7 +52,7 @@ class CheckBox extends React.PureComponent {
         return (
             <>
                 <div className="m-checkbox-row-legend-paren" style={{ height: this.state.height }}>
-                    <Row> <span className="font-yq">雨情图例(5分钟)</span><span className="isShow">{React.createElement(this.state.collapsed ? CaretUpOutlined : CaretDownOutlined, {
+                    <Row> <span className="font-yq">雨情图例(24小时)</span><span className="isShow">{React.createElement(this.state.collapsed ? CaretUpOutlined : CaretDownOutlined, {
                         className: 'trigger',
                         onClick: this.btnClick,
                     })}</span></Row>

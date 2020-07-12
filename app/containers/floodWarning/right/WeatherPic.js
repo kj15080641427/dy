@@ -109,9 +109,9 @@ class WeatherPic extends React.PureComponent {
       autoplay: false,
     };
     return (
-      <div className="m-wth-pic">
+      <div className="m-wth-pic-wraning">
         <img className="m-pic-img" src={imgURL} alt="" />
-        <div className="m-pic-div">
+        <div className="m-pic-div-wraning">
           <Tabs defaultActiveKey="1" animated="true" tabBarGutter={27} tabPosition="left" size="small" onTabClick={this.callback}>
             <TabPane tab="卫星云图" key="1" >
               <div className="m-pic-div-img" >

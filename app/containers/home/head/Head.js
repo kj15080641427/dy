@@ -68,7 +68,7 @@ class Head extends React.PureComponent {
               <FullScreen />
             </div>
             <div className="setting">
-              <HomeOutlined onClick={() => { this.props.history.push('/index') }} style={{ fontSize: '20px' }} />
+              <HomeOutlined onClick={() => { this.props.history.push('/display') }} style={{ fontSize: '20px' }} />
               {/* <SettingFilled style={{ fontSize: '21px', cursor: 'pointer' }} onClick={this.setting} /> */}
             </div>
             <div className="news-wrap">

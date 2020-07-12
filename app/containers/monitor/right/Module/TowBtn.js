@@ -13,9 +13,12 @@ import ybmx from '@app/resource/ybmx.png';
 import hyyb from '@app/resource/hyyb.png';
 import hhsq from '@app/resource/hhsq.png';
 import zhjk from '@app/resource/zhjk.png';
+import sjzx from '@app/resource/sjzx.png';
 import sqjk from '@app/resource/sqjk.png';
 import yqjk from '@app/resource/yqjk.png';
 import yld from '@app/resource/yld.png';
+import { PhotoProvider, PhotoConsumer } from 'react-photo-view';
+import 'react-photo-view/dist/index.css';
 import moment from "moment";
 import { getWeatherdata, getWaterRealTime } from "@app/data/request";
 class TowBtn extends React.PureComponent {
@@ -29,6 +32,9 @@ class TowBtn extends React.PureComponent {
             visibleScheme: false,//方案
             visibleDuty: false,//责任
             water: [],//实时水位
+            videovisible: false,//中心城
+            pumpvisible: false,//泵站
+            sluicevisible: false,//水闸
         };
     }
     //打开预报模型
@@ -91,6 +97,39 @@ class TowBtn extends React.PureComponent {
         console.log(e);
         this.setState({
             hyvisible: false,
+        });
+    };
+    //中心城
+    showCityModal = () => {
+        this.setState({
+            videovisible: true,
+        });
+    }
+    videohandleCancel = () => {
+        this.setState({
+            videovisible: false,
+        });
+    };
+    //泵站
+    showpumpModal = () => {
+        this.setState({
+            pumpvisible: true,
+        });
+    }
+    pumphandleCancel = () => {
+        this.setState({
+            pumpvisible: false,
+        });
+    };
+    //水闸表
+    showsluiceModal = () => {
+        this.setState({
+            sluicevisible: true,
+        });
+    }
+    sluicehandleCancel = () => {
+        this.setState({
+            sluicevisible: false,
         });
     };
     render() {
@@ -504,15 +543,33 @@ class TowBtn extends React.PureComponent {
                         width="100%"
                         height="100%"
                     >
-                        <Table
-                            columns={columns}
-                            dataSource={data}
-                            title={() => <Row><Col span={10}></Col><Col span={10}><span className="title-scheme">东营市中心城主干河道关键断面调度方案</span></Col><Col span={2}></Col><Col span={2}><Button onClick={this.showDutyModal}>责任安排</Button></Col></Row>}
+                        <Row><Col span={12}></Col><Col span={6}><span className="title-scheme">工程布置图</span></Col>
+                            <Col span={2}><Button onClick={this.showDutyModal}>责任安排</Button></Col>
+                            <Col span={2}><Button onClick={this.showpumpModal}>泵站列表</Button></Col>
+                            <Col span={2}><Button onClick={this.showsluiceModal}>水闸列表</Button></Col></Row>
+                        <PhotoProvider>
+                            <PhotoConsumer key={1} src={"http://172.19.112.74/list/%E4%B8%AD%E5%BF%83%E5%9F%8E.png"}>
+                                <img className="zxc-img1" src={"http://172.19.112.74/list/%E4%B8%AD%E5%BF%83%E5%9F%8Esml.jpg"} alt="" />
+                            </PhotoConsumer>
+                            <PhotoConsumer key={2} src={"http://172.19.112.74/list/%E4%B8%9C%E8%90%A5%E5%B8%82%E6%B2%B3%E6%B5%81%E6%B0%B4%E7%B3%BB%E5%88%86%E5%B8%83%E5%9B%BE.jpg"}>
+                                <img className="zxc-img1" src={"http://172.19.112.74/list/%E4%B8%9C%E8%90%A5%E5%B8%82%E6%B2%B3%E6%B5%81%E6%B0%B4%E7%B3%BB%E5%88%86%E5%B8%83%E5%9B%BEsml.jpg"} alt="" />
+                            </PhotoConsumer>
+                        </PhotoProvider>
+                        {/* <Table
+                            // columns={columns}
+                            // dataSource={data}
+                            title={() =>
+                                <Row><Col span={10}></Col><Col span={6}><span className="title-scheme">东营市中心城主干河道关键断面调度方案</span></Col>
+                                    <Col span={2}><Button onClick={this.showDutyModal}>责任安排</Button></Col>
+                                    <Col span={2}><Button onClick={this.showCityModal}>工程布置图</Button></Col>
+                                    <Col span={2}><Button onClick={this.showpumpModal}>泵站列表</Button></Col>
+                                    <Col span={2}><Button onClick={this.showsluiceModal}>水闸列表</Button></Col></Row>
+                            }
                             bordered
                             size="middle"
                             scroll={{ x: 'calc(700px + 50%)', y: 1040 }}
                             pagination={false}
-                        />
+                        /> */}
                         <Modal
                             forceRender={true}
                             onCancel={this.handleDutyCancel}
@@ -529,6 +586,39 @@ class TowBtn extends React.PureComponent {
                                 scroll={{ x: 1000, y: 1040 }}
                                 pagination={false}
                             />
+                        </Modal>
+                        <Modal
+                            forceRender={true}
+                            onCancel={this.videohandleCancel}
+                            visible={this.state.videovisible}
+                            title='中心城防洪排涝工程布置图'
+                            footer={null}
+                            width={1700}
+                        >
+                            {/* <Zmage className="zxc-img" src="http://172.19.112.74/list/%E4%B8%AD%E5%BF%83%E5%9F%8E.jpg" /> */}
+                        </Modal>
+                        <Modal
+                            forceRender={true}
+                            onCancel={this.pumphandleCancel}
+                            visible={this.state.pumpvisible}
+                            title='中心城防洪排涝工程泵站列表'
+                            footer={null}
+                            width={940}
+                        >
+                            <iframe
+                                frameborder="0" scrolling="no" style={{ width: 900, height: 800 }}
+                                src={"http://172.19.112.74/list/%E4%B8%AD%E5%BF%83%E5%9F%8E%E9%98%B2%E6%B4%AA%E6%8E%92%E6%B6%9D%E5%B7%A5%E7%A8%8B/%E4%B8%AD%E5%BF%83%E5%9F%8E%E9%98%B2%E6%B4%AA%E6%8E%92%E6%B6%9D%E5%B7%A5%E7%A8%8B%E6%B3%B5%E7%AB%99%E5%88%97%E8%A1%A8.htm"}></iframe>
+                        </Modal>
+                        <Modal
+                            forceRender={true}
+                            onCancel={this.sluicehandleCancel}
+                            visible={this.state.sluicevisible}
+                            title='中心城防洪排涝工程水闸列表'
+                            footer={null}
+                            width={1550}
+                        >
+                            <iframe frameborder="0" scrolling="no" style={{ width: 1500, height: 800 }}
+                                src="http://172.19.112.74/list/%E4%B8%AD%E5%BF%83%E5%9F%8E%E9%98%B2%E6%B4%AA%E6%8E%92%E6%B6%9D%E5%B7%A5%E7%A8%8B/%E4%B8%AD%E5%BF%83%E5%9F%8E%E9%98%B2%E6%B4%AA%E6%8E%92%E6%B6%9D%E5%B7%A5%E7%A8%8B%E6%B0%B4%E9%97%B8%E5%88%97%E8%A1%A8.htm"></iframe>
                         </Modal>
                     </Drawer>
                     {/* 黄河水情 */}
@@ -554,14 +644,27 @@ class TowBtn extends React.PureComponent {
                         width={"100%"}
                         height="100%"
                     >
-                        <div style={{ height: '950px', width: '1060px' }}>
-                            <iframe src="http://hsdy.dongying.gov.cn/col/col36593/index.html" width="1870px" height="1225px"
-                                frameborder="0" scrolling="no" style={{ position: 'relative', top: -340 }}></iframe>
+                        <div style={{
+                            height: 900,
+                            width: 850,
+                            overflow: 'hidden',
+                            position: 'relative',
+                            left: 500,
+                        }}>
+                            <iframe src="http://hsdy.dongying.gov.cn/col/col36593/index.html" width="1870px" height="1200px"
+                                frameborder="0" scrolling="no" style={{ position: 'relative', top: -340, left: -670 }}></iframe>
                         </div>
                     </Drawer>
                     <div>
                         <Row className="m-alm-row-index" >
                             <Col span={4}></Col>
+                            <Col span={4}>
+                                <Link to={'/display'}>
+                                    <img
+                                        className="m-btn-flood-index"
+                                        src={sjzx}
+                                    ></img></Link>
+                            </Col>
                             <Col span={4}><img
                                 className="m-btn-flood-index"
                                 src={hhsq}
@@ -573,12 +676,12 @@ class TowBtn extends React.PureComponent {
                                 src={hyyb}
                                 onClick={this.hyshowModal}
                             ></img></Col>
-                            <Col span={4}><img
+                            {/* <Col span={4}><img
                                 className="m-btn-flood-index"
                                 src={ybmx}
                                 onClick={this.ybshowModal}
                             ></img>
-                            </Col>
+                            </Col> */}
                             <Col span={4}> <img
                                 className="m-btn-flood-index"
                                 src={ddfa}

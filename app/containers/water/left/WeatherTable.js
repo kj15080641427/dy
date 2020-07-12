@@ -25,9 +25,9 @@ class WeatherTable extends React.PureComponent {
     this.locationClick = this.locationClick.bind(this);
     const { TabPane } = Tabs;
     return (
-      <div className="m-wth-tablerain">
+      <div className="m-wth-tablewater">
         <img className="m-table-img" src={imgURL} />
-        <div className="m-divrain">
+        <div className="m-divwater">
           <Tabs type="card" defaultActiveKey="2" onChange={this.callback} animated="true" tabBarGutter={10} size="large" className="ant-tabs-nav-container">
             {/* <TabPane tab="雨量站" key="1">
               <Precipitation></Precipitation>

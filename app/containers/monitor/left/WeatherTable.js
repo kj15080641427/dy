@@ -30,7 +30,7 @@ class WeatherTable extends React.PureComponent {
         <div className="m-div">
           <Tabs type="card" defaultActiveKey="1" onChange={this.callback} animated="true" tabBarGutter={10} size="large" className="ant-tabs-nav-container">
             <TabPane tab="雨量站" key="1">
-              <Precipitation></Precipitation>
+              <Precipitation claname="m-div-table" scroll={300}></Precipitation>
             </TabPane>
             <TabPane tab="水位站" key="2">
               <WaterLevel></WaterLevel>

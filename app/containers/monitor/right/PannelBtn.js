@@ -85,14 +85,16 @@ class PannelBtn extends React.PureComponent {
           </Drawer>
           <div>
             <Row className="m-alm-row-index" >
-              <Col span={4}>  <Link to={'/index'} ><img
+              <Col span={4}>  
+              {/* <Link to={'/index'} ><img
                 className="m-btn-flood-index"
                 style={{ border: '3px solid #007ed7', height: 79 ,
                 '-webkit-filter': 'opacity(0.5)'}}
                 src={zhjk}
               // onClick={this.handlefxyj}
               ></img>
-              </Link></Col>
+              </Link> */}
+              </Col>
               <Col span={4}><Link to={"/rain"}><img
                 className="m-btn-flood-index"
                 src={yqjk}

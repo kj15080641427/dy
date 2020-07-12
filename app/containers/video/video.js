@@ -40,7 +40,7 @@ class Monitor extends React.PureComponent {
         flood: false, // 洪水图层
         river: true, // 水系图
         heatmap: true, // 热力图
-        traffic: true, // 交通图层
+        traffic: false, // 交通图层
         person: true, // 防汛人员
         video: true, // 视频站点
         rain: false, // 雨量站

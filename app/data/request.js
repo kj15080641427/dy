@@ -86,7 +86,10 @@ export function getBasicsAll(data) {
 export function getRadioAll(data) {
   return fetchJSONData("POST", "/radio/getAll", data);
 }
-
+//查询防汛队伍及下面的防汛人员
+export function getfloodRanksAll(data) {
+  return fetchJSONData("POST", "/floodRanks/getAll", data);
+}
 //获取所有防汛人员信息
 export function getfloodUser(data) {
   return fetchJSONData("POST", "/floodUser/getAll", data);
@@ -158,6 +161,10 @@ export function updateFloodUser(data) {
 //查询所有专家库
 export function getFloodControlExpertAll(data) {
   return fetchJSONData("POST", "/floodControlExpert/getAll", data);
+}
+//查询防汛专家分类下的防汛专家
+export function floodControlExpertCategoryAll(data) {
+  return fetchJSONData("POST", "/floodControlExpertCategory/getAll", data);
 }
 //获取小时降雨量
 export function getByTimeHour(data) {

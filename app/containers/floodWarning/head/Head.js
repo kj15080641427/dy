@@ -17,7 +17,7 @@ class Head extends React.PureComponent {
     const { weatherData } = this.state;
 
     return (
-      <div className="m-head">
+      <div className="m-head-warning">
         <div className="m-hd-weather">
           <img className="m-hd-weather-img" src={weatherData.state1MinIco}></img>
           <span>{weatherData.stateDetailed}</span>

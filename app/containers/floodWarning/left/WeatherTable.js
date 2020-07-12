@@ -10,7 +10,7 @@ import { Table, Tabs } from 'antd';
 import Precipitation from './WeatherModule/Precipitation';
 import WaterLevel from './WeatherModule/WaterLevel';
 import Video from './WeatherModule/Video';
-import EasyFlood from './WeatherModule/easyFlood';
+import Experts from './WeatherModule/Experts';
 import emitter from "@app/utils/emitter.js";
 import FloodPeople from './WeatherModule/FloodPeople';
 import FloodGoods from './WeatherModule/FloodGoods';
@@ -30,23 +30,14 @@ class WeatherTable extends React.PureComponent {
         <img className="m-table-img" src={imgURL} />
         <div className="m-divflood">
           <Tabs type="card" defaultActiveKey="1" onChange={this.callback} animated="true" tabBarGutter={10} size="large" className="ant-tabs-nav-container">
-            {/* <TabPane tab="雨量站" key="1">
-              <Precipitation></Precipitation>
-            </TabPane>
-            <TabPane tab="水位站" key="2">
-              <WaterLevel></WaterLevel>
-            </TabPane>
-            <TabPane tab="易涝点" key="3">
-              <EasyFlood></EasyFlood>
-            </TabPane>
-            <TabPane tab="视频站点" key="4">
-              <Video></Video>
-            </TabPane> */}
             <TabPane tab="防汛人员" key="1">
               <FloodPeople></FloodPeople>
             </TabPane>
             <TabPane tab="防汛物资" key="2">
               <FloodGoods></FloodGoods>
+            </TabPane>
+            <TabPane tab="专家库" key="3">
+              <Experts></Experts>
             </TabPane>
           </Tabs>
         </div>

@@ -8,6 +8,14 @@ import echarts from 'echarts/lib/echarts';
 import 'echarts';
 import imgURL from '../../../resource/title_bg.png';
 import { getFiveCitydata } from "@app/data/request";
+const areaMap = {
+  "370502": '东营区\n(开发区)',
+  '370503': '河口区\n(东营港)',
+  '370521': '垦利区',
+  '370522': '利津县',
+  '370523': '广饶县\n(省农高区)',
+  '370500': '东营市'
+}
 class WeatherChart extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -37,7 +45,8 @@ class WeatherChart extends React.PureComponent {
         var myChart = echarts.init(document.getElementById('main'));
         for (var i = result.data.length - 1; i >= 0; i--) {
           hourData.push((result.data[i].prd * 1).toFixed(1))
-          addData.push(result.data[i].areaName)
+          let areaName = areaMap[result.data[i].areaId]
+          addData.push(areaName);
         }
         myChart.setOption({
           // color:["#c23531","#99CCFF","#FFFF66","#666666",],
@@ -72,27 +81,34 @@ class WeatherChart extends React.PureComponent {
             }
           },
           grid: {
+            top: '25%',
             left: '3%',
-            right: '4%',
+            right: '2%',
             bottom: '3%',
             containLabel: true
           },
           xAxis: [
             {
-              position: 'top',
+              // position: 'top',
               type: 'category',
               data: addData,
               axisTick: {
                 alignWithLabel: true
+              },
+              axisLabel: {
+                show: true,
+                textStyle: {  //更改坐标轴文字颜色
+                  fontSize: 11      //更改坐标轴文字大小
+                }
               },
             }
           ],
           yAxis: [
             {
               axisLabel: {
-                formatter: '{value} mm'
+                formatter: '{value}'
               },
-              inverse: true,
+              // inverse: true,
               type: 'value',
             },
             // {
@@ -129,7 +145,7 @@ class WeatherChart extends React.PureComponent {
               // },
               label: {
                 show: true,
-                position: 'bottom'
+                position: 'top'
 
               },
             },
@@ -169,8 +185,7 @@ class WeatherChart extends React.PureComponent {
                   data: dayData,
                   label: {
                     show: true,
-                    position: 'bottom'
-
+                    position: 'top'
                   },
                   // markPoint: {
                   //   data: [
@@ -205,7 +220,7 @@ class WeatherChart extends React.PureComponent {
                   data: thDayData,
                   label: {
                     show: true,
-                    position: 'bottom'
+                    position: 'top'
 
                   },
                   // markPoint: {
@@ -237,7 +252,7 @@ class WeatherChart extends React.PureComponent {
                   data: seDayData,
                   label: {
                     show: true,
-                    position: 'bottom'
+                    position: 'top'
 
                   },
                   // markPoint: {
@@ -281,7 +296,7 @@ class WeatherChart extends React.PureComponent {
                   // },
                   label: {
                     show: true,
-                    position: 'bottom'
+                    position: 'top'
 
                   },
                 },

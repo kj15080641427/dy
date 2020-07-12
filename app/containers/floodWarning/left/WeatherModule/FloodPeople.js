@@ -7,7 +7,7 @@ import React from 'react';
 import "../style.scss";
 import { Table, Tag, Popover, Modal, Button, Input, Space, Col } from 'antd';
 import moment from 'moment';
-import { getfloodUser } from "@app/data/request";
+import { getfloodUser, getfloodRanksAll } from "@app/data/request";
 import emitter from "@app/utils/emitter.js";
 import { SearchOutlined } from '@ant-design/icons';
 import { setTime } from "@app/utils/common";
@@ -85,39 +85,72 @@ class FloodPeople extends React.PureComponent {
         this.setState({ searchText: '' });
     };
     render() {
+
         const qycolumns = [
             {
-                title: '姓名',
+                title: '队伍',
                 dataIndex: 'name',
                 className: 'column-money',
                 ...this.getColumnSearchProps('name'),
             },
-            {
-                title: '单位',
-                dataIndex: 'unit',
-                className: 'column-money',
-            },
-            {
-                title: '联系电话',
-                dataIndex: 'phone',
-                className: 'column-money',
-            },
-            {
-                title: '备注',
-                dataIndex: 'remark',
-                className: 'column-money',
-            },
         ];
+        const expandedRowRendertype = (record, index, indent, expanded) => {
+            console.log(record)
+            const qycolumns = [
+                {
+                    title: '姓名',
+                    dataIndex: 'name',
+                    className: 'column-money',
+                    ...this.getColumnSearchProps('name'),
+                },
+                {
+                    title: '单位',
+                    dataIndex: 'unit',
+                    className: 'column-money',
+                    ellipsis: true,
+                },
+                {
+                    title: '联系电话',
+                    dataIndex: 'phone',
+                    className: 'column-money',
+                    ellipsis: true,
+                },
+                {
+                    title: '备注',
+                    dataIndex: 'remark',
+                    className: 'column-money',
+                },
+            ];
+            return <Table
+                size="small"
+                loading={loading}
+                columns={qycolumns}
+                dataSource={record.userList}
+                scroll={{ y: 230 }}
+                rowKey={row => row.floodId}
+                // pagination={{
+                //     defaultPageSize: 50
+                // }}
+                pagination={{
+                    showTotal: () => `共${record.userList.length}条`,
+                }}
+            />
+        };
         const { loading } = this.state;
         return (
             <>
                 <Table className="m-div-table"
+                    expandable={{
+                        expandedRowRender: expandedRowRendertype,
+                        defaultExpandedRowKeys: ["1"]
+                    }}
                     size="small"
                     loading={loading}
                     columns={qycolumns}
+                    showHeader={false}
                     dataSource={this.state.qydataSource}
-                    scroll={{ y: 170 }}
-                    rowKey={row => row.floodId}
+                    scroll={{ y: 450 }}
+                    rowKey={row => row.floodRanksId}
                 />
 
             </>
@@ -125,7 +158,7 @@ class FloodPeople extends React.PureComponent {
     }
     selectInit() {
         this.setState({ loading: true });
-        getfloodUser({})
+        getfloodRanksAll({})
             .then((result) => {
                 this.setState({ loading: false });
                 this.setState({ qydataSource: result.data })

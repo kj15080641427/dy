@@ -299,11 +299,12 @@ class Precipitation extends React.PureComponent {
     selectInit() {
         this.setState({ loading: true });
         getAllVideo({
-            "isShow": "1"
+            "isShow": "0"
         }).then((result) => {
             console.log(result)
             let dyfloodarr = [];
             let dycatyarr = [];
+            let dyteharr = [];
             let klfloodarr = [];
             let klcatyarr = [];
             let ljfloodarr = [];
@@ -315,9 +316,13 @@ class Precipitation extends React.PureComponent {
             this.setState({ loading: false });
             for (let i = 0; i < result.data.length; i++) {
                 if (result.data[i].regionName === "东营区") {
-                    if (result.data[i].dataSource === "3" || result.data[i].dataSource === "9") {
+                    if (result.data[i].dataSource * 1 === 10) {
+                        dyteharr.push(result.data[i])
+                    }
+                    else if (result.data[i].dataSource * 1 === 3 || result.data[i].dataSource * 1 === 9) {
                         dyfloodarr.push(result.data[i])
-                    } else {
+                    }
+                    else {
                         dycatyarr.push(result.data[i])
                     }
                 } if (result.data[i].regionName === "广饶县") {
@@ -346,16 +351,16 @@ class Precipitation extends React.PureComponent {
                     }
                 }
             }
-            let dyarr = [{ name: "河道", list: dycatyarr }, { name: "积水点", list: dyfloodarr }];
+            let dyarr = [{ name: "河道", list: dycatyarr }, { name: "积水点", list: dyfloodarr }, { name: "天鹅湖蓄滞洪区", list: dyteharr }];
             let klarr = [{ name: "河道", list: klcatyarr }];
             let ljarr = [{ name: "河道", list: ljcatyarr }];
             let grarr = [{ name: "河道", list: grcatyarr }];
             let hkarr = [{ name: "河道", list: hkcatyarr }];
             let data = [
-                { regionName: "东营区", list: dyarr },
-                { regionName: "广饶县", list: grarr },
+                { regionName: "东营区(开发区)", list: dyarr },
+                { regionName: "广饶县(省农高区)", list: grarr },
                 { regionName: "利津县", list: ljarr },
-                { regionName: "河口区", list: hkarr },
+                { regionName: "河口区(东营港)", list: hkarr },
                 { regionName: "垦利区", list: klarr },
             ]
             console.log(data)

@@ -105,7 +105,7 @@ class Rain extends React.PureComponent {
                 render: value => value === null ? '-' : value,
             },
             {
-                title: '雨量(mm)',
+                title: '水深(m)',
                 dataIndex: 'minuteAvg',
                 width: 120,
                 className: 'column-money',

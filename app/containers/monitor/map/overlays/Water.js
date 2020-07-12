@@ -140,6 +140,7 @@ class Water extends Base {
     let chars = echarts.init(document.getElementById('echartsDiv'));
     let xdata = [];
     let ydata = [];
+    let maxz = 0;
     if (model.waters.length === 0) {
       const option = {
         title: {
@@ -173,9 +174,9 @@ class Water extends Base {
     } else {
       for (let i = model.waters.length - 1; i >= 0; i--) {
         xdata.push(moment(model.waters[i].tm).format('MM-DD HH:mm'))
-        ydata.push(model.waters[i].z)
+        ydata.push((model.waters[i].z).toFixed(2))
       }
-
+      const warningnum = model.warning === null ? 99 : model.warning
       const option = {
         title: {
           text: model.waters[0].stnm + '24小时水位曲线',
@@ -197,48 +198,102 @@ class Water extends Base {
         },
         yAxis: {
           type: 'value',
-          name: '水位(m)'
+          name: '水位(m)',
+          max: function (value) {
+            return (warningnum + value.max).toFixed(1)
+          }
         },
+        // visualMap: {
+        //   show: true,
+        //   pieces: [
+        //     {
+        //       gt: warningnum > 0 ? -warningnum : warningnum,
+        //       lte: warningnum,          //这儿设置基线上下颜色区分 基线下面为绿色
+        //       color: '#03d6d6'
+        //     }, {
+        //       gt: warningnum,          //这儿设置基线上下颜色区分 基线上面为红色
+        //       color: '#e91642',
+        //       // lte: obj.warning,
+        //     },
+
+        //   ]
+        //   ,
+        // },
         series: [{
           data: ydata,
-          type: 'line'
+          type: 'line',
+          // markPoint: {
+          //   data: [
+          //     { type: 'max', name: '最大值' },
+          //     {
+          //       type: 'min', name: '最小值', itemStyle: {
+          //         color: '#03d6d6'
+          //       }
+          //     }
+          //   ],
+
+          // },
+          // markLine: {
+          //   label: {
+          //     position: "end",
+          //   },
+          //   lineStyle: {
+          //     type: 'solid',
+          //     width: 2
+          //   },
+          // color: '#ffcc33',
+          // data: [
+          //   {
+          //     silent: false,
+          //     label: {
+          //       position: 'center',
+          //       formatter: "预警" + warningnum + "m",
+          //       itemStyle: {
+          //         left: '100px',
+
+          //       }
+          //     },
+          //     yAxis: warningnum,
+          //   }
+          // ]
+        // }
         }]
-      };
-      chars.setOption(option);
-    }
+    };
+    chars.setOption(option);
+  }
 
-  }
-  componentWillUnmount() {
-    super.componentWillUnmount();
+}
+componentWillUnmount() {
+  super.componentWillUnmount();
 
+}
+getType() {
+  return Water.type;
+}
+onCustomClick(e) {
+  if (hasClassName(e.target, "img-size-up")) {
+    this.onRotateCamera({ token: this.state.token, action: 'up' })
   }
-  getType() {
-    return Water.type;
+  else if (hasClassName(e.target, "img-size-left")) {
+    this.onRotateCamera({ token: this.state.token, action: 'left' })
   }
-  onCustomClick(e) {
-    if (hasClassName(e.target, "img-size-up")) {
-      this.onRotateCamera({ token: this.state.token, action: 'up' })
-    }
-    else if (hasClassName(e.target, "img-size-left")) {
-      this.onRotateCamera({ token: this.state.token, action: 'left' })
-    }
-    else if (hasClassName(e.target, "img-size-right")) {
-      this.onRotateCamera({ token: this.state.token, action: 'right' })
-    }
-    else if (hasClassName(e.target, "img-size-down")) {
-      this.onRotateCamera({ token: this.state.token, action: 'down' })
-    }
-    else if (hasClassName(e.target, "img-size-zoomin")) {
-      this.onRotateCamera({ token: this.state.token, action: 'zoomin' })
-    } else if (hasClassName(e.target, "img-size-zoomout")) {
-      this.onRotateCamera({ token: this.state.token, action: 'zoomout' })
-    }
+  else if (hasClassName(e.target, "img-size-right")) {
+    this.onRotateCamera({ token: this.state.token, action: 'right' })
   }
-  onClose() {
-    let { onClose, model } = this.props;
-    if (onClose) {
-      onClose(model.id, Water.type);
-    }
+  else if (hasClassName(e.target, "img-size-down")) {
+    this.onRotateCamera({ token: this.state.token, action: 'down' })
   }
+  else if (hasClassName(e.target, "img-size-zoomin")) {
+    this.onRotateCamera({ token: this.state.token, action: 'zoomin' })
+  } else if (hasClassName(e.target, "img-size-zoomout")) {
+    this.onRotateCamera({ token: this.state.token, action: 'zoomout' })
+  }
+}
+onClose() {
+  let { onClose, model } = this.props;
+  if (onClose) {
+    onClose(model.id, Water.type);
+  }
+}
 }
 export default Water;

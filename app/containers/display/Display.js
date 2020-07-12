@@ -7,14 +7,37 @@ import Map from "./map/Map";
 import Satellite from "./left/Satellite";
 import OverView from "./left/OverView";
 import Tables from "./right/Tables";
+import CheckBoxs from "./right/CheckBoxs";
+import Legend from "./right/Legend";
 import Head from "./head/Head";
 class Display extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+    this.state = {
+      layerVisible: {
+        tiandi: true, // 天地图底图
+        tiandi2: true, // 天地图标注
+        wfsRiver: false, // wfs河道图
+        river40: true, //40条河图片 用于解决河道标注很多的问题
+        flood: false, // 洪水图层
+        river: true, // 水系图
+        heatmap: true, // 热力图
+        traffic: false, // 交通图层
+        person: true, // 防汛人员
+        video: false, // 视频站点
+        rain: false, // 雨量站
+        water: true, // 水位站
+        gate: false, // 水闸
+        pump: false, // 水泵
+        ponding: false, // 积水
+      }
+    };
+    this.onChecked = this.onChecked.bind(this);
+    this.onShow =this.onShow.bind(this)
   }
   render() {
-    return ( 
+    let { layerVisible } = this.state;
+    return (
       <div className="display">
         <Map></Map>
         <div className="dis-head">
@@ -25,11 +48,27 @@ class Display extends React.PureComponent {
           <OverView></OverView>
         </div>
         <div className="dis-right">
+          <div style={{ float: 'left' }}>
+            {/* <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked} clicks={this.onShow}></CheckBoxs> */}
+            {/* <Legend></Legend> */}
+          </div>
           <Tables></Tables>
         </div>
       </div>
     );
   }
-  componentDidMount() {}
+  onShow(layerKey){
+    console.log(layerKey)
+  }
+  onChecked(layerKey, checked) {
+    let { layerVisible } = this.state;
+    console.log(layerVisible[layerKey])
+    if (layerVisible[layerKey] === checked) return;
+    layerVisible[layerKey] = checked;
+    this.setState({
+      layerVisible: { ...layerVisible }
+    });
+  }
+  componentDidMount() { }
 }
 export default Display;

@@ -67,8 +67,8 @@ class Monitor extends React.PureComponent {
         <Head></Head>
         <div style={{ display: displayLeft }}>
           <div className="m-left">
-            {/* <WeatherBox></WeatherBox>
-            <WeatherChart></WeatherChart> */}
+            {/* <WeatherBox></WeatherBox>*/}
+            <WeatherChart></WeatherChart> 
             <WeatherTable></WeatherTable>
           </div>
         </div>

@@ -412,7 +412,6 @@ class Precipitation extends React.PureComponent {
                 title: '站名',
                 dataIndex: 'SpliceSiteName',
                 width: 80,
-                className: 'column-money',
                 key: 'riverwaterdataID',
                 ...this.getColumnSearchProps('SpliceSiteName'),
                 render:
@@ -428,7 +427,6 @@ class Precipitation extends React.PureComponent {
                 title: '5分钟(mm)',
                 dataIndex: 'minuteAvg',
                 width: 88,
-                className: 'column-money',
                 render: minuteAvg => minuteAvg == '-' ? '-' : (minuteAvg * 1).toFixed(1),
                 sorter: (a, b) => a.minuteAvg - b.minuteAvg,
             },
@@ -436,7 +434,6 @@ class Precipitation extends React.PureComponent {
                 title: '1小时(mm)',
                 dataIndex: 'hourAvg',
                 width: 88,
-                className: 'column-money',
                 render: hourAvg => hourAvg == '-' ? '-' : (hourAvg * 1).toFixed(1),
                 sorter: (a, b) => a.hourAvg - b.hourAvg,
             },
@@ -444,7 +441,6 @@ class Precipitation extends React.PureComponent {
                 title: '24小时(mm)',
                 dataIndex: 'dayAvg',
                 width: 90,
-                className: 'column-money',
                 render: dayAvg => dayAvg == '-' ? '-' : (dayAvg * 1).toFixed(1),
                 sorter: (a, b) => a.dayAvg - b.dayAvg,
             },
@@ -452,7 +448,6 @@ class Precipitation extends React.PureComponent {
                 title: '更新时间',
                 dataIndex: 'tm',
                 width: 140,
-                className: 'column-money',
                 render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
                 sorter: (a, b) => new Date(a.tm).getTime() - new Date(b.tm).getTime(),
             }
@@ -572,12 +567,13 @@ class Precipitation extends React.PureComponent {
         const { loading } = this.state;
         return (
             <>
-                <Table className="m-div-table"
+                <Table
+                    className={this.props.claname}
                     size="small"
                     loading={loading}
                     columns={qycolumns}
                     dataSource={this.state.qydataSource}
-                    scroll={{ y: 300 }}
+                    scroll={{ y: this.props.scroll }}
                     rowKey={row => row.stcd}
                     onRow={this.onClickRow}
                 // pagination={pagination} 

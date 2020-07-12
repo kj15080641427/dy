@@ -11,7 +11,7 @@ import { Table, Popover, Tag, Modal, Button, Card, Row, Col, Input, Space } from
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import moment from 'moment';
-import { getWfsRiver, getWfsRiverByName } from "@app/data/request";
+import { getWfsRiver, getWfsRiverByName , getWaterHistory} from "@app/data/request";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 import 'echarts';
@@ -43,143 +43,161 @@ class RiverWater extends React.PureComponent {
             visible: true,
             mloading: true
         });
+        let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YY-MM-DD HH:mm:ss")
+        let endtm = moment(new Date().getTime()).format("YY-MM-DD HH:mm:ss")
         console.log(obj)
-        getWfsRiverByName({
-            "name": obj.name
-        }).then((result) => {
-            console.log(result)
-            this.setState({
-                mloading: false,
-            })
-            var myChart = echarts.init(document.getElementById('mainbyhd'));
-            if (result.data[0].list.length !== 0) {
-                this.setState({ swdataSourceById: result.data[0].list })
-                let xdata = []
-                let ydata = []
-                let legenddata = []
-                for (var i = result.data[0].list.length - 1; i >= 0; i--) {
-                    legenddata.push(result.data[0].list[i].name)
-                    ydata.push(
-                        {
-                            name: result.data[0].list[i].name,
-                            type: 'bar',
-                            stack: '总量',
-                            label: {
-                                show: true,
-                                position: 'insideRight'
-                            },
-                            data: [320 + i]
-                        },
-                    )
-                }
-                // console.log(ydata)
-                myChart.setOption({
-                    title: {
-                        text: obj.name + "-河道下站点分布",
-                        // subtext: starttm + '至' + endtm,
-                        // left: 'center',
-                    },
-                    dataZoom: [
-                        {
-                            type: 'slider',
-                            show: true,
-                            xAxisIndex: [0],
-                        },
-                    ],
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {// 坐标轴指示器，坐标轴触发有效
-                            type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
-                        }
-                    },
-                    toolbox: {
-                        show: true,
-                        feature: {
-                            dataView: { show: true, readOnly: true },
-                            magicType: { show: true, type: ['line', 'bar'] },
-                            restore: { show: true },
-                            saveAsImage: { show: true },
-                        }
-                    },
-                    xAxis: {
-                        type: 'category',
-                        // data: xdata,
-                        name: '时间',
-                    },
-                    yAxis: {
-                        type: 'value',
-                        name: '水位（m）',
-                        max: function (value) {
-                            return value.max > 0 ? value.max + obj.warning * 1 : obj.warning * 1 + 3
-                        }
-                    },
-                    series: [{
-                        data: ydata,
-                        symbolSize: 15,
-                        type: 'scatter',
-                    }],
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                        }
-                    },
-                    legend: {
-                        data: legenddata
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
-                        containLabel: true
-                    },
-                    xAxis: {
-                        type: 'value'
-                    },
-                    yAxis: {
-                        type: 'category',
-                        data: [obj.name]
-                    },
-                    series: ydata
-                });
-            } else {
-                myChart.setOption({
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {// 坐标轴指示器，坐标轴触发有效
-                            type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
-                        }
-                    },
-                    grid: {
-                        top: 90,
-                    },
-                    dataZoom: [
-                        {
-                            type: 'slider',
-                            show: true,
-                            xAxisIndex: [0],
-                        },
-                    ],
-                    title: {
-                        text: obj.name + "-水位站24小时水位变化",
-                        // subtext: starttm + '至' + endtm,
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: [],
-                        name: '时间',
-                    },
-                    yAxis: {
-                        type: 'value',
-                        name: '水位(m)'
-                    },
-                    series: [{
-                        data: [],
-                        type: 'line',
-                    }]
-                })
-            }
+        getWaterHistory({
+            "stcd": obj.stcd,
+            "starttm": starttm,
+            "endtm": endtm,
+            "current": 1,
+            "size": 10000
         })
+            .then((result) => {
+                this.setState({
+                    mloading: false,
+                })
+                var myChart = echarts.init(document.getElementById('mainbyhd'));
+                if (result.data.records.length !== 0) {
+                    this.setState({ swdataSourceById: result.data.records, })
+                    let xdata = []
+                    let ydata = []
+                    for (var i = result.data.records.length - 1; i >= 0; i--) {
+                        xdata.push(result.data.records[i].tm)
+                        ydata.push((result.data.records[i].z * 1).toFixed(2))
+                    }
+                    myChart.setOption({
+                        title: {
+                            text: obj.SpliceSiteName + "-24小时水位曲线",
+                            subtext: starttm + '至' + endtm,
+                            // left: 'center',
+                        },
+                        grid: {
+                            top: 90,
+                        },
+                        dataZoom: [
+                            {
+                                type: 'slider',
+                                show: true,
+                                xAxisIndex: [0],
+                            },
+                        ],
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {// 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                dataView: { show: true, readOnly: true },
+                                magicType: { show: true, type: ['line', 'bar'] },
+                                restore: { show: true },
+                                saveAsImage: { show: true },
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: xdata,
+                            name: '时间',
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name: '水位（m）',
+                            max: function (value) {
+                                return value.max > 0 ? value.max + obj.warning * 1 : obj.warning * 1 + 3
+                            }
+                        },
+                        visualMap: {
+                            show: true,
+                            pieces: [
+                                {
+                                    gt: obj.warning > 0 ? -obj.warning : obj.warning,
+                                    lte: obj.warning,          //这儿设置基线上下颜色区分 基线下面为绿色
+                                    color: '#03d6d6'
+                                }, {
+                                    gt: obj.warning,          //这儿设置基线上下颜色区分 基线上面为红色
+                                    color: '#e91642',
+                                    // lte: obj.warning,
+                                },
+
+                            ]
+                            ,
+                        },
+                        series: [{
+                            data: ydata,
+                            type: 'line',
+                            markPoint: {
+                                data: [
+                                    { type: 'max', name: '最大值' },
+                                    {
+                                        type: 'min', name: '最小值', itemStyle: {
+                                            color: '#03d6d6'
+                                        }
+                                    }
+                                ],
+
+                            },
+                            markLine: {
+                                label: {
+                                    position: "end",
+                                },
+                                // color: '#ffcc33',
+                                data: [
+                                    {
+                                        silent: false,
+                                        label: {
+                                            position: 'center',
+                                            formatter: "预警" + obj.warning + "m",
+                                            itemStyle: {
+                                                left: '100px'
+                                            }
+                                        },
+                                        yAxis: obj.warning,
+                                    }
+                                ]
+                            }
+                        }],
+                    });
+                } else {
+                    myChart.setOption({
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {// 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        grid: {
+                            top: 90,
+                        },
+                        dataZoom: [
+                            {
+                                type: 'slider',
+                                show: true,
+                                xAxisIndex: [0],
+                            },
+                        ],
+                        title: {
+                            text: obj.name + "-24小时水位曲线",
+                            subtext: starttm + '至' + endtm,
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: [],
+                            name: '时间',
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name: '水位(m)'
+                        },
+                        series: [{
+                            data: [],
+                            type: 'line',
+                        }]
+                    })
+                }
+            })
     };
     //模态框关闭
     handleCancel = () => {
@@ -189,10 +207,10 @@ class RiverWater extends React.PureComponent {
         })
         var myChart = echarts.init(document.getElementById('mainbyhd'));
         myChart.setOption({
-            // title: {
-            //     text: "暂无数据",
-            //     subtext: '暂无数据',
-            // },
+            title: {
+                text: "暂无数据",
+                subtext: '暂无数据',
+            },
             xAxis: {
                 data: []
             },
@@ -296,22 +314,17 @@ class RiverWater extends React.PureComponent {
                 this.locationsmalClick(record)
             },
             //双击打开历史水位
-            // onDoubleClick: () => {
-            //     this.showModal(record)
-            // },
+            onDoubleClick: () => {
+                this.showModal(record)
+            },
         };
     }
     onExpandOpen = (expanded, record) => {
         console.log(expanded, record)
-        // this.setState({
-        //     smalloading: true,
-        //     zdDataSource: new Map()
-        // })
         getWfsRiverByName({
             "name": record.name
         }).then((result) => {
             console.log(result)
-            // let dataArr = SpliceSite(result)
             let data = []
             for (let i = 0; i < result.data[0].list.length; i++) {
                 data.push({
@@ -324,12 +337,9 @@ class RiverWater extends React.PureComponent {
                     lat: result.data[0].list[i].lat,
                 })
             }
-
             let dataSource = {...this.state.zdDataSource} ;
             dataSource[record.name] = data;
-
             this.setState({
-                // smalloading: false,
                 zdDataSource: dataSource
             })
         })
@@ -339,7 +349,7 @@ class RiverWater extends React.PureComponent {
     }
     render() {
         const { loading } = this.state;
-        //根据编号获取信息表头daata
+        //根据编号获取信息表头data
         const swcolumnsById = [
             {
                 title: '站名',
@@ -362,24 +372,54 @@ class RiverWater extends React.PureComponent {
                         }
                     }
             },
-            // {
-            //     title: '河流总长',
-            //     dataIndex: 'riverlen',
-            //     className: 'column-money',
-            //     // render: dayAvg => (dayAvg * 1).toFixed(2)
-            // },
             {
                 title: '警戒水位(m)',
                 dataIndex: 'warning',
                 className: 'column-money',
                 render: warning => (warning * 1).toFixed(2)
             },
+
+        ];
+        const swcolumnsByIdModel = [
+            {
+                title: '站名',
+                dataIndex: 'stnm',
+                className: 'column-money',
+                render:
+                    stnm => {
+                        if (stnm !== null && stnm !== "") {
+                            return (
+                                <a>
+                                    {stnm}
+                                </a>
+                            )
+                        } else {
+                            return (
+                                <a>
+                                    {stnm ? stnm : "暂无数据"}
+                                </a>
+                            )
+                        }
+                    }
+            },
+            {
+                title: '水位(m)',
+                dataIndex: 'z',
+                className: 'column-money',
+                render: dayAvg => (dayAvg * 1).toFixed(2)
+            },
             // {
-            //     title: '东营市长度',
-            //     dataIndex: 'riverlendy',
+            //     title: '警戒水位(m)',
+            //     dataIndex: 'warning',
             //     className: 'column-money',
-            //     // render: value => moment(value).format("YYYY-MM-DD HH:mm")
+            //     render: warning => (warning * 1).toFixed(2)
             // },
+            {
+                title: '更新时间',
+                dataIndex: 'tm',
+                className: 'column-money',
+                render: value => moment(value).format("YYYY-MM-DD HH:mm")
+            },
 
         ];
         const qxcolumns = [
@@ -425,11 +465,6 @@ class RiverWater extends React.PureComponent {
             },
         ];
         const expandedRowRendertype = (record, index, indent, expanded) => {
-            console.log(record)
-            console.log(index)
-            console.log(indent)
-            console.log(expanded)
-
             //水位data
             const swcolumns = [
                 {
@@ -478,7 +513,7 @@ class RiverWater extends React.PureComponent {
                 loading={this.state.smalloading}
                 columns={swcolumns}
                 dataSource={source}
-                scroll={{ y: 830 }}
+                scroll={{ y: 400 }}
                 rowKey={row => row.stcd}
                 onRow={this.onClickSmalRow}
                 pagination={{
@@ -497,9 +532,7 @@ class RiverWater extends React.PureComponent {
                     expandable={{
                         expandedRowRender: expandedRowRendertype,
                         onExpand: this.onExpandOpen,
-                        // onExpandedRowsChange: this.onExpandedRowsChangea,
                         rowExpandable: false,
-
                     }}
                     // defaultExpandedRowKeys={[1]}
                     size="small"
@@ -507,7 +540,7 @@ class RiverWater extends React.PureComponent {
                     columns={qxcolumns}
                     dataSource={this.state.qxdataSource}
                     rowKey={row => row.name}
-                    scroll={{ y: 820 }}
+                    scroll={{ y: 400 }}
                     pagination={{
                         defaultPageSize: 50,
                     }}
@@ -530,7 +563,7 @@ class RiverWater extends React.PureComponent {
                             <Table
                                 size="small"
                                 loading={this.state.mloading}
-                                columns={swcolumnsById}
+                                columns={swcolumnsByIdModel}
                                 dataSource={this.state.swdataSourceById}
                                 scroll={{ y: 500 }}
                                 rowKey={row => row.stcd}

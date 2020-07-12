@@ -44,7 +44,7 @@ class Login extends Component {
 					localStorage.setItem("token", result.headers.get("token"))
 					localStorage.setItem("username", values.username)
 					console.log(localStorage.getItem("token"))
-					this.props.history.push('/index')
+					this.props.history.push('/display')
 					window.location.reload()
 					message.success("登录成功！")
 					queryUser({

@@ -13,7 +13,7 @@ import WeatherBox from "./left/WeatherBox";
 import WeatherChart from "./left/WeatherChart";
 import WeatherTable from "./left/WeatherTable";
 import PannelBtn from "./right/PannelBtn";
-import AlarmTable from "./right/AlarmTable";
+import AlarmTable from "../floodWarning/right/AlarmTable";
 import WeatherPic from "./right/WeatherPic";
 import WeatherDy from "./right/WeatherDy";
 import CheckBoxs from "../monitor/bottom/CheckBox";
@@ -69,7 +69,9 @@ class Monitor extends React.PureComponent {
           <div className="m-left">
             {/* <WeatherBox></WeatherBox>
             <WeatherChart></WeatherChart> */}
+            <AlarmTable></AlarmTable>
             <WeatherTable></WeatherTable>
+            
           </div>
         </div>
         <div style={{ display: displayRight }}>

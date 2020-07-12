@@ -32,20 +32,15 @@ class PannelBtn extends React.PureComponent {
         <div>
 
           <Row className="m-alm-row-index" >
-            <Col span={4}>  <Link to={'/index'} ><img
+            <Col span={4}> 
+             {/* <Link to={'/index'} ><img
               className="m-btn-flood-index"
 
               src={zhjk}
             // onClick={this.handlefxyj}
             ></img>
-            </Link></Col>
-            <Col span={4}><Link to={"/rain"}><img
-
-              className="m-btn-flood-index"
-              src={yqjk}
-            // onClick={this.handleysgq}
-            ></img>
-            </Link></Col>
+            </Link> */}
+            </Col>
             <Col span={4}>
               <Link to={'/water'} ><img
                 className="m-btn-flood-index"
@@ -53,6 +48,14 @@ class PannelBtn extends React.PureComponent {
               // onClick={this.handlefxyj}
               ></img>
               </Link></Col>
+            <Col span={4}><Link to={"/rain"}><img
+
+              className="m-btn-flood-index"
+              src={yqjk}
+            // onClick={this.handleysgq}
+            ></img>
+            </Link></Col>
+            
             <Col span={4}>
               <Link to={"/easyFlood"}><img
                 className="m-btn-flood-index"

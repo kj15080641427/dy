@@ -31,7 +31,7 @@ class Precipitation extends React.PureComponent {
             searchText: '',
             searchedColumn: '',
             stid: "",
-            qxdataSource:[]
+            qxdataSource: []
         };
     }
     //画图
@@ -405,7 +405,7 @@ class Precipitation extends React.PureComponent {
         };
     }
     render() {
-        
+
         const columnsByHour = [
             {
                 title: '站名',
@@ -606,7 +606,7 @@ class Precipitation extends React.PureComponent {
                     columns={qxcolumns}
                     dataSource={this.state.qxdataSource}
                     rowKey={row => row.regionName}
-                    scroll={{ y: 900 }}
+                    scroll={{ y: 500 }}
                     pagination={{
                         defaultPageSize: 50,
                     }}
@@ -721,8 +721,9 @@ class Precipitation extends React.PureComponent {
                 let ljarr = [];
                 let grarr = [];
                 let hkarr = [];
+                // let teharr = [];
                 for (let i = 0; i < dataArr.length; i++) {
-                    if (dataArr[i].region === "370502") {
+                    if (dataArr[i].region === "370502" && dataArr[i].indtype !== 11) {
                         dyarr.push(dataArr[i])
                     } if (dataArr[i].region === "370523") {
                         grarr.push(dataArr[i])
@@ -732,13 +733,17 @@ class Precipitation extends React.PureComponent {
                         hkarr.push(dataArr[i])
                     } if (dataArr[i].region === "370521") {
                         klarr.push(dataArr[i])
-                    }
+                    } 
+                    // else if (dataArr[i].indtype === 11) {
+                    //     teharr.push(dataArr[i])
+                    // }
                 }
                 let data = [
-                    { regionName: "东营区", list: dyarr },
-                    { regionName: "广饶县", list: grarr },
+                    { regionName: "东营区(开发区)", list: dyarr },
+                    // { regionName: "天鹅湖蓄滞洪区", list: teharr },
+                    { regionName: "广饶县(省农高区)", list: grarr },
                     { regionName: "利津县", list: ljarr },
-                    { regionName: "河口区", list: hkarr },
+                    { regionName: "河口区(东营港)", list: hkarr },
                     { regionName: "垦利区", list: klarr },
                 ]
                 this.setState({ loading: false });

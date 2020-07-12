@@ -1,5 +1,5 @@
 @import "@app/variable.scss";
-.m-head {
+.m-head-warning {
   /*test*/
   display: flex;
   justify-content: space-between;
@@ -9,7 +9,7 @@
   right: 0;
   height: $headHeight;
   color: white;
-  background: url(("../../../resource/head_bg.png")) center no-repeat;
+  background: url(("../../../resource/title/title-warning.png")) center no-repeat;
   background-size: auto 100%;
   .m-hd-weather {
     line-height: 47px;

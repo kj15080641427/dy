@@ -21,7 +21,7 @@ import {
 } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { updateUser, saveUser, queryRole } from '@app/data/request';
-import ResizableTextArea from 'antd/lib/input/ResizableTextArea';
+// import ResizableTextArea from 'antd/lib/input/ResizableTextArea';
 
 
 const { Option } = Select;

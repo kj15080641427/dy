@@ -2,13 +2,28 @@
  * Tables 2020-07-06
  */
 import React from 'react';
+import { Link } from 'react-router-dom'
 import "./style.scss";
 import TableWrap from "./table/TableWrap";
-import { Table } from 'antd';
+import { Table, Row, Col, Button } from 'antd';
+import EasyFlood from "./table/easyFlood"
+import Precipitation from "./table/Precipitation"
+import Video from "./table/Video"
+import Water from "./table/Water"
+import { getBasicsAll, getRadioAll } from "@app/data/request";
 class Tables extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+    this.state = {
+      waterData: [],
+      rainData: [],
+      easyData: [],
+      videoData: [],
+      waterCount: 0,
+      rainCount: 0,
+      videoCount: 0,
+      easyCount: 0,
+    };
   }
   render() {
     const columns = [
@@ -52,28 +67,109 @@ class Tables extends React.PureComponent {
         tags: ['cool', 'teacher'],
       },
     ];
-    return ( 
+    // onClickRow = (record) => {
+    //   return {
+    //     onClick: () => {
+    //       this.setState({
+    //         rowId: record.id,
+    //       });
+    //     },
+    //   };
+    // }
+    const setRowClassName = (record) => {
+      return 'clickRowStyle';
+    }
+    let { waterData, rainData, easyData, videoData, waterCount, rainCount, videoCount, easyCount, } = this.state
+    return (
       <div className="dis-tables">
         <div className="dis-table-btns">
-          dis-table-btns
+          <Row>
+            <Col span={22}>
+            </Col>
+            <Col span={2}>
+              <Button className="button-color-yello" size="large" ><Link to="/water">进入系统</Link></Button>
+            </Col>
+            {/* <Col span={2}>
+              <Button size="large" className="button-color-green"><Link to="/rain">雨情监测</Link></Button>
+            </Col>
+            <Col span={2}>
+              <Button size="large" type="primary"><Link to="/water">河湖水情</Link></Button>
+            </Col>
+            <Col span={2}>
+              <Button size="large" className="button-color-orange"><Link to="/easyFlood">城市防汛</Link></Button>
+            </Col>
+            <Col span={2}>
+              <Button size="large" className="button-color-violet"><Link to="/video">视频监控</Link></Button>
+            </Col>
+            <Col span={2}>
+              <Button size="large" className="button-color-yello"><Link to="/floodWarning">防汛预警</Link></Button>
+            </Col>
+            <Col span={2}>
+              {localStorage.getItem("username") === "admin1" ? null : <Button size="large" className="button-color-green"><Link to="/home/rwvdata">系统管理</Link></Button>}
+            </Col>
+            <Col span={10}>
+            </Col> */}
+          </Row>
         </div>
         <div className="dis-table-con">
-          <TableWrap title={"雨量站(120)"} extra={"单位mm"}>
-            <Table columns={columns} dataSource={data} />
+          <TableWrap title={"雨量站(" + rainCount + ")"} extra={"单位mm"}>
+            <Precipitation dataSource={rainData}></Precipitation>
           </TableWrap>
-          <TableWrap title={"雨量站(120)"} >
-            <Table columns={columns} dataSource={data} />
+          <TableWrap title={"视频站点(" + videoCount + ")"} >
+            <Video dataSource={videoData}></Video>
           </TableWrap>
-          <TableWrap title={"雨量站(120)"} >
-            <Table columns={columns} dataSource={data} />
+          <TableWrap title={"易涝点(" + easyCount + ")"} >
+            <EasyFlood dataSource={easyData}></EasyFlood>
           </TableWrap>
-          <TableWrap title={"雨量站(120)"} >
-            <Table columns={columns} dataSource={data} />
+          <TableWrap title={"水位站(" + waterCount + ")"} >
+            <Water dataSource={waterData}></Water>
           </TableWrap>
         </div>
       </div>
     );
   }
-  componentDidMount() {}
+  selectInit() {
+    getBasicsAll({
+      'type': 1
+    }).then((result) => {
+      this.setState({
+        rainData: result.data,
+        rainCount: result.data.length
+      })
+    })
+    getBasicsAll({
+      'type': 2
+    }).then((result) => {
+      this.setState({
+        waterData: result.data,
+        waterCount: result.data.length
+      })
+    })
+    getBasicsAll({
+      'type': 3
+    }).then((result) => {
+      console.log(result)
+      this.setState({
+        easyData: result.data,
+        easyCount: result.data.length
+      })
+    })
+    getRadioAll({
+      "isShow": "0"
+    })
+      .then((result) => {
+        this.setState({
+          videoData: result.data,
+          videoCount: result.data.length
+        });
+      })
+  }
+
+  componentDidMount() {
+    this.selectInit()
+    window.setInterval(() => {
+      this.selectInit()
+    }, 1000 * 5 * 60)
+  }
 }
 export default Tables;
