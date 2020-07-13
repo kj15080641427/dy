@@ -28,7 +28,7 @@ class Water extends Base {
     let { model } = this.props;
     console.log(model)
     //let water = (model.z !== null && model.z !== undefined) ? (model.z + 'm') : '--';
-    let water = model.z ? parseFloat(model.z) : NaN;
+    let water = (model.z !== null && model.z !== undefined) ? parseFloat(model.z) : NaN;
     let waterString = isNaN(water) ? '--' : (water.toFixed(2) + 'm');
     let flow = (model.q !== null) ? (model.q + "m³/s") : '--';
     let tm = model.ztm ? model.ztm : model.tm;
@@ -83,7 +83,6 @@ class Water extends Base {
             <div className="m-ovl-line">河流：{rivername}</div>
             <div className="m-ovl-line">县区：{regionName}</div>
             <div className="m-ovl-line">时间：{udpTm}</div>
-
           </div>
         </div>
         <span className="iconfont iconcuo m-ovl-close" ></span>
@@ -207,7 +206,7 @@ class Water extends Base {
         visualMap: {
           show: false,
           type: 'piecewise',
-          pieces: warningnum == 0 ? [] : [
+          pieces: warningnum === 0 ? [] : [
             {
               gt: warningnum >= 0 ? -warningnum : warningnum,
               lte: warningnum,          //这儿设置基线上下颜色区分 基线下面为绿色
@@ -243,13 +242,13 @@ class Water extends Base {
               width: 2,
               opacity: warningnum === 0 ? 0 : 1
             },
-            color: '#ffcc33',
+            color: '#03d6d6',
             data: [
               {
 
                 silent: false,
                 label: {
-                  show: warningnum === 0 ? false : true,
+                  show: warningnum !== 0,
                   position: 'center',
                   formatter: "预警" + warningnum + "m",
                   itemStyle: {
