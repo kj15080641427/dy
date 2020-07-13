@@ -70,7 +70,7 @@ class Water extends React.PureComponent {
                     <table className="fl-table">
                         <thead>
                             <tr>
-                                <th style={{ width: 200 }}>站名(来源)</th>
+                                <th style={{ width: 200 }}>站名</th>
                                 {/* <th>位置</th> */}
                                 <th>状态</th>
                                 <th>操作</th>
@@ -84,18 +84,12 @@ class Water extends React.PureComponent {
                 </div>
                 <Modal
                     title={this.state.address}
-                    placement="top"
+                    // placement="top"
                     onCancel={this.handleCancel}
                     visible={this.state.visible}
                     width={"50%"}
-                    height="80%"
-                // style={{
-                //     padding: '8px 0',
-                //     background: '#747575',
-                //     position: 'relative',
-                //     overflow: 'hidden',
-                //     left: 9
-                // }}
+                    footer={null}
+                    centered={true}
                 >
                     {/* <FullScreen ></FullScreen> */}
                     <div style={{

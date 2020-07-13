@@ -158,9 +158,17 @@ class Tables extends React.PureComponent {
       "isShow": "0"
     })
       .then((result) => {
+        console.log(result)
+        let arr = [];
+        for (let i = 0; i < result.data.length; i++) {
+          if (result.data[i].isOnline * 1 === 0) {
+            arr.push(result.data[i])
+          }
+        }
+        console.log(arr)
         this.setState({
-          videoData: result.data,
-          videoCount: result.data.length
+          videoData: arr,
+          videoCount: arr.length
         });
       })
   }

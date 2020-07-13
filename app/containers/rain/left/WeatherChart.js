@@ -6,8 +6,12 @@ import "./style.scss";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 import 'echarts';
+import moment from 'moment';
 import imgURL from '../../../resource/title_bg.png';
 import { getFiveCitydata } from "@app/data/request";
+import { DatePicker } from 'antd';
+
+
 const areaMap = {
   "370502": '东营区\n(开发区)',
   '370503': '河口区\n(东营港)',
@@ -20,20 +24,64 @@ class WeatherChart extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      timeIsShow: 'none'
     };
+    this.selectInit = this.selectInit.bind(this)
   }
   render() {
+    const { RangePicker } = DatePicker;
+    function onOk(value) {
+
+    }
+
+    function onChange(value, dateString) {
+
+      getFiveCitydata(
+        {
+          "startTime": moment(value[0]).format("YYYY-MM-DD HH:00:00"),
+          "endTime": moment(value[1]).format("YYYY-MM-DD HH:00:00")
+        }
+      ).then((result) => {
+        console.log(result)
+        var myChart = echarts.init(document.getElementById('main'));
+        let setData = [];
+        for (var i = result.data.length - 1; i >= 0; i--) {
+          setData.push((result.data[i].prd * 1).toFixed(1))
+        }
+        myChart.setOption({
+          series: [
+            {
+              name: '自定义',
+              data: setData,
+              label: {
+                show: true,
+                position: 'top'
+              },
+            },
+
+          ]
+        })
+
+      })
+    }
     return (
       <div className="m-wth-chart">
         <img className="m-chart-img" src={imgURL} alt="" />
         <div className="m-chart-dev">
-          <div id="main" className="m-chart-table"></div>
+          <RangePicker size="small" className="time-select" format="YYYY-MM-DD HH" showTime={{ format: 'HH' }}
+            // style={{ display: this.state.timeIsShow }}
+            onChange={onChange}
+            onOk={onOk}
+            format="YYYY-MM-DD HH" />
+          <div id="main" className="m-chart-table">
+
+          </div>
         </div>
       </div>
     );
   }
-  selectInit() {
 
+  selectInit() {
     getFiveCitydata({ "type": 1 })
       .then((result) => {
         let hourData = [];
@@ -48,6 +96,22 @@ class WeatherChart extends React.PureComponent {
           let areaName = areaMap[result.data[i].areaId]
           addData.push(areaName);
         }
+        let _this = this;
+        myChart.on('legendselectchanged', function (obj) {
+          var selected = obj.selected;
+          var legend = obj.name;
+
+          if (selected.自定义) {
+            _this.setState({
+              timeIsShow: 'block'
+            })
+          }else{
+            _this.setState({
+              timeIsShow: 'none'
+            })
+          }
+          console.log(obj)
+        })
         myChart.setOption({
           // color:["#c23531","#99CCFF","#FFFF66","#666666",],
           tooltip: {
@@ -69,21 +133,22 @@ class WeatherChart extends React.PureComponent {
           },
           legend: {
             right: 'center',
-            x: '60px',
+            x: '6px',
             y: '30px',
-            data: ['1小时', '24小时', '近三天', '近一周', '近一年以来'],
+            data: ['1小时', '24小时', '近三天', '近一周', '近一年以来', '自定义'],
             selected: {
               '1小时': false,
               '24小时': false,
               '近三天': true,
               '近一周': false,
-              '近一年以来': false
+              '近一年以来': false,
+              '自定义': false ? console.log(false) : console.log(true),
             }
           },
           grid: {
             top: '25%',
             left: '3%',
-            right: '2%',
+            right: '0%',
             bottom: '3%',
             containLabel: true
           },
@@ -168,6 +233,11 @@ class WeatherChart extends React.PureComponent {
             },
             {
               name: '近一年以来',
+              type: 'bar',
+              barWidth: '15%',
+            },
+            {
+              name: '自定义',
               type: 'bar',
               barWidth: '15%',
             }

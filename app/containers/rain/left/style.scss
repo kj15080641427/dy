@@ -20,7 +20,7 @@
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 }
 .m-wth-chart {
-  height: $monitor_left_wthChart_height;
+  height: 400px;
   background: rgb(253, 250, 250);
 }
 .m-chart-img {
@@ -31,7 +31,7 @@
 }
 .m-chart-dev {
   width: 514px;
-  height: 370px;
+  height: 402px;
   border: 1px solid #007ed7;
   position: relative;
   bottom: 23px;
@@ -44,7 +44,7 @@
   // right: 15px;
 }
 .m-wth-table-rain {
-  height: 580px;
+  height: 540px;
   background: rgb(253, 250, 250);
 }
 .m-table-img {
@@ -55,7 +55,7 @@
 }
 .m-div-rain {
   width: 514px;
-  height: 580px;
+  height: 540px;
   border: 1px solid #007ed7;
   position: relative;
   bottom: 22px;
@@ -85,17 +85,17 @@
   background: transparent;
   left: 15px;
 }
-.ant-tabs .ant-tabs-top .ant-tabs-nav-container .ant-tabs-large .ant-tabs-card{
+.ant-tabs .ant-tabs-top .ant-tabs-nav-container .ant-tabs-large .ant-tabs-card {
   height: 365px;
   width: 460px;
-   text-align: center;
+  text-align: center;
   height: 380px;
   margin-bottom: -3px;
   line-height: 380px;
   background: rgba(204, 51, 51, 0.27);
   overflow: hidden;
 }
-.ant-tabs-content .ant-tabs-content-animated .ant-tabs-top-content .ant-tabs-card-content{
+.ant-tabs-content .ant-tabs-content-animated .ant-tabs-top-content .ant-tabs-card-content {
   height: 365px;
   width: 460px;
   text-align: center;
@@ -104,7 +104,7 @@
   background: rgba(204, 51, 51, 0.27);
   overflow: hidden;
 }
-.ant-tabs-tabpane .ant-tabs-tabpane-active{
+.ant-tabs-tabpane .ant-tabs-tabpane-active {
   height: 365px;
   width: 460px;
   text-align: center;
@@ -112,4 +112,10 @@
   line-height: 380px;
   background: rgba(204, 51, 51, 0.27);
   overflow: hidden;
+}
+.time-select {
+  position: relative;
+  left: 103px;
+  bottom: -80px;
+  z-index: 100;
 }

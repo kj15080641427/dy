@@ -124,7 +124,7 @@ class Water extends Base {
     let id = this.getType() + "_" + model.id;
     let map_center = map.getView().getCenter();
     let center = transform(map_center, 'EPSG:3857', 'EPSG:4326');
-    map.addOverlay(id, { Coordinate: center, offset: [-325, -240] }, nowNode);
+    map.addOverlay(id, { Coordinate: center, offset: [-325, -340] }, nowNode);
     // let { model } = this.props;
     // let category = [];
     // let values = [];
@@ -176,12 +176,13 @@ class Water extends Base {
         xdata.push(moment(model.waters[i].tm).format('MM-DD HH:mm'))
         ydata.push((model.waters[i].z).toFixed(2))
       }
-      const warningnum = model.warning === null ? 99 : model.warning
+      const warningnum = model.warning === null || model.warning === 99 ? 0 : model.warning
       const option = {
         title: {
           text: model.waters[0].stnm + '24小时水位曲线',
           // left: 'center',
         },
+
         xAxis: {
           type: 'category',
           data: xdata,
@@ -203,97 +204,100 @@ class Water extends Base {
             return (warningnum + value.max).toFixed(1)
           }
         },
-        // visualMap: {
-        //   show: true,
-        //   pieces: [
-        //     {
-        //       gt: warningnum > 0 ? -warningnum : warningnum,
-        //       lte: warningnum,          //这儿设置基线上下颜色区分 基线下面为绿色
-        //       color: '#03d6d6'
-        //     }, {
-        //       gt: warningnum,          //这儿设置基线上下颜色区分 基线上面为红色
-        //       color: '#e91642',
-        //       // lte: obj.warning,
-        //     },
+        visualMap: {
+          show: false,
+          type: 'piecewise',
+          pieces: warningnum == 0 ? [] : [
+            {
+              gt: warningnum >= 0 ? -warningnum : warningnum,
+              lte: warningnum,          //这儿设置基线上下颜色区分 基线下面为绿色
+              color: '#03d6d6'
+            }, {
+              gt: warningnum,          //这儿设置基线上下颜色区分 基线上面为红色
+              color: '#e91642',
+              // lte: obj.warning,
+            },
 
-        //   ]
-        //   ,
-        // },
+          ]
+        },
         series: [{
           data: ydata,
           type: 'line',
-          // markPoint: {
-          //   data: [
-          //     { type: 'max', name: '最大值' },
-          //     {
-          //       type: 'min', name: '最小值', itemStyle: {
-          //         color: '#03d6d6'
-          //       }
-          //     }
-          //   ],
+          markPoint: {
+            data: [
+              { type: 'max', name: '最大值' },
+              {
+                type: 'min', name: '最小值', itemStyle: {
+                  color: '#03d6d6'
+                }
+              }
+            ],
 
-          // },
-          // markLine: {
-          //   label: {
-          //     position: "end",
-          //   },
-          //   lineStyle: {
-          //     type: 'solid',
-          //     width: 2
-          //   },
-          // color: '#ffcc33',
-          // data: [
-          //   {
-          //     silent: false,
-          //     label: {
-          //       position: 'center',
-          //       formatter: "预警" + warningnum + "m",
-          //       itemStyle: {
-          //         left: '100px',
+          },
+          markLine: {
+            label: {
+              position: "end",
+            },
+            lineStyle: {
+              type: 'solid',
+              width: 2,
+              opacity: warningnum === 0 ? 0 : 1
+            },
+            color: '#ffcc33',
+            data: [
+              {
 
-          //       }
-          //     },
-          //     yAxis: warningnum,
-          //   }
-          // ]
-        // }
+                silent: false,
+                label: {
+                  show: warningnum === 0 ? false : true,
+                  position: 'center',
+                  formatter: "预警" + warningnum + "m",
+                  itemStyle: {
+                    left: '100px',
+
+                  }
+                },
+                yAxis: warningnum,
+              }
+            ]
+          }
         }]
-    };
-    chars.setOption(option);
-  }
+      };
+      chars.setOption(option);
+    }
 
-}
-componentWillUnmount() {
-  super.componentWillUnmount();
+  }
+  componentWillUnmount() {
+    super.componentWillUnmount();
 
-}
-getType() {
-  return Water.type;
-}
-onCustomClick(e) {
-  if (hasClassName(e.target, "img-size-up")) {
-    this.onRotateCamera({ token: this.state.token, action: 'up' })
   }
-  else if (hasClassName(e.target, "img-size-left")) {
-    this.onRotateCamera({ token: this.state.token, action: 'left' })
+  getType() {
+    return Water.type;
   }
-  else if (hasClassName(e.target, "img-size-right")) {
-    this.onRotateCamera({ token: this.state.token, action: 'right' })
+  onCustomClick(e) {
+    if (hasClassName(e.target, "img-size-up")) {
+      this.onRotateCamera({ token: this.state.token, action: 'up' })
+    }
+    else if (hasClassName(e.target, "img-size-left")) {
+      this.onRotateCamera({ token: this.state.token, action: 'left' })
+    }
+    else if (hasClassName(e.target, "img-size-right")) {
+      this.onRotateCamera({ token: this.state.token, action: 'right' })
+    }
+    else if (hasClassName(e.target, "img-size-down")) {
+      this.onRotateCamera({ token: this.state.token, action: 'down' })
+    }
+    else if (hasClassName(e.target, "img-size-zoomin")) {
+      this.onRotateCamera({ token: this.state.token, action: 'zoomin' })
+    } else if (hasClassName(e.target, "img-size-zoomout")) {
+      this.onRotateCamera({ token: this.state.token, action: 'zoomout' })
+    }
   }
-  else if (hasClassName(e.target, "img-size-down")) {
-    this.onRotateCamera({ token: this.state.token, action: 'down' })
+  onClose() {
+    let { onClose, model } = this.props;
+    if (onClose) {
+      onClose(model.id, Water.type);
+    }
   }
-  else if (hasClassName(e.target, "img-size-zoomin")) {
-    this.onRotateCamera({ token: this.state.token, action: 'zoomin' })
-  } else if (hasClassName(e.target, "img-size-zoomout")) {
-    this.onRotateCamera({ token: this.state.token, action: 'zoomout' })
-  }
-}
-onClose() {
-  let { onClose, model } = this.props;
-  if (onClose) {
-    onClose(model.id, Water.type);
-  }
-}
 }
 export default Water;

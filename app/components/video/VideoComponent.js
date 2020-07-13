@@ -19,11 +19,6 @@ class VideoComponent extends Component {
       videoControl.login(null, null)
         .then((sessionId) => this.setState({ session: sessionId }));
     }
-    var iframe = document.getElementById("iframe1"); //获取iframe标签
-    var iwindow = iframe.contentWindow; //获取iframe的window对象
-    var idoc = iwindow.document; //获取iframe的document对象
-    console.log(idoc.getElementById("h5sVideo1")); //获取iframe的html
-    console.log("body", idoc.video);
   }
 
   render() {
@@ -31,7 +26,6 @@ class VideoComponent extends Component {
       <div>
         {this.state.session !== null ?
           <iframe
-            id="iframe1"
             src={`http://172.19.112.74/video/index.html?sessionId=${this.state.session}&token=${this.state.token}&type=${this.state.type}`}
             style={this.props.style}
             scrolling="no"

@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom'
+
 import "@app/containers/monitor/right/style.scss";
 import { Row, Col, Drawer, Table, Modal, Button } from 'antd';
 import ddfa from '@app/resource/ddfa.png';
@@ -14,7 +15,7 @@ import hyyb from '@app/resource/hyyb.png';
 import hhsq from '@app/resource/hhsq.png';
 import zhjk from '@app/resource/zhjk.png';
 import sjzx from '@app/resource/sjzx.png';
-import sqjk from '@app/resource/sqjk.png';
+import fxyj from '@app/resource/fxyj.png';
 import yqjk from '@app/resource/yqjk.png';
 import yld from '@app/resource/yld.png';
 import { PhotoProvider, PhotoConsumer } from 'react-photo-view';
@@ -133,6 +134,7 @@ class TowBtn extends React.PureComponent {
         });
     };
     render() {
+        console.log(this)
         const { weatherData } = this.state;
         const dutyColumns = [
             {
@@ -544,14 +546,14 @@ class TowBtn extends React.PureComponent {
                         height="100%"
                     >
                         <Row><Col span={24}></Col>
-                            <Col span={24} style={{alignItems: 'center'}}>
-                                <div style={{textAlign: 'center'}}>
-                                    <div style={{fontSize: 40, fontFamily: '黑体'}}>调度方案</div>
+                            <Col span={24} style={{ alignItems: 'center' }}>
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ fontSize: 40, fontFamily: '黑体' }}>调度方案</div>
                                     {/*<span className="title-scheme"><h2>东营市智慧水务系统-调度方案</h2></span>*/}
                                 </div>
                             </Col>
                             <Col span={24}>
-                                <div style={{textAlign:'right', paddingBottom: 15}}>
+                                <div style={{ textAlign: 'right', paddingBottom: 15 }}>
                                     <Button onClick={this.showDutyModal}>责任安排</Button>
                                     <Button onClick={this.showpumpModal}>泵站列表</Button>
                                     <Button onClick={this.showsluiceModal}>水闸列表</Button>
@@ -674,13 +676,13 @@ class TowBtn extends React.PureComponent {
                     <div>
                         <Row className="m-alm-row-index" >
                             <Col span={4}></Col>
-                            <Col span={4}>
+                            {/* <Col span={4}>
                                 <Link to={'/display'}>
                                     <img
                                         className="m-btn-flood-index"
                                         src={sjzx}
                                     ></img></Link>
-                            </Col>
+                            </Col> */}
                             <Col span={4}><img
                                 className="m-btn-flood-index"
                                 src={hhsq}
@@ -703,6 +705,17 @@ class TowBtn extends React.PureComponent {
                                 src={ddfa}
                                 onClick={this.showSchemeModal}
                             ></img></Col>
+                            <Col span={4}>
+                                <Link to={'/floodWarning'}>
+                                    <img
+                                        className="m-btn-flood-index"
+                                        src={fxyj}
+                                        style={{
+                                            border: '3px solid #007ed7', height: 79,
+                                            '-webkit-filter': 'opacity(0.5)'
+                                        }}
+                                    ></img></Link>
+                            </Col>
                             <Col span={4}>
                                 {localStorage.getItem("username") === "admin1" ? null :
                                     <Link to={'/home/rwvdata'} target="_blank">

@@ -54,7 +54,7 @@ class Map extends React.PureComponent {
     this.map = new UbiMap({
       target: 'map',
       center: [118.57, 37.53],
-      zoom: 9,
+      zoom: 9.7,
       minZoom: 3,
       maxZoom: 18,
       mouseControl: false

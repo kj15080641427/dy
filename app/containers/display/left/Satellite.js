@@ -48,6 +48,7 @@ class Satellite extends React.PureComponent {
     }
     return (
       <div className="dis-satellite"><br></br>
+        <div className="div-precipitation"></div>
         <div className="dis-satellite-div">
           <iframe frameborder="0" scrolling="no" src="http://m.nmc.cn/publish/precipitation/1-day.html" style={{
             position: 'absolute', top: '-189px',
