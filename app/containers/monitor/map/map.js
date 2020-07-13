@@ -176,19 +176,19 @@ class Map extends React.PureComponent {
       key: 'traffic'
     });
 
-    this.flood = new FloodAnimation({
-      map: this.map.getMap(),
-      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/ows?service=WFS',
-      srsName: 'EPSG:4326', ns: 'www.gcspace.com', ws: 'dy',
-      layerName: 'River',
-      colorTable: [
-        { min: 0, max: 0.1, color: '#00ff00' },
-        {min: 0.1, max: 0.5, color: '#eee538'},
-        {min: 0.5, max: 0.75, color: '#ffa500'},
-        {min: 0.75, max: 1000, color: '#ff0000'}
-      ]
-    });
-    this.flood.on("click", this.onFloodClick);
+    // this.flood = new FloodAnimation({
+    //   map: this.map.getMap(),
+    //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/ows?service=WFS',
+    //   srsName: 'EPSG:4326', ns: 'www.gcspace.com', ws: 'dy',
+    //   layerName: 'River',
+    //   colorTable: [
+    //     { min: 0, max: 0.1, color: '#00ff00' },
+    //     {min: 0.1, max: 0.5, color: '#eee538'},
+    //     {min: 0.5, max: 0.75, color: '#ffa500'},
+    //     {min: 0.75, max: 1000, color: '#ff0000'}
+    //   ]
+    // });
+    // this.flood.on("click", this.onFloodClick);
     this.map.addWFS({
       zIndex: 11,
       key: "wfsRiver",
@@ -750,7 +750,7 @@ class Map extends React.PureComponent {
         this.map.setVisible(layerKey, show);
       });
       // 特殊几个layer, 如洪水
-      this.flood.setVisible(layerVisible.flood);
+      // this.flood.setVisible(layerVisible.flood);
     }
   }
   addEvent() {
