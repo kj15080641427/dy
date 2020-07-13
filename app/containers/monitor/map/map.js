@@ -908,7 +908,7 @@ class Map extends React.PureComponent {
         let r = 'R' + i;
         data.push({ r: r, d: Math.random() });
       }
-      this.flood.updateData(data)
+      //this.flood.updateData(data)
     }, 1000);
     // this.map.addAlarm("alarm001", [118.67, 37.43]);
     this.map.addFeatures("person", [
