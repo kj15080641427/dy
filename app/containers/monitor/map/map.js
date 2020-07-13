@@ -908,7 +908,7 @@ class Map extends React.PureComponent {
         let r = 'R' + i;
         data.push({ r: r, d: Math.random() });
       }
-      this.flood.updateData(data)
+      // this.flood.updateData(data)
     }, 1000);
     // this.map.addAlarm("alarm001", [118.67, 37.43]);
     this.map.addFeatures("person", [
@@ -974,8 +974,8 @@ class Map extends React.PureComponent {
     }
   }
   addWaterWaring(warningWater) {
+    this.map.removeAlarmByString("alarm_water_")
     if (!warningWater || !warningWater.length) return;
-    this.map.removeAlarmByString("alarm_water_");
     warningWater.forEach((w) => {
       this.map.addAlarm("alarm_water_" + w.stcd, [w.lon, w.lat]);
     });
