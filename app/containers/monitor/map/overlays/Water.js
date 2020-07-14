@@ -28,7 +28,7 @@ class Water extends Base {
     let { model } = this.props;
     console.log(model)
     //let water = (model.z !== null && model.z !== undefined) ? (model.z + 'm') : '--';
-    let water = (model.z !== null && model.z !== undefined) ? parseFloat(model.z) : NaN;
+    let water = (model.z !== null && model.z !== undefined) ? parseFloat(model.z * 1) : NaN;
     let waterString = isNaN(water) ? '--' : (water.toFixed(2) + 'm');
     let flow = (model.q !== null) ? (model.q + "m³/s") : '--';
     let tm = model.ztm ? model.ztm : model.tm;
@@ -39,7 +39,7 @@ class Water extends Base {
     let videoControl = model.videoControl;
     let videos = model.videos;
     //let token = videos && videos.length != 0 ? videos[0].strtoken : '';
-    let type = videos && videos.length != 0 ? videos[0].datasource : '';
+    let type = videos && videos.length !== 0 ? videos[0].datasource : '';
     const onChange = (e) => {
       console.log(`radio checked:${e.target.value}`);
       if (e.target.value === "a") {
