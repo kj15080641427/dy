@@ -565,11 +565,11 @@ class TowBtn extends React.PureComponent {
                             </Col>
                         </Row>
                         <PhotoProvider>
-                            <PhotoConsumer key={1} src={"http://172.19.112.74/list/%E4%B8%AD%E5%BF%83%E5%9F%8E.png"}>
-                                <img className="zxc-img1" src={"http://172.19.112.74/list/%E4%B8%AD%E5%BF%83%E5%9F%8Esml.jpg"} alt="" />
+                            <PhotoConsumer key={1} src={"http://172.19.112.74/list/dycityfolld.png"}>
+                                <img className="zxc-img1" src={"http://172.19.112.74/list/dycityfolldsml.jpg"} alt="" />
                             </PhotoConsumer>
-                            <PhotoConsumer key={2} src={"http://172.19.112.74/list/%E4%B8%9C%E8%90%A5%E5%B8%82%E6%B2%B3%E6%B5%81%E6%B0%B4%E7%B3%BB%E5%88%86%E5%B8%83%E5%9B%BE.jpg"}>
-                                <img className="zxc-img1" src={"http://172.19.112.74/list/%E4%B8%9C%E8%90%A5%E5%B8%82%E6%B2%B3%E6%B5%81%E6%B0%B4%E7%B3%BB%E5%88%86%E5%B8%83%E5%9B%BEsml.jpg"} alt="" />
+                            <PhotoConsumer key={2} src={"http://172.19.112.74/list/dywaterfolld.png"}>
+                                <img className="zxc-img1" src={"http://172.19.112.74/list/dywaterfolldsml.jpg"} alt="" />
                             </PhotoConsumer>
                         </PhotoProvider>
                         {/* <Table

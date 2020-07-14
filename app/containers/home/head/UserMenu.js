@@ -22,13 +22,11 @@ class UserMenu extends React.PureComponent {
     }
     render() {
         console.log("11", this.props)
-        // console.log("11", this.props.history.push)
-        console.log(localStorage.getItem("userInfo").toString())
         return (
             <Menu className="drop-list">
                 <Menu.Item key="user">
                     <Icon type="user" />
-                    {localStorage.getItem("userInfo").username}
+                    {localStorage.getItem("username")}
                 </Menu.Item>
                 <Menu.Item key="logout" onClick={() => { localStorage.removeItem("token"); window.location.reload() }}>
                     <Icon type="logout" />

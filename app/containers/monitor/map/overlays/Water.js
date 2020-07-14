@@ -30,7 +30,7 @@ class Water extends Base {
     //let water = (model.z !== null && model.z !== undefined) ? (model.z + 'm') : '--';
     let water = (model.z !== null && model.z !== undefined) ? parseFloat(model.z * 1) : NaN;
     let waterString = isNaN(water) ? '--' : (water.toFixed(2) + 'm');
-    let flow = (model.q !== null) ? (model.q + "m³/s") : '--';
+    let flow = (model.q !== null) ? (model.q.toFixed(1) + "m³/s") : '--';
     let tm = model.ztm ? model.ztm : model.tm;
     let udpTm = tm ? moment(tm).format('MM-DD HH:mm') : '--';
     let warningLevel = (model.warning && model.warning !== 99) ? (model.warning + 'm') : '--';
@@ -203,22 +203,21 @@ class Water extends Base {
             return (warningnum + value.max).toFixed(1)
           }
         },
-        visualMap: {
-          show: false,
-          type: 'piecewise',
-          pieces: warningnum === 0 ? [] : [
-            {
-              gt: warningnum >= 0 ? -warningnum : warningnum,
-              lte: warningnum,          //这儿设置基线上下颜色区分 基线下面为绿色
-              color: '#03d6d6'
-            }, {
-              gt: warningnum,          //这儿设置基线上下颜色区分 基线上面为红色
-              color: '#e91642',
-              // lte: obj.warning,
-            },
-
-          ]
-        },
+        // visualMap: {
+        //   show: false,
+        //   type: 'piecewise',
+        //   pieces: warningnum === 0 ? [] : [
+        //     {
+        //       gt: warningnum >= 0 ? -warningnum : warningnum,
+        //       lte: warningnum,          //这儿设置基线上下颜色区分 基线下面为绿色
+        //       color: '#03d6d6'
+        //     }, {
+        //       gt: warningnum,          //这儿设置基线上下颜色区分 基线上面为红色
+        //       color: '#e91642',
+        //       // lte: obj.warning,
+        //     },
+        //   ]
+        // },
         series: [{
           data: ydata,
           type: 'line',

@@ -493,7 +493,7 @@ class Precipitation extends React.PureComponent {
                 }
                 let data = [
                     { regionName: "东营区(开发区)", list: dyarr },
-                    { regionName: "天鹅湖蓄滞洪区", list: teharr },
+                    // { regionName: "天鹅湖蓄滞洪区", list: teharr },
                     { regionName: "广饶县(省农高区)", list: grarr },
                     { regionName: "利津县", list: ljarr },
                     { regionName: "河口区(东营港)", list: hkarr },

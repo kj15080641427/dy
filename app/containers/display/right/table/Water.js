@@ -19,7 +19,7 @@ class Water extends React.PureComponent {
             elements.push(
                 <tr key={i}>
                     <td style={{ width: 200 }}>{data[i].name + "(" + data[i].dataSourceDesc + ")"}</td>
-                    <td>{(data[i].z * 1).toFixed(1)}</td>
+                    <td>{(data[i].z * 1).toFixed(2)}</td>
                     <td>{data[i].warning === 99 ? "--" : data[i].warning}</td>
                     <td>{data[i].ztm === null ? "--" : moment(data[i].ztm).format("MM-DD HH:mm")}</td>
                 </tr>

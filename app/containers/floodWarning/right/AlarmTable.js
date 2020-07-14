@@ -10,7 +10,7 @@ import emitter from "@app/utils/emitter.js";
 import localimgURL from '../../../resource/local.png';
 import imgURL from '../../../resource/title_bg.png';
 import warningImg from '../../../resource/warning.svg';
-import { getwaterlevelAlarmLog, getWaterWarning } from "@app/data/request";
+import { getWaterHistory, getWaterWarning } from "@app/data/request";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 import 'echarts';
@@ -59,7 +59,8 @@ class AlarmTable extends React.PureComponent {
         let ydata = []
         var myChart = echarts.init(document.getElementById('mainbywat'));
         if (result.data.length !== 0) {
-          for (var i = result.data.length - 1; i >= 0; i--) {
+          console.log(result)
+          for (var i = result.data.records.length - 1; i >= 0; i--) {
             xdata.push(result.data.records[i].tm)
             ydata.push((result.data.records[i].z * 1).toFixed(2))
           }
@@ -105,10 +106,10 @@ class AlarmTable extends React.PureComponent {
             },
             yAxis: {
               type: 'value',
-              name: '超警戒水位(m)'
+              name: '超警戒水位(m)',
             },
             visualMap: {
-              show: true,
+              show: false,
               pieces: [
                 {
                   gt: value.baselevel > 0 ? -value.baselevel : value.baselevel,
@@ -277,11 +278,11 @@ class AlarmTable extends React.PureComponent {
             )
           }
       },
-      {
-        title: '警戒水位(m)',
-        dataIndex: 'warning',
-        className: 'column-money',
-      },
+      // {
+      //   title: '警戒水位(m)',
+      //   dataIndex: 'warning',
+      //   className: 'column-money',
+      // },
       {
         title: '当前水位(m)',
         dataIndex: 'z',
@@ -289,7 +290,7 @@ class AlarmTable extends React.PureComponent {
       },
       {
         title: '更新时间',
-        dataIndex: 'ztm',
+        dataIndex: 'tm',
         width: 140,
         className: 'column-money',
         render: (value, key) => moment(value).format("YYYY-MM-DD HH:mm")
@@ -344,10 +345,10 @@ class AlarmTable extends React.PureComponent {
             width={1300}
           >
             <Row>
-              <Col span={12}><Card title="水位走势" bordered={false}>
+              <Col span={12}>
                 <div id="mainbywat" style={{ width: 600, height: 500 }}></div>
-              </Card></Col>
-              <Col span={12}><Card title="水位数据" bordered={false}>
+              </Col>
+              <Col span={12}>
                 <Table
                   size="small"
                   loading={this.state.mloading}
@@ -356,7 +357,7 @@ class AlarmTable extends React.PureComponent {
                   scroll={{ y: 400 }}
                   rowKey={row => row.stcd}
                 />
-              </Card></Col>
+              </Col>
             </Row>
           </Modal>
         </div>

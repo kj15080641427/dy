@@ -12,7 +12,7 @@ import Holder from "@app/components/video/Holder"
 import {
     CaretRightOutlined,
 } from '@ant-design/icons';
-class Water extends React.PureComponent {
+class Video extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -127,4 +127,4 @@ class Water extends React.PureComponent {
 
     componentDidMount() { }
 }
-export default Water;
+export default Video;

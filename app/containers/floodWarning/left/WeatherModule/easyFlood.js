@@ -64,7 +64,7 @@ class easyFlood extends React.PureComponent {
 
                     myChart.setOption({
                         title: {
-                            text: value.name + "-易涝点24小时水位变化",
+                            text: value.name + "-易涝点24小时水深变化",
                             subtext: starttm + '至' + endtm,
                             // left: 'center',
                         },
@@ -100,7 +100,7 @@ class easyFlood extends React.PureComponent {
                         },
                         yAxis: {
                             type: 'value',
-                            name: '水位（m）'
+                            name: '水深（m）'
                         },
                         // visualMap: {
                         //     show: true,
@@ -172,7 +172,7 @@ class easyFlood extends React.PureComponent {
                             },
                         ],
                         title: {
-                            text: value.name + "-易涝点24小时水位变化",
+                            text: value.name + "-易涝点24小时水深变化",
                             subtext: starttm + '至' + endtm,
                         },
                         xAxis: {
@@ -182,7 +182,7 @@ class easyFlood extends React.PureComponent {
                         },
                         yAxis: {
                             type: 'value',
-                            name: '水位(m)'
+                            name: '水深(m)'
                         },
                         series: [{
                             data: [],
@@ -324,7 +324,7 @@ class easyFlood extends React.PureComponent {
                     },
             },
             {
-                title: '水位(m)',
+                title: '水深(m)',
                 dataIndex: 'z',
                 className: 'column-money',
                 render: dayAvg => dayAvg != "-" ? (dayAvg * 1).toFixed(2) : "-",
@@ -363,7 +363,7 @@ class easyFlood extends React.PureComponent {
                     }
             },
             {
-                title: '水位(m)',
+                title: '水深(m)',
                 dataIndex: 'z',
                 className: 'column-money',
                 render: z => (z * 1).toFixed(2)
@@ -395,10 +395,10 @@ class easyFlood extends React.PureComponent {
                     width={1300}
                 >
                     <Row>
-                        <Col span={12}><Card title="水位走势" bordered={false}>
+                        <Col span={12}>
                             <div id="mainbyef" style={{ width: 600, height: 500 }}></div>
-                        </Card></Col>
-                        <Col span={12}><Card title="水位数据" bordered={false}>
+                        </Col>
+                        <Col span={12}>
                             <Table
                                 size="small"
                                 loading={this.state.mloading}
@@ -408,7 +408,7 @@ class easyFlood extends React.PureComponent {
                                 rowKey={row => row.stcd}
                             // pagination={{ current: this.state.pageNum , onChange: (current) => this.changePage(current)}}
                             />
-                        </Card></Col>
+                        </Col>
                     </Row>
                 </Modal>
             </>

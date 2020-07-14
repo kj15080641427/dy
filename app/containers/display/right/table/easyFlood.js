@@ -18,7 +18,7 @@ class easyFlood extends React.PureComponent {
             elements.push(
                 <tr key={i}>
                     <td style={{ width: 200 }}>{data[i].name + "(" + data[i].dataSourceDesc + ")"}</td>
-                    <td>{(data[i].z * 1).toFixed(1)}</td>
+                    <td>{(data[i].z * 1).toFixed(2)}</td>
                     <td>{data[i].ztm === null ? "--" : moment(data[i].ztm).format("MM-DD HH:mm")}</td>
                 </tr>
             )
@@ -30,7 +30,7 @@ class easyFlood extends React.PureComponent {
                         <thead>
                             <tr>
                                 <th style={{ width: 200 }}>站名(来源)</th>
-                                <th>水位(m)</th>
+                                <th>水深(m)</th>
                                 <th>更新时间</th>
                             </tr>
                         </thead>
