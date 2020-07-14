@@ -39,8 +39,8 @@ class Precipitation extends React.PureComponent {
             visible: true,
             mloading: true
         });
-        let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YY-MM-DD HH:mm:ss")
-        let endtm = moment(new Date().getTime()).format("YY-MM-DD HH:mm:ss")
+        let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YYYY-MM-DD HH:mm:ss")
+        let endtm = moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss")
         console.log(obj)
         getWaterHistory({
             "stcd": obj.stcd,
@@ -97,6 +97,7 @@ class Precipitation extends React.PureComponent {
                             type: 'category',
                             data: xdata,
                             name: '时间',
+                            maxInterval: 300 * 1000
                         },
                         yAxis: {
                             type: 'value',
@@ -106,7 +107,7 @@ class Precipitation extends React.PureComponent {
                             }
                         },
                         visualMap: {
-                            show: true,
+                            show: false,
                             pieces: [
                                 {
                                     gt: obj.warning > 0 ? -obj.warning : obj.warning,
@@ -428,7 +429,7 @@ class Precipitation extends React.PureComponent {
                     columns={qxcolumns}
                     dataSource={this.state.qxdataSource}
                     rowKey={row => row.regionName}
-                    scroll={{ y: 420 }}
+                    scroll={{ y: 620 }}
                     pagination={{
                         defaultPageSize: 50,
                     }}

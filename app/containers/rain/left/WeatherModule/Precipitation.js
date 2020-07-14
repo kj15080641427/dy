@@ -11,7 +11,7 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import emitter from "@app/utils/emitter.js";
-import { getRainHistory, getBasicsAll, getByTimeHour, getByTimeDay } from "@app/data/request";
+import { getByTimeMinute, getBasicsAll, getByTimeHour, getByTimeDay } from "@app/data/request";
 import { SpliceSite } from "@app/utils/common";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
@@ -261,20 +261,18 @@ class Precipitation extends React.PureComponent {
         this.callback(value)
         let starttm = moment(new Date().getTime() - 60 * 60 * 1000).format("YYYY-MM-DD HH:mm:ss")
         let endtm = moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss")
-        getRainHistory({
+        getByTimeMinute({
             "stcd": value.stcd,
-            "starttm": starttm,
-            "endtm": endtm,
-            "current": 1,
-            "size": 10000
+            "starttm": moment(new Date().getTime() - 60 * 60 * 1000).format("YYYY-MM-DD HH:mm:ss"),
+            "endtm": moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss"),
         })
             .then((result) => {
                 console.log(result)
                 this.setState({
-                    qydataSourceByHour: result.data.records,
+                    qydataSourceByHour: result.data,
                     mloading: false,
                 })
-                this.showTu(result.data.records, value, starttm, endtm, 'mainbyqyByHour')
+                this.showTu2(result.data, value, moment(new Date().getTime() - 60 * 60 * 1000).format("YYYY-MM-DD HH:mm:ss"), endtm, 'mainbyqyByHour')
             })
         getByTimeHour({
             "stcd": value.stcd,
@@ -430,14 +428,14 @@ class Precipitation extends React.PureComponent {
             },
             {
                 title: '5分钟(mm)',
-                dataIndex: 'drp',
+                dataIndex: 'avgDrp',
                 className: 'column-money',
                 render: drp => drp == '-' ? '-' : (drp * 1).toFixed(1),
                 sorter: (a, b) => a.drp - b.drp,
             },
             {
                 title: '更新时间',
-                dataIndex: 'tm',
+                dataIndex: 'endTime',
                 className: 'column-money',
                 render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
                 sorter: (a, b) => new Date(a.tm).getTime() - new Date(b.tm).getTime(),
@@ -606,7 +604,7 @@ class Precipitation extends React.PureComponent {
                     columns={qxcolumns}
                     dataSource={this.state.qxdataSource}
                     rowKey={row => row.regionName}
-                    scroll={{ y: 500 }}
+                    scroll={{ y: 450 }}
                     pagination={{
                         defaultPageSize: 50,
                     }}

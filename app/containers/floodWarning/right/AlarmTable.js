@@ -42,12 +42,14 @@ class AlarmTable extends React.PureComponent {
       mloading: true
     });
     this.setState({ mloading: true });
-    let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YY-MM-DD HH:mm:ss")
-    let endtm = moment(new Date().getTime()).format("YY-MM-DD HH:mm:ss")
-    getwaterlevelAlarmLog({
+    let starttm = moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YYYY-MM-DD HH:mm:ss")
+    let endtm = moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss")
+    getWaterHistory({
       "stcd": value.stcd,
       "starttm": starttm,
       "endtm": endtm,
+      "current": 1,
+      "size": 10000
     })
       .then((result) => {
         this.setState({
@@ -58,16 +60,16 @@ class AlarmTable extends React.PureComponent {
         var myChart = echarts.init(document.getElementById('mainbywat'));
         if (result.data.length !== 0) {
           for (var i = result.data.length - 1; i >= 0; i--) {
-            xdata.push(result.data[i].alarmtime)
-            ydata.push(result.data[i].actuallevel)
+            xdata.push(result.data.records[i].tm)
+            ydata.push((result.data.records[i].z * 1).toFixed(2))
           }
           this.setState({
-            dataSourceById: result.data,
+            dataSourceById: result.data.records,
           })
 
           myChart.setOption({
             title: {
-              text: result.data[0].stnm + "-警戒站24小时水位变化",
+              text: value.stnm + "-警戒站24小时水位变化",
               subtext: starttm + '至' + endtm,
               // left: 'center',
             },
@@ -277,17 +279,17 @@ class AlarmTable extends React.PureComponent {
       },
       {
         title: '警戒水位(m)',
-        dataIndex: 'baselevel',
+        dataIndex: 'warning',
         className: 'column-money',
       },
       {
         title: '当前水位(m)',
-        dataIndex: 'actuallevel',
+        dataIndex: 'z',
         className: 'column-money'
       },
       {
         title: '更新时间',
-        dataIndex: 'alarmtime',
+        dataIndex: 'ztm',
         width: 140,
         className: 'column-money',
         render: (value, key) => moment(value).format("YYYY-MM-DD HH:mm")
@@ -311,19 +313,22 @@ class AlarmTable extends React.PureComponent {
         <img className="m-alm-img" src={imgURL} alt="" /><div className="m-alm-divflood">
           <Row className="m-alm-row">
             <Col span={4}><img className="m-alm-warningImg" src={warningImg}></img></Col>
-            <Col span={10}><Row><Col span={12}>{this.state.waterWar ? <>超警戒水位<span className="m-alm-row-warning">{this.state.wacount}</span></> : <span>气象预警<span className="m-alm-row-warning"></span></span>}</Col>
-              {/* <Col span={12}>已经处理<span className="m-alm-row-abnormal">2</span></Col> */}
+            <Col span={10}>
+              <Row><Col span={12}>{this.state.waterWar ? <>超警戒水位<span className="m-alm-row-warning">{this.state.wacount}</span></> : <span>气象预警<span className="m-alm-row-warning"></span></span>}</Col>
+                {/* <Col span={12}>已经处理<span className="m-alm-row-abnormal">2</span></Col> */}
 
-            </Row>
+              </Row>
               {/* <Row><Col span={12}>数据异常<span className="m-alm-row-processed">1</span></Col><Col span={12}>等待处理<span className="m-alm-row-pending">4</span></Col>
               </Row> */}
 
             </Col>
             <Col span={10}>
-              <Radio.Group onChange={onChange} defaultValue="a" style={{position: 'relative',
-    top: 10,}}>
-                <Radio.Button value="a">水位告警</Radio.Button>
-                <Radio.Button value="b">气象预警</Radio.Button>
+              <Radio.Group onChange={onChange} defaultValue="a" style={{
+                position: 'relative',
+                top: 10,
+              }}>
+                {/* <Radio.Button value="a">水位告警</Radio.Button>
+                <Radio.Button value="b">气象预警</Radio.Button> */}
               </Radio.Group></Col>
           </Row>
           {this.state.waterWar ? <Table className="m-alm-div-table" size="small" loading={loading} columns={columns} dataSource={this.state.wardataSource} scroll={{ y: 370 }}
@@ -369,7 +374,7 @@ class AlarmTable extends React.PureComponent {
         let arr = []
         for (let i = 0; i < result.data.length; i++) {
           // if (moment(result.data[i].alarmtime).format("YYYY-MM-DD") === moment(new Date()).format("YYYY-MM-DD")) {
-            arr.push(result.data[i])
+          arr.push(result.data[i])
           // }
         }
         this.setState({ wardataSource: arr })

@@ -149,9 +149,15 @@ class Tables extends React.PureComponent {
       'type': 3
     }).then((result) => {
       console.log(result)
+      let arr = [];
+      for (let i = 0; i < result.data.length; i++) {
+        if (result.data[i].indtype !== 11) {
+          arr.push(result.data[i])
+        }
+      }
       this.setState({
-        easyData: result.data,
-        easyCount: result.data.length
+        easyData: arr,
+        easyCount: arr.length
       })
     })
     getRadioAll({

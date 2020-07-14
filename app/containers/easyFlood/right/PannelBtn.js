@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import "./style.scss";
 import "@app/containers/monitor/right/style.scss";
 import { Row, Col } from 'antd';
-import fxyj from '../../../resource/fxyj.png';
+import sjzx from '../../../resource/sjzx.png';
 import sjgl from '../../../resource/sjgl.png';
 import spjk from '../../../resource/spjk.png';
 import yqjk from '../../../resource/yqjk.png';
@@ -41,17 +41,20 @@ class PannelBtn extends React.PureComponent {
               ></img>
               </Link> */}
               </Col>
+              <Col span={4}><Link to={'/display'} ><img
+                className="m-btn-flood-index"
+                src={sjzx}
+              ></img>
+              </Link></Col>
               <Col span={4}>
                 <Link to={'/water'} ><img
                   className="m-btn-flood-index"
                   src={sqjk}
-                // onClick={this.handlefxyj}
                 ></img>
                 </Link></Col>
               <Col span={4}><Link to={"/rain"}><img
                 className="m-btn-flood-index"
                 src={yqjk}
-              // onClick={this.handleysgq}
               ></img>
               </Link></Col>
               
@@ -59,21 +62,18 @@ class PannelBtn extends React.PureComponent {
                 <Link to={"/easyFlood"}><img
                   className="m-btn-flood-index"
                   src={yld}
-                // onClick={this.handleysgq}
                 style={{ border: '3px solid #007ed7', height: 79 }}
                 ></img>
                 </Link></Col>
               <Col span={4}>  <Link to={"/video"}><img
                 className="m-btn-flood-index"
                 src={spjk}
-              // onClick={this.handlespjk}
               ></img></Link></Col>
-              <Col span={4}><Link to={'/floodWarning'} ><img
+              {/* <Col span={4}><Link to={'/floodWarning'} ><img
                 className="m-btn-flood-index"
                 src={fxyj}
-              // onClick={this.handlefxyj}
               ></img>
-              </Link></Col>
+              </Link></Col> */}
             </Row>
             <TowBtn></TowBtn>
         </div >

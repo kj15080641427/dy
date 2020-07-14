@@ -11,7 +11,7 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import emitter from "@app/utils/emitter.js";
-import { getRainHistory, getBasicsAll, getByTimeHour, getByTimeDay } from "@app/data/request";
+import { getByTimeMinute, getBasicsAll, getByTimeHour, getByTimeDay } from "@app/data/request";
 import { SpliceSite } from "@app/utils/common";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
@@ -261,20 +261,18 @@ class Precipitation extends React.PureComponent {
         this.callback(value)
         let starttm = moment(new Date().getTime() - 60 * 60 * 1000).format("YYYY-MM-DD HH:mm:ss")
         let endtm = moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss")
-        getRainHistory({
+        getByTimeMinute({
             "stcd": value.stcd,
-            "starttm": starttm,
-            "endtm": endtm,
-            "current": 1,
-            "size": 10000
+            "starttm": moment(new Date().getTime() - 60 * 60 * 1000).format("YYYY-MM-DD HH:mm:ss"),
+            "endtm": moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss"),
         })
             .then((result) => {
                 console.log(result)
                 this.setState({
-                    qydataSourceByHour: result.data.records,
+                    qydataSourceByHour: result.data,
                     mloading: false,
                 })
-                this.showTu(result.data.records, value, starttm, endtm, 'mainbyqyByHour')
+                this.showTu2(result.data, value, moment(new Date().getTime() - 60 * 60 * 1000).format("YYYY-MM-DD HH:mm:ss"), endtm, 'mainbyqyByHour')
             })
         getByTimeHour({
             "stcd": value.stcd,

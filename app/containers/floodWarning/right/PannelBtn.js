@@ -10,7 +10,7 @@ import { Row, Col, Drawer, Table, Button, Modal } from 'antd';
 import fxyj from '../../../resource/fxyj.png';
 import sjgl from '../../../resource/sjgl.png';
 import spjk from '../../../resource/spjk.png';
-import ysgq from '../../../resource/ysgq.png';
+import sjzx from '../../../resource/sjzx.png';
 import ybmx from '../../../resource/ybmx.png';
 import sqjk from '../../../resource/sqjk.png';
 import yqjk from '../../../resource/yqjk.png';
@@ -467,6 +467,13 @@ class PannelBtn extends React.PureComponent {
             </Link> */}
             </Col>
             <Col span={4}>
+              <Link to={'/display'} ><img
+                className="m-btn-flood-index"
+                src={sjzx}
+              // onClick={this.handlefxyj}
+              ></img>
+              </Link></Col>
+            <Col span={4}>
               <Link to={'/water'} ><img
                 className="m-btn-flood-index"
                 src={sqjk}
@@ -493,14 +500,14 @@ class PannelBtn extends React.PureComponent {
               src={spjk}
             // onClick={this.handlespjk}
             ></img></Link></Col>
-            <Col span={4}><Link to={'/floodWarning'} ><img
+            {/* <Col span={4}><Link to={'/floodWarning'} ><img
               style={{ border: '3px solid #007ed7', height: 79 ,
               '-webkit-filter': 'opacity(0.5)',}}
               className="m-btn-flood-index"
               src={fxyj}
             // onClick={this.handlefxyj}
             ></img>
-            </Link></Col>
+            </Link></Col> */}
           </Row>
           <TowBtn></TowBtn>
         </div>

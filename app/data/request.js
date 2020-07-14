@@ -170,6 +170,10 @@ export function floodControlExpertCategoryAll(data) {
 export function getByTimeHour(data) {
   return fetchJSONData("POST", "/raindataHour/getByTime", data);
 }
+//获取5分钟降雨量
+export function getByTimeMinute(data) {
+  return fetchJSONData("POST", "/raindataMinute/getByTime", data);
+}
 //获取日降雨量
 export function getByTimeDay(data) {
   return fetchJSONData("POST", "/raindataDay/getByTime", data);

@@ -311,7 +311,9 @@ class AlarmTable extends React.PureComponent {
         <img className="m-alm-img" src={imgURL} alt="" /><div className="m-alm-divflood">
           <Row className="m-alm-row">
             <Col span={4}><img className="m-alm-warningImg" src={warningImg}></img></Col>
-            <Col span={10}><Row><Col span={12}>{this.state.waterWar ? <>超警戒水位<span className="m-alm-row-warning">{this.state.wacount}</span></> : <span>气象预警<span className="m-alm-row-warning"></span></span>}</Col>
+            <Col span={10}>
+              <Row><Col span={12}>{this.state.waterWar ? <>超警戒水位<span className="m-alm-row-warning">{this.state.wacount}</span></> : <span>气象预警<span className="m-alm-row-warning"></span></span>}
+              </Col>
               {/* <Col span={12}>已经处理<span className="m-alm-row-abnormal">2</span></Col> */}
 
             </Row>

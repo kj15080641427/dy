@@ -134,7 +134,6 @@ class TowBtn extends React.PureComponent {
         });
     };
     render() {
-        console.log(this)
         const { weatherData } = this.state;
         const dutyColumns = [
             {
@@ -648,9 +647,14 @@ class TowBtn extends React.PureComponent {
                         width={"100%"}
                         height="100%"
                     >
-                        <div style={{ height: '950px', width: '1060px' }}>
-                            <iframe src="http://61.163.88.227:8006/hwsq.aspx" width="1870px" height="950px"
-                                frameborder="0" scrolling="no" style={{ position: 'relative' }}></iframe>
+                        <div style={{
+                            height: '100%', width: '100%',
+                            'position': 'absolute',
+                            'margin': 'auto',
+                            top: 0, left: 0, bottom: 0, right: 0
+                        }}>
+                            <iframe src="http://61.163.88.227:8006/hwsq.aspx" width="100%" height="100%"
+                                frameborder="0" scrolling="no"></iframe>
                         </div>
                     </Drawer>
                     {/* 海洋预警 */}
@@ -663,13 +667,13 @@ class TowBtn extends React.PureComponent {
                         height="100%"
                     >
                         <div style={{
-                            height: 900,
-                            width: 850,
+                            height: "100%",
+                            width: "100%",
                             overflow: 'hidden',
                             position: 'relative',
                             left: 500,
                         }}>
-                            <iframe src="http://hsdy.dongying.gov.cn/col/col36593/index.html" width="1870px" height="1200px"
+                            <iframe src="http://hsdy.dongying.gov.cn/col/col36593/index.html" width="100%" height="100%"
                                 frameborder="0" scrolling="no" style={{ position: 'relative', top: -340, left: -670 }}></iframe>
                         </div>
                     </Drawer>
@@ -710,10 +714,10 @@ class TowBtn extends React.PureComponent {
                                     <img
                                         className="m-btn-flood-index"
                                         src={fxyj}
-                                        style={{
-                                            border: '3px solid #007ed7', height: 79,
-                                            '-webkit-filter': 'opacity(0.5)'
-                                        }}
+                                    // style={{
+                                    //     border: '3px solid #007ed7', height: 79,
+                                    //     '-webkit-filter': 'opacity(0.5)'
+                                    // }}
                                     ></img></Link>
                             </Col>
                             <Col span={4}>
