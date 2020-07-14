@@ -952,7 +952,7 @@ class Map extends React.PureComponent {
     if (rain && rain.length) {
       rain.forEach((r) => {
         let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("rain_tag_"+r.stcd, [r.lon, r.lat], {title: name, subTitle:(r.minuteAvg*1).toFixed(2) + "mm", prefix: "rain_tag"});
+        this.map.addTagBox("rain_tag_"+r.stcd, [r.lon, r.lat], {title: name, subTitle:(r.minuteAvg*1).toFixed(1) + "mm", prefix: "rain_tag"});
       });
     }
   }
