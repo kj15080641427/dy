@@ -82,7 +82,7 @@ class Satellite extends React.PureComponent {
         <div className="div-precipitation1" onClick={this.showRain}>
         </div>
         <Modal
-          title="全国降雨量实况图"
+          title="全国降雨量预报图"
           onCancel={this.handleCancel}
           visible={this.state.rainvisible}
           width={"50%"}
@@ -98,8 +98,8 @@ class Satellite extends React.PureComponent {
             width: "1000px",
             margin: '0 auto',
           }}>
-            <iframe src="http://m.nmc.cn/publish/observations/hourly-precipitation.html" width="753px" height="950px"
-              frameborder="0" scrolling="no" style={{ position: 'relative', left: 80, top: '-193px', transform: 'scale(1.2)' }}></iframe>
+            <iframe src="http://m.nmc.cn/publish/precipitation/1-day.html" width="753px" height="1010px"
+              frameborder="0" scrolling="no" style={{ position: 'relative', left: 80, top: '-170px', transform: 'scale(1.2)' }}></iframe>
           </div>
         </Modal>
         <div className="div-precipitation2" onClick={this.showcloud}>

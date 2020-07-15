@@ -26,11 +26,10 @@ class Water extends Base {
   }
   render() {
     let { model } = this.props;
-    console.log(model)
     //let water = (model.z !== null && model.z !== undefined) ? (model.z + 'm') : '--';
     let water = (model.z !== null && model.z !== undefined) ? parseFloat(model.z * 1) : NaN;
     let waterString = isNaN(water) ? '--' : (water.toFixed(2) + 'm');
-    let flow = (model.q !== null) ? (model.q.toFixed(1) + "m³/s") : '--';
+    let flow = (model.q !== null) ? ((model.q * 1).toFixed(1) + "m³/s") : '--';
     let tm = model.ztm ? model.ztm : model.tm;
     let udpTm = tm ? moment(tm).format('MM-DD HH:mm') : '--';
     let warningLevel = (model.warning && model.warning !== 99) ? (model.warning + 'm') : '--';
@@ -181,7 +180,6 @@ class Water extends Base {
           text: model.waters[0].stnm + '24小时水位曲线',
           // left: 'center',
         },
-
         xAxis: {
           type: 'category',
           data: xdata,
@@ -200,7 +198,7 @@ class Water extends Base {
           type: 'value',
           name: '水位(m)',
           max: function (value) {
-            return (warningnum + value.max).toFixed(1)
+            return (warningnum === 0 ? (value.max * 1.2) : warningnum + value.max).toFixed(1)
           }
         },
         // visualMap: {
@@ -249,7 +247,7 @@ class Water extends Base {
                 label: {
                   show: warningnum !== 0,
                   position: 'center',
-                  formatter: "预警" + warningnum + "m",
+                  formatter: "警戒水位" + warningnum + "m",
                   itemStyle: {
                     left: '100px',
 

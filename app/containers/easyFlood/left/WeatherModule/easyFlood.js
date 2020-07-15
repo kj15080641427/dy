@@ -493,6 +493,7 @@ class easyFlood extends React.PureComponent {
                 }
                 this.setState({ loading: false });
                 this.setState({ qxdataSource: data })
+                this.props.parent.getChildrenMsgone(this, result.data.length)
             })
     }
     //初始化数据
