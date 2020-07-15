@@ -114,9 +114,12 @@ $ol-duration : 4s;
   position: relative;
   //width: 68px;
   border: 2px solid #3179C2;
-  background: rgba(196, 232, 255, 0.81);
-  color: #3179C2;
-  font-size: 12px;
+  //background: rgba(196, 232, 255, 0.81);
+  background: rgba(255, 255, 255, 0.8);
+  //color: #3179C2;
+  color: red;
+  font-size: 15px;
+  font-weight: bold;
   padding: 2px;
 }
 .ol-tag-container.active {

@@ -104,12 +104,16 @@ class Map extends React.PureComponent {
     this._mapMove && this._mapMove.remove();
     this.flood && this.flood.destroy();
     // this._clickToken.remove();
+
+    if(this.alarmTimer){
+      clearInterval(this.alarmTimer);
+    }
   }
   createMap() {
     this.map = new UbiMap({
       target: 'map',
-      center: [118.67, 37.43],
-      zoom: 11,
+      center: [118.67, 37.60],
+      zoom: 9.7,
       minZoom: 3,
       maxZoom: 18,
       mouseControl: false
@@ -522,23 +526,6 @@ class Map extends React.PureComponent {
           .catch((e) => {
           message.error("获取水位详情失败");
         });
-      /*getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 })
-        .then((res) => {
-          if (res.code == 200) {
-            let record = res.data.records && res.data.records[0] || null;
-            this.props.actions.setDetailData({
-              key: "ponding",
-              value: record
-            });
-
-            this.addOverlay(Ponding.type, record ? {...param, ...record} : param);
-          }
-          //this.addOverlay(Ponding.type, {...param});
-        })
-        .catch((e) => {
-          message.error("获取积水点数据失败");
-         });*/
-
     });
     this.map.startSelectFeature("video", (param) => {
       //查询站点的水位
@@ -662,8 +649,8 @@ class Map extends React.PureComponent {
   toggleTagByMapZoom() {
     let zoom = this.map.getView().getZoom();
     let { layerVisible } = this.props;
-    if (zoom >= 12) {
-      if (this._zoom && this._zoom >= 12) return;
+    if (zoom >= 11) {
+      if (this._zoom && this._zoom >= 11) return;
       //console.log("show")
       if(layerVisible.water) {
         this.map.showTagBox("water_tag");
@@ -685,7 +672,7 @@ class Map extends React.PureComponent {
       // this.map.showTagOnLayer("water");
       // this.map.showTagOnLayer("rain");
     } else {
-      if ( this._zoom && this._zoom < 12) return;
+      if ( this._zoom && this._zoom < 11) return;
       //console.log("hide");
       this.map.hideTagBox("water_tag");
       this.map.hideTagBox("rain_tag");
@@ -883,9 +870,9 @@ class Map extends React.PureComponent {
     })
     .catch(() => {
       console.log(e);
-    })
+    });
     // 轮询预警更新
-    window.setInterval(() => {
+    this.alarmTimer = window.setInterval(() => {
       getWaterWarning({})
       .then((res) => {
         if (res.code === 200) {
@@ -901,15 +888,15 @@ class Map extends React.PureComponent {
       });
     }, 30000);
 
-    // 模拟洪水
-    setInterval(() => {
-      let data = [];
-      for (let i = 0; i < 195; i++){
-        let r = 'R' + i;
-        data.push({ r: r, d: Math.random() });
-      }
-      //this.flood.updateData(data)
-    }, 1000);
+    // // 模拟洪水
+    // setInterval(() => {
+    //   let data = [];
+    //   for (let i = 0; i < 195; i++){
+    //     let r = 'R' + i;
+    //     data.push({ r: r, d: Math.random() });
+    //   }
+    //   this.flood.updateData(data)
+    // }, 1000);
     // this.map.addAlarm("alarm001", [118.67, 37.43]);
     this.map.addFeatures("person", [
         {
@@ -952,7 +939,7 @@ class Map extends React.PureComponent {
     if (rain && rain.length) {
       rain.forEach((r) => {
         let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("rain_tag_"+r.stcd, [r.lon, r.lat], {title: name, subTitle:(r.minuteAvg*1).toFixed(1) + "mm", prefix: "rain_tag"});
+        this.map.addTagBox("rain_tag_"+r.stcd, [r.lon, r.lat], {title: name, subTitle:(r.dayAvg*1).toFixed(1) + "mm", prefix: "rain_tag"});
       });
     }
   }
