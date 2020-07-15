@@ -19,10 +19,10 @@ class WeatherTable extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      count: 0,
     };
   }
   render() {
-    this.state = {};
     this.locationClick = this.locationClick.bind(this);
     const { TabPane } = Tabs;
     return (
@@ -30,10 +30,10 @@ class WeatherTable extends React.PureComponent {
         <img className="m-table-img" src={imgURL} />
         <div className="m-div-rain">
           <Tabs type="card" defaultActiveKey="1" onChange={this.callback} animated="true" tabBarGutter={10} size="large" className="ant-tabs-nav-container">
-            <TabPane tab="雨量站" key="1">
-              <Precipitation></Precipitation>
+            <TabPane tab={`雨量站(${this.state.count})`} key="1">
+              <Precipitation parent={this}></Precipitation>
             </TabPane>
-             {/* <TabPane tab="河道" key="2">
+            {/* <TabPane tab="河道" key="2">
               <RiverWater></RiverWater>
             </TabPane> */}
             {/*
@@ -51,7 +51,13 @@ class WeatherTable extends React.PureComponent {
       </div>
     );
   }
-  componentDidMount() { }
+  getChildrenMsg = (result, count) => {
+    this.setState({
+      count: count
+    })
+  }
+  componentDidMount() {
+  }
   locationClick(e) {
     let lon = e.target.dataset.lon * 1;
     let lat = e.target.dataset.lat * 1;

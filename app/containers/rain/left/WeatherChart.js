@@ -9,8 +9,8 @@ import 'echarts';
 import moment from 'moment';
 import imgURL from '../../../resource/title_bg.png';
 import { getFiveCitydata } from "@app/data/request";
-import { DatePicker } from 'antd';
-
+import { DatePicker, Radio, Button } from 'antd';
+import WeatherDy from "../right/WeatherDy"
 
 const areaMap = {
   "370502": '东营区\n(开发区)',
@@ -24,10 +24,14 @@ class WeatherChart extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      timeIsShow: 'none'
+      timeIsShow: 'none',
+      weathershow: true,
+      weatherstyle: 'black'
+
     };
     this.selectInit = this.selectInit.bind(this)
   }
+
   render() {
     const { RangePicker } = DatePicker;
     function onOk(value) {
@@ -35,7 +39,6 @@ class WeatherChart extends React.PureComponent {
     }
 
     function onChange(value, dateString) {
-
       getFiveCitydata(
         {
           "startTime": moment(value[0]).format("YYYY-MM-DD HH:00:00"),
@@ -64,6 +67,7 @@ class WeatherChart extends React.PureComponent {
 
       })
     }
+    let { weatherstyle } = this.state;
     return (
       <div className="m-wth-chart">
         <img className="m-chart-img" src={imgURL} alt="" />
@@ -73,9 +77,41 @@ class WeatherChart extends React.PureComponent {
             onChange={onChange}
             onOk={onOk}
             format="YYYY-MM-DD HH" />
-          <div id="main" className="m-chart-table">
-
+          {/* <Radio.Group onChange={(e) => {
+            if (e.target.value === "a") {
+              this.setState({
+                weathershow: true,
+                weatherstyle: 'black'
+              })
+            } else {
+              this.setState({
+                weathershow: false,
+                weatherstyle: 'none'
+              })
+            }
+            console.log(this.state.weatherstyle)
+          }} defaultValue="a" style={{
+            position: 'relative',
+            top: 10,
+          }}>
+            <Radio.Button size="small" value="a">县区降雨</Radio.Button>
+            <Radio.Button size="small" value="b">气象预警</Radio.Button>
+          </Radio.Group> */}
+          {/* <Button onClick={() => {
+            this.setState({
+              weatherstyle: "black"
+            });
+          }}>gai</Button> */}
+          {/* <div style={{ display: weatherstyle }}> */}
+          <div id="main" className="m-chart-table" >
           </div>
+          {/* </div> */}
+          {/* {this.state.weathershow ?  : <WeatherDy></WeatherDy>} */}
+          {/* {this.state.weathershow ? <><RangePicker size="small" className="time-select" format="YYYY-MM-DD HH" showTime={{ format: 'HH' }}
+            // style={{ display: this.state.timeIsShow }}
+            onChange={onChange}
+            onOk={onOk}
+            format="YYYY-MM-DD HH" /> </> : <WeatherDy></WeatherDy>} */}
         </div>
       </div>
     );
@@ -105,7 +141,7 @@ class WeatherChart extends React.PureComponent {
             _this.setState({
               timeIsShow: 'block'
             })
-          }else{
+          } else {
             _this.setState({
               timeIsShow: 'none'
             })
@@ -121,7 +157,7 @@ class WeatherChart extends React.PureComponent {
             }
           },
           title: {
-            text: '区县降雨量',
+            text: '县区降雨量',
             left: 'center',
             textStyle: {
               color: '#007ed7',
@@ -135,13 +171,13 @@ class WeatherChart extends React.PureComponent {
             right: 'center',
             x: '6px',
             y: '30px',
-            data: ['1小时', '24小时', '近三天', '近一周', '近一年以来', '自定义'],
+            data: ['1小时', '24小时', '近三天', '近一周', '今年以来', '自定义'],
             selected: {
               '1小时': false,
-              '24小时': false,
-              '近三天': true,
+              '24小时': true,
+              '近三天': false,
               '近一周': false,
-              '近一年以来': false,
+              '今年以来': false,
               '自定义': false ? console.log(false) : console.log(true),
             }
           },
@@ -232,7 +268,7 @@ class WeatherChart extends React.PureComponent {
 
             },
             {
-              name: '近一年以来',
+              name: '今年以来',
               type: 'bar',
               barWidth: '15%',
             },
@@ -350,7 +386,7 @@ class WeatherChart extends React.PureComponent {
             myChart.setOption({
               series: [
                 {
-                  name: '近一年以来',
+                  name: '今年以来',
                   data: yearData,
                   // markPoint: {
                   //   data: [

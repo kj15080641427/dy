@@ -540,7 +540,7 @@ class RiverWater extends React.PureComponent {
                     columns={qxcolumns}
                     dataSource={this.state.qxdataSource}
                     rowKey={row => row.name}
-                    scroll={{ y: 550 }}
+                    scroll={{ y: 560 }}
                     pagination={{
                         defaultPageSize: 50,
                     }}

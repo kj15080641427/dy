@@ -15,7 +15,7 @@ class WeatherDy extends React.PureComponent {
         super(props, context);
         this.state = {
             contentObj: [],
-            loading: false,
+            loading: true,
         };
     }
     render() {
@@ -45,16 +45,16 @@ class WeatherDy extends React.PureComponent {
             elements.push(<Empty description="当前无气象预警" image={Empty.PRESENTED_IMAGE_SIMPLE} />)
         }
         return (
-            <div className="m-pannel-WDy">
-                <img className="m-alm-img" src={imgURL} alt="" />
-                <div className="m-WDy-div">
+            // <div className="m-pannel-WDy">
+            //     <img className="m-alm-img" src={imgURL} alt="" />
+            //     <div className="m-WDy-div">
                     <Spin spinning={loading} >
                         <div className="m-inner-div">
                             {elements}
                         </div>
                     </Spin>
-                </div>
-            </div>
+            //     </div>
+            // </div>
         );
     }
     selectInit() {

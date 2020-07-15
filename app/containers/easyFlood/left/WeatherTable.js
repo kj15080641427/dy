@@ -18,10 +18,10 @@ class WeatherTable extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      count: 0
     };
   }
   render() {
-    this.state = {};
     this.locationClick = this.locationClick.bind(this);
     const { TabPane } = Tabs;
     return (
@@ -35,8 +35,8 @@ class WeatherTable extends React.PureComponent {
             {/* <TabPane tab="水位站" key="2">
               <WaterLevel></WaterLevel>
             </TabPane> */}
-            <TabPane tab="易涝点" key="3">
-              <EasyFlood></EasyFlood>
+            <TabPane tab={`易涝点(${this.state.count})`} key="3">
+              <EasyFlood parent={this}></EasyFlood>
             </TabPane>
             {/* <TabPane tab="视频站点" key="4">
               <Video></Video>
@@ -48,6 +48,11 @@ class WeatherTable extends React.PureComponent {
         </div>
       </div>
     );
+  }
+  getChildrenMsgone = (result, count) => {
+    this.setState({
+      count: count
+    })
   }
   componentDidMount() { }
   locationClick(e) {

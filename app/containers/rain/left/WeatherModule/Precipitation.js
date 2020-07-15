@@ -31,7 +31,8 @@ class Precipitation extends React.PureComponent {
             searchText: '',
             searchedColumn: '',
             stid: "",
-            qxdataSource: []
+            qxdataSource: [],
+            count:0,//总数
         };
     }
     //画图
@@ -731,7 +732,7 @@ class Precipitation extends React.PureComponent {
                         hkarr.push(dataArr[i])
                     } if (dataArr[i].region === "370521") {
                         klarr.push(dataArr[i])
-                    } 
+                    }
                     // else if (dataArr[i].indtype === 11) {
                     //     teharr.push(dataArr[i])
                     // }
@@ -744,8 +745,8 @@ class Precipitation extends React.PureComponent {
                     { regionName: "河口区(东营港)", list: hkarr },
                     { regionName: "垦利区", list: klarr },
                 ]
-                this.setState({ loading: false });
-                this.setState({ qxdataSource: data })
+                this.setState({ loading: false, qxdataSource: data, count: result.data.length });
+                this.props.parent.getChildrenMsg(this, result.data.length)
             })
     }
     //初始化数据
@@ -754,7 +755,6 @@ class Precipitation extends React.PureComponent {
         window.setInterval(() => {
             this.selectInit()
         }, 1000 * 5 * 60);
-
     }
     locationClick(e) {
         console.log(e)
