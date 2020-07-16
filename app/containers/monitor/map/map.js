@@ -781,13 +781,14 @@ class Map extends React.PureComponent {
     // 加载雨量站和水位站,水位站报警信息
     let warningPro = getWaterWarning({});
     let allPro = getAll();
+    let _this = this;
     Promise.all([allPro, warningPro]).then((res) => {
       if (res[0].code === 200) {
         let data = this.transformData(res[0].data);
 
         this.props.actions.initBaseData(data);
         //如果显示报警
-        if(this.props.layerVisible.waterWarning === true){
+        if(_this.props.layerVisible.waterWarning === true){
           this.props.actions.setMutiDetailData({
             key: "water",
             value: res[1] && res[1].data || []
@@ -963,11 +964,13 @@ class Map extends React.PureComponent {
     }
   }
   addWaterWaring(warningWater) {
-    if (!warningWater || !warningWater.length) return;
     this.map.removeAlarmByString("alarm_water_");
-    warningWater.forEach((w) => {
-      this.map.addAlarm("alarm_water_" + w.stcd, [w.lon, w.lat]);
-    });
+    if (!warningWater || !warningWater.length) return;
+    if(this.props.layerVisible.waterWarning === true){
+      warningWater.forEach((w) => {
+        this.map.addAlarm("alarm_water_" + w.stcd, [w.lon, w.lat]);
+      });
+    }
   }
   transformData(data) {
     if (!data || !data.length) return {};
