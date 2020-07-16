@@ -99,7 +99,7 @@ class Satellite extends React.PureComponent {
             margin: '0 auto',
           }}>
             <iframe src="http://m.nmc.cn/publish/precipitation/1-day.html" width="753px" height="1010px"
-              frameborder="0" scrolling="no" style={{ position: 'relative', left: 80, top: '-170px', transform: 'scale(1.2)' }}></iframe>
+              scrolling="no" style={{ position: 'relative', left: 80, top: '-170px', transform: 'scale(1.2)', border: 0 }}></iframe>
           </div>
         </Modal>
         <div className="div-precipitation2" onClick={this.showcloud}>
@@ -138,7 +138,7 @@ class Satellite extends React.PureComponent {
             width: "100%",
           }}>
             <iframe src="http://58.59.29.51:14003/Radar"
-              frameborder="0" scrolling="no" style={{ position: 'relative', top: '-300px', width: "100%", height: "1275px" }}></iframe>
+              scrolling="no" style={{ position: 'relative', top: '-300px', width: "100%", height: "1275px", border: 0 }}></iframe>
           </div>
         </Modal>
         <div className="div-precipitation4" onClick={this.showtyphoon}></div>
@@ -159,39 +159,42 @@ class Satellite extends React.PureComponent {
             width: "100%",
           }}>
             <iframe src="http://typhoon.zjwater.gov.cn/wap.htm"
-              frameborder="0" scrolling="no" style={{ position: 'relative', width: "100%", height: "1275px" }}></iframe>
+              scrolling="no" style={{ position: 'relative', width: "100%", height: "1275px", border: 0 }}></iframe>
           </div>
         </Modal>
         <div className="dis-satellite-div">
-          <iframe frameborder="0" scrolling="no" src="http://m.nmc.cn/publish/precipitation/1-day.html" style={{
+          <iframe scrolling="no" src="http://m.nmc.cn/publish/precipitation/1-day.html" style={{
             position: 'absolute', top: '-189px',
             height: 440,
             width: 360,
+            border: 0
           }}></iframe>
         </div>
         <div className="dis-satellite-div">
           {/* <PlayCircleOutlined className="m-pic-icon" onClick={() => this.slickPlayRoPause(lunboSetting)} /> */}
-          <Carousel 
+          <Carousel
           // rtl={true}
-           autoplaySpeed={400} speed={1} {...lunboSetting} 
+           autoplaySpeed={400} speed={1} {...lunboSetting}
           // ref={el => (this.slider = el)}
           >
             {elements}
           </Carousel>
         </div>
         <div className="dis-satellite-div">
-          <iframe frameborder="0" scrolling="no" src="http://58.59.29.51:14003/Radar" style={{
+          <iframe scrolling="no" src="http://58.59.29.51:14003/Radar" style={{
             position: 'absolute', top: -125,
             // left: 15,
             height: 440,
-            width: 360
+            width: 360,
+            border: 0,
           }}></iframe>
         </div>
         <div className="dis-satellite-div">
-          <iframe frameborder="0" scrolling="no" src="http://typhoon.zjwater.gov.cn/wap.htm" style={{
+          <iframe scrolling="no" src="http://typhoon.zjwater.gov.cn/wap.htm" style={{
             position: 'absolute', top: '-35px',
             height: 370,
-            width: 360
+            width: 360,
+            border: 0
           }}></iframe>
         </div>
 
