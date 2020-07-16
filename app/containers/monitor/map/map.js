@@ -33,7 +33,6 @@ class Map extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      test: 1,
       overlays: {
         // [Person.type]: {},
         // [Rain.type]: {},
@@ -201,7 +200,7 @@ class Map extends React.PureComponent {
       onClick: (props) => {
         if (props && props.NAME) {
           // 下2次事件循环
-          console.log('addwfs',this._isClickInfoBox);
+          //console.log('addwfs',this._isClickInfoBox);
           if (this._isClickInfoBox) return;
           this.onWfsRiverClick(props);
 
@@ -277,9 +276,7 @@ class Map extends React.PureComponent {
           catch (e) {
             num = 0.0;
           }
-
-
-          if (num == 0) {
+          if (num === 0) {
             return require("../../../resource/icon/1.svg")["default"];
           }else if (num >0 && num <= 10) {
             return require("../../../resource/icon/2.svg")["default"];
@@ -579,7 +576,7 @@ class Map extends React.PureComponent {
     });
     this.map.startSelectFeature("warehouse", (param) => {
       let { details } = this.props;
-      console.log(1);
+      //console.log(1);
       if (details.warehouse[param.id]) {
         this.addOverlay(Warehouse.type, {...param, ...details.warehouse[param.id]});
       }else {
@@ -610,7 +607,7 @@ class Map extends React.PureComponent {
     this.map.onFeatureClicked((feature) => {
       // console.log("featureclick", feature);
       if (feature) {
-        console.log('onFeatureClicked', this._isClickInfoBox);
+        //console.log('onFeatureClicked', this._isClickInfoBox);
         this._isClickInfoBox = true;
 
         this.addWindowCloseEvent();
@@ -642,7 +639,7 @@ class Map extends React.PureComponent {
     let zoom = this.map.getView().getZoom();
     let { onZoomChanged } = this.props;
     onZoomChanged && onZoomChanged(zoom);
-    console.log(zoom);
+    //console.log(zoom);
     this.toggleTagByMapZoom();
 
   }
@@ -789,10 +786,14 @@ class Map extends React.PureComponent {
         let data = this.transformData(res[0].data);
 
         this.props.actions.initBaseData(data);
-        this.props.actions.setMutiDetailData({
-          key: "water",
-          value: res[1] && res[1].data || []
-        });
+        //如果显示报警
+        if(this.props.layerVisible.waterWarning === true){
+          this.props.actions.setMutiDetailData({
+            key: "water",
+            value: res[1] && res[1].data || []
+          });
+        }
+
         this.drawFeatures(data);
       }
     })
@@ -872,6 +873,7 @@ class Map extends React.PureComponent {
       console.log(e);
     });
     // 轮询预警更新
+    if(this.props.layerVisible.waterWarning === true)
     this.alarmTimer = window.setInterval(() => {
       getWaterWarning({})
       .then((res) => {
@@ -999,9 +1001,9 @@ class Map extends React.PureComponent {
       overlays: {...overlays}
     });
   }
-  onFloodClick(featureProp) {
-    console.log(featureProp);
-  }
+  // onFloodClick(featureProp) {
+  //   console.log(featureProp);
+  // }
 
 }
 function mapStateToProps(state) {

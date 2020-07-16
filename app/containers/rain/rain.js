@@ -42,13 +42,14 @@ class Monitor extends React.PureComponent {
         river: true, // 水系图
         heatmap: true, // 热力图
         traffic: false, // 交通图层
-        person: true, // 防汛人员
+        person: false, // 防汛人员
         video: false, // 视频站点
         rain: true, // 雨量站
         water: false, // 水位站
         gate: false, // 水闸
         pump: false, // 水泵
         ponding: false, // 积水
+        warehouse: false, //物资仓库
       }
     };
     this.onChecked = this.onChecked.bind(this)

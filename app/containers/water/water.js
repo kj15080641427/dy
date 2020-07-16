@@ -49,6 +49,7 @@ class Monitor extends React.PureComponent {
         gate: false, // 水闸
         pump: false, // 水泵
         ponding: false, // 积水
+        waterWarning: true, //水位报警
       }
     };
     this.onChecked = this.onChecked.bind(this)
@@ -71,7 +72,7 @@ class Monitor extends React.PureComponent {
             <WeatherChart></WeatherChart> */}
             <AlarmTable></AlarmTable>
             <WeatherTable></WeatherTable>
-            
+
           </div>
         </div>
         <div style={{ display: displayRight }}>

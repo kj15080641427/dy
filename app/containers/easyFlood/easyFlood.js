@@ -49,6 +49,7 @@ class Monitor extends React.PureComponent {
         gate: false, // 水闸
         pump: false, // 水泵
         ponding: true, // 积水
+        warehouse: false, //物资仓库
       }
     };
     this.onChecked = this.onChecked.bind(this)
