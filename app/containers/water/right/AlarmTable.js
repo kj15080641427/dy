@@ -314,16 +314,18 @@ class AlarmTable extends React.PureComponent {
             <Col span={10}>
               <Row><Col span={12}>{this.state.waterWar ? <>超警戒水位<span className="m-alm-row-warning">{this.state.wacount}</span></> : <span>气象预警<span className="m-alm-row-warning"></span></span>}
               </Col>
-              {/* <Col span={12}>已经处理<span className="m-alm-row-abnormal">2</span></Col> */}
+                {/* <Col span={12}>已经处理<span className="m-alm-row-abnormal">2</span></Col> */}
 
-            </Row>
+              </Row>
               {/* <Row><Col span={12}>数据异常<span className="m-alm-row-processed">1</span></Col><Col span={12}>等待处理<span className="m-alm-row-pending">4</span></Col>
               </Row> */}
 
             </Col>
             <Col span={10}>
-              <Radio.Group onChange={onChange} defaultValue="a" style={{position: 'relative',
-    top: 10,}}>
+              <Radio.Group onChange={onChange} defaultValue="a" style={{
+                position: 'relative',
+                top: 10,
+              }}>
                 <Radio.Button value="a">水位告警</Radio.Button>
                 <Radio.Button value="b">气象预警</Radio.Button>
               </Radio.Group></Col>
@@ -371,7 +373,7 @@ class AlarmTable extends React.PureComponent {
         let arr = []
         for (let i = 0; i < result.data.length; i++) {
           // if (moment(result.data[i].alarmtime).format("YYYY-MM-DD") === moment(new Date()).format("YYYY-MM-DD")) {
-            arr.push(result.data[i])
+          arr.push(result.data[i])
           // }
         }
         this.setState({ wardataSource: arr })
@@ -380,9 +382,12 @@ class AlarmTable extends React.PureComponent {
   }
   componentDidMount() {
     this.selectInit()
-    window.setInterval(() => {
+    this.init = window.setInterval(() => {
       this.selectInit()
     }, 1000 * 5 * 60)
+  }
+  componentWillUnmount() {
+    clearTimeout(this.init);
   }
   locationClick(e) {
     let lon = e.lon * 1;

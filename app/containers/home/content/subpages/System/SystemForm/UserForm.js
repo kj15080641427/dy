@@ -156,61 +156,7 @@ class JurisdicForm extends React.Component {
                                 >
                                     <Input.Password />
                                 </Form.Item>
-
                                 <Form.Item
-                                    name="idcard"
-                                    label={
-                                        <span>
-                                            身份证号&nbsp;
-                                        </span>
-                                    }
-                                    rules={[
-                                        {
-
-                                            required: true,
-                                            message: '请输入身份证号!',
-                                            whitespace: true,
-                                        },
-                                    ]}
-                                >
-                                    <Input />
-                                </Form.Item>
-
-                                <Form.Item
-                                    name="phone"
-                                    label="手机号码"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: '请输入手机号!',
-                                        },
-                                    ]}
-                                >
-                                    <Input
-                                        style={{
-                                            width: '100%',
-                                        }}
-                                    />
-                                </Form.Item>
-                            </> : null}
-                        <Form.Item
-                            name="realname"
-                            label="真实姓名"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: '请输入真实姓名!',
-                                },
-                            ]}
-                        >
-                            <Input
-                                style={{
-                                    width: '100%',
-                                }}
-                            />
-                        </Form.Item>
-
-                        <Form.Item
                             name="roleId"
                             label="角色"
                             rules={[
@@ -222,23 +168,57 @@ class JurisdicForm extends React.Component {
                         >
                             <Select
                                 style={{
-                                    width: 70,
+                                    width: "100%",
                                 }}
                             >
                                 {
                                     roleArr.map((item, i) => {
                                         return (
-                                            <option key={`${i}`} value={item.roleId}>{item.roleDesc}</option>
+                                            <Option key={`${i}`} value={item.roleId+""}>{item.roleDesc}</Option>
                                         )
                                     })
                                 }
                             </Select>
                         </Form.Item>
+                                <Form.Item
+                                    name="idcard"
+                                    label={
+                                        <span>
+                                            身份证号&nbsp;
+                                        </span>
+                                    }
+                                >
+                                    <Input />
+                                </Form.Item>
+
+                                <Form.Item
+                                    name="phone"
+                                    label="手机号码"
+                                >
+                                    <Input
+                                        style={{
+                                            width: '100%',
+                                        }}
+                                    />
+                                </Form.Item>
+                            </> : null}
+                        <Form.Item
+                            name="realname"
+                            label="真实姓名"
+                        >
+                            <Input
+                                style={{
+                                    width: '100%',
+                                }}
+                            />
+                        </Form.Item>
+
+                        
                         <Form.Item label="是否冻结账号" name="state">
 
                             <Radio.Group>
-                                <Radio value={1}>是</Radio>
-                                <Radio value={0}>否</Radio>
+                                <Radio value={'1'}>是</Radio>
+                                <Radio value={'0'}>否</Radio>
                             </Radio.Group>
                         </Form.Item>
 

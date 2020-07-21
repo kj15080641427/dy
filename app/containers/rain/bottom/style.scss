@@ -67,18 +67,19 @@
   margin: 7px 0;
 }
 .m-checkbox-row-legend-paren {
-  width: 340px;
-  
+  width: 360px;
   background: rgba(224, 224, 224, 0.849);
   pointer-events: auto;
   border-radius: 10px;
   position: relative;
   left: 770px;
   bottom: 150px;
+  font-size: 17px;
+  font-weight: 600;
 }
 .m-checkbox-row-legend {
-  width: 330px;
-  height: 105px;
+  width: 350px;
+  height: 123px;
   background: rgba(255, 255, 255, 0.548);
   pointer-events: auto;
   border-radius: 5px;
@@ -94,14 +95,17 @@
   top: 7px;
 }
 .font-yq {
-  font-size: 16px;
+  font-size: 20px;
   color: darkblue;
   position: relative;
   left: 20px;
   font-weight: bold;
 }
-.isShow{
+.isShow {
   position: relative;
-  left: 180px;
+  left: 165px;
   font-size: 16px;
+}
+.trigger{
+  font-size: 30px;
 }

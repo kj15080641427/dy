@@ -17,6 +17,9 @@ import Jurisdiction from "./subpages/System/Jurisdiction"
 import Role from "./subpages/System/Role"
 import Model from "./subpages/media/Model"
 import Home from "./subpages/Home/Home"
+import VideoBasic from "./subpages/BasicData/VideoBasic/VideoBasic"
+import StationBasic from "./subpages/BasicData/StationBasic/StationBasic"
+import VideoStation from "./subpages/BasicData/VideoandStation/VideoStation"
 
 const NoMatch = () => {
     return (
@@ -54,6 +57,9 @@ class ContentRouter extends React.PureComponent {
                                 <Route path={path + "/jurisdiction"} component={Jurisdiction} />
                                 <Route path={path + "/rwvdata"} component={rwvData} />
                                 <Route path={path + "/model"} component={Model} />
+                                <Route path={path + "/videoBasic"} component={VideoBasic} />
+                                <Route path={path + "/stationBasic"} component={StationBasic} />
+                                <Route path={path + "/videoStation"} component={VideoStation} />
                             </>
                         }
                     </>

@@ -25,7 +25,7 @@ class FloodPrevention extends React.PureComponent {
       modalvisible: false,//模态框
       confirmLoading: false,//模态框提交动画
       selectObj: {
-        grade: null,
+        grade: "",
         query: ""
       },//条件查询对象
     };
@@ -52,13 +52,14 @@ class FloodPrevention extends React.PureComponent {
         title: '性别',
         dataIndex: 'sex',
         className: 'column-money',
-        render: sex => { return (sex === "1" ? "男" : "女") }
+        render: sex => { return (sex === "1" ? "男" : sex === "2" ? "女" : "未知") }
       },
       {
         title: '年龄',
         dataIndex: 'age',
         className: 'column-money',
         sorter: (a, b) => a.age - b.age,
+        render: age => { return (age === null ? "未知" : age) }
       },
       {
         title: '单位',
@@ -237,7 +238,26 @@ class FloodPrevention extends React.PureComponent {
         })
       }
     };
-
+    const layout = {
+      labelCol: {
+        span: 5,
+      },
+      wrapperCol: {
+        span: 19,
+      },
+    };
+    const tailFormItemLayout = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 16,
+          offset: 8,
+        },
+      },
+    };
     return (
       <>
         {/* 条件查询行 */}
@@ -252,10 +272,10 @@ class FloodPrevention extends React.PureComponent {
             onFinish={onFinish}
           >
             <Form.Item
-              label="人员名称："
+              label="全文检索："
               name="value"
             >
-              <Input size="large"/>
+              <Input size="large" />
             </Form.Item>
 
             <Form.Item
@@ -280,7 +300,7 @@ class FloodPrevention extends React.PureComponent {
               <Button size="large" htmlType="button" onClick={onReset} icon={<RedoOutlined />}>重置</Button>
             </Form.Item>
             <Form.Item>
-          <Button htmlType="button" size="large" onClick={this.showModal} icon={<PlusCircleOutlined />}>增加</Button>
+              <Button htmlType="button" size="large" onClick={this.showModal} icon={<PlusCircleOutlined />}>增加</Button>
             </Form.Item>
           </Form>
         </Row>
@@ -291,41 +311,42 @@ class FloodPrevention extends React.PureComponent {
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel}
           footer={null}
+          forceRender={true}
         >
           {/* 模态框面板 */}
-          <Form name="save" onFinish={onFinishmodal} validateMessages={validateMessages} ref={this.addform}
+          <Form {...layout} name="save" onFinish={onFinishmodal} validateMessages={validateMessages} ref={this.addform}
             initialValues={{
               remember: true,
             }}>
             <Form.Item name={'name'} label="姓名" rules={[{ required: true }]}>
               <Input />
             </Form.Item>
-            <Form.Item name={'sex'} label="性别" valuePropName="radio">
-              <Radio.Group onChange={this.onChange} defaultValue={0} value={this.state.isShow}>
-                <Radio value={0}>未知性别</Radio>
-                <Radio value={1}>男</Radio>
-                <Radio value={2}>女</Radio>
+            <Form.Item name={'sex'} label="性别" rules={[{ required: true }]}>
+              <Radio.Group defaultValue={null} >
+                <Radio value={null}>未知性别</Radio>
+                <Radio value={'1'}>男</Radio>
+                <Radio value={'2'}>女</Radio>
               </Radio.Group>
             </Form.Item>
-            <Form.Item name={'age'} label="年龄" rules={[{ required: true }]}>
+            <Form.Item name={'age'} label="年龄" >
               <Input />
             </Form.Item>
-            <Form.Item name={'unit'} label="单位" rules={[{ required: true }]}>
+            <Form.Item name={'unit'} label="单位">
               <Input />
             </Form.Item>
-            <Form.Item name={'phone'} label="电话" rules={[{ required: true }]}>
+            <Form.Item name={'phone'} label="电话" >
               <Input />
             </Form.Item>
-            <Form.Item name={'remark'} label="备注" rules={[{ required: true }]}>
+            <Form.Item name={'remark'} label="备注" >
               <Input />
             </Form.Item>
-            <Form.Item name={'parent'} label="上一级" rules={[{ required: true }]}>
+            <Form.Item name={'parent'} label="上一级" >
               <Input />
             </Form.Item>
-            <Form.Item name={'isShow'} label="是否显示" valuePropName="radio">
-              <Radio.Group onChange={this.onChange} defaultValue={0} >
-                <Radio value={0}>是</Radio>
-                <Radio value={1}>否</Radio>
+            <Form.Item name={'isShow'} label="是否显示">
+              <Radio.Group defaultValue={0} >
+                <Radio value={'0'}>是</Radio>
+                <Radio value={'1'}>否</Radio>
               </Radio.Group>
             </Form.Item>
             <Form.Item
@@ -341,7 +362,7 @@ class FloodPrevention extends React.PureComponent {
             </Form.Item>
             <Form.Item name={'floodId'}>
             </Form.Item>
-            <Form.Item>
+            <Form.Item {...tailFormItemLayout}>
               <Button type="primary" htmlType="submit">
                 确定
         </Button>
@@ -456,7 +477,7 @@ class FloodPrevention extends React.PureComponent {
   }
   componentDidUpdate() {
     // this.addform.current.setFieldsValue(this.props.rowObj)
-}
+  }
 }
 function mapStateToProps(state) {
   return {

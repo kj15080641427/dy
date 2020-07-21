@@ -12,6 +12,8 @@ import Holder from "@app/components/video/Holder"
 import {
     CaretRightOutlined,
 } from '@ant-design/icons';
+import { Loading } from '@jiaminghi/data-view-react'
+
 class Video extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
@@ -63,24 +65,47 @@ class Video extends React.PureComponent {
                     </td>
                 </tr>
             )
+            // elements.push(
+            //     [
+            //         data[i].sitename,
+            //         data[i].isOnline == 0 ? "在线" : '<a>离线</a>',
+            //         // '<Button type="primary" shape="circle" icon={< CaretRightOutlined style={{ fontSize: 20 }} />} onClick={() => this.playV(data[i])} />'
+            //         '<Button onClick={() => this.playV(' + data[i] + ')} >打开</Button>'
+            //     ]
+            // )
+        }
+        const config = {
+            header: ['站名', '状态', '操作'],
+            data:
+                elements
+            ,
+            headerBGC: "#123ead42",
+            oddRowBGC: "0px 35px 50px rgba(0, 0, 0, 0)",
+            evenRowBGC: "0px 35px 50px rgba(0, 0, 0, 0)",
+            rowNum: 6,
+            columnWidth: [210],
+
         }
         return (
             <div >
                 <div className="table-wrapper">
-                    <table className="fl-table">
-                        <thead>
-                            <tr>
-                                <th style={{ width: 200 }}>站名</th>
-                                {/* <th>位置</th> */}
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody style={{ height: 300 }}>
-                            {elements}
-                        </tbody>
-                        {/* <Pagination></Pagination> */}
-                    </table>
+                    {this.props.lod ? <Loading style={{
+                        'position': 'relative',
+                        top: '110px',
+                    }}><span style={{ color: "#fff" }}>Loading...</span></Loading> : <table className="fl-table">
+                            <thead>
+                                <tr>
+                                    <th style={{ width: 200 }}>站名</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody style={{ height: 300 }}>
+                                {elements}
+                            </tbody>
+                        </table>}
+                    {/* <ScrollBoard config={config} style={{ width: '100%', height: '350px' }} /> */}
+
                 </div>
                 <Modal
                     title={this.state.address}
@@ -121,7 +146,7 @@ class Video extends React.PureComponent {
                     </div>
                     <Holder token={this.state.token}></Holder>
                 </Modal>
-            </ div>
+            </ div >
         );
     }
 

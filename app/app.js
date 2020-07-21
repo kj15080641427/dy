@@ -4,15 +4,15 @@ import { HashRouter, BrowserRouter, Route, Switch } from 'react-router-dom';
 // import Home from '@app/containers/home/Index';
 import AsyncComp from "@app/components/asyncComponent";
 import './style.scss';
-const AsyncHome = AsyncComp(() => import(/*webpackChunkName:'home'*/"@app/containers/home/Index").then((res) => { removeLoading(); return res; }));
-const AsyncLogin = AsyncComp(() => import(/*webpackChunkName:'home'*/"@app/containers/home/Login").then((res) => { removeLoading(); return res; }));
+const AsyncHome = AsyncComp(() => import(/*webpackChunkName:'Index'*/"@app/containers/home/Index").then((res) => { removeLoading(); return res; }));
+const AsyncLogin = AsyncComp(() => import(/*webpackChunkName:'Login'*/"@app/containers/home/Login").then((res) => { removeLoading(); return res; }));
 const AsyncMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/monitor/Monitor").then((res) => { removeLoading(); return res; }));
-const rainMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/rain/rain").then((res) => { removeLoading(); return res; }));
-const waterMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/water/water").then((res) => { removeLoading(); return res; }));
-const easyFloodMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/easyFlood/easyFlood").then((res) => { removeLoading(); return res; }));
-const videoMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/video/video").then((res) => { removeLoading(); return res; }));
-const floodWarningMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/floodWarning/floodWarning").then((res) => { removeLoading(); return res; }));
-const AsyncNoLogin = AsyncComp(() => import(/*webpackChunkName:'home'*/"@app/containers/home/NoLogin").then((res) => { removeLoading(); return res; }));
+const rainMonitor = AsyncComp(() => import(/*webpackChunkName:'rain'*/"@app/containers/rain/rain").then((res) => { removeLoading(); return res; }));
+const waterMonitor = AsyncComp(() => import(/*webpackChunkName:'water'*/"@app/containers/water/water").then((res) => { removeLoading(); return res; }));
+const easyFloodMonitor = AsyncComp(() => import(/*webpackChunkName:'easyFlood'*/"@app/containers/easyFlood/easyFlood").then((res) => { removeLoading(); return res; }));
+const videoMonitor = AsyncComp(() => import(/*webpackChunkName:'video'*/"@app/containers/video/video").then((res) => { removeLoading(); return res; }));
+const floodWarningMonitor = AsyncComp(() => import(/*webpackChunkName:'floodWarning'*/"@app/containers/floodWarning/floodWarning").then((res) => { removeLoading(); return res; }));
+const AsyncNoLogin = AsyncComp(() => import(/*webpackChunkName:'NoLogin'*/"@app/containers/home/NoLogin").then((res) => { removeLoading(); return res; }));
 const AsyncDisplay = AsyncComp(() => import(/*webpackChunkName:'display'*/"@app/containers/display/Display").then((res) => { removeLoading(); return res; }));
 
 export class App extends React.Component {

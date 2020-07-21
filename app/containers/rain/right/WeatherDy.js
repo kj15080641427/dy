@@ -24,7 +24,6 @@ class WeatherDy extends React.PureComponent {
         if (contentObj.length != 0) {
             for (let i = 0; i < contentObj.length; i++) {
                 let coltype = (contentObj[i].yjHissignal).substring(3);
-                console.log(coltype)
                 elements.push(
                     <>
                         <Row>
@@ -42,19 +41,22 @@ class WeatherDy extends React.PureComponent {
                 )
             }
         } else {
-            elements.push(<Empty description="当前无气象预警" image={Empty.PRESENTED_IMAGE_SIMPLE} />)
+            elements.push(<a className="notwdy" >当前暂无气象预警</a>)
         }
         return (
-            // <div className="m-pannel-WDy">
-            //     <img className="m-alm-img" src={imgURL} alt="" />
-            //     <div className="m-WDy-div">
-                    <Spin spinning={loading} >
-                        <div className="m-inner-div">
+            <div className="m-pannel-WDy-rain">
+                <img className="m-alm-img" src={imgURL} alt="" />
+                <div className="m-WDy-div-rain">
+                    <Spin style={{
+                        'position': 'relative',
+                        top: 40
+                    }} spinning={loading} >
+                        <div className="m-inner-div-rain">
                             {elements}
                         </div>
                     </Spin>
-            //     </div>
-            // </div>
+                </div>
+            </div>
         );
     }
     selectInit() {
@@ -67,9 +69,12 @@ class WeatherDy extends React.PureComponent {
     }
     componentDidMount() {
         this.selectInit()
-        window.setInterval(() => {
+        this.init = window.setInterval(() => {
             this.selectInit()
         }, 1000 * 5 * 60)
+    }
+    componentWillUnmount() {
+        clearTimeout(this.init);
     }
 }
 export default WeatherDy;

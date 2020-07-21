@@ -20,7 +20,7 @@ class CheckBox extends React.PureComponent {
         super(props, context);
         this.state = {
             collapsed: true,
-            height: 140,
+            height: 165,
             display: "block"
         };
         this.onChange = this.onChange.bind(this);
@@ -39,16 +39,16 @@ class CheckBox extends React.PureComponent {
                 height: 28,
                 display: "none"
             })
-        }else{
+        } else {
             this.setState({
                 collapsed: !this.state.collapsed,
-                height: 140,
+                height: 165,
                 display: "block"
-            }) 
+            })
         }
     }
+    
     render() {
-        let { layerVisible } = this.props;
         return (
             <>
                 <div className="m-checkbox-row-legend-paren" style={{ height: this.state.height }}>

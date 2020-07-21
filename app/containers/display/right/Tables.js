@@ -23,8 +23,13 @@ class Tables extends React.PureComponent {
       rainCount: 0,
       videoCount: 0,
       easyCount: 0,
+      rainlod: false,
+      easylod: false,
+      waterlod: false,
+      videolod: false
     };
   }
+
   render() {
     const columns = [
       {
@@ -79,7 +84,7 @@ class Tables extends React.PureComponent {
     const setRowClassName = (record) => {
       return 'clickRowStyle';
     }
-    let { waterData, rainData, easyData, videoData, waterCount, rainCount, videoCount, easyCount, } = this.state
+    let { waterData, rainData, easyData, videoData, waterCount, rainCount, videoCount, easyCount, rainlod, easylod, waterlod, videolod } = this.state
     return (
       <div className="dis-tables">
         <div className="dis-table-btns">
@@ -112,29 +117,36 @@ class Tables extends React.PureComponent {
           </Row>
         </div>
         <div className="dis-table-con">
-          <TableWrap title={"雨量站(" + rainCount + ")"} extra={"单位mm"}>
-            <Precipitation dataSource={rainData}></Precipitation>
+          <TableWrap title={"雨量站(" + rainCount + ")"} extra={"单位：mm"}>
+            <Precipitation dataSource={rainData} lod={rainlod}></Precipitation>
           </TableWrap>
           <TableWrap title={"视频站点(" + videoCount + ")"} >
-            <Video dataSource={videoData}></Video>
+            <Video dataSource={videoData} lod={videolod}></Video>
           </TableWrap>
-          <TableWrap title={"易涝点(" + easyCount + ")"} >
-            <EasyFlood dataSource={easyData}></EasyFlood>
+          <TableWrap title={"易涝点(" + easyCount + ")"} extra={"单位：m"}>
+            <EasyFlood dataSource={easyData} lod={easylod}></EasyFlood>
           </TableWrap>
-          <TableWrap title={"水位站(" + waterCount + ")"} >
-            <Water dataSource={waterData}></Water>
+          <TableWrap title={"水位站(" + waterCount + ")"} extra={"单位：m"}>
+            <Water dataSource={waterData} lod={waterlod}></Water>
           </TableWrap>
         </div>
       </div>
     );
   }
   selectInit() {
+    this.setState({
+      rainlod: true,
+      easylod: true,
+      waterlod: true,
+      videolod: true
+    })
     getBasicsAll({
       'type': 1
     }).then((result) => {
       this.setState({
         rainData: result.data,
-        rainCount: result.data.length
+        rainCount: result.data.length,
+        rainlod: false
       })
     })
     getBasicsAll({
@@ -142,7 +154,8 @@ class Tables extends React.PureComponent {
     }).then((result) => {
       this.setState({
         waterData: result.data,
-        waterCount: result.data.length
+        waterCount: result.data.length,
+        waterlod: false
       })
     })
     getBasicsAll({
@@ -157,7 +170,8 @@ class Tables extends React.PureComponent {
       }
       this.setState({
         easyData: arr,
-        easyCount: arr.length
+        easyCount: arr.length,
+        easylod: false
       })
     })
     getRadioAll({
@@ -174,16 +188,20 @@ class Tables extends React.PureComponent {
         console.log(arr)
         this.setState({
           videoData: arr,
-          videoCount: arr.length
+          videoCount: arr.length,
+          videolod: false
         });
       })
   }
 
   componentDidMount() {
     this.selectInit()
-    window.setInterval(() => {
+    this.init = window.setInterval(() => {
       this.selectInit()
     }, 1000 * 5 * 60)
+  }
+  componentWillUnmount() {
+    clearTimeout(this.init);
   }
 }
 export default Tables;

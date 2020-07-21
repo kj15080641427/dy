@@ -117,15 +117,15 @@ class PannelBtn extends React.PureComponent {
     // w.location.href = "/#/floodWarning"
   }
   componentDidMount() {
-    this._timer = window.setInterval(() => {
-      if (this.time) {
-        this.time.innerHTML = moment().format("MM月DD日");
-      }
-    }, 1000);
-    this.selectInit()
-    window.setInterval(() => {
-      this.selectInit()
-    }, 1000 * 12);
+    // this._timer = window.setInterval(() => {
+    //   if (this.time) {
+    //     this.time.innerHTML = moment().format("MM月DD日");
+    //   }
+    // }, 1000);
+    // this.selectInit()
+    // window.setInterval(() => {
+    //   this.selectInit()
+    // }, 1000 * 12);
 
   }
   selectInit() {

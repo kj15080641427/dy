@@ -47,12 +47,13 @@ class Head extends React.PureComponent {
       }
     }, 1000);
     this.selectInit()
-    window.setInterval(() => {
+    this.init = window.setInterval(() => {
       this.selectInit()
     }, 1000 * 5 * 60)
   }
   componentWillUnmount() {
     clearTimeout(this.time);
+    clearTimeout(this.init);
   }
 }
 export default Head;

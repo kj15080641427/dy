@@ -8,6 +8,7 @@ import moment from 'moment';
 import {
   PlayCircleOutlined, PauseCircleOutlined
 } from '@ant-design/icons';
+import { BorderBox8 } from '@jiaminghi/data-view-react'
 import { getSatellite } from "@app/data/request";
 class Satellite extends React.PureComponent {
   constructor(props, context) {
@@ -78,7 +79,7 @@ class Satellite extends React.PureComponent {
       }
     }
     return (
-      <div className="dis-satellite"><br></br>
+      <div className="dis-satellite">
         <div className="div-precipitation1" onClick={this.showRain}>
         </div>
         <Modal
@@ -99,7 +100,7 @@ class Satellite extends React.PureComponent {
             margin: '0 auto',
           }}>
             <iframe src="http://m.nmc.cn/publish/precipitation/1-day.html" width="753px" height="1010px"
-              scrolling="no" style={{ position: 'relative', left: 80, top: '-170px', transform: 'scale(1.2)', border: 0 }}></iframe>
+              frameborder="0" scrolling="no" style={{ position: 'relative', left: 80, top: '-170px', transform: 'scale(1.2)' }}></iframe>
           </div>
         </Modal>
         <div className="div-precipitation2" onClick={this.showcloud}>
@@ -113,7 +114,7 @@ class Satellite extends React.PureComponent {
           footer={null}
           centered={true}
         >
-          <div style={{ height: '976px', width: '910px',  margin: '0 auto', }}>
+          <div style={{ height: '976px', width: '910px', margin: '0 auto', }}>
             <PlayCircleOutlined className="m-pic-icon-big" onClick={() => this.slickPlayRoPause(lunboSetting)} />
             <Carousel effect="fade" dots={false} autoplaySpeed={400} speed={1} {...lunboSetting} ref={el => (this.slider = el)}>
               {elements}
@@ -138,7 +139,7 @@ class Satellite extends React.PureComponent {
             width: "100%",
           }}>
             <iframe src="http://58.59.29.51:14003/Radar"
-              scrolling="no" style={{ position: 'relative', top: '-300px', width: "100%", height: "1275px", border: 0 }}></iframe>
+              frameborder="0" scrolling="no" style={{ position: 'relative', top: '-300px', width: "100%", height: "1275px" }}></iframe>
           </div>
         </Modal>
         <div className="div-precipitation4" onClick={this.showtyphoon}></div>
@@ -159,44 +160,61 @@ class Satellite extends React.PureComponent {
             width: "100%",
           }}>
             <iframe src="http://typhoon.zjwater.gov.cn/wap.htm"
-              scrolling="no" style={{ position: 'relative', width: "100%", height: "1275px", border: 0 }}></iframe>
+              frameborder="0" scrolling="no" style={{ position: 'relative', width: "100%", height: "1275px" }}></iframe>
           </div>
         </Modal>
+        {/* <BorderBox8 style={{
+          height: 255,
+          width: 364,
+        }} reverse="{true}"> */}
         <div className="dis-satellite-div">
-          <iframe scrolling="no" src="http://m.nmc.cn/publish/precipitation/1-day.html" style={{
+          <iframe frameborder="0" scrolling="no" src="http://m.nmc.cn/publish/precipitation/1-day.html" style={{
             position: 'absolute', top: '-189px',
             height: 440,
             width: 360,
-            border: 0
           }}></iframe>
         </div>
+        {/* </BorderBox8>
+        <BorderBox8 style={{
+          height: 255,
+          width: 364,
+        }} reverse="{true}"> */}
         <div className="dis-satellite-div">
           {/* <PlayCircleOutlined className="m-pic-icon" onClick={() => this.slickPlayRoPause(lunboSetting)} /> */}
           <Carousel
-          // rtl={true}
-           autoplaySpeed={400} speed={1} {...lunboSetting}
+            // rtl={true}
+            autoplaySpeed={400} speed={1} {...lunboSetting}
           // ref={el => (this.slider = el)}
           >
             {elements}
           </Carousel>
         </div>
+        {/* </BorderBox8>
+        <BorderBox8 style={{
+          height: 255,
+          width: 364,
+        }} reverse="{true}"> */}
         <div className="dis-satellite-div">
-          <iframe scrolling="no" src="http://58.59.29.51:14003/Radar" style={{
+          <iframe frameborder="0" scrolling="no" src="http://58.59.29.51:14003/Radar" style={{
             position: 'absolute', top: -125,
             // left: 15,
             height: 440,
-            width: 360,
-            border: 0,
+            width: 360
           }}></iframe>
         </div>
-        <div className="dis-satellite-div">
-          <iframe scrolling="no" src="http://typhoon.zjwater.gov.cn/wap.htm" style={{
-            position: 'absolute', top: '-35px',
-            height: 370,
-            width: 360,
-            border: 0
-          }}></iframe>
-        </div>
+        {/* </BorderBox8>
+        <BorderBox8 style={{
+          height: 255,
+          width: 364,
+        }} reverse="{true}"> */}
+          <div className="dis-satellite-div">
+            <iframe frameborder="0" scrolling="no" src="http://typhoon.zjwater.gov.cn/wap.htm" style={{
+              position: 'absolute', top: '-35px',
+              height: 370,
+              width: 360
+            }}></iframe>
+          </div>
+        {/* </BorderBox8> */}
 
       </div >
     );
@@ -220,9 +238,12 @@ class Satellite extends React.PureComponent {
   }
   componentDidMount() {
     this.selectInit()
-    window.setInterval(() => {
+    this.init = window.setInterval(() => {
       this.selectInit()
     }, 1000 * 5 * 60)
+  }
+  componentWillUnmount() {
+    clearTimeout(this.init);
   }
 }
 export default Satellite;

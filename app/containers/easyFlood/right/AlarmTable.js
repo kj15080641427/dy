@@ -352,9 +352,12 @@ class AlarmTable extends React.PureComponent {
         this.setState({ wacount: arr.length })
       })
   }
+  componentWillUnmount() {
+    clearTimeout(this.init);
+  }
   componentDidMount() {
     this.selectInit()
-    window.setInterval(() => {
+    this.init = window.setInterval(() => {
       this.selectInit()
     }, 1000 * 5 * 60)
   }

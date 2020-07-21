@@ -249,10 +249,14 @@ class WeatherPic extends React.PureComponent {
   }
   componentDidMount() {
     this.selectInit()
-    window.setInterval(() => {
+    this.init = window.setInterval(() => {
       this.selectInit()
     }, 1000 * 5 * 60)
   }
+  componentWillUnmount() {
+    clearTimeout(this.init);
+  }
+
 }
 
 export default WeatherPic;

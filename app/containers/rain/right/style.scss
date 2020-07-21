@@ -33,26 +33,26 @@
   bottom: 13px;
 }
 .m-btn-flood-rain {
-  border-radius:7px;
+  border-radius: 7px;
   position: relative;
   bottom: 13px;
   left: 10px;
 }
 //dy天气
-.m-pannel-WDy {
-  height: 200px;
+.m-pannel-WDy-rain {
+  height: 90px;
   background: rgb(255, 255, 255);
 }
-.m-WDy-div {
+.m-WDy-div-rain {
   width: 514px;
-  height: 200px;
+  height: 90px;
   border: 1px solid #007ed7;
   position: relative;
   bottom: 22px;
   white-space: pre-line;
   overflow: auto;
 }
-.m-inner-div {
+.m-inner-div-rain {
   position: relative;
   top: 3px;
   left: 5px;
@@ -219,3 +219,12 @@
 //   background: rgba(204, 51, 51, 0.27);
 //   overflow: hidden;
 // }
+.notwdy {
+  font-size: 20px;
+  /* margin: 29px auto; */
+  margin: auto;
+  position: absolute;
+  left: 156px;
+  /* right: 0px; */
+  top: 25px;
+}

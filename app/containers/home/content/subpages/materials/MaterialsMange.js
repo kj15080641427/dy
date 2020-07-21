@@ -13,7 +13,26 @@ import { SearchOutlined, RedoOutlined, PlusCircleOutlined, CloseCircleOutlined, 
 import moment from 'moment';
 import { FormInstance } from 'antd/lib/form';
 import { add } from 'ol/coordinate';
-
+const layout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+const tailFormItemLayout = {
+  wrapperCol: {
+      xs: {
+          span: 24,
+          offset: 0,
+      },
+      sm: {
+          span: 16,
+          offset: 8,
+      },
+  },
+};
 class MaterialsMange extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -286,7 +305,7 @@ class MaterialsMange extends React.PureComponent {
             onFinish={onFinish}
           >
             <Form.Item
-              label="物资名称："
+              label="全文检索："
               name="value"
             >
               <Input size="large" />
@@ -328,6 +347,7 @@ class MaterialsMange extends React.PureComponent {
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel}
           footer={null}
+          forceRender={true}
         >
           {/* 模态框面板 */}
           <Form {...layout} name="save" onFinish={onFinishmodal} validateMessages={validateMessages} ref={this.addform}
@@ -337,22 +357,22 @@ class MaterialsMange extends React.PureComponent {
             <Form.Item name={'name'} label="名称" rules={[{ required: true }]}>
               <Input />
             </Form.Item>
-            <Form.Item name={'spec'} label="规格型号" rules={[{ required: true }]}>
+            <Form.Item name={'spec'} label="规格型号">
               <Input />
             </Form.Item>
-            <Form.Item name={'company'} label="计量单位" rules={[{ required: true }]}>
+            <Form.Item name={'company'} label="计量单位">
               <Input />
             </Form.Item>
-            <Form.Item name={'saveTotal'} label="	存储总量" rules={[{ required: true }]}>
+            <Form.Item name={'saveTotal'} label="	存储总量">
               <Input />
             </Form.Item>
-            <Form.Item name={'money'} label="价值" rules={[{ required: true }]}>
+            <Form.Item name={'money'} label="价值">
               <Input />
             </Form.Item>
             <Form.Item name={'isShow'} label="是否显示">
-              <Radio.Group onChange={this.onChange} defaultValue={0}>
-                <Radio value={0}>是</Radio>
-                <Radio value={1}>否</Radio>
+              <Radio.Group defaultValue={'0'}>
+                <Radio value={'0'}>是</Radio>
+                <Radio value={'1'}>否</Radio>
               </Radio.Group>
             </Form.Item>
             <Form.Item
@@ -360,26 +380,26 @@ class MaterialsMange extends React.PureComponent {
               name="materialWarehouseId"
               rules={[{ required: true }]}
             >
-              <Select style={{ width: 250 }} defaultValue={32}>
+              <Select style={{ width: 250 }}>
                 {
                   ckdataSource.map((item, i) => {
                     return (
-                      <Select.Option key={`${i}`} value={item.materialWarehouseId}>{item.name}</Select.Option>
+                      <Option key={`${i + 1}`} value={item.materialWarehouseId}>{item.name}</Option>
                     )
                   })
                 }
               </Select>
             </Form.Item>
-            <Form.Item name={'expireDate'} label="过期时间" rules={[{ required: true }]}>
+            <Form.Item name={'expireDate'} label="过期时间">
               <DatePicker format="YYYY-MM-DD HH:mm:ss" />
             </Form.Item>
-            <Form.Item name={'manufactureDate'} label="出厂日期" rules={[{ required: true }]}>
+            <Form.Item name={'manufactureDate'} label="出厂日期" >
               <DatePicker format="YYYY-MM-DD HH:mm:ss" />
             </Form.Item>
-            <Form.Item name={'warningNumber'} label="预警数量" rules={[{ required: true }]}>
+            <Form.Item name={'warningNumber'} label="预警数量" >
               <Input />
             </Form.Item>
-            <Form.Item>
+            <Form.Item {...tailFormItemLayout}>
               <Button type="primary" htmlType="submit">
                 确定
         </Button>

@@ -1,4 +1,4 @@
-import { fetchData, fetchJSONData, fetchFormData, fetchOutData } from "@app/utils/common";
+import { fetchData, fetchJSONData, fetchFormData, fetchOutData, fetchDataByExcel } from "@app/utils/common";
 // 获取所有基础数据
 export function getAll() {
   return fetchJSONData("POST", "/station/getAll", {});
@@ -19,7 +19,7 @@ export function getVideosByCode(data) {
   return fetchJSONData("POST", "/station/code", data);
 }
 //根据视频站点唯一编码获取关联的水位站点
-export function getWaterStationByVideoCode(data){
+export function getWaterStationByVideoCode(data) {
   return fetchJSONData("POST", "/station/radioCode", data);
 }
 // 获取雨晴实时信息
@@ -251,4 +251,65 @@ export function queryByRoleId(data) {
 //分页查询用户登录日志
 export function usersLoginLog(data) {
   return fetchJSONData("POST", "/usersLoginLog/query", data);
+}
+//==============================================================业务基础站点配置接口=======================================================================
+//分页查询视频站点
+export function radioQuery(data) {
+  return fetchJSONData("POST", "/radio/query", data);
+}
+//导出站点数据
+export function radioExportExcel(data) {
+  return fetchJSONData("GET", "/radio/exportExcel", data);
+}
+//新增视频站点
+export function radioSave(data) {
+  return fetchJSONData("POST", "/radio/save", data);
+}
+//修改视频站点
+export function radioUpdate(data) {
+  return fetchJSONData("POST", "/radio/update", data);
+}
+//删除视频站点
+export function radioDelete(data) {
+  return fetchJSONData("POST", "/radio/delete", data);
+}
+//分页查询基础站点
+export function stationQuery(data) {
+  return fetchJSONData("POST", "/station/query", data);
+}
+//导出站点数据
+export function stationExportExcel(data) {
+  return fetchJSONData("GET", "/station/exportExcel", data);
+}
+//新增基础站点
+export function stationSave(data) {
+  return fetchJSONData("POST", "/station/save", data);
+}
+//修改基础站点
+export function stationUpdate(data) {
+  return fetchJSONData("POST", "/station/update", data);
+}
+//删除基础站点
+export function stationDelete(data) {
+  return fetchJSONData("POST", "/station/delete", data);
+}
+//分页查询基础站点和视频站点关联信息
+export function stationRadioQuery(data) {
+  return fetchJSONData("POST", "/stationRadio/query", data);
+}
+//导出基础站点和视频站点关联信息
+export function stationRadioExportExcel(data) {
+  return fetchJSONData("GET", "/stationRadio/exportExcel", data);
+}
+//新增基础站点和视频站点关联信息
+export function stationRadioSave(data) {
+  return fetchJSONData("POST", "/stationRadio/save", data);
+}
+//修改基础站点和视频站点关联信息
+export function stationRadioUpdate(data) {
+  return fetchJSONData("POST", "/stationRadio/update", data);
+}
+//删除基础站点和视频站点关联信息
+export function stationRadioDelete(data) {
+  return fetchJSONData("POST", "/stationRadio/delete", data);
 }

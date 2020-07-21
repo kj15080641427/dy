@@ -374,9 +374,12 @@ class Precipitation extends React.PureComponent {
     //初始化数据
     componentDidMount() {
         this.selectInit()
-        window.setInterval(() => {
+        this.init = window.setInterval(() => {
             this.selectInit()
         }, 1000 * 5 * 60);
+    }
+    componentWillUnmount() {
+        clearTimeout(this.init);
     }
     // 选中行
     onClickRow = (record) => {

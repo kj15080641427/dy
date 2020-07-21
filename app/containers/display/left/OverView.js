@@ -3,14 +3,16 @@
  */
 import React from 'react';
 import "./style.scss";
-import hl from "@app/resource/display/board/5-河流.svg"
-import sk from "@app/resource/display/board/2-水库.svg"
-import sz from "@app/resource/display/board/3-水闸.svg"
-import symj from "@app/resource/display/board/1-市域面积.svg"
-import jsl from "@app/resource/display/board/1-平均降雨量.svg"
-import swz from "@app/resource/display/board/7-水位站.svg"
+import hl from "@app/resource/display/board/5-河流.svg";
+import sk from "@app/resource/display/board/2-水库.svg";
+import sz from "@app/resource/display/board/3-水闸.svg";
+import symj from "@app/resource/display/board/1-市域面积.svg";
+import jsl from "@app/resource/display/board/1-平均降雨量.svg";
+import swz from "@app/resource/display/board/7-水位站.svg";
+import moment from 'moment';
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
+import { BorderBox1 } from '@jiaminghi/data-view-react'
 import 'echarts';
 import { getFiveCitydata, getCityAvgRaindata } from "@app/data/request";
 import { Row, Col } from 'antd';
@@ -141,6 +143,7 @@ class OverView extends React.PureComponent {
       .then((result) => {
         console.log(result)
         let hourData = [];
+        let towData = [];
         let dayData = [];
         let thDayData = [];
         let seDayData = [];
@@ -182,13 +185,14 @@ class OverView extends React.PureComponent {
             itemGap: 60,
             padding: [10, 10, 10, 10],
             pageIconInactiveColor: "#01337C",
-            data: ['1小时', '24小时', '近三天', '近一周', '近一年以来'],
+            data: ['1小时', '12小时', '24小时', '近三天', '今年以来'],
+            selectedMode: 'single',
             selected: {
               '1小时': false,
-              '24小时': false,
-              '近三天': true,
-              '近一周': false,
-              '近一年以来': false
+              '12小时': false,
+              '24小时': true,
+              '近三天': false,
+              '今年以来': false
             },
             textStyle: {
               color: "#00CFFE"
@@ -268,16 +272,16 @@ class OverView extends React.PureComponent {
             {
               name: '1小时',
               type: 'bar',
-              barWidth: '20%',
+              barWidth: '40%',
               data: hourData == 0 ? null : hourData,
               itemStyle: {
                 normal: {
                   color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                     offset: 0,
-                    color: '#5614B0'
+                    color: '#3494e6'
                   }, {
                     offset: 1,
-                    color: '#DBD65C'
+                    color: '#ec6ead'
                   }]),
                 }
               },
@@ -287,29 +291,62 @@ class OverView extends React.PureComponent {
               },
             },
             {
+              name: '12小时',
+              type: 'bar',
+              barWidth: '40%',
+            },
+            {
               name: '24小时',
               type: 'bar',
-              barWidth: '20%',
-              data: dayData,
+              barWidth: '40%',
             },
             {
               name: '近三天',
               type: 'bar',
-              barWidth: '20%',
+              barWidth: '40%',
             },
             {
-              name: '近一周',
+              name: '今年以来',
               type: 'bar',
-              barWidth: '20%',
-
-            },
-            {
-              name: '近一年以来',
-              type: 'bar',
-              barWidth: '20%',
+              barWidth: '40%',
             }
           ]
         });
+        //12小时
+        getFiveCitydata(
+          {
+            "startTime": moment(new Date().getTime() - 12 * 60 * 60 * 1000).format("YYYY-MM-DD HH:00:00"),
+            "endTime": moment(new Date().getTime()).format("YYYY-MM-DD HH:00:00")
+          })
+          .then((result) => {
+            for (var i = result.data.length - 1; i >= 0; i--) {
+              towData.push((result.data[i].prd * 1).toFixed(1))
+            }
+            myChart.setOption({
+              series: [
+                {
+                  name: '12小时',
+                  data: towData,
+                  label: {
+                    show: true,
+                    position: 'top'
+                  },
+                  itemStyle: {
+                    normal: {
+                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: '#4568dc'
+                      }, {
+                        offset: 1,
+                        color: '#b06ab3'
+                      }]),
+                    }
+                  },
+                },
+
+              ]
+            })
+          });
         getFiveCitydata({ "type": 2 })
           .then((result) => {
             for (var i = result.data.length - 1; i >= 0; i--) {
@@ -328,10 +365,10 @@ class OverView extends React.PureComponent {
                     normal: {
                       color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                         offset: 0,
-                        color: '#6441A5'
+                        color: '#654EA3'
                       }, {
                         offset: 1,
-                        color: '#2E1437'
+                        color: '#EAAFC8'
                       }]),
                     }
                   },
@@ -366,66 +403,11 @@ class OverView extends React.PureComponent {
                       }]),
                     }
                   },
-                  // markPoint: {
-                  //   data: [
-                  //     {
-                  //       type: 'max', name: '最大值',
-                  //       label: {
-                  //         show: thDayData = 0 ? false : true,
-                  //         // position: 'Right'
-                  //       },
-                  //       symbolSize: 1,
-                  //     }
-                  //   ],
-
-                  // },
                 },
               ]
             })
           });
-        getFiveCitydata({ "type": 4 })
-          .then((result) => {
-            for (var i = result.data.length - 1; i >= 0; i--) {
-              seDayData.push((result.data[i].prd * 1).toFixed(1))
-            }
-            myChart.setOption({
-              series: [
-                {
-                  name: '近一周',
-                  data: seDayData,
-                  label: {
-                    show: true,
-                    position: 'top'
 
-                  },
-                  itemStyle: {
-                    normal: {
-                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                        offset: 0,
-                        color: '#a8c0ff'
-                      }, {
-                        offset: 1,
-                        color: '#3f2b96'
-                      }]),
-                    }
-                  },
-                  // markPoint: {
-                  //   data: [
-                  //     {
-                  //       type: 'max', name: '最大值',
-                  //       label: {
-                  //         show: seDayData = 0 ? false : true,
-                  //         position: 'bottom'
-                  //       },
-                  //       symbolSize: 1,
-                  //     }
-                  //   ],
-
-                  // },
-                },
-              ]
-            })
-          });
         getFiveCitydata({ "type": 5 })
           .then((result) => {
             for (var i = result.data.length - 1; i >= 0; i--) {
@@ -434,7 +416,7 @@ class OverView extends React.PureComponent {
             myChart.setOption({
               series: [
                 {
-                  name: '近一年以来',
+                  name: '今年以来',
                   data: yearData,
                   // markPoint: {
                   //   data: [
@@ -457,10 +439,10 @@ class OverView extends React.PureComponent {
                     normal: {
                       color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                         offset: 0,
-                        color: '#D38312'
+                        color: '#9796f0'
                       }, {
                         offset: 1,
-                        color: '#A83279'
+                        color: '#fbc7d4'
                       }]),
                     }
                   },
@@ -479,9 +461,12 @@ class OverView extends React.PureComponent {
   //初始化数据
   componentDidMount() {
     this.selectInit()
-    window.setInterval(() => {
+    this.init = window.setInterval(() => {
       this.selectInit()
     }, 1000 * 5 * 60)
+  }
+  componentWillUnmount() {
+    clearTimeout(this.init);
   }
 }
 export default OverView;

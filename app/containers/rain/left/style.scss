@@ -19,7 +19,7 @@
   font-weight: bold;
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 }
-.m-wth-chart {
+.m-wth-chart-rain {
   height: 400px;
   background: rgb(253, 250, 250);
 }
@@ -29,14 +29,14 @@
   position: relative;
   bottom: 17px;
 }
-.m-chart-dev {
+.m-chart-dev-rain {
   width: 514px;
   height: 402px;
   border: 1px solid #007ed7;
   position: relative;
   bottom: 23px;
 }
-.m-chart-table {
+.m-chart-table-rain {
   width: 484px;
   height: 367px;
   position: relative;
@@ -44,7 +44,7 @@
   // right: 15px;
 }
 .m-wth-table-rain {
-  height: 540px;
+  height: 430px;
   background: rgb(253, 250, 250);
 }
 .m-table-img {
@@ -55,7 +55,7 @@
 }
 .m-div-rain {
   width: 514px;
-  height: 540px;
+  height: 430px;
   border: 1px solid #007ed7;
   position: relative;
   bottom: 22px;
@@ -115,7 +115,7 @@
 }
 .time-select {
   position: relative;
-  left: 103px;
+  left: 70px;
   bottom: -80px;
   z-index: 100;
 }

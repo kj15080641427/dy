@@ -9,7 +9,7 @@ import 'echarts';
 import moment from 'moment';
 import imgURL from '../../../resource/title_bg.png';
 import { getFiveCitydata } from "@app/data/request";
-import { DatePicker, Radio, Button } from 'antd';
+import { DatePicker, Radio, Button, Row } from 'antd';
 import WeatherDy from "../right/WeatherDy"
 
 const areaMap = {
@@ -24,19 +24,22 @@ class WeatherChart extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      timeIsShow: 'none',
       weathershow: true,
       weatherstyle: 'black'
 
     };
     this.selectInit = this.selectInit.bind(this)
+    this.btnClick = this.btnClick.bind(this);
   }
-
+  btnClick = () => {
+    this.setState({
+      weathershow: !this.state.weathershow,
+      // weatherstyle: this.state.weathershow ? 'black' : 'none'
+    })
+    // console.log(this.state.weatherstyle)
+  }
   render() {
     const { RangePicker } = DatePicker;
-    function onOk(value) {
-
-    }
 
     function onChange(value, dateString) {
       getFiveCitydata(
@@ -52,6 +55,16 @@ class WeatherChart extends React.PureComponent {
           setData.push((result.data[i].prd * 1).toFixed(1))
         }
         myChart.setOption({
+          legend: {
+            selected: {
+              '1小时': false,
+              '24小时': false,
+              '近三天': false,
+              '近一周': false,
+              '今年以来': false,
+              '自定义': true
+            },
+          },
           series: [
             {
               name: '自定义',
@@ -69,49 +82,24 @@ class WeatherChart extends React.PureComponent {
     }
     let { weatherstyle } = this.state;
     return (
-      <div className="m-wth-chart">
+      <div className="m-wth-chart-rain">
         <img className="m-chart-img" src={imgURL} alt="" />
-        <div className="m-chart-dev">
-          <RangePicker size="small" className="time-select" format="YYYY-MM-DD HH" showTime={{ format: 'HH' }}
-            // style={{ display: this.state.timeIsShow }}
-            onChange={onChange}
-            onOk={onOk}
-            format="YYYY-MM-DD HH" />
-          {/* <Radio.Group onChange={(e) => {
-            if (e.target.value === "a") {
-              this.setState({
-                weathershow: true,
-                weatherstyle: 'black'
-              })
-            } else {
-              this.setState({
-                weathershow: false,
-                weatherstyle: 'none'
-              })
-            }
-            console.log(this.state.weatherstyle)
-          }} defaultValue="a" style={{
-            position: 'relative',
-            top: 10,
-          }}>
-            <Radio.Button size="small" value="a">县区降雨</Radio.Button>
-            <Radio.Button size="small" value="b">气象预警</Radio.Button>
-          </Radio.Group> */}
-          {/* <Button onClick={() => {
-            this.setState({
-              weatherstyle: "black"
-            });
-          }}>gai</Button> */}
-          {/* <div style={{ display: weatherstyle }}> */}
-          <div id="main" className="m-chart-table" >
-          </div>
-          {/* </div> */}
-          {/* {this.state.weathershow ?  : <WeatherDy></WeatherDy>} */}
-          {/* {this.state.weathershow ? <><RangePicker size="small" className="time-select" format="YYYY-MM-DD HH" showTime={{ format: 'HH' }}
-            // style={{ display: this.state.timeIsShow }}
-            onChange={onChange}
-            onOk={onOk}
-            format="YYYY-MM-DD HH" /> </> : <WeatherDy></WeatherDy>} */}
+        {/* <Radio.Group onChange={this.btnClick}>
+          <Radio.Button size="small" value="a">县区降雨</Radio.Button>
+          <Radio.Button size="small" value="b">气象预警</Radio.Button>
+        </Radio.Group> */}
+        <div className="m-chart-dev-rain">
+          {this.state.weathershow ? <><Row className="time-select">
+            时间选择:&nbsp; <RangePicker size="small" format="YYYY-MM-DD HH" showTime={{ format: 'HH' }}
+              // allowClear={false}
+              bordered={false}
+              suffixIcon={null}
+              onChange={onChange}
+              format="YYYY-MM-DD HH" />
+          </Row>
+            <div id="main" className="m-chart-table-rain" >
+            </div>
+          </> : <WeatherDy></WeatherDy>}
         </div>
       </div>
     );
@@ -121,33 +109,19 @@ class WeatherChart extends React.PureComponent {
     getFiveCitydata({ "type": 1 })
       .then((result) => {
         let hourData = [];
+        let towData = [];
         let dayData = [];
         let thDayData = [];
         let seDayData = [];
         let addData = [];
         let yearData = [];
+
         var myChart = echarts.init(document.getElementById('main'));
         for (var i = result.data.length - 1; i >= 0; i--) {
           hourData.push((result.data[i].prd * 1).toFixed(1))
           let areaName = areaMap[result.data[i].areaId]
           addData.push(areaName);
         }
-        let _this = this;
-        myChart.on('legendselectchanged', function (obj) {
-          var selected = obj.selected;
-          var legend = obj.name;
-
-          if (selected.自定义) {
-            _this.setState({
-              timeIsShow: 'block'
-            })
-          } else {
-            _this.setState({
-              timeIsShow: 'none'
-            })
-          }
-          console.log(obj)
-        })
         myChart.setOption({
           // color:["#c23531","#99CCFF","#FFFF66","#666666",],
           tooltip: {
@@ -157,7 +131,7 @@ class WeatherChart extends React.PureComponent {
             }
           },
           title: {
-            text: '县区降雨量',
+            text: '县区降雨量(单位mm)',
             left: 'center',
             textStyle: {
               color: '#007ed7',
@@ -169,16 +143,17 @@ class WeatherChart extends React.PureComponent {
           },
           legend: {
             right: 'center',
-            x: '6px',
+            x: '10px',
             y: '30px',
-            data: ['1小时', '24小时', '近三天', '近一周', '今年以来', '自定义'],
+            data: ['1小时', '12小时', '24小时', '近三天', '今年以来', '自定义'],
+            selectedMode: 'single',
             selected: {
               '1小时': false,
+              '12小时': false,
               '24小时': true,
               '近三天': false,
-              '近一周': false,
               '今年以来': false,
-              '自定义': false ? console.log(false) : console.log(true),
+              '自定义': false
             }
           },
           grid: {
@@ -224,7 +199,7 @@ class WeatherChart extends React.PureComponent {
             {
               name: '1小时',
               type: 'bar',
-              barWidth: '15%',
+              barWidth: '50%',
               data: hourData == 0 ? null : hourData,
               // markPoint: {
               //   data: [
@@ -251,34 +226,64 @@ class WeatherChart extends React.PureComponent {
               },
             },
             {
+              name: '12小时',
+              type: 'bar',
+              barWidth: '50%',
+              data: towData,
+            },
+            {
               name: '24小时',
               type: 'bar',
-              barWidth: '15%',
+              barWidth: '50%',
               data: dayData,
             },
             {
               name: '近三天',
               type: 'bar',
-              barWidth: '15%',
+              barWidth: '50%',
             },
-            {
-              name: '近一周',
-              type: 'bar',
-              barWidth: '15%',
+            // {
+            //   name: '近一周',
+            //   type: 'bar',
+            //   barWidth: '50%',
 
-            },
+            // },
             {
               name: '今年以来',
               type: 'bar',
-              barWidth: '15%',
+              barWidth: '50%',
             },
             {
               name: '自定义',
               type: 'bar',
-              barWidth: '15%',
+              barWidth: '50%',
             }
           ]
         });
+        //12小时
+        getFiveCitydata(
+          {
+            "startTime": moment(new Date().getTime() - 12 * 60 * 60 * 1000).format("YYYY-MM-DD HH:00:00"),
+            "endTime": moment(new Date().getTime()).format("YYYY-MM-DD HH:00:00")
+          })
+          .then((result) => {
+            for (var i = result.data.length - 1; i >= 0; i--) {
+              towData.push((result.data[i].prd * 1).toFixed(1))
+            }
+            myChart.setOption({
+              series: [
+                {
+                  name: '12小时',
+                  data: towData,
+                  label: {
+                    show: true,
+                    position: 'top'
+                  },
+                },
+
+              ]
+            })
+          });
         getFiveCitydata({ "type": 2 })
           .then((result) => {
             for (var i = result.data.length - 1; i >= 0; i--) {
@@ -293,27 +298,10 @@ class WeatherChart extends React.PureComponent {
                     show: true,
                     position: 'top'
                   },
-                  // markPoint: {
-                  //   data: [
-                  //     {
-                  //       type: 'max',
-                  //       name: '最大值',
-                  //       label: {
-                  //         show: true,
-                  //         // position: 'Right'
-
-                  //       },
-                  //       symbolSize: 1,
-                  //     }
-                  //   ],
-
-                  // },
                 },
-
               ]
             })
           });
-
         getFiveCitydata({ "type": 3 })
           .then((result) => {
             for (var i = result.data.length - 1; i >= 0; i--) {
@@ -346,38 +334,25 @@ class WeatherChart extends React.PureComponent {
               ]
             })
           });
-        getFiveCitydata({ "type": 4 })
-          .then((result) => {
-            for (var i = result.data.length - 1; i >= 0; i--) {
-              seDayData.push((result.data[i].prd * 1).toFixed(1))
-            }
-            myChart.setOption({
-              series: [
-                {
-                  name: '近一周',
-                  data: seDayData,
-                  label: {
-                    show: true,
-                    position: 'top'
+        // getFiveCitydata({ "type": 4 })
+        //   .then((result) => {
+        //     for (var i = result.data.length - 1; i >= 0; i--) {
+        //       seDayData.push((result.data[i].prd * 1).toFixed(1))
+        //     }
+        //     myChart.setOption({
+        //       series: [
+        //         {
+        //           name: '近一周',
+        //           data: seDayData,
+        //           label: {
+        //             show: true,
+        //             position: 'top'
 
-                  },
-                  // markPoint: {
-                  //   data: [
-                  //     {
-                  //       type: 'max', name: '最大值',
-                  //       label: {
-                  //         show: seDayData = 0 ? false : true,
-                  //         position: 'bottom'
-                  //       },
-                  //       symbolSize: 1,
-                  //     }
-                  //   ],
-
-                  // },
-                },
-              ]
-            })
-          });
+        //           },
+        //         },
+        //       ]
+        //     })
+        //   });
         getFiveCitydata({ "type": 5 })
           .then((result) => {
             for (var i = result.data.length - 1; i >= 0; i--) {
@@ -415,9 +390,12 @@ class WeatherChart extends React.PureComponent {
   //初始化数据
   componentDidMount() {
     this.selectInit()
-    window.setInterval(() => {
+    this.init = window.setInterval(() => {
       this.selectInit()
     }, 1000 * 5 * 60)
   }
+  componentWillUnmount() {
+    clearTimeout(this.init);
+}
 }
 export default WeatherChart;

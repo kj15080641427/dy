@@ -492,6 +492,7 @@ class Precipitation extends React.PureComponent {
                     }
                 }
                 let data = [
+                    { regionName: "全部", list: dataArr },
                     { regionName: "东营区(开发区)", list: dyarr },
                     // { regionName: "天鹅湖蓄滞洪区", list: teharr },
                     { regionName: "广饶县(省农高区)", list: grarr },
@@ -507,10 +508,13 @@ class Precipitation extends React.PureComponent {
     //初始化数据
     componentDidMount() {
         this.selectInit()
-        window.setInterval(() => {
+        this.init = window.setInterval(() => {
             this.selectInit()
         }, 1000 * 5 * 60);
 
+    }
+    componentWillUnmount() {
+        clearTimeout(this.init);
     }
     locationClick(e) {
         let lon = e.lon * 1;

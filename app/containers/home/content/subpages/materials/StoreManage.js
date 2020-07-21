@@ -10,6 +10,26 @@ import * as actions from '@app/redux/actions/home';
 import { QueryMaterialWarehouse, saveMaterialWarehouse, deleteMaterialWarehouse, updateMaterialWarehouse } from '@app/data/request';
 import { Table, Row, Modal, Input, Button, Select, Form, Radio, DatePicker, Switch, Popconfirm, message } from 'antd';
 import { SearchOutlined, RedoOutlined, PlusCircleOutlined, CloseCircleOutlined, FormOutlined } from '@ant-design/icons';
+const layout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+const tailFormItemLayout = {
+  wrapperCol: {
+      xs: {
+          span: 24,
+          offset: 0,
+      },
+      sm: {
+          span: 16,
+          offset: 8,
+      },
+  },
+};
 class StoreManage extends React.PureComponent {
 
   constructor(props, context) {
@@ -252,9 +272,10 @@ class StoreManage extends React.PureComponent {
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel}
           footer={null}
+          forceRender={true}
         >
           {/* 模态框面板 */}
-          <Form name="save" onFinish={onFinishmodal} validateMessages={validateMessages} ref={this.addform}
+          <Form {...layout} name="save" onFinish={onFinishmodal} validateMessages={validateMessages} ref={this.addform}
             initialValues={{
               remember: true,
             }}>
@@ -269,7 +290,7 @@ class StoreManage extends React.PureComponent {
             <Form.Item name={'lat'} label="纬度" rules={[{ required: true }]}>
               <Input />
             </Form.Item>
-            <Form.Item>
+            <Form.Item {...tailFormItemLayout}>
               <Button type="primary" htmlType="submit">
                 确定
         </Button>

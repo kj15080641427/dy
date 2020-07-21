@@ -307,11 +307,11 @@ class WeatherChart extends React.PureComponent {
 
   }
   //初始化数据
-  componentDidMount() {
-    this.selectInit()
-    window.setInterval(() => {
-      this.selectInit()
-    }, 1000 * 5 * 60)
-  }
+  // componentDidMount() {
+  //   this.selectInit()
+  //   window.setInterval(() => {
+  //     this.selectInit()
+  //   }, 1000 * 5 * 60)
+  // }
 }
 export default WeatherChart;
