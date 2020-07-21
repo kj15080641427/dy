@@ -357,7 +357,7 @@ class AlarmTable extends React.PureComponent {
   }
   componentDidMount() {
     this.selectInit()
-    this.init = window.setInterval(() => {
+    this.init =window.setInterval(() => {
       this.selectInit()
     }, 1000 * 5 * 60)
   }
