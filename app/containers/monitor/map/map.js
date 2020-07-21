@@ -100,6 +100,19 @@ class Map extends React.PureComponent {
     if (this._resizeTimeout) {
       clearTimeout(this._resizeTimeout);
     }
+
+    this.map.stopSelectFeature("video");
+    this.map.stopSelectFeature("ponding");
+    this.map.stopSelectFeature("rain");
+    this.map.stopSelectFeature("water");
+    this.map.stopSelectFeature("gate");
+    this.map.stopSelectFeature("pump");
+    this.map.stopSelectFeature("person");
+    this.map.stopSelectFeature("warehouse");
+    this.map.getMap().un("movestart");
+    this.map.getMap().un("moveend");
+    this.map.unView("change:resolution", this.mapViewChanged.bind(this));
+
     this._mapMove && this._mapMove.remove();
     this.flood && this.flood.destroy();
     // this._clickToken.remove();
@@ -602,7 +615,7 @@ class Map extends React.PureComponent {
     // this.map.activeMeasure();
     this.map.on("moveend", () => {
       let a = this.map.getView().calculateExtent();
-      // console.log(a);
+      console.log(a);
     });
     this.map.onFeatureClicked((feature) => {
       // console.log("featureclick", feature);
@@ -618,9 +631,10 @@ class Map extends React.PureComponent {
       }, 0);
     });
     // 缩放事件
-    this.map.onView("change:resolution", () => {
-      this.mapViewChanged();
-    });
+    // this.map.onView("change:resolution", () => {
+    //   this.mapViewChanged();
+    // });
+    this.map.onView("change:resolution", this.mapViewChanged.bind(this));
     this.mapViewChanged(); // 初始化完成调一下,根据zoom隐藏相关图层
     // 地图拖动事件
     this.map.getMap().on("movestart", () => {

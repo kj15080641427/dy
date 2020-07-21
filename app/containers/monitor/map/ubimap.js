@@ -43,14 +43,14 @@ import "ol/ol.css";
 import ImageLayer from 'ol/layer/Image';
 import { ImageWMS } from 'ol/source';
 
-export function formatDegree(value) { 
-  value = Math.abs(value);  
-  var v1 = Math.floor(value);//度  
-  var v2 = Math.floor((value - v1) * 60);//分  
+export function formatDegree(value) {
+  value = Math.abs(value);
+  var v1 = Math.floor(value);//度
+  var v2 = Math.floor((value - v1) * 60);//分
   v2 < 10 ? (v2 = "0"+v2) : v2;
-  var v3 = Math.round((value - v1) * 3600 % 60);//秒  
+  var v3 = Math.round((value - v1) * 3600 % 60);//秒
   v3 < 10 ? (v3 = "0"+v3) : v3;
-  return v1 + '°' + v2 + '\'' + v3 + '"';  
+  return v1 + '°' + v2 + '\'' + v3 + '"';
 }
 export default (function(window) {
     var projection = get("EPSG:3857");
@@ -74,7 +74,7 @@ export default (function(window) {
         this.hlLayers = []; // 启用高亮
         this.sfLayers = [] ; // 启用的点击交互图层
         this.tagLayers = []; // 开启有tag的layer
-        this.tagLayerEvent = {} // 
+        this.tagLayerEvent = {} //
         this.clusterLayer = {};
         this.callbacks = {
           onFeatureClicked: null,
@@ -280,12 +280,12 @@ export default (function(window) {
                 geoLine = new MultiLineString(obj.lonlats);
                 geoLine.transform(sprojection, projection);
               }
-              
+
             }else {
               geoLine = new LineString(obj.lonlats);
               geoLine.transform(sprojection, projection);
             }
-            
+
             var feature = new Feature({
                 geometry: geoLine
             });
@@ -512,7 +512,7 @@ export default (function(window) {
     Map.prototype.removeGis = function(key) {
         this._removeLayer(key);
   };
-  
+
   //添加图片图层
   Map.prototype.addImageTile = function (param, urlFunc) {
     if (!param || !param.key) return;
@@ -574,7 +574,7 @@ export default (function(window) {
               })
             })
         }
-        // 
+        //
       });
       var cachFeature = null;
       // 等到下一次事件循环再加
@@ -605,11 +605,11 @@ export default (function(window) {
             }});
         });
       }, 0)
-      
+
       vectorLayer.set("key", param.key);
       this.map.addLayer(vectorLayer);
       this.layers[param.key] = vectorLayer;
-      
+
     };
     Map.prototype.addHeatmap = function(param, urlFunc) {
       var vectorSource = new VectorSource({
@@ -633,11 +633,11 @@ export default (function(window) {
           return 1;
         }
       });
-     
+
       vectorLayer.set("key", param.key);
       this.map.addLayer(vectorLayer);
       this.layers[param.key] = vectorLayer;
-      
+
     };
     //添加矢量图
     Map.prototype.addTraffic = function(param) {
@@ -647,7 +647,7 @@ export default (function(window) {
             source: new VectorSource(),
             visible: param.visible == null ? true : param.visible,
             zIndex: param.zIndex ? param.zIndex : 0,
-            
+
             style: function(feature) {
               let traffic = feature.get("attr") && feature.get("attr").traffic;
               let zoom = _this.getZoom();
@@ -855,7 +855,7 @@ export default (function(window) {
         tg.classList.remove("active");
       }
     }
-    
+
     //添加目标
     Map.prototype.addFeature = function(key, obj) {
         if (!this.layers[key] || obj == null) return;
@@ -1064,7 +1064,7 @@ export default (function(window) {
                       });
                       featureStyle.setText(text);
                     }
-                    
+
                     feature.setStyle(featureStyle);
                     hlFeature = feature;
                     flag = true;
@@ -1076,14 +1076,14 @@ export default (function(window) {
                 return true;
               }
               return false;
-              
+
             }});
             if (flag) {
                 target.style.cursor = "pointer";
             }else{
                 target.style.cursor = "inherit";
             }
-            
+
         });
     };
     //关闭高亮
@@ -1101,7 +1101,7 @@ export default (function(window) {
     Map.prototype.startTagOnLayer = function(key) {
       if (!this.layers[key]) return;
       this.tagLayers.push(this.layers[key]);
-      
+
       let layer = this.layers[key];
       let func = (e) => {
       // layer.getSource().getFeatures().forEach((feature) => {
@@ -1169,7 +1169,7 @@ export default (function(window) {
     Map.prototype.showTextonLayer = function(key, isShow) {
         if (!this.layers[key]) return;
         if (this.showTextLayer[key] === isShow) return;
-        
+
         var features = this.layers[key].getSource().getFeatures();
         if (features && features.length) {
             var _this = this;
@@ -1189,12 +1189,12 @@ export default (function(window) {
                         });
                         featureStyle.setText(text);
                     }
-                    
+
                 }else{
                     if (featureStyle.getText()) {
                         featureStyle.setText(null);
                     }
-                    
+
                 }
                 f.setStyle(featureStyle);
             });
@@ -1229,8 +1229,8 @@ export default (function(window) {
             var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
                 return {feature, layer};
                 if (feature && layer && feature.get("attr") && feature.get("attr").type === "Point") {
-                    
-                   
+
+
                     // for (var i = 0; i < this.sfLayers.length; i++) {
                     //     var item = this.sfLayers[i];
                     //     if (item.layer === layer) {
@@ -1251,7 +1251,7 @@ export default (function(window) {
                 return true;
               }
               return false;
-              
+
             }});
             if (_this.callbacks.onFeatureClicked) {
               _this.callbacks.onFeatureClicked.call(_this, feature);
@@ -1290,7 +1290,7 @@ export default (function(window) {
         var clusterSource = new Cluster({
             distance: isSimple? 0:30,
             source: new VectorSource(),
-            
+
         });
         var clusterLayer = new VectorLayer({
         	zIndex: 21,
@@ -1489,7 +1489,7 @@ export default (function(window) {
         var formatLength = function(line) {
             var length;
             if (false) {
-               
+
             } else {
                 length = Math.round(line.getLength() * 100) / 100;
             }
@@ -1513,7 +1513,7 @@ export default (function(window) {
         var formatArea = function(polygon) {
             var area;
             if (false) {
-               
+
             } else {
                 area = polygon.getArea();
             }
@@ -1882,17 +1882,22 @@ export default (function(window) {
     Map.prototype.onView = function(eventType, func) {
         return this.map.getView().on(eventType, func);
     };
+    //解绑视图事件
+    Map.prototype.unView = function(eventType, func){
+        return this.map.getView().un(eventType, func);
+    };
     //
     Map.prototype.getView = function() {
         return this.map.getView();
     };
+
     Map.prototype.getMap = function() {
       return this.map;
     };
     Map.prototype.onFeatureClicked = function(callback) {
       this.callbacks.onFeatureClicked = callback;
     }
-    
+
     return Map;
 })(window);
 
