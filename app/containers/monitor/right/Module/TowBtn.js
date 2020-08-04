@@ -10,6 +10,7 @@ import "@app/containers/monitor/right/style.scss";
 import { Row, Col, Drawer, Table, Modal, Button } from 'antd';
 import ddfa from '@app/resource/ddfa.png';
 import sjgl from '@app/resource/sjgl.png';
+import xqkb from '@app/resource/xqkb.png';
 import ybmx from '@app/resource/ybmx.png';
 import hyyb from '@app/resource/hyyb.png';
 import hhsq from '@app/resource/hhsq.png';
@@ -721,13 +722,23 @@ class TowBtn extends React.PureComponent {
                                     ></img></Link>
                             </Col>
                             <Col span={4}>
+                                {/* {localStorage.getItem("username") === "admin1" ? null : */}
+                                    <Link to={'/notices'}>
+                                        <img
+                                            className="m-btn-flood-index"
+                                            src={xqkb}
+                                        ></img></Link>
+                                {/* } */}
+                                </Col>
+                            {/* <Col span={4}>
                                 {localStorage.getItem("username") === "admin1" ? null :
-                                    <Link to={'/home/rwvdata'} target="_blank">
+                                    <Link to={'/notices'}>
                                         <img
                                             className="m-btn-flood-index"
                                             src={sjgl}
                                         ></img></Link>
-                                }</Col>
+                                }
+                            </Col> */}
                         </Row>
                     </div>
 

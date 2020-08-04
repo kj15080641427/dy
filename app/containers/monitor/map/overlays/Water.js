@@ -11,7 +11,9 @@ import { hasClassName } from "@app/utils/common.js";
 import { transform } from "ol/proj";
 import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/line';
+import { withRouter } from 'react-router-dom';
 import { Button, Radio } from "antd"
+
 class Water extends Base {
   static type = "water";
   constructor(props, context) {
@@ -26,9 +28,10 @@ class Water extends Base {
   }
   render() {
     let { model } = this.props;
+    let iswater = model.indtype === 9 || model.indtype === 11 ? true : false
     //let water = (model.z !== null && model.z !== undefined) ? (model.z + 'm') : '--';
     let water = (model.z !== null && model.z !== undefined) ? parseFloat(model.z * 1) : NaN;
-    let waterString = isNaN(water) ? '--' : (water.toFixed(2) + 'm');
+    let typewater = iswater ? '水深：' + (water * 100).toFixed(1) + 'cm' : '水位：' + water.toFixed(2) + 'm';
     let flow = (model.q !== null) ? ((model.q * 1).toFixed(1) + "m³/s") : '--';
     let tm = model.ztm ? model.ztm : model.tm;
     let udpTm = tm ? moment(tm).format('MM-DD HH:mm') : '--';
@@ -75,10 +78,10 @@ class Water extends Base {
         <div style={{ float: 'right', overflow: 'hidden', width: 200 }}>
           <div>
             <div className="m-ovl-line" style={{ width: 180 }}>名称：{model.stnm || model.name}</div>
-            <div className="m-ovl-line">水位：{waterString}</div>
+            <div className="m-ovl-line">{typewater}</div>
             <div className="m-ovl-line">流量：{flow}</div>
             <div className="m-ovl-line">警戒：{warningLevel}</div>
-            <div className="m-ovl-line">来源：{model.dataSourceDesc}</div>
+            {/* <div className="m-ovl-line">来源：{model.dataSourceDesc}</div> */}
             <div className="m-ovl-line">河流：{rivername}</div>
             <div className="m-ovl-line">县区：{regionName}</div>
             <div className="m-ovl-line">时间：{udpTm}</div>
@@ -114,7 +117,10 @@ class Water extends Base {
   }
   componentDidMount() {
     //super.componentDidMount();
+
     let { map, model } = this.props;
+    console.log(model)
+    let iswater = model.indtype === 9 || model.indtype === 11 ? true : false
     if (!map || !model) return;
     let nowNode = this.container.cloneNode(true);
     nowNode.style.display = "block";
@@ -138,7 +144,6 @@ class Water extends Base {
     let chars = echarts.init(document.getElementById('echartsDiv'));
     let xdata = [];
     let ydata = [];
-    let maxz = 0;
     if (model.waters.length === 0) {
       const option = {
         title: {
@@ -161,7 +166,7 @@ class Water extends Base {
         },
         yAxis: {
           type: 'value',
-          name: '水位(m)'
+          name: iswater ? '水深(cm)' : '水位(m)'
         },
         series: [{
           data: [],
@@ -172,7 +177,11 @@ class Water extends Base {
     } else {
       for (let i = model.waters.length - 1; i >= 0; i--) {
         xdata.push(moment(model.waters[i].tm).format('MM-DD HH:mm'))
-        ydata.push((model.waters[i].z).toFixed(2))
+        if (iswater) {
+          ydata.push((model.waters[i].z * 100).toFixed(1))
+        } else {
+          ydata.push((model.waters[i].z).toFixed(2))
+        }
       }
       const warningnum = model.warning === null || model.warning === 99 ? 0 : model.warning
       const option = {
@@ -196,7 +205,7 @@ class Water extends Base {
         },
         yAxis: {
           type: 'value',
-          name: '水位(m)',
+          name: iswater ? '水深(cm)' : '水位(m)',
           max: function (value) {
             return (warningnum === 0 ? (value.max * 1.2) : warningnum + value.max).toFixed(1)
           }

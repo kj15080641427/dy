@@ -413,7 +413,8 @@ class Precipitation extends React.PureComponent {
                     defaultPageSize: 50
                 }}
                 pagination={{
-                    showTotal: () => `共${record.list.length}条`,
+                    // showTotal: () => `共${record.list.length}条`,
+                    showTotal: () => `共123条`,
                 }}
             />
         };

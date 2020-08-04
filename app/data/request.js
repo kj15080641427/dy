@@ -1,4 +1,4 @@
-import { fetchData, fetchJSONData, fetchFormData, fetchOutData, fetchDataByExcel } from "@app/utils/common";
+import { fetchData, fetchJSONData, fetchFormData, fetchOutData, fetchGet } from "@app/utils/common";
 // 获取所有基础数据
 export function getAll() {
   return fetchJSONData("POST", "/station/getAll", {});
@@ -312,4 +312,25 @@ export function stationRadioUpdate(data) {
 //删除基础站点和视频站点关联信息
 export function stationRadioDelete(data) {
   return fetchJSONData("POST", "/stationRadio/delete", data);
+}
+//==============================================================业务报表配置接口=======================================================================
+// 获取河道信息word
+export function downlRiverdata(data) {
+  return fetchGet("/download/riverdata", data);
+}
+// 导出河道信息word
+export function downlRiver(data) {
+  return fetchGet("/download/river", data);
+}
+// 获取积水点实时情况数据word
+export function downlPointdata(data) {
+  return fetchGet("/download/pointdata", data);
+}
+// 获取降水统计信息数据word
+export function downlRaindata(data) {
+  return fetchGet("/download/raindata", data);
+}
+// 获取所有统计信息数据word
+export function downlWordData(data) {
+  return fetchGet("/download/worddata", data);
 }

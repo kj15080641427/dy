@@ -67,7 +67,7 @@ class Satellite extends React.PureComponent {
       autoplay: false,
     };
     let { totalData } = this.state
-    if (totalData.length === 0) {
+    if (totalData.length === 0) { 
       elements.push(
         <img key={0} className="m-pic-Carousel-img" src={"https://qlfy.sdmsc.net/web/products/sates/SateCut.php?key=a&sateTypes=G&sateKinds=P&StationID=54736&num=2&sateTimeRange=  "}></img>
       )
@@ -126,7 +126,7 @@ class Satellite extends React.PureComponent {
           title="华东地区气象雷达图"
           onCancel={this.handleCancel}
           visible={this.state.radarvisible}
-          width={"50%"}
+          width={"100%"}
           height="100%"
           footer={null}
           centered={true}
@@ -147,7 +147,7 @@ class Satellite extends React.PureComponent {
           title="台风路径图"
           onCancel={this.handleCancel}
           visible={this.state.typhoonvisible}
-          width={"50%"}
+          width={"100%"}
           height="100%"
           footer={null}
           centered={true}
@@ -159,14 +159,14 @@ class Satellite extends React.PureComponent {
             height: "975px",
             width: "100%",
           }}>
-            <iframe src="http://typhoon.zjwater.gov.cn/wap.htm"
-              frameborder="0" scrolling="no" style={{ position: 'relative', width: "100%", height: "1275px" }}></iframe>
+            <iframe src="https://tf.istrongcloud.com/release/index-id.html?id=1260387956"
+              frameborder="0" scrolling="no" style={{ position: 'relative', width: "100%", height: "100%" }}></iframe>
           </div>
         </Modal>
-        {/* <BorderBox8 style={{
+        <BorderBox8 style={{
           height: 255,
           width: 364,
-        }} reverse="{true}"> */}
+        }} reverse="{true}">
         <div className="dis-satellite-div">
           <iframe frameborder="0" scrolling="no" src="http://m.nmc.cn/publish/precipitation/1-day.html" style={{
             position: 'absolute', top: '-189px',
@@ -174,26 +174,26 @@ class Satellite extends React.PureComponent {
             width: 360,
           }}></iframe>
         </div>
-        {/* </BorderBox8>
+        </BorderBox8>
         <BorderBox8 style={{
           height: 255,
           width: 364,
-        }} reverse="{true}"> */}
+        }} reverse="{true}">
         <div className="dis-satellite-div">
           {/* <PlayCircleOutlined className="m-pic-icon" onClick={() => this.slickPlayRoPause(lunboSetting)} /> */}
           <Carousel
-            // rtl={true}
+            rtl={true}
             autoplaySpeed={400} speed={1} {...lunboSetting}
-          // ref={el => (this.slider = el)}
+          ref={el => (this.slider = el)}
           >
             {elements}
           </Carousel>
         </div>
-        {/* </BorderBox8>
+        </BorderBox8>
         <BorderBox8 style={{
           height: 255,
           width: 364,
-        }} reverse="{true}"> */}
+        }} reverse="{true}">
         <div className="dis-satellite-div">
           <iframe frameborder="0" scrolling="no" src="http://58.59.29.51:14003/Radar" style={{
             position: 'absolute', top: -125,
@@ -202,19 +202,19 @@ class Satellite extends React.PureComponent {
             width: 360
           }}></iframe>
         </div>
-        {/* </BorderBox8>
+        </BorderBox8>
         <BorderBox8 style={{
           height: 255,
           width: 364,
-        }} reverse="{true}"> */}
+        }} reverse="{true}">
           <div className="dis-satellite-div">
-            <iframe frameborder="0" scrolling="no" src="http://typhoon.zjwater.gov.cn/wap.htm" style={{
-              position: 'absolute', top: '-35px',
+            <iframe frameborder="0" scrolling="no" src="https://tf.istrongcloud.com/release/index-id.html?id=1260387956" style={{
+              position: 'absolute', top: '-12px',
               height: 370,
               width: 360
             }}></iframe>
           </div>
-        {/* </BorderBox8> */}
+        </BorderBox8>
 
       </div >
     );

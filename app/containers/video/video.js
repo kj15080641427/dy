@@ -20,6 +20,7 @@ import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png"
 import { Drawer, Switch, Row, Divider, Checkbox } from 'antd';
 import { none } from 'ol/centerconstraint';
+import SetTitle from '@app/components/setting/SetTitle';
 
 class Monitor extends React.PureComponent {
   constructor(props, context) {
@@ -91,7 +92,7 @@ class Monitor extends React.PureComponent {
           });
         }} className="m-set-img" src={setImg}></img>
         <Drawer
-          title={<a style={{ fontSize: 18, color: '#000000fd', fontWeight: 'bold ' }}>设置</a>}
+          title={<SetTitle></SetTitle>}
           placement="right"
           closable={false}
           onClose={this.onClose}

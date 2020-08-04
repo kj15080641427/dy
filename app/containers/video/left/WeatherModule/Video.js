@@ -351,12 +351,13 @@ class Precipitation extends React.PureComponent {
                     }
                 }
             }
-            let dyarr = [{ name: "河道", list: dycatyarr }, { name: "积水点", list: dyfloodarr }, { name: "天鹅湖蓄滞洪区", list: dyteharr }];
+            let dyarr = [{ name: "河道", list: dycatyarr }, { name: "积水点", list: dyfloodarr }, { name: "天鹅湖蓄滞洪区", list: dyteharr },];
             let klarr = [{ name: "河道", list: klcatyarr }];
             let ljarr = [{ name: "河道", list: ljcatyarr }];
             let grarr = [{ name: "河道", list: grcatyarr }];
             let hkarr = [{ name: "河道", list: hkcatyarr }];
             let data = [
+                { regionName: "全部", list: [{ name: "全部", list: result.data }] },
                 { regionName: "东营区(开发区)", list: dyarr },
                 { regionName: "广饶县(省农高区)", list: grarr },
                 { regionName: "利津县", list: ljarr },

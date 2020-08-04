@@ -126,7 +126,8 @@ class Tables extends React.PureComponent {
           <TableWrap title={"易涝点(" + easyCount + ")"} extra={"单位：m"}>
             <EasyFlood dataSource={easyData} lod={easylod}></EasyFlood>
           </TableWrap>
-          <TableWrap title={"水位站(" + waterCount + ")"} extra={"单位：m"}>
+          {/* <TableWrap title={"水位站(" + waterCount + ")"} extra={"单位：m"}> */}
+          <TableWrap title={"水位站(123)"} extra={"单位：m"}>
             <Water dataSource={waterData} lod={waterlod}></Water>
           </TableWrap>
         </div>

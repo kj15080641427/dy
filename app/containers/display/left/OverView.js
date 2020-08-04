@@ -92,7 +92,7 @@ class OverView extends React.PureComponent {
                   </div>
                   <div className="dis-ov-div-right">
                     <Row className="dos-vo-div-row">
-                      <span className="dis-ov-value">100</span><span className="dis-ov-unit1">个</span></Row>
+                      <span className="dis-ov-value">92</span><span className="dis-ov-unit1">个</span></Row>
                     <Row><span className="dis-ov-text">全市易涝点</span></Row>
                     <div className="dis-ov-board-one" style={{ bottom: 10 }}></div>
                   </div>
@@ -118,7 +118,7 @@ class OverView extends React.PureComponent {
                   </div>
                   <div className="dis-ov-div-right2">
                     <Row className="dos-vo-div-row2">
-                      <span className="dis-ov-value3">116</span>
+                      <span className="dis-ov-value3">123</span>
                       <span className="dis-ov-unit">座</span>
                     </Row>
                     <Row><span className="dis-ov-text2">全市水位站</span></Row>

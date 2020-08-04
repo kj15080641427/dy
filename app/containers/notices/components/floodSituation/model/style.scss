@@ -1,18 +1,17 @@
-.div-right-table {
-    position: relative;
-    width: 1200px;
-    height: 750px;
-    right: -20px;
+.situation-title {
+    font-size: 50px;
+    font-family: serif;
+    margin: auto;
+    font-weight: bold;
 }
-.div-left-echarts {
-    width: 420px;
-    height: 810px;
-}
-.echarts-isOnline {
-    height: 400px;
-}
-.echarts-count {
-    height: 400px;
+.situation-text {
+    font-size: 20px;
+    margin: inherit;
+    .text-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: rgb(114, 108, 108);
+    }
 }
 .tg {
     border-collapse: collapse;

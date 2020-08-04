@@ -6,15 +6,17 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '@app/redux/actions/monitor';
 import UbiMap from "./ubimap";
-import  FloodAnimation from "./FloodAnimation";
+import FloodAnimation from "./FloodAnimation";
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
 import emitter from "@app/utils/emitter.js";
 import moment from 'moment';
 
 import "./style.scss";
 import { templateWater, templateRain, templatePonding, templateWareHouse } from "./template";
-import { getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning, getGate,
-  getPump, getWfsRiver, getWarehouse, getWarehouseMt,getVideosByCode, getWaterStationByVideoCode } from "@app/data/request";
+import {
+  getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning, getGate,
+  getPump, getWfsRiver, getWarehouse, getWarehouseMt, getVideosByCode, getWaterStationByVideoCode
+} from "@app/data/request";
 import VideoControl from '@app/components/video/VideoControl';
 
 import Person from "./overlays/Person";
@@ -47,7 +49,7 @@ class Map extends React.PureComponent {
     };
     this.type = [Person, Rain, Water, Video, Gate, Pump, WfsRiver, Ponding, Warehouse];
     // eslint-disable-next-line react/no-direct-mutation-state
-    this.type.forEach((Ovl) => {this.state.overlays[Ovl.type] = {};});
+    this.type.forEach((Ovl) => { this.state.overlays[Ovl.type] = {}; });
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this._windowCloseFlag = true; // window关闭事件是否开启
     this.onOverlayClose = this.onOverlayClose.bind(this);
@@ -117,7 +119,7 @@ class Map extends React.PureComponent {
     this.flood && this.flood.destroy();
     // this._clickToken.remove();
 
-    if(this.alarmTimer){
+    if (this.alarmTimer) {
       clearInterval(this.alarmTimer);
     }
   }
@@ -261,8 +263,8 @@ class Map extends React.PureComponent {
       key: "video",
       zIndex: 20,
       style: {
-        src: function(featureObj) { //
-            return require("../../../resource/icon/camera.svg")["default"];
+        src: function (featureObj) { //
+          return require("../../../resource/icon/camera.svg")["default"];
         },
         anchor: [0.5, 0.5],
         strokeColor: "#1890ff",
@@ -270,8 +272,8 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [10, 0],
-        fontText: function(featureObj) {
-            return featureObj.sitename + "";
+        fontText: function (featureObj) {
+          return featureObj.sitename + "";
         },
         font: '16px sans-serif'
       }
@@ -280,10 +282,10 @@ class Map extends React.PureComponent {
       key: "rain",
       zIndex: 20,
       style: {
-        src: function(featureObj) { //
+        src: function (featureObj) { //
           //let num = parseInt(featureObj.minuteAvg*1);
           let num = 0.0;
-          try{
+          try {
             num = parseFloat(featureObj.dayAvg * 1);
           }
           catch (e) {
@@ -291,17 +293,17 @@ class Map extends React.PureComponent {
           }
           if (num === 0) {
             return require("../../../resource/icon/1.svg")["default"];
-          }else if (num >0 && num <= 10) {
+          } else if (num > 0 && num <= 10) {
             return require("../../../resource/icon/2.svg")["default"];
-          }else if (num >10 && num <= 25) {
+          } else if (num > 10 && num <= 25) {
             return require("../../../resource/icon/3.svg")["default"];
-          }else if (num >25 && num <= 50) {
+          } else if (num > 25 && num <= 50) {
             return require("../../../resource/icon/4.svg")["default"];
-          }else if (num >50 && num <= 100) {
+          } else if (num > 50 && num <= 100) {
             return require("../../../resource/icon/5.svg")["default"];
-          }else if (num >100 && num <= 250) {
+          } else if (num > 100 && num <= 250) {
             return require("../../../resource/icon/6.svg")["default"];
-          }else if (num >250) {
+          } else if (num > 250) {
             return require("../../../resource/icon/7.svg")["default"];
           }
         },
@@ -311,8 +313,8 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [10, 0],
-        fontText: function(featureObj) {
-            return featureObj.name + "";
+        fontText: function (featureObj) {
+          return featureObj.name + "";
         },
         font: '16px sans-serif'
       }
@@ -321,7 +323,7 @@ class Map extends React.PureComponent {
       key: "water",
       zIndex: 20,
       style: {
-        src: function(featureObj) { //
+        src: function (featureObj) { //
           // if (featureObj.warningOver) {
           //   return require("../../../resource/icon/water_warning.svg")["default"];
           // } else {
@@ -335,8 +337,8 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [10, 0],
-        fontText: function(featureObj) {
-            return featureObj.name + "";
+        fontText: function (featureObj) {
+          return featureObj.name + "";
         },
         font: '16px sans-serif'
       }
@@ -345,7 +347,7 @@ class Map extends React.PureComponent {
       key: "ponding",
       zIndex: 20,
       style: {
-        src: function(featureObj) { //
+        src: function (featureObj) { //
           return require("../../../resource/icon/ponding.svg")["default"];
         },
         anchor: [0.5, 0.5],
@@ -354,8 +356,8 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [10, 0],
-        fontText: function(featureObj) {
-            return featureObj.name + "";
+        fontText: function (featureObj) {
+          return featureObj.name + "";
         },
         font: '16px sans-serif'
       }
@@ -370,8 +372,8 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [0, 0],
-        fontText: function(featureObj) {
-            return featureObj.name + "";
+        fontText: function (featureObj) {
+          return featureObj.name + "";
         },
         font: '16px sans-serif'
       }
@@ -386,12 +388,12 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [0, 0],
-        src: function(featureObj) {
+        src: function (featureObj) {
           return require("../../../resource/pump.svg")["default"];
 
         },
-        fontText: function(featureObj) {
-            return featureObj.name + "";
+        fontText: function (featureObj) {
+          return featureObj.name + "";
         },
         font: '16px sans-serif'
       }
@@ -406,11 +408,11 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [20, 0],
-        src: function(featureObj) {
+        src: function (featureObj) {
           return require("../../../resource/icon/warehouse.svg")["default"];
         },
-        fontText: function(featureObj) {
-            return featureObj.name + "";
+        fontText: function (featureObj) {
+          return featureObj.name + "";
         },
         font: '16px sans-serif'
       }
@@ -443,25 +445,25 @@ class Map extends React.PureComponent {
     this.map.startSelectFeature("rain", (param) => {
       let { details } = this.props;
       //if (details.rain[param.stcd]) {
-      if(false){
-        this.addOverlay(Rain.type, {...param, ...details.rain[param.stcd]});
-      }else {
-        getRainRealTime({stcd: param.stcd, current: 1, size: 1})
-        .then((res) => {
-          if (res.code === 200) {
-            let record = res.data.records && res.data.records[0] || null;
-            this.props.actions.setDetailData({
-              key: "rain",
-              value: record
-            });
-            this.addOverlay(Rain.type, record ? {...param, ...record} : param);
-          } else {
-            return Promise.reject(res.msg || "未知错误");
-          }
-        })
-        .catch((e) => {
-          message.error("获取雨晴详情失败");
-        });
+      if (false) {
+        this.addOverlay(Rain.type, { ...param, ...details.rain[param.stcd] });
+      } else {
+        getRainRealTime({ stcd: param.stcd, current: 1, size: 1 })
+          .then((res) => {
+            if (res.code === 200) {
+              let record = res.data.records && res.data.records[0] || null;
+              this.props.actions.setDetailData({
+                key: "rain",
+                value: record
+              });
+              this.addOverlay(Rain.type, record ? { ...param, ...record } : param);
+            } else {
+              return Promise.reject(res.msg || "未知错误");
+            }
+          })
+          .catch((e) => {
+            message.error("获取雨晴详情失败");
+          });
       }
 
     });
@@ -469,13 +471,13 @@ class Map extends React.PureComponent {
       let { details } = this.props;
       //if (details.water[param.stcd]) {
       //phz 修改，所有的水位都从接口获取
-      if(false){
-        this.addOverlay(Water.type, {...param, ...details.water[param.stcd]});
+      if (false) {
+        this.addOverlay(Water.type, { ...param, ...details.water[param.stcd] });
       } else {
         //查询实时水位
         let queryWater = getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 });
         //查询站点视频信息
-        let queryVideo = getVideosByCode({ code: param.code});
+        let queryVideo = getVideosByCode({ code: param.code });
         //getWaterRealTime({stcd: param.stcd, current: 1, size: 1})
         let endTime = new moment().format('YYYY-MM-DD HH:mm:ss');
         let beginTime = moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
@@ -494,57 +496,57 @@ class Map extends React.PureComponent {
               let waterLevels = result[2].data.records;
               let newParam = records ? { ...param, ...records } : param;
               newParam = videoObject ? { ...newParam, videos: [...videoObject] } : newParam;
-              newParam = waterLevels ? {...newParam, waters: [...waterLevels]} : newParam;
+              newParam = waterLevels ? { ...newParam, waters: [...waterLevels] } : newParam;
               newParam.videoControl = this.videoControl;
-            this.addOverlay(Water.type, newParam);
-          } else {
-            return Promise.reject(res.msg || "未知错误");
-          }
-        })
+              this.addOverlay(Water.type, newParam);
+            } else {
+              return Promise.reject(res.msg || "未知错误");
+            }
+          })
           .catch((e) => {
-          message.error("获取水位详情失败");
-        });
+            message.error("获取水位详情失败");
+          });
       }
     });
     this.map.startSelectFeature("ponding", (param) => {
       let queryWater = getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 });
-        let queryVideo = getVideosByCode({ code: param.code});
-        //getWaterRealTime({stcd: param.stcd, current: 1, size: 1})
-        let endTime = new moment().format('YYYY-MM-DD HH:mm:ss');
-        let beginTime = moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
-        let queryWaterHistory = getWaterHistory({ stcd: param.stcd, current: 1, size: 10000, starttm: beginTime, endtm: endTime })
-        Promise.all([queryWater, queryVideo, queryWaterHistory])
-          .then((result) => {
-            let res = result[0];
-            if (res.code === 200) {
-              let records = res.data.records && res.data.records[0] || null;
-              this.props.actions.setDetailData({
-                key: "water",
-                value: records
-              });
-              let videoObject = result[1].data;
-              let waterLevels = result[2].data.records;
-              let newParam = records ? { ...param, ...records } : param;
-              newParam = videoObject ? { ...newParam, videos: [...videoObject] } : newParam;
-              newParam = waterLevels ? {...newParam, waters: [...waterLevels]} : newParam;
-              newParam.videoControl = this.videoControl;
+      let queryVideo = getVideosByCode({ code: param.code });
+      //getWaterRealTime({stcd: param.stcd, current: 1, size: 1})
+      let endTime = new moment().format('YYYY-MM-DD HH:mm:ss');
+      let beginTime = moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
+      let queryWaterHistory = getWaterHistory({ stcd: param.stcd, current: 1, size: 10000, starttm: beginTime, endtm: endTime })
+      Promise.all([queryWater, queryVideo, queryWaterHistory])
+        .then((result) => {
+          let res = result[0];
+          if (res.code === 200) {
+            let records = res.data.records && res.data.records[0] || null;
+            this.props.actions.setDetailData({
+              key: "water",
+              value: records
+            });
+            let videoObject = result[1].data;
+            let waterLevels = result[2].data.records;
+            let newParam = records ? { ...param, ...records } : param;
+            newParam = videoObject ? { ...newParam, videos: [...videoObject] } : newParam;
+            newParam = waterLevels ? { ...newParam, waters: [...waterLevels] } : newParam;
+            newParam.videoControl = this.videoControl;
             this.addOverlay(Water.type, newParam);
           } else {
             return Promise.reject(res.msg || "未知错误");
           }
         })
-          .catch((e) => {
+        .catch((e) => {
           message.error("获取水位详情失败");
         });
     });
     this.map.startSelectFeature("video", (param) => {
       //查询站点的水位
-      getWaterStationByVideoCode({code: param.code})
+      getWaterStationByVideoCode({ code: param.code })
         .then(result => {
           //查询失败
-          if(result.code !== 200){
+          if (result.code !== 200) {
             message.error('查询水位站点失败');
-          } else if(!result.data || result.data.length === 0){
+          } else if (!result.data || result.data.length === 0) {
             //没有水位信息时，仅显示视频
             let newParam = { ...param };
             newParam.videoControl = this.videoControl;
@@ -557,7 +559,7 @@ class Map extends React.PureComponent {
             let beginTime = moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
             getWaterHistory({ stcd: stcd, current: 1, size: 10000, starttm: beginTime, endtm: endTime })
               .then(res => {
-                if(res.code === 200){
+                if (res.code === 200) {
                   let newParam = { ...waterStation };
                   newParam.videoControl = this.videoControl;
                   newParam.videos = [param];
@@ -591,25 +593,25 @@ class Map extends React.PureComponent {
       let { details } = this.props;
       //console.log(1);
       if (details.warehouse[param.id]) {
-        this.addOverlay(Warehouse.type, {...param, ...details.warehouse[param.id]});
-      }else {
-        getWarehouseMt({materialWarehouseId: param.id})
-        .then((res) => {
-          if (res.code === 200) {
-            let record = res.data || [];
-            this.props.actions.setDetailData({
-              key: "warehouse",
-              value: {materials: record, id: param.id},
-              idKey: 'id'
-            });
-            this.addOverlay(Warehouse.type, record ? {...param, materials: record, id: param.id} : param);
-          } else {
-            return Promise.reject(res.msg || "未知错误");
-          }
-        })
-        .catch((e) => {
-          message.error("获取仓库详情失败");
-        });
+        this.addOverlay(Warehouse.type, { ...param, ...details.warehouse[param.id] });
+      } else {
+        getWarehouseMt({ materialWarehouseId: param.id })
+          .then((res) => {
+            if (res.code === 200) {
+              let record = res.data || [];
+              this.props.actions.setDetailData({
+                key: "warehouse",
+                value: { materials: record, id: param.id },
+                idKey: 'id'
+              });
+              this.addOverlay(Warehouse.type, record ? { ...param, materials: record, id: param.id } : param);
+            } else {
+              return Promise.reject(res.msg || "未知错误");
+            }
+          })
+          .catch((e) => {
+            message.error("获取仓库详情失败");
+          });
       }
     });
     // this.map.activeMeasure();
@@ -644,7 +646,7 @@ class Map extends React.PureComponent {
     this.map.getMap().on("moveend", () => {
       window.setTimeout(() => {
         this._isMapMoved = false;
-      },0)
+      }, 0)
 
       // this.mapViewChanged();
     });
@@ -663,27 +665,27 @@ class Map extends React.PureComponent {
     if (zoom >= 11) {
       if (this._zoom && this._zoom >= 11) return;
       //console.log("show")
-      if(layerVisible.water) {
+      if (layerVisible.water) {
         this.map.showTagBox("water_tag");
-      }else {
+      } else {
         this.map.hideTagBox("water_tag");
       }
-      if(layerVisible.rain) {
+      if (layerVisible.rain) {
         this.map.showTagBox("rain_tag");
-      }else{
+      } else {
         this.map.hideTagBox("rain_tag");
       }
 
-      if(layerVisible.ponding){
+      if (layerVisible.ponding) {
         this.map.showTagBox('ponding_tag');
-      }else {
+      } else {
         this.map.hideTagBox('ponding_tag');
       }
 
       // this.map.showTagOnLayer("water");
       // this.map.showTagOnLayer("rain");
     } else {
-      if ( this._zoom && this._zoom < 11) return;
+      if (this._zoom && this._zoom < 11) return;
       //console.log("hide");
       this.map.hideTagBox("water_tag");
       this.map.hideTagBox("rain_tag");
@@ -696,25 +698,25 @@ class Map extends React.PureComponent {
     props.id = props.NAME;
     let { details } = this.props;
     if (details.wfsRiver[props.NAME]) {
-      this.addOverlay(WfsRiver.type, {...props, ...details.wfsRiver[props.NAME]});
-    }else {
-      getWfsRiver({name: props.NAME})
-      .then((res) => {
-        if (res.code === 200) {
-          let record = res.data && res.data[0] || null;
-          this.props.actions.setDetailData({
-            key: "wfsRiver",
-            value: record,
-            idKey: "name"
-          });
-          this.addOverlay(WfsRiver.type, record ? {...props, ...record} : props);
-        } else {
-          return Promise.reject(res.msg || "未知错误");
-        }
-      })
-      .catch((e) => {
-        message.error("获取河流详情失败");
-      });
+      this.addOverlay(WfsRiver.type, { ...props, ...details.wfsRiver[props.NAME] });
+    } else {
+      getWfsRiver({ name: props.NAME })
+        .then((res) => {
+          if (res.code === 200) {
+            let record = res.data && res.data[0] || null;
+            this.props.actions.setDetailData({
+              key: "wfsRiver",
+              value: record,
+              idKey: "name"
+            });
+            this.addOverlay(WfsRiver.type, record ? { ...props, ...record } : props);
+          } else {
+            return Promise.reject(res.msg || "未知错误");
+          }
+        })
+        .catch((e) => {
+          message.error("获取河流详情失败");
+        });
     }
   }
   addOverlay(key, param) {
@@ -737,7 +739,7 @@ class Map extends React.PureComponent {
       elements[id] = param;
     }
     this.setState({
-      overlays: {...overlays}
+      overlays: { ...overlays }
     });
   }
   setVisible() {
@@ -781,7 +783,7 @@ class Map extends React.PureComponent {
       if (!this._windowCloseFlag) return;
       if (this._isMapMoved) return;
       let obj = {};
-      this.type.forEach((Ovl) => {obj[Ovl.type] = {};});
+      this.type.forEach((Ovl) => { obj[Ovl.type] = {}; });
       this.setState({
         overlays: obj
       });
@@ -802,7 +804,7 @@ class Map extends React.PureComponent {
 
         this.props.actions.initBaseData(data);
         //如果显示报警
-        if(_this.props.layerVisible.waterWarning === true){
+        if (_this.props.layerVisible.waterWarning === true) {
           this.props.actions.setMutiDetailData({
             key: "water",
             value: res[1] && res[1].data || []
@@ -812,9 +814,9 @@ class Map extends React.PureComponent {
         this.drawFeatures(data);
       }
     })
-    .catch((e) => {
-      message.error('获取基础资料失败');
-    });
+      .catch((e) => {
+        message.error('获取基础资料失败');
+      });
     // 加载视频数据
     getAllVideo({}).then((res) => {
       if (res.code === 200) {
@@ -827,17 +829,17 @@ class Map extends React.PureComponent {
             lonlat: [item.lon, item.lat],
 
           };
-        })) ;
+        }));
       }
     })
-    .catch((e) => {
-      console.log(e);
-    });
+      .catch((e) => {
+        console.log(e);
+      });
     // 加载水闸数据
     getGate({}).then((res) => {
       if (res.code === 200) {
         this.props.actions.addGates(res.data);
-        this.map.addFeatures("gate", res.data.filter((item) => { return item.lat > 3 && item.lat < 53}).map((item) => {
+        this.map.addFeatures("gate", res.data.filter((item) => { return item.lat > 3 && item.lat < 53 }).map((item) => {
           return {
             ...item,
             type: "LineString",
@@ -850,11 +852,11 @@ class Map extends React.PureComponent {
             rotateAnchor: [150, 50],
             lonlats: [item.lon, item.lat],
             coords: [
-              [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0],[0, 100], [300, 0],[0, 0], [300, 100]]
+              [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0], [0, 100], [300, 0], [0, 0], [300, 100]]
 
             ]
           };
-        })) ;
+        }));
       }
     }).catch((e) => {
       console.log(e);
@@ -874,9 +876,9 @@ class Map extends React.PureComponent {
         }));
       }
     })
-    .catch((e) => {
-      console.log(e);
-    });
+      .catch((e) => {
+        console.log(e);
+      });
     // 防汛物资仓库
     getWarehouse({}).then((res) => {
       if (res.code === 200) {
@@ -884,26 +886,26 @@ class Map extends React.PureComponent {
         this.map.addFeatures("warehouse", templateWareHouse(res.data));
       }
     })
-    .catch(() => {
-      console.log(e);
-    });
-    // 轮询预警更新
-    if(this.props.layerVisible.waterWarning === true)
-    this.alarmTimer = window.setInterval(() => {
-      getWaterWarning({})
-      .then((res) => {
-        if (res.code === 200) {
-          //res.data.records[0].stcd = "31106670";
-          this.props.actions.setMutiDetailData({
-            key: "water",
-            value: res && res.data || []
-          });
-          let { water, details } = this.props;
-          this.map.updateFeatures("water", templateWater(water, details.water));
-          this.addWaterWaring(res.data);
-        }
+      .catch(() => {
+        console.log(e);
       });
-    }, 30000);
+    // 轮询预警更新
+    if (this.props.layerVisible.waterWarning === true)
+      this.alarmTimer = window.setInterval(() => {
+        getWaterWarning({})
+          .then((res) => {
+            if (res.code === 200) {
+              //res.data.records[0].stcd = "31106670";
+              this.props.actions.setMutiDetailData({
+                key: "water",
+                value: res && res.data || []
+              });
+              let { water, details } = this.props;
+              this.map.updateFeatures("water", templateWater(water, details.water));
+              this.addWaterWaring(res.data);
+            }
+          });
+      }, 30000);
 
     // // 模拟洪水
     // setInterval(() => {
@@ -916,18 +918,18 @@ class Map extends React.PureComponent {
     // }, 1000);
     // this.map.addAlarm("alarm001", [118.67, 37.43]);
     this.map.addFeatures("person", [
-        {
-            type: "Point",
-            id: "person001",
-            lonlat: [118.67, 37.43],
-            heading: 0
-        },
-        {
-            type: "Point",
-            id: "person002",
-            lonlat: [118.37, 37.43],
-            heading: 0
-        },
+      {
+        type: "Point",
+        id: "person001",
+        lonlat: [118.67, 37.43],
+        heading: 0
+      },
+      {
+        type: "Point",
+        id: "person002",
+        lonlat: [118.37, 37.43],
+        heading: 0
+      },
     ]);
 
   }
@@ -956,7 +958,7 @@ class Map extends React.PureComponent {
     if (rain && rain.length) {
       rain.forEach((r) => {
         let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("rain_tag_"+r.stcd, [r.lon, r.lat], {title: name, subTitle:(r.dayAvg*1).toFixed(1) + "mm", prefix: "rain_tag"});
+        this.map.addTagBox("rain_tag_" + r.stcd, [r.lon, r.lat], { title: name, subTitle: r.dayAvg === null || r.dayAvg === undefined ? '--' : (r.dayAvg * 1).toFixed(1) + "mm", prefix: "rain_tag" });
       });
     }
   }
@@ -964,23 +966,23 @@ class Map extends React.PureComponent {
     if (water && water.length) {
       water.forEach((r) => {
         let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("water_tag_"+r.stcd, [r.lon, r.lat], {title: name, subTitle:(r.z*1).toFixed(2) + "m", prefix: "water_tag"});
+        this.map.addTagBox("water_tag_" + r.stcd, [r.lon, r.lat], { title: name, subTitle: r.z === null || r.z === undefined ? '--' : (r.z * 1).toFixed(2) + "m", prefix: "water_tag" });
       });
     }
   }
 
-  addPondingTagBox(water){
+  addPondingTagBox(water) {
     if (water && water.length) {
       water.forEach((r) => {
         let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("ponding_tag_"+r.stcd, [r.lon, r.lat], {title: name, subTitle:(r.z*1).toFixed(2) + "m", prefix: "ponding_tag"});
+        this.map.addTagBox("ponding_tag_" + r.stcd, [r.lon, r.lat], { title: name, subTitle: r.z === null || r.z === undefined ? '--' : (r.z * 100).toFixed(1) + "cm", prefix: "ponding_tag" });
       });
     }
   }
   addWaterWaring(warningWater) {
     this.map.removeAlarmByString("alarm_water_");
     if (!warningWater || !warningWater.length) return;
-    if(this.props.layerVisible.waterWarning === true){
+    if (this.props.layerVisible.waterWarning === true) {
       warningWater.forEach((w) => {
         this.map.addAlarm("alarm_water_" + w.stcd, [w.lon, w.lat]);
       });
@@ -1015,7 +1017,7 @@ class Map extends React.PureComponent {
     if (!obj || !obj[id]) return;
     delete obj[id];
     this.setState({
-      overlays: {...overlays}
+      overlays: { ...overlays }
     });
   }
   // onFloodClick(featureProp) {

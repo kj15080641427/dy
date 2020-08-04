@@ -48,10 +48,13 @@ export function fetchData(method, url, data) {
       'token': token
     },
     // 注意 post 时候参数的形式
-    body: data ? appendParam(data) : null
+    body: data ? appendParam(url, data) : null
+
   }).then((res) => {
+
     return res.ok ? res.json() : Promise.reject("接口出错");
   });
+
 }
 export function fetchJSONData(method, url, data) {
   url = ("/api" + url);
@@ -74,27 +77,56 @@ export function fetchJSONData(method, url, data) {
   });
 }
 /*
-*   请求formdate数据
+*   请求数据
 */
-export function fetchFormData(url, data) {
+export function fetchGet(url, params) {
   url = ("/api" + url);
+  if (params) {
+    let paramsArray = [];
+    //拼接参数
+    Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
+    if (url.search(/\?/) === -1) {
+      url += '?' + paramsArray.join('&')
+    } else {
+      url += '&' + paramsArray.join('&')
+    }
+  }
+  console.log(url, params)
+  // fetch 请求
   return fetch(url, {
-    method: 'POST',
+    method: 'GET',
     credentials: 'include',
     headers: {
-      // 'Accept': 'application/json, text/plain, */*',
-      // 'Content-Type': 'application/json'
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'token': token
     },
-    // 注意 post 时候参数的形式
-    body: data
   }).then((res) => {
+    // download(res)
     return res.ok ? res.json() : Promise.reject("接口出错");
   });
+
+}
+//下载文件
+function download(data) {
+  if (!data) {
+    return
+  }
+  var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' })
+  var url = window.URL.createObjectURL(blob);
+  var aLink = document.createElement("a");
+  aLink.style.display = "none";
+  aLink.href = url;
+  aLink.setAttribute("download", "excel.xls");
+  document.body.appendChild(aLink);
+  aLink.click();
+  document.body.removeChild(aLink); //下载完成移除元素
+  window.URL.revokeObjectURL(url); //释放掉blob对象
 }
 /*
 *   拼接参数
 */
-function appendParam(data) {
+function appendParam(url, params) {
   if (data) {
     var str = "";
     for (var key in data) {
@@ -102,8 +134,9 @@ function appendParam(data) {
         str += key + "=" + data[key] + "&";
       }
     }
-    return str;
+    return '?' + str;
   }
+
 }
 /*
 *   拼接基础信息中站点名称和来源

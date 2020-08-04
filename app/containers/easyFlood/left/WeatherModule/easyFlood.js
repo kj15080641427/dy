@@ -56,7 +56,7 @@ class easyFlood extends React.PureComponent {
                     let ydata = []
                     for (var i = result.data.records.length - 1; i >= 0; i--) {
                         xdata.push(result.data.records[i].tm)
-                        ydata.push((result.data.records[i].z * 1).toFixed(2))
+                        ydata.push((result.data.records[i].z * 100).toFixed(1))
                     }
                     this.setState({
                         swdataSourceById: result.data.records,
@@ -101,7 +101,7 @@ class easyFlood extends React.PureComponent {
                         },
                         yAxis: {
                             type: 'value',
-                            name: '水深（m）'
+                            name: '水深（cm）'
                         },
                         // visualMap: {
                         //     show: true,
@@ -333,10 +333,10 @@ class easyFlood extends React.PureComponent {
                     }
             },
             {
-                title: '水深(m)',
+                title: '水深(cm)',
                 dataIndex: 'z',
                 className: 'column-money',
-                render: z => (z * 1).toFixed(2)
+                render: z => (z * 100).toFixed(1)
             },
             {
                 title: '更新时间',
@@ -373,10 +373,10 @@ class easyFlood extends React.PureComponent {
                         },
                 },
                 {
-                    title: '水深(m)',
+                    title: '水深(cm)',
                     dataIndex: 'z',
                     className: 'column-money',
-                    render: dayAvg => dayAvg != "-" ? (dayAvg * 1).toFixed(2) : "-",
+                    render: dayAvg => dayAvg != "-" ? (dayAvg * 100).toFixed(1) : "-",
                     sorter: (a, b) => a.z - b.z,
                 },
                 {
@@ -468,21 +468,22 @@ class easyFlood extends React.PureComponent {
                 for (let i = 0; i < dataArr.length; i++) {
                     if (dataArr[i].region === "370502" && dataArr[i].indtype !== 11) {
                         dyarr.push(dataArr[i])
-                    } if (dataArr[i].region === "370523") {
-                        grarr.push(dataArr[i])
-                    } if (dataArr[i].region === "370522") {
-                        ljarr.push(dataArr[i])
-                    } if (dataArr[i].region === "370503") {
-                        hkarr.push(dataArr[i])
-                    } if (dataArr[i].region === "370521") {
-                        klarr.push(dataArr[i])
-                    } else if (dataArr[i].indtype === 11) {
-                        teharr.push(dataArr[i])
-                    }
+                    } 
+                    // if (dataArr[i].region === "370523") {
+                    //     grarr.push(dataArr[i])
+                    // } if (dataArr[i].region === "370522") {
+                    //     ljarr.push(dataArr[i])
+                    // } if (dataArr[i].region === "370503") {
+                    //     hkarr.push(dataArr[i])
+                    // } if (dataArr[i].region === "370521") {
+                    //     klarr.push(dataArr[i])
+                    // } else if (dataArr[i].indtype === 11) {
+                    //     teharr.push(dataArr[i])
+                    // }
                 }
                 let data = [
                     { regionName: "东营区(开发区)", list: dyarr },
-                    { regionName: "天鹅湖蓄滞洪区", list: teharr },
+                    // { regionName: "天鹅湖蓄滞洪区", list: teharr },
                     // { regionName: "广饶县", list: grarr },
                     // { regionName: "利津县", list: ljarr },
                     // { regionName: "河口区", list: hkarr },
@@ -493,7 +494,7 @@ class easyFlood extends React.PureComponent {
                 }
                 this.setState({ loading: false });
                 this.setState({ qxdataSource: data })
-                this.props.parent.getChildrenMsgone(this, result.data.length)
+                this.props.parent.getChildrenMsgone(this, dyarr.length)
             })
     }
     //初始化数据

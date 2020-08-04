@@ -14,6 +14,7 @@ const videoMonitor = AsyncComp(() => import(/*webpackChunkName:'video'*/"@app/co
 const floodWarningMonitor = AsyncComp(() => import(/*webpackChunkName:'floodWarning'*/"@app/containers/floodWarning/floodWarning").then((res) => { removeLoading(); return res; }));
 const AsyncNoLogin = AsyncComp(() => import(/*webpackChunkName:'NoLogin'*/"@app/containers/home/NoLogin").then((res) => { removeLoading(); return res; }));
 const AsyncDisplay = AsyncComp(() => import(/*webpackChunkName:'display'*/"@app/containers/display/Display").then((res) => { removeLoading(); return res; }));
+const AsyncNotices = AsyncComp(() => import(/*webpackChunkName:'display'*/"@app/containers/notices/notices").then((res) => { removeLoading(); return res; }));
 
 export class App extends React.Component {
   render() {
@@ -35,6 +36,7 @@ export class App extends React.Component {
               <Route path={`/video`} component={videoMonitor} />
               <Route path={`/floodwarning`} component={floodWarningMonitor} />
               <Route path={`/display`} component={AsyncDisplay} />
+              <Route path={`/notices`} component={AsyncNotices} />
             </>}
           <Route component={AsyncLogin} />
         </Switch>
