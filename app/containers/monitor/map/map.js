@@ -590,6 +590,7 @@ class Map extends React.PureComponent {
       this.addOverlay(Pump.type, newParam);
     });
     this.map.startSelectFeature("warehouse", (param) => {
+      // return emitter.emit("map-move-focus", param.lonlat, 3000);
       let { details } = this.props;
       //console.log(1);
       if (details.warehouse[param.id]) {
@@ -646,8 +647,7 @@ class Map extends React.PureComponent {
     this.map.getMap().on("moveend", () => {
       window.setTimeout(() => {
         this._isMapMoved = false;
-      }, 0)
-
+      }, 0);
       // this.mapViewChanged();
     });
   }
@@ -768,6 +768,14 @@ class Map extends React.PureComponent {
         duration: 250,
       }, () => {
         onMoveEnd && onMoveEnd();
+      });
+    });
+    this._mapMove = emitter.addListener("map-move-focus", (lonlat, duration = 2000) => {
+      this.map && this.map.animate({
+        center: lonlat,
+        duration: 250,
+      }, () => {
+        this.addFocusBox(lonlat, duration);
       });
     });
 
@@ -1019,6 +1027,32 @@ class Map extends React.PureComponent {
     this.setState({
       overlays: { ...overlays }
     });
+  }
+  addFocusBox(lonlat, duration = 2000) {
+    let div = document.createElement("div");
+    div.className = "ol-focus-container";
+    let div1 = document.createElement("div");
+    div1.className = "ol-focus-box";
+    let div2 = document.createElement("div");
+    div2.className = "ol-focus-box";
+    let div3 = document.createElement("div");
+    div3.className = "ol-focus-box";
+    let div4 = document.createElement("div");
+    div4.className = "ol-focus-box";
+    div.append(div1, div2, div3, div4);
+    this.map.removeOverlay("focus");
+    this.map.addOverlay("focus", {
+      Coordinate: lonlat,
+      positioning: "center-center",
+      offset: [0, 0],
+      stopEvent: false,
+    }, div);
+    if (this._focusToken) {
+      clearTimeout(this._focusToken);
+    }
+    this._focusToken = window.setTimeout(() => {
+      this.map.removeOverlay("focus");
+    }, duration);
   }
   // onFloodClick(featureProp) {
   //   console.log(featureProp);

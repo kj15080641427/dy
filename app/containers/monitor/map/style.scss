@@ -142,3 +142,37 @@ $ol-duration : 4s;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
+.ol-focus-container {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  > .ol-focus-box {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    &:nth-child(1){
+      top: 0;
+      left: 0;
+      border-left: 2px solid red;
+      border-top: 2px solid red;
+    }
+    &:nth-child(2){
+      top: 0;
+      right: 0;
+      border-right: 2px solid red;
+      border-top: 2px solid red;
+    }
+    &:nth-child(3){
+      bottom: 0;
+      left: 0;
+      border-left: 2px solid red;
+      border-bottom: 2px solid red;
+    }
+    &:nth-child(4){
+      bottom: 0;
+      right: 0;
+      border-bottom: 2px solid red;
+      border-right: 2px solid red;
+    }
+  }
+}

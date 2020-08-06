@@ -45,6 +45,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@jiaminghi/data-view-react": "^1.2.3",
     "antd": "^4.2.3",
     "core-js": "^3.6.5",
     "echarts": "^4.7.0",
