@@ -58,7 +58,8 @@ class Precipitation extends React.PureComponent {
                     this.setState({ swdataSourceById: result.data.records, })
                     let xdata = []
                     let ydata = []
-                    for (var i = result.data.records.length - 1; i >= 0; i--) {
+                    console.log(result.data.records)
+                    for (var i = 1; i < result.data.records.length; i++) {
                         xdata.push(result.data.records[i].tm)
                         ydata.push((result.data.records[i].z * 1).toFixed(2))
                     }
@@ -478,7 +479,7 @@ class Precipitation extends React.PureComponent {
                 let hkarr = [];
                 let teharr = [];
                 for (let i = 0; i < dataArr.length; i++) {
-                    if (dataArr[i].region === "370502"&& dataArr[i].indtype !== 11) {
+                    if (dataArr[i].region === "370502" && dataArr[i].indtype !== 11) {
                         dyarr.push(dataArr[i])
                     } if (dataArr[i].region === "370523") {
                         grarr.push(dataArr[i])

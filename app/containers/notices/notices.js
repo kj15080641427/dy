@@ -68,6 +68,9 @@ class notices extends React.PureComponent {
     })
     console.log(value)
   }
+  sortId(a, b) {
+    return b.z - a.z;
+  }
   init() {
     this.setState({
       pointloding: true,
@@ -75,9 +78,20 @@ class notices extends React.PureComponent {
     })
     downlWordData({ 'startTime': this.state.starttime, 'endTime': this.state.endtime }).then((result) => {
       console.log(result)
+      let _arrayList = result.data.pointList
+      for (var i = 0; i < _arrayList.length; i++) {
+        for (var u = i + 1; u < _arrayList.length; u++) {
+          if (parseFloat(_arrayList[i]["z"]) < parseFloat(_arrayList[u]["z"])) {
+            var num = [];
+            num = _arrayList[i];
+            _arrayList[i] = _arrayList[u];
+            _arrayList[u] = num;
+          }
+        }
+      }
       this.setState({
         raindata: result.data,
-        pointdata: result.data.pointList,
+        pointdata: _arrayList,
         riverdata: result.data.riverList,
         riverloding: false,
         pointloding: false

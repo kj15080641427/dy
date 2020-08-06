@@ -175,7 +175,7 @@ class Water extends Base {
       };
       chars.setOption(option);
     } else {
-      for (let i = model.waters.length - 1; i >= 0; i--) {
+      for (var i = 1; i < model.waters.length; i++) {
         xdata.push(moment(model.waters[i].tm).format('MM-DD HH:mm'))
         if (iswater) {
           ydata.push((model.waters[i].z * 100).toFixed(1))

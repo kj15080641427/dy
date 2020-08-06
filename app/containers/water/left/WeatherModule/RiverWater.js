@@ -62,7 +62,7 @@ class RiverWater extends React.PureComponent {
                     this.setState({ swdataSourceById: result.data.records, })
                     let xdata = []
                     let ydata = []
-                    for (var i = result.data.records.length - 1; i >= 0; i--) {
+                    for (var i = 1; i < result.data.records.length; i++) {
                         xdata.push(result.data.records[i].tm)
                         ydata.push((result.data.records[i].z * 1).toFixed(2))
                     }

@@ -30,11 +30,11 @@ class WaterAnnunciate extends React.PureComponent {
         )
     }
     title() {
-        return <Row ><Col span={10}></Col> <Col span={4} style={{
+        return <Row ><Col span={8}></Col> <Col span={8} style={{
             fontSize: 30,
             fontWeight: 1000,
         }
-        }>水情通报</Col><Col span={10}></Col></Row >
+        }>积水点水深统计表</Col><Col span={8}></Col></Row >
     }
     componentDidUpdate() {
         this.setState({
