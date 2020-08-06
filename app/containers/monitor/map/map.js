@@ -116,6 +116,7 @@ class Map extends React.PureComponent {
     this.map.unView("change:resolution", this.mapViewChanged.bind(this));
 
     this._mapMove && this._mapMove.remove();
+    this._mapMoveFocus && this._mapMoveFocus.remove();
     this.flood && this.flood.destroy();
     // this._clickToken.remove();
 
@@ -590,7 +591,7 @@ class Map extends React.PureComponent {
       this.addOverlay(Pump.type, newParam);
     });
     this.map.startSelectFeature("warehouse", (param) => {
-      // return emitter.emit("map-move-focus", param.lonlat, 3000);
+      // return emitter.emit("map-move-focus", [118.333, 37.333], 3000);
       let { details } = this.props;
       //console.log(1);
       if (details.warehouse[param.id]) {
@@ -770,7 +771,7 @@ class Map extends React.PureComponent {
         onMoveEnd && onMoveEnd();
       });
     });
-    this._mapMove = emitter.addListener("map-move-focus", (lonlat, duration = 2000) => {
+    this._mapMoveFocus = emitter.addListener("map-move-focus", (lonlat, duration = 2000) => {
       this.map && this.map.animate({
         center: lonlat,
         duration: 250,
