@@ -58,13 +58,13 @@ class notices extends React.PureComponent {
   }
   onOkstart = (value) => {
     this.setState({
-      starttime: moment(value).format('YYYY-MM-DD HH:mm:00')
+      starttime: moment(value).format('YYYY-MM-DD HH:00:00')
     })
     console.log(value)
   }
   onOkend = (value) => {
     this.setState({
-      endtime: moment(value).format('YYYY-MM-DD HH:mm:00')
+      endtime: moment(value).format('YYYY-MM-DD HH:00:00')
     })
     console.log(value)
   }

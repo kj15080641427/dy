@@ -24,12 +24,12 @@ class RainrAnnunciate extends React.PureComponent {
                     <Col span={4}> 东营市降水量统计表</Col>
                     <Col span={10}></Col>
                 </Row>
-                <Row style={{ fontSize: 20 }}>
+                <Row style={{ fontSize: 25 }}>
                     降水时段({tm})单位：毫米
                 </Row>
                 {dy === undefined ? null :
                     <>
-                        <Row>
+                        <Row >
                             <Col span={5}>
                                 <table class="tg">
                                     <thead>

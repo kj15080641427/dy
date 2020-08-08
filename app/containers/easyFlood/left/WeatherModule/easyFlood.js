@@ -121,7 +121,7 @@ class easyFlood extends React.PureComponent {
                             type: 'line',
                             markPoint: {
                                 data: [
-                                    { type: 'max', name: '最大值' },
+                                    { type: 'max', name: '最大值',  value: ydata },
                                     {
                                         type: 'min', name: '最小值', itemStyle: {
                                             color: '#03d6d6'
@@ -468,7 +468,7 @@ class easyFlood extends React.PureComponent {
                 for (let i = 0; i < dataArr.length; i++) {
                     if (dataArr[i].region === "370502" && dataArr[i].indtype !== 11) {
                         dyarr.push(dataArr[i])
-                    } 
+                    }
                     // if (dataArr[i].region === "370523") {
                     //     grarr.push(dataArr[i])
                     // } if (dataArr[i].region === "370522") {
@@ -511,7 +511,7 @@ class easyFlood extends React.PureComponent {
         let lon = e.lon * 1;
         let lat = e.lat * 1;
         if (lon == null && lat == null) return;
-        emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
+        emitter.emit("map-move-focus", [lon, lat], 3000);
     }
 }
 export default easyFlood;
