@@ -399,7 +399,7 @@ class Precipitation extends React.PureComponent {
         let lon = e.lon * 1;
         let lat = e.lat * 1;
         if (lon == null && lat == null) return;
-        emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
+        emitter.emit("map-move-focus", [lon, lat], 3000);
     }
 }
 export default Precipitation;

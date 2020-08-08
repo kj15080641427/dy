@@ -20,10 +20,10 @@ class FloodSituation extends React.PureComponent {
         const { raindata, riverdata, riverloding, pointdata, pointloding, onOkstart, onOkend, init, downl } = this.props;
         const element = <Row>
             <Col span={5}>
-                开始时间： <DatePicker format={"YYYY-MM-DD HH:mm"} size='large' showTime onOk={onOkstart} onChange={onOkstart} />
+                开始时间： <DatePicker format={"YYYY-MM-DD HH"} size='large' showTime onOk={onOkstart} onChange={onOkstart} />
             </Col>
             <Col span={5}>
-                结束时间： <DatePicker format={"YYYY-MM-DD HH:mm"} size='large' showTime onOk={onOkend} onChange={onOkend} />
+                结束时间： <DatePicker format={"YYYY-MM-DD HH"} size='large' showTime onOk={onOkend} onChange={onOkend} />
             </Col>
             <Col span={2}>
                 <Button type='primary' size='large' icon={<SearchOutlined />} onClick={init}>查询</Button>
