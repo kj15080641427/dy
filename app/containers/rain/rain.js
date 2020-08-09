@@ -4,9 +4,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
-import * as actions from '@app/redux/actions/monitor';
-//import Map from "./map/map";
-import Map from '../monitor/map/map';
+import * as actions from '@app/redux/actions/rain';
+import Map from "./map/map";
+// import Map from '../monitor/map/map';
 import "./style.scss";
 import Head from "./head/Head";
 import WeatherBox from "./left/WeatherBox";
@@ -22,6 +22,7 @@ import setImg from "@app/resource/setsys.png"
 import { Drawer, Switch, Row, Divider, Checkbox } from 'antd';
 import { none } from 'ol/centerconstraint';
 import SetTitle from '@app/components/setting/SetTitle';
+import RainSwitcher from "./right/Module/RainSwitcher";
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -77,10 +78,14 @@ class Monitor extends React.PureComponent {
         <div style={{ display: displayRight }}>
           <div className="m-right">
             <PannelBtn></PannelBtn>
-            {/* 
+
+            {/*
             <AlarmTable></AlarmTable>
             <WeatherPic></WeatherPic> */}
           </div>
+        </div>
+        <div class="m-rain-button">
+          <RainSwitcher style={{width: 150}}/>
         </div>
         <div className="m-bottom" >
           <RainLegend></RainLegend>
@@ -133,6 +138,10 @@ class Monitor extends React.PureComponent {
     );
   }
   componentDidMount() {
+    //this.props.actions.rainCurrent();
+    //加载雨量站基础信息
+    this.props.actions.getAllRainStation();
+    this.props.actions.rainCurrent();
   }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
@@ -147,6 +156,7 @@ class Monitor extends React.PureComponent {
 
 function mapStateToProps(state) {
   return {
+    store : state,
   };
 }
 

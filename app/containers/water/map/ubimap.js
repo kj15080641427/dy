@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 
 // import { formatDegree } from "../../../../../util/common.js";
 import {fromLonLat, get, transform} from 'ol/proj.js';
@@ -32,9 +33,9 @@ import {bbox as bboxStrategy} from 'ol/loadingstrategy';
 import {WFS, GeoJSON} from 'ol/format';
 import Heatmap from 'ol/layer/Heatmap';
 import {
-  equalTo as equalToFilter,
-  like as likeFilter,
-  and as andFilter
+    equalTo as equalToFilter,
+    like as likeFilter,
+    and as andFilter
 } from 'ol/format/filter';
 import MousePosition from 'ol/control/MousePosition';
 import { defaults } from 'ol/control';
@@ -42,14 +43,14 @@ import "ol/ol.css";
 import ImageLayer from 'ol/layer/Image';
 import { ImageWMS } from 'ol/source';
 
-export function formatDegree(value) { 
-  value = Math.abs(value);  
-  var v1 = Math.floor(value);//度  
-  var v2 = Math.floor((value - v1) * 60);//分  
-  v2 < 10 ? (v2 = "0"+v2) : v2;
-  var v3 = Math.round((value - v1) * 3600 % 60);//秒  
-  v3 < 10 ? (v3 = "0"+v3) : v3;
-  return v1 + '°' + v2 + '\'' + v3 + '"';  
+export function formatDegree(value) {
+    value = Math.abs(value);
+    var v1 = Math.floor(value);//度
+    var v2 = Math.floor((value - v1) * 60);//分
+    v2 < 10 ? (v2 = "0"+v2) : v2;
+    var v3 = Math.round((value - v1) * 3600 % 60);//秒
+    v3 < 10 ? (v3 = "0"+v3) : v3;
+    return v1 + '°' + v2 + '\'' + v3 + '"';
 }
 export default (function(window) {
     var projection = get("EPSG:3857");
@@ -72,7 +73,12 @@ export default (function(window) {
         this.controls = {};
         this.hlLayers = []; // 启用高亮
         this.sfLayers = [] ; // 启用的点击交互图层
+        this.tagLayers = []; // 开启有tag的layer
+        this.tagLayerEvent = {} //
         this.clusterLayer = {};
+        this.callbacks = {
+            onFeatureClicked: null,
+        };
         this._init.call(this, opt);
     };
     //初始化map
@@ -85,7 +91,17 @@ export default (function(window) {
                 minZoom: opt.minZoom ? opt.minZoom: 0
             }),
             target: this.target,
-            controls: [],
+            controls: [
+                new MousePosition({
+                    coordinateFormat:  (cood) => {
+                        cood = transform(cood, 'EPSG:3857', 'EPSG:4326');
+                        if (this._format) {
+                            return formatDegree(cood[0])+ ',' + formatDegree(cood[1]);
+                        }
+                        return cood[0].toFixed(6) + ',' + cood[1].toFixed(6);
+                    }
+                })
+            ],
             // controls: defaults().extend([new MousePosition({
             //     coordinateFormat:  (cood) => {
             //         cood = transform(cood, 'EPSG:3857', 'EPSG:4326');
@@ -119,8 +135,8 @@ export default (function(window) {
     Map.prototype._createPointStyle = function(style, obj) {
         if (!style) return;
         var heading = null,
-            src = null,
-            opacity = null;
+          src = null,
+          opacity = null;
         if (typeof style.heading === 'function') {
             heading = style.heading(obj);
         } else {
@@ -204,6 +220,9 @@ export default (function(window) {
         var nowStyle = obj.style || this.layerStyle[key];
         if (nowStyle) {
             var style = this._createPointStyle(nowStyle, obj);
+            // 放入text
+            let text = feature.getStyle().getText();
+            style.setText(text);
             feature.setStyle(style);
         }
     };
@@ -247,26 +266,26 @@ export default (function(window) {
         return array.map(function(obj) {
             var geoLine = null;
             if (obj.isMuti) {
-        //       let geom = new MultiLineString(coords);
-        // geom.rotate(10, [150, 50]);
-        // geom.translate(coord[0], coord[1]);
-              if (obj.coords) {
-                let lonlats = fromLonLat(obj.lonlats, 'EPSG:3857');
-                geoLine = new MultiLineString(obj.coords);
-                geoLine.rotate(obj.rotate, obj.rotateAnchor, 'EPSG:3857');
-                geoLine.translate(lonlats[0], lonlats[1]);
-                geoLine.translate(-150, -50);
-                // geoLine.transform(sprojection, projection);
-              }else {
-                geoLine = new MultiLineString(obj.lonlats);
-                geoLine.transform(sprojection, projection);
-              }
-              
+                //       let geom = new MultiLineString(coords);
+                // geom.rotate(10, [150, 50]);
+                // geom.translate(coord[0], coord[1]);
+                if (obj.coords) {
+                    let lonlats = fromLonLat(obj.lonlats, 'EPSG:3857');
+                    geoLine = new MultiLineString(obj.coords);
+                    geoLine.rotate(obj.rotate, obj.rotateAnchor, 'EPSG:3857');
+                    geoLine.translate(lonlats[0], lonlats[1]);
+                    geoLine.translate(-150, -50);
+                    // geoLine.transform(sprojection, projection);
+                }else {
+                    geoLine = new MultiLineString(obj.lonlats);
+                    geoLine.transform(sprojection, projection);
+                }
+
             }else {
-              geoLine = new LineString(obj.lonlats);
-              geoLine.transform(sprojection, projection);
+                geoLine = new LineString(obj.lonlats);
+                geoLine.transform(sprojection, projection);
             }
-            
+
             var feature = new Feature({
                 geometry: geoLine
             });
@@ -408,10 +427,12 @@ export default (function(window) {
 
         var oneurl = urlFunc ? urlFunc() : param.url;
         var tilelayer = new TileLayer({
+            className: param.className || undefined,
             visible: param.visible == null ? true : param.visible,
             opacity:param.opacity == null ? 1: param.opacity,
             source: new XYZ({
-                url: oneurl,
+                tileLoadFunction: param.tileLoadFunction ? param.tileLoadFunction: undefined,
+                url: oneurl ? oneurl: undefined,
                 projection: param.projection ? sprojection : projection,
                 transition: param.transition || 0
             })
@@ -490,25 +511,25 @@ export default (function(window) {
     //删除高分影像图层
     Map.prototype.removeGis = function(key) {
         this._removeLayer(key);
-  };
-  
-  //添加图片图层
-  Map.prototype.addImageTile = function (param, urlFunc) {
-    if (!param || !param.key) return;
-    var oneurl = param.url;
-    var tilelayer = new ImageLayer({
-      visible: param.visible == null ? true : param.visible,
-      zIndex: param.zIndex ? param.zIndex : 0,
-      source: new ImageWMS({
-        url: oneurl,
-        params: param.params,
-        serverType: 'geoserver'
-      })
-    });
-    this.map.addLayer(tilelayer);
-    this.layers[param.key] = tilelayer;
+    };
 
-  };
+    //添加图片图层
+    Map.prototype.addImageTile = function (param, urlFunc) {
+        if (!param || !param.key) return;
+        var oneurl = param.url;
+        var tilelayer = new ImageLayer({
+            visible: param.visible == null ? true : param.visible,
+            zIndex: param.zIndex ? param.zIndex : 0,
+            source: new ImageWMS({
+                url: oneurl,
+                params: param.params,
+                serverType: 'geoserver'
+            })
+        });
+        this.map.addLayer(tilelayer);
+        this.layers[param.key] = tilelayer;
+
+    };
     //添加高分影像图层
     Map.prototype.addGeo = function(param, urlFunc) {
         if (!param || !param.key) return;
@@ -517,9 +538,9 @@ export default (function(window) {
             visible: param.visible == null ? true : param.visible,
             zIndex: param.zIndex ? param.zIndex : 0,
             source: new TileWMS({ // wfs
-              url: oneurl,
-              params: param.params,
-              serverType: 'geoserver'
+                url: oneurl,
+                params: param.params,
+                serverType: 'geoserver'
             })
         });
         this.map.addLayer(tilelayer);
@@ -527,92 +548,96 @@ export default (function(window) {
 
     };
     Map.prototype.addWFS = function(param, urlFunc) {
-      var vectorSource = new VectorSource({
-        format: new GeoJSON(),
-        url: function(extent) {
-          var prj = 'EPSG:3857';
-          return param.url + '?service=WFS&' +
-          'version=1.1.0&request=GetFeature&typename=' + param.typename +
-          '&outputFormat=application/json&srsname=' + prj +
-          '&bbox=' + extent.join(',') + ',' + prj;
-        },
-        strategy: bboxStrategy
-      });
-      vectorSource.on("addfeature", function({feature}) {
-        feature.set("attr", feature.getProperties());
-      });
-      var vectorLayer = new VectorLayer({
-        source: vectorSource,
-        zIndex: param.zIndex,
-        style: function(feature) {
-          let isEnter = feature.get("mEnter");
-          return new Style({
-              stroke: new Stroke({
-                color: isEnter ? 'rgba(255,0,0,1.0)' : 'rgba(0, 0, 255, 1.0)',
-                width: isEnter ? 5 : 2
-              })
-            })
-        }
-        // 
-      });
-      var cachFeature = null;
-      this._pointermoveWFSKey = this.map.on('pointermove', function(e) {
-          var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
-              if (feature && layer) {
-                if (cachFeature) {
-                  cachFeature.set("mEnter", false);
-                }
-                feature.set("mEnter", true);
-                cachFeature = feature;
-              }
-          }.bind(this), {hitTolerance:5, layerFilter: function(layer) {
-            return layer === vectorLayer;
-          }});
-      });
-      this._pointermoveWFSKey = this.map.on('click', function(e) {
-          var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
-              if (feature && layer) {
-                let coord = this.getCoordinateFromPixel(e.pixel);
-                let lonlat = coord;
-                lonlat = transform(lonlat, projection, sprojection);
-                param.onClick && param.onClick({...feature.getProperties(), lonlat });
-              }
-          }.bind(this), {hitTolerance:5, layerFilter: function(layer) {
-            return layer === vectorLayer;
-          }});
-      });
-      vectorLayer.set("key", param.key);
-      this.map.addLayer(vectorLayer);
-      this.layers[param.key] = vectorLayer;
-      
+        var vectorSource = new VectorSource({
+            format: new GeoJSON(),
+            url: function(extent) {
+                var prj = 'EPSG:3857';
+                return param.url + '?service=WFS&' +
+                  'version=1.1.0&request=GetFeature&typename=' + param.typename +
+                  '&outputFormat=application/json&srsname=' + prj +
+                  '&bbox=' + extent.join(',') + ',' + prj;
+            },
+            strategy: bboxStrategy
+        });
+        vectorSource.on("addfeature", function({feature}) {
+            feature.set("attr", feature.getProperties());
+        });
+        var vectorLayer = new VectorLayer({
+            source: vectorSource,
+            zIndex: param.zIndex,
+            style: function(feature) {
+                let isEnter = feature.get("mEnter");
+                return new Style({
+                    stroke: new Stroke({
+                        color: isEnter ? 'rgba(255,0,0,1.0)' : 'rgba(0, 0, 255, 1.0)',
+                        width: isEnter ? 5 : 2
+                    })
+                })
+            }
+            //
+        });
+        var cachFeature = null;
+        // 等到下一次事件循环再加
+        window.setTimeout(() => {
+            this._pointermoveWFSKey = this.map.on('pointermove', function(e) {
+                var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+                    if (feature && layer) {
+                        if (cachFeature) {
+                            cachFeature.set("mEnter", false);
+                        }
+                        feature.set("mEnter", true);
+                        cachFeature = feature;
+                    }
+                }.bind(this), {hitTolerance:5, layerFilter: function(layer) {
+                        return layer === vectorLayer;
+                    }});
+            });
+            this._pointermoveWFSKey = this.map.on('click', function(e) {
+                var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+                    if (feature && layer) {
+                        let coord = this.getCoordinateFromPixel(e.pixel);
+                        let lonlat = coord;
+                        lonlat = transform(lonlat, projection, sprojection);
+                        param.onClick && param.onClick({...feature.getProperties(), lonlat });
+                    }
+                }.bind(this), {hitTolerance:5, layerFilter: function(layer) {
+                        return layer === vectorLayer;
+                    }});
+            });
+        }, 0)
+
+        vectorLayer.set("key", param.key);
+        this.map.addLayer(vectorLayer);
+        this.layers[param.key] = vectorLayer;
+
     };
     Map.prototype.addHeatmap = function(param, urlFunc) {
-      var vectorSource = new VectorSource({
-        format: new GeoJSON(),
-        url: function(extent) {
-          var prj = 'EPSG:3857';
-          return param.url + '?service=WFS&' +
-          'version=1.1.0&request=GetFeature&typename=' + param.typename +
-          '&outputFormat=application/json&srsname=' + prj +
-          '&bbox=' + extent.join(',') + ',' + prj;
-        },
-        strategy: bboxStrategy
-      });
-      var vectorLayer = new Heatmap({
-        gradient: param.gradient,
-        source: vectorSource,
-        blur: 8,
-        radius: 8,
-        weight: function(feature) {
-          var w = feature.get('降雨量');
-          return 1;
-        }
-      });
-     
-      vectorLayer.set("key", param.key);
-      this.map.addLayer(vectorLayer);
-      this.layers[param.key] = vectorLayer;
-      
+        var vectorSource = new VectorSource({
+            format: new GeoJSON(),
+            url: function(extent) {
+                var prj = 'EPSG:3857';
+                return param.url + '?service=WFS&' +
+                  'version=1.1.0&request=GetFeature&typename=' + param.typename +
+                  '&outputFormat=application/json&srsname=' + prj +
+                  '&bbox=' + extent.join(',') + ',' + prj;
+            },
+            strategy: bboxStrategy
+        });
+        var vectorLayer = new Heatmap({
+            gradient: param.gradient,
+            source: vectorSource,
+            blur: 8,
+            radius: 8,
+            weight: function(feature) {
+                var w = feature.get('降雨量');
+                return 1;
+            }
+        });
+
+        vectorLayer.set("key", param.key);
+        this.map.addLayer(vectorLayer);
+        this.layers[param.key] = vectorLayer;
+
     };
     //添加矢量图
     Map.prototype.addTraffic = function(param) {
@@ -622,16 +647,16 @@ export default (function(window) {
             source: new VectorSource(),
             visible: param.visible == null ? true : param.visible,
             zIndex: param.zIndex ? param.zIndex : 0,
-            
+
             style: function(feature) {
-              let traffic = feature.get("attr") && feature.get("attr").traffic;
-              let zoom = _this.getZoom();
-              return new Style({
-                stroke: new Stroke({
-                    color: traffic === 1 ? "#aaee77" : "#ff0000",
-                    width: 8 + (zoom - 11),
-                }),
-              });
+                let traffic = feature.get("attr") && feature.get("attr").traffic;
+                let zoom = _this.getZoom();
+                return new Style({
+                    stroke: new Stroke({
+                        color: traffic === 1 ? "#aaee77" : "#ff0000",
+                        width: 8 + (zoom - 11),
+                    }),
+                });
             }
         });
         vectorLayer.set("key", param.key);
@@ -642,50 +667,6 @@ export default (function(window) {
         }
     };
     Map.prototype.addGate = function(param) {
-      if (!param || !param.key) return;
-      var vectorLayer = new VectorLayer({
-          source: new VectorSource(),
-          visible: param.visible == null ? true : param.visible,
-          zIndex: param.zIndex ? param.zIndex : 0,
-          style: typeof param.style === "function" ? param.style : undefined
-      });
-      vectorLayer.set("key", param.key);
-      this.map.addLayer(vectorLayer);
-      this.layers[param.key] = vectorLayer;
-      if (param.style && typeof param.style !== "function") {
-          this.layerStyle[param.key] = param.style;
-      }
-      // let coord = [118.67, 37.43];
-      // let coord = fromLonLat([118.67, 37.43], 'EPSG:3857');
-
-
-      // let coords = [
-      //   [[0, 0], [118.67, 37.43], [118.67, 37.43], [118.67, 37.430], [0, 0]],
-      //   [[0, 0], [118.67, 37.43]],
-      //   [[0, 0], [118.67, 37.43]]
-      // ];
-      // let coords = [
-      //   [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0]],
-      //   [[0, 100], [300, 0]],
-      //   [[0, 0], [300, 100]]];
-
-      // // let coords = [
-      // //   [[0, 0],[118.67, 37.43],[118.37, 37.43]],
-      // //   [[118.67, 37.43],[118.37, 38.43]]
-      // // ];
-      //   let geom = new MultiLineString(coords);
-      //   geom.rotate(10, [150, 50]);
-      //   geom.translate(coord[0], coord[1]);
-      //   // geom.transform(sprojection, projection);
-      //   let feature = new Feature({
-      //       id: "123",
-      //       geometry: geom,
-      //   });
-      //   feature.setId("123");
-      //   vectorLayer.getSource().addFeature(feature);
-    }
-    //添加矢量图
-    Map.prototype.addVector = function(param) {
         if (!param || !param.key) return;
         var vectorLayer = new VectorLayer({
             source: new VectorSource(),
@@ -699,6 +680,71 @@ export default (function(window) {
         if (param.style && typeof param.style !== "function") {
             this.layerStyle[param.key] = param.style;
         }
+        // let coord = [118.67, 37.43];
+        // let coord = fromLonLat([118.67, 37.43], 'EPSG:3857');
+
+
+        // let coords = [
+        //   [[0, 0], [118.67, 37.43], [118.67, 37.43], [118.67, 37.430], [0, 0]],
+        //   [[0, 0], [118.67, 37.43]],
+        //   [[0, 0], [118.67, 37.43]]
+        // ];
+        // let coords = [
+        //   [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0]],
+        //   [[0, 100], [300, 0]],
+        //   [[0, 0], [300, 100]]];
+
+        // // let coords = [
+        // //   [[0, 0],[118.67, 37.43],[118.37, 37.43]],
+        // //   [[118.67, 37.43],[118.37, 38.43]]
+        // // ];
+        //   let geom = new MultiLineString(coords);
+        //   geom.rotate(10, [150, 50]);
+        //   geom.translate(coord[0], coord[1]);
+        //   // geom.transform(sprojection, projection);
+        //   let feature = new Feature({
+        //       id: "123",
+        //       geometry: geom,
+        //   });
+        //   feature.setId("123");
+        //   vectorLayer.getSource().addFeature(feature);
+    }
+    //添加矢量图
+    Map.prototype.addVector = function(param) {
+        if (!param || !param.key) return;
+        let source = new VectorSource()
+        var vectorLayer = new VectorLayer({
+            source: source,
+            visible: param.visible == null ? true : param.visible,
+            zIndex: param.zIndex ? param.zIndex : 0,
+            style: typeof param.style === "function" ? param.style : undefined
+        });
+        vectorLayer.set("key", param.key);
+        this.map.addLayer(vectorLayer);
+        this.layers[param.key] = vectorLayer;
+        if (param.style && typeof param.style !== "function") {
+            this.layerStyle[param.key] = param.style;
+        }
+        // source.on("addfeature", (e) => {
+        //   if (param.key === "water") {
+        //     let feature = e.feature;
+        //     let featureStyle = feature.getStyle();
+        //     var nowStyle = feature.get("attr").style || this.layerStyle[vectorLayer.get("key")];
+        //     var font = this.layerStyle[param.key] && this.layerStyle[param.key].font || "14px";
+        //     var text = new Text({
+        //         text: typeof nowStyle.fontText === "function" ? nowStyle.fontText(feature.get("attr")) : nowStyle.fontText,
+        //         offsetX: nowStyle.fontOffset && nowStyle.fontOffset[0] != null ? nowStyle.fontOffset[0] : 10,
+        //         offsetY: nowStyle.fontOffset && nowStyle.fontOffset[1] != null ? nowStyle.fontOffset[1] : -10,
+        //         textAlign: "left",
+        //         fill: new Fill({
+        //             color: nowStyle.fontColor
+        //         }),
+        //         font: font
+        //     });
+        //     featureStyle.setText(text);
+        //     feature.setStyle(featureStyle);
+        //   }
+        // })
     };
     //删除矢量图层
     Map.prototype.removeVector = function(key) {
@@ -709,13 +755,13 @@ export default (function(window) {
         if (!id || !opt) return;
         if (this.overlay[id]) return;
         var overlay = new Overlay({
-              id:id,
-              offset: opt.offset ? opt.offset : [0, -20],
-              stopEvent: opt.stopEvent != null ? opt.stopEvent : true,
-              className:opt.className,
-              // autoPan:true,
-              positioning: opt.positioning ? opt.positioning: 'left',
-              position: transform(opt.Coordinate ? opt.Coordinate:[0,0], sprojection, projection),
+            id:id,
+            offset: opt.offset ? opt.offset : [0, -20],
+            stopEvent: opt.stopEvent != null ? opt.stopEvent : true,
+            className:opt.className,
+            // autoPan:true,
+            positioning: opt.positioning ? opt.positioning: 'left',
+            position: transform(opt.Coordinate ? opt.Coordinate:[0,0], sprojection, projection),
         });
         overlay.setElement(dom);
         this.map.addOverlay(overlay);
@@ -728,7 +774,10 @@ export default (function(window) {
         delete this.overlay[id];
     };
     Map.prototype.getOverlay = function(id) {
-      return this.overlay[id];
+        return this.overlay[id];
+    };
+    Map.prototype.getAllOverlays = function() {
+        return Object.values(this.overlay);
     };
     Map.prototype.addOverlayClass = function(id, clazz) {
         if (!id || !this.overlay[id]) return;
@@ -744,43 +793,85 @@ export default (function(window) {
     };
     Map.prototype.addAlarm = function(id, coordinate, type) {
 
-      let div = document.createElement("div");
-      div.className = "ol-alarm-container";
-      let w1 = document.createElement("div");
-      w1.className = "ol-alarm-water1";
-      let w2 = document.createElement("div");
-      w2.className = "ol-alarm-water2";
-      let w3 = document.createElement("div");
-      w3.className = "ol-alarm-water3";
-      let w4 = document.createElement("div");
-      w4.className = "ol-alarm-water4";
-      div.appendChild(w1);
-      div.appendChild(w2);
-      div.appendChild(w3);
-      div.appendChild(w4);
-      this.addOverlay(id, {
-        Coordinate: coordinate,
-        positioning: "center-center",
-        offset: [0, 0],
-        stopEvent: false,
-      }, div);
+        let div = document.createElement("div");
+        div.className = "ol-alarm-container";
+        let w1 = document.createElement("div");
+        w1.className = "ol-alarm-water1";
+        let w2 = document.createElement("div");
+        w2.className = "ol-alarm-water2";
+        let w3 = document.createElement("div");
+        w3.className = "ol-alarm-water3";
+        let w4 = document.createElement("div");
+        w4.className = "ol-alarm-water4";
+        div.appendChild(w1);
+        div.appendChild(w2);
+        div.appendChild(w3);
+        div.appendChild(w4);
+        this.addOverlay(id, {
+            Coordinate: coordinate,
+            positioning: "center-center",
+            offset: [0, 0],
+            stopEvent: false,
+        }, div);
     };
+    Map.prototype.removeAlarmByString = function(str) {
+        let overlays = this.overlay;
+        let removeKeys = Object.keys(overlays).filter((olKey) => {
+            return olKey.indexOf(str) > -1;
+        });
+        removeKeys.forEach((key) => {
+            this.removeOverlay(key);
+        })
+    }
+    Map.prototype.addTagBox = function(id, coordinate, model) {
+        let div = document.createElement("div");
+        div.className = "ol-tag-container " + model.prefix;
+        let item1 = document.createElement("div");
+        item1.className = "ol-tag-item";
+        item1.innerHTML = model.title;
+        let item2 = document.createElement("div");
+        item2.className = "ol-tag-item";
+        item2.innerHTML = model.subTitle;
+        div.appendChild(item1);
+        div.appendChild(item2);
+        this.addOverlay(id, {
+            Coordinate: coordinate,
+            positioning: "top-left",
+            offset: [14, -10],
+            stopEvent: false,
+        }, div);
+    }
+    Map.prototype.showTagBox = function(prefix) {
+        let tags = document.querySelectorAll(".ol-tag-container." + prefix);
+        for(let i = 0; i < tags.length; i++) {
+            let tg = tags[i];
+            tg.classList.add("active");
+        }
+    }
+    Map.prototype.hideTagBox = function(prefix) {
+        let tags = document.querySelectorAll(".ol-tag-container." + prefix);
+        for(let i = 0; i < tags.length; i++) {
+            let tg = tags[i];
+            tg.classList.remove("active");
+        }
+    }
+
     //添加目标
     Map.prototype.addFeature = function(key, obj) {
         if (!this.layers[key] || obj == null) return;
 
         switch (obj.type) {
-        case "Point":
-            this._addPointFeature(key, obj);
-            break;
-        case "LineString":
-            this._addLineStringFeature(key, obj);
-            break;
-        case "Polygon":
-            this._addPolygonFeature(key, obj);
-            break;
-        default:
-            break;
+            case "Point":
+                this._addPointFeature(key, obj);
+                break;
+            case "LineString":
+                this._addLineStringFeature(key, obj);
+                break;
+            case "Polygon":
+                this._addPolygonFeature(key, obj);
+                break;
+            default:
+                break;
         }
 
     };
@@ -799,17 +890,17 @@ export default (function(window) {
         }
         for (var typeKey in types) {
             switch (typeKey) {
-            case "Point":
-                this._addPointFeatures(key, types[typeKey]);
-                break;
-            case "LineString":
-                this._addLineStringFeatures(key, types[typeKey]);
-                break;
-            case "Polygon":
-                this._addPolygonFeatures(key, types[typeKey]);
-                break;
-            default:
-                break;
+                case "Point":
+                    this._addPointFeatures(key, types[typeKey]);
+                    break;
+                case "LineString":
+                    this._addLineStringFeatures(key, types[typeKey]);
+                    break;
+                case "Polygon":
+                    this._addPolygonFeatures(key, types[typeKey]);
+                    break;
+                default:
+                    break;
             }
         }
     };
@@ -849,17 +940,17 @@ export default (function(window) {
     Map.prototype.updateFeature = function(key, obj) {
         if (!this.layers[key] || obj == null) return;
         switch (obj.type) {
-        case "Point":
-            this._updatePointFeature(key, obj);
-            break;
-        case "LineString":
-            this._updateLineStringFeature(key, obj);
-            break;
-        case "Polygon":
-            this._updatePolygonFeature(key, obj);
-            break;
-        default:
-            break;
+            case "Point":
+                this._updatePointFeature(key, obj);
+                break;
+            case "LineString":
+                this._updateLineStringFeature(key, obj);
+                break;
+            case "Polygon":
+                this._updatePolygonFeature(key, obj);
+                break;
+            default:
+                break;
         }
     };
     //修改features
@@ -877,17 +968,17 @@ export default (function(window) {
         }
         for (var typeKey in types) {
             switch (typeKey) {
-            case "Point":
-                this._updatePointFeatures(key, types[typeKey]);
-                break;
-            case "LineString":
-                this._updateLineStringFeatures(key, types[typeKey]);
-                break;
-            case "Polygon":
-                this._updatePolygonFeatures(key, types[typeKey]);
-                break;
-            default:
-                break;
+                case "Point":
+                    this._updatePointFeatures(key, types[typeKey]);
+                    break;
+                case "LineString":
+                    this._updateLineStringFeatures(key, types[typeKey]);
+                    break;
+                case "Polygon":
+                    this._updatePolygonFeatures(key, types[typeKey]);
+                    break;
+                default:
+                    break;
             }
         }
     };
@@ -916,19 +1007,19 @@ export default (function(window) {
             }));
         } else {
             var type = feature.get("attr").type,
-                style = null;
+              style = null;
             switch (type) {
-            case "Point":
-                this._createPointStyle(key, types[typeKey]);
-                break;
-            case "LineString":
-                this._createLineStyle(key, types[typeKey]);
-                break;
-            case "Polygon":
-                this._createPolygonStyle(key, types[typeKey]);
-                break;
-            default:
-                break;
+                case "Point":
+                    this._createPointStyle(key, types[typeKey]);
+                    break;
+                case "LineString":
+                    this._createLineStyle(key, types[typeKey]);
+                    break;
+                case "Polygon":
+                    this._createPolygonStyle(key, types[typeKey]);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -939,12 +1030,13 @@ export default (function(window) {
         this.hlLayers.push(this.layers[key]);
         if (this.hlLayers.length > 1) return;
         var _this = this,
-            hlFeature = null;
+          hlFeature = null;
         var font = this.layerStyle[key] && this.layerStyle[key].font || "14px";
         var target = document.querySelectorAll("#"+this.target)[0];
         this._pointermoveEKey = this.map.on('pointermove', function(e) {
             var flag = false;
             var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+                if (this.tagLayers.indexOf(layer) > -1 && feature.getStyle().getText() && feature.getStyle().getText().getText() !== "") return;
                 if (hlFeature) {
                     var hlfeatureStyle = hlFeature.getStyle();
                     hlfeatureStyle.setText(null);
@@ -952,40 +1044,46 @@ export default (function(window) {
                     hlFeature = null;
                 }
                 if (feature && layer && feature.get("attr") && (feature.get("attr").type === "Point" || feature.get("attr").type === "LineString") &&
-                        this.hlLayers.indexOf(layer) > -1) {
+                  this.hlLayers.indexOf(layer) > -1) {
 
                     var featureStyle = feature.getStyle();
                     var nowStyle = feature.get("attr").style || this.layerStyle[layer.get("key")];
-                    var text = new Text({
-                        text: typeof nowStyle.fontText === "function" ? nowStyle.fontText(feature.get("attr")) : nowStyle.fontText,
-                        offsetX: nowStyle.fontOffset && nowStyle.fontOffset[0] != null ? nowStyle.fontOffset[0] : 10,
-                        offsetY: nowStyle.fontOffset && nowStyle.fontOffset[1] != null ? nowStyle.fontOffset[1] : -10,
-                        textAlign: "left",
-                        fill: new Fill({
-                            color: nowStyle.fontColor
-                        }),
-                        font: font
-                    });
-                    featureStyle.setText(text);
+                    let textWord = typeof nowStyle.fontText === "function" ? nowStyle.fontText(feature.get("attr")) : nowStyle.fontText;
+                    if (featureStyle.getText()) {
+                        featureStyle.getText().setText(textWord);
+                    }else {
+                        var text = new Text({
+                            text: textWord,
+                            offsetX: nowStyle.fontOffset && nowStyle.fontOffset[0] != null ? nowStyle.fontOffset[0] : 10,
+                            offsetY: nowStyle.fontOffset && nowStyle.fontOffset[1] != null ? nowStyle.fontOffset[1] : -10,
+                            textAlign: "left",
+                            fill: new Fill({
+                                color: nowStyle.fontColor
+                            }),
+                            font: font
+                        });
+                        featureStyle.setText(text);
+                    }
+
                     feature.setStyle(featureStyle);
                     hlFeature = feature;
                     flag = true;
                     return;
                 }
-                
+
             }.bind(_this), {hitTolerance:5, layerFilter: function(layer) {
-              if (_this.hlLayers && _this.hlLayers.indexOf(layer) > -1) {
-                return true;
-              }
-              return false;
-              
-            }});
+                    if (_this.hlLayers && _this.hlLayers.indexOf(layer) > -1) {
+                        return true;
+                    }
+                    return false;
+
+                }});
             if (flag) {
                 target.style.cursor = "pointer";
             }else{
                 target.style.cursor = "inherit";
             }
-            
+
         });
     };
     //关闭高亮
@@ -1000,10 +1098,78 @@ export default (function(window) {
             this._pointermoveEKey = null;
         }
     };
+    Map.prototype.startTagOnLayer = function(key) {
+        if (!this.layers[key]) return;
+        this.tagLayers.push(this.layers[key]);
+
+        let layer = this.layers[key];
+        let func = (e) => {
+            // layer.getSource().getFeatures().forEach((feature) => {
+            let feature = e.feature;
+            var featureStyle = feature.getStyle();
+            var nowStyle = feature.get("attr").style || this.layerStyle[layer.get("key")];
+            var font = this.layerStyle[key] && this.layerStyle[key].font || "14px";
+            var text = new Text({
+                // text: typeof nowStyle.fontText === "function" ? nowStyle.fontText(feature.get("attr")) : nowStyle.fontText,
+                text: "",
+                offsetX: nowStyle.fontOffset && nowStyle.fontOffset[0] != null ? nowStyle.fontOffset[0] : 10,
+                offsetY: nowStyle.fontOffset && nowStyle.fontOffset[1] != null ? nowStyle.fontOffset[1] : -10,
+                textAlign: "left",
+                fill: new Fill({
+                    color: nowStyle.fontColor
+                }),
+                font: font
+            });
+            featureStyle.setText(text);
+            feature.setStyle(featureStyle);
+        }
+        this.tagLayerEvent[key] = layer.getSource().on('addfeature', func);
+        // layer.getSource().on('changefeature', func);
+    }
+    Map.prototype.hideTagOnLayer = function(key) {
+        if (!this.layers[key]) return;
+        var index = this.tagLayers.indexOf(this.layers[key]);
+        if (index > -1) {
+            this.layers[key].getSource().getFeatures().forEach((feature) => {
+                let style = feature.getStyle();
+                if (style.getText()) {
+                    style.getText().setText("");
+                }
+                feature.setStyle(style);
+            });
+        }
+    };
+    Map.prototype.showTagOnLayer = function(key) {
+        if (!this.layers[key]) return;
+        var index = this.tagLayers.indexOf(this.layers[key]);
+        if (index > -1) {
+            this.layers[key].getSource().getFeatures().forEach((feature) => {
+                var nowStyle = feature.get("attr").style || this.layerStyle[key];
+                var style = feature.getStyle();
+                if (style.getText()) {
+                    style.getText().setText(typeof nowStyle.fontText === "function" ? nowStyle.fontText(feature.get("attr")) : nowStyle.fontText);
+                }
+                feature.setStyle(style);
+            });
+        }
+    };
+    Map.prototype.stopTagOnLayer = function(key) {
+        if (!this.layers[key]) return;
+        var index = this.tagLayers.indexOf(this.layers[key]);
+        if (index > -1) {
+            this.tagLayers.splice(index, 1);
+        }
+        this.layers[key].getSource().getFeatures().forEach((feature) => {
+            let style = feature.getStyle();
+            style.setText(null);
+            feature.setStyle(style);
+        });
+        unByKey(this.tagLayerEvent[key]);
+    }
     Map.prototype.showTextonLayer = function(key, isShow) {
         if (!this.layers[key]) return;
         if (this.showTextLayer[key] === isShow) return;
-        
+
         var features = this.layers[key].getSource().getFeatures();
         if (features && features.length) {
             var _this = this;
@@ -1023,12 +1189,12 @@ export default (function(window) {
                         });
                         featureStyle.setText(text);
                     }
-                    
+
                 }else{
                     if (featureStyle.getText()) {
                         featureStyle.setText(null);
                     }
-                    
+
                 }
                 f.setStyle(featureStyle);
             });
@@ -1063,8 +1229,8 @@ export default (function(window) {
             var feature = this.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
                 return {feature, layer};
                 if (feature && layer && feature.get("attr") && feature.get("attr").type === "Point") {
-                    
-                   
+
+
                     // for (var i = 0; i < this.sfLayers.length; i++) {
                     //     var item = this.sfLayers[i];
                     //     if (item.layer === layer) {
@@ -1081,12 +1247,15 @@ export default (function(window) {
                     // }
                 }
             }.bind(_this),{hitTolerance:5,layerFilter: function(layer) {
-              if (_this.hlLayers && _this.hlLayers.indexOf(layer) > -1) {
-                return true;
-              }
-              return false;
-              
-            }});
+                    if (_this.hlLayers && _this.hlLayers.indexOf(layer) > -1) {
+                        return true;
+                    }
+                    return false;
+
+                }});
+            if (_this.callbacks.onFeatureClicked) {
+                _this.callbacks.onFeatureClicked.call(_this, feature);
+            }
             if (!feature) return;
             for (var i = 0; i < _this.sfLayers.length; i++) {
                 var sflayer = _this.sfLayers[i];
@@ -1121,10 +1290,10 @@ export default (function(window) {
         var clusterSource = new Cluster({
             distance: isSimple? 0:30,
             source: new VectorSource(),
-            
+
         });
         var clusterLayer = new VectorLayer({
-        	zIndex: 21,
+            zIndex: 21,
             source: clusterSource,
             visible: this.layers[key].getVisible(),
             style: function(feature) {
@@ -1320,17 +1489,17 @@ export default (function(window) {
         var formatLength = function(line) {
             var length;
             if (false) {
-               
+
             } else {
                 length = Math.round(line.getLength() * 100) / 100;
             }
             var output;
             if (length > 100) {
                 output = (Math.round(length / 1000 * 100) / 100) +
-                    ' ' + 'km';
+                  ' ' + 'km';
             } else {
                 output = (Math.round(length * 100) / 100) +
-                    ' ' + 'm';
+                  ' ' + 'm';
             }
             return output;
         }.bind(this);
@@ -1344,17 +1513,17 @@ export default (function(window) {
         var formatArea = function(polygon) {
             var area;
             if (false) {
-               
+
             } else {
                 area = polygon.getArea();
             }
             var output;
             if (area > 10000) {
                 output = (Math.round(area / 1000000 * 100) / 100) +
-                    ' ' + 'km<sup>2</sup>';
+                  ' ' + 'km<sup>2</sup>';
             } else {
                 output = (Math.round(area * 100) / 100) +
-                    ' ' + 'm<sup>2</sup>';
+                  ' ' + 'm<sup>2</sup>';
             }
             return output;
         }.bind(this);
@@ -1606,8 +1775,8 @@ export default (function(window) {
         this.map.addInteraction(draw);
         // return {
         // 	prev:function(){
-    // 	}
-    // };
+        // 	}
+        // };
     };
     Map.prototype.stopEditablePolygon = function() {
         if (this._edDraw && this._modifyDraw && this._searchEdlayer) {
@@ -1623,13 +1792,13 @@ export default (function(window) {
         }
     };
     Map.prototype.startEditablePolygonInLayerFeature = function(key, featureId, callback) {
-		if (!this.layers[key]) return;
-		var layer = this.layers[key];
-		var featrue = layer.getSource().getFeatureById(featureId);
-		if (!featrue) return;
-		var features = new Collection();
-		features.push(featrue);
-		var modify = new Modify({
+        if (!this.layers[key]) return;
+        var layer = this.layers[key];
+        var featrue = layer.getSource().getFeatureById(featureId);
+        if (!featrue) return;
+        var features = new Collection();
+        features.push(featrue);
+        var modify = new Modify({
             features: features,
             // the SHIFT key must be pressed to delete vertices, so
             // that new vertices can be drawn at the same position
@@ -1713,14 +1882,22 @@ export default (function(window) {
     Map.prototype.onView = function(eventType, func) {
         return this.map.getView().on(eventType, func);
     };
+    //解绑视图事件
+    Map.prototype.unView = function(eventType, func){
+        return this.map.getView().un(eventType, func);
+    };
     //
     Map.prototype.getView = function() {
         return this.map.getView();
     };
+
     Map.prototype.getMap = function() {
-      return this.map;
-  };
-    
+        return this.map;
+    };
+    Map.prototype.onFeatureClicked = function(callback) {
+        this.callbacks.onFeatureClicked = callback;
+    }
+
     return Map;
 })(window);
 
