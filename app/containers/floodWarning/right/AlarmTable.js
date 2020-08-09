@@ -60,7 +60,7 @@ class AlarmTable extends React.PureComponent {
         var myChart = echarts.init(document.getElementById('mainbywat'));
         if (result.data.length !== 0) {
           console.log(result)
-          for (var i = result.data.records.length - 1; i >= 0; i--) {
+          for (var i = 0; i < result.data.records.length; i++) {
             xdata.push(result.data.records[i].tm)
             ydata.push((result.data.records[i].z * 1).toFixed(2))
           }
@@ -395,7 +395,7 @@ class AlarmTable extends React.PureComponent {
     let lon = e.lon * 1;
     let lat = e.lat * 1;
     if (lon == null && lat == null) return;
-    emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
+    emitter.emit("map-move-focus", [lon, lat], 3000);
   }
 }
 export default AlarmTable;

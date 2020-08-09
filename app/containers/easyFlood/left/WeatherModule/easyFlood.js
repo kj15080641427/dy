@@ -54,15 +54,34 @@ class easyFlood extends React.PureComponent {
                 if (result.data.records.length !== 0) {
                     let xdata = []
                     let ydata = []
+                    let max = 0
+                    let maxTime = '2020-01-01 00:00:00'
+                    let min = 999
+                    let minTime = '2020-01-01 00:00:00'
                     for (var i = 1; i < result.data.records.length; i++) {
+                        if (
+                            result.data.records[i].z > max
+                        ) {
+                            max = result.data.records[i].z
+                            maxTime = result.data.records[i].tm
+                        }
+                        if (result.data.records[i].z < min) {
+                            min = result.data.records[i].z
+                            minTime = result.data.records[i].tm
+                        }
                         xdata.push(result.data.records[i].tm)
                         ydata.push((result.data.records[i].z * 100).toFixed(1))
                     }
+                    console.log(xdata)
+
+                    max = (max * 100).toFixed(1)
+                    min = (min * 100).toFixed(1)
+                    maxTime = maxTime.split(' ')[1].slice(0, -3)
+                    minTime = minTime.split(' ')[1].slice(0, -3)
                     this.setState({
                         swdataSourceById: result.data.records,
                         mloading: false,
                     })
-
                     myChart.setOption({
                         title: {
                             text: value.name + "-易涝点24小时水深变化",
@@ -121,10 +140,18 @@ class easyFlood extends React.PureComponent {
                             type: 'line',
                             markPoint: {
                                 data: [
-                                    { type: 'max', name: '最大值' },
+                                    {
+                                        type: 'max', name: '最大值',
+                                        label: {
+                                            formatter: `${maxTime}\n${max}`,
+                                        }
+                                    },
                                     {
                                         type: 'min', name: '最小值', itemStyle: {
                                             color: '#03d6d6'
+                                        },
+                                        label: {
+                                            formatter: `${minTime}\n${min}`,
                                         }
                                     }
                                 ],
@@ -468,7 +495,7 @@ class easyFlood extends React.PureComponent {
                 for (let i = 0; i < dataArr.length; i++) {
                     if (dataArr[i].region === "370502" && dataArr[i].indtype !== 11) {
                         dyarr.push(dataArr[i])
-                    } 
+                    }
                     // if (dataArr[i].region === "370523") {
                     //     grarr.push(dataArr[i])
                     // } if (dataArr[i].region === "370522") {
@@ -511,7 +538,7 @@ class easyFlood extends React.PureComponent {
         let lon = e.lon * 1;
         let lat = e.lat * 1;
         if (lon == null && lat == null) return;
-        emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
+        emitter.emit("map-move-focus", [lon, lat], 3000);
     }
 }
 export default easyFlood;

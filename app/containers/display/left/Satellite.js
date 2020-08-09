@@ -123,7 +123,7 @@ class Satellite extends React.PureComponent {
         </Modal>
         <div className="div-precipitation3" onClick={this.showradar}></div>
         <Modal
-          title="华东地区气象雷达图"
+          // title="华东地区气象雷达图"
           onCancel={this.handleCancel}
           visible={this.state.radarvisible}
           width={"100%"}

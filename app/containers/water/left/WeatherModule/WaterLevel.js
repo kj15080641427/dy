@@ -6,7 +6,6 @@
 import React from 'react';
 import "../style.scss";
 import localimgURL from '../../../../resource/local.png';
-import emitter from "@app/utils/emitter.js";
 import { Table, Popover, Tag, Modal, Button, Card, Row, Col, Input, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
@@ -15,6 +14,7 @@ import { getWaterHistory, getBasicsAll } from "@app/data/request";
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 import 'echarts';
+import emitter from "@app/utils/emitter.js";
 import { SpliceSite } from "@app/utils/common";
 
 class Precipitation extends React.PureComponent {
@@ -522,7 +522,8 @@ class Precipitation extends React.PureComponent {
         let lon = e.lon * 1;
         let lat = e.lat * 1;
         if (lon == null && lat == null) return;
-        emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
+        emitter.emit("map-move-focus", [lon, lat], 3000);
+        // emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
     }
 }
 export default Precipitation;
