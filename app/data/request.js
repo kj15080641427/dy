@@ -178,6 +178,17 @@ export function getByTimeMinute(data) {
 export function getByTimeDay(data) {
   return fetchJSONData("POST", "/raindataDay/getByTime", data);
 }
+//=====================================统计==============================================================
+//统计分钟雨量数据
+export function countMinutesRain(data){
+  return fetchJSONData("POST", "/raindataMinute/getByCount", data);
+}
+
+//统计小时雨量数据
+export function countHoursRain(data){
+  return fetchJSONData("POST", "/raindataHour/getByCount", data);
+}
+
 //统计各来源的站点数
 export function getCountStation(data) {
   return fetchJSONData("POST", "/count/getCountStation", data);

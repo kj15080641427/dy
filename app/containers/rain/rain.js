@@ -4,9 +4,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
-import * as actions from '@app/redux/actions/monitor';
-//import Map from "./map/map";
-import Map from '../monitor/map/map';
+import * as actions from '@app/redux/actions/rain';
+import Map from "./map/map";
+// import Map from '../monitor/map/map';
 import "./style.scss";
 import Head from "./head/Head";
 import WeatherBox from "./left/WeatherBox";
@@ -22,6 +22,7 @@ import setImg from "@app/resource/setsys.png"
 import { Drawer, Switch, Row, Divider, Checkbox } from 'antd';
 import { none } from 'ol/centerconstraint';
 import SetTitle from '@app/components/setting/SetTitle';
+import RainSwitcher from "./right/Module/RainSwitcher";
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -64,32 +65,36 @@ class Monitor extends React.PureComponent {
     let { layerVisible, displayRight, displayLeft } = this.state;
     return (
       <div className="monitor">
-        <Map layerVisible={layerVisible}></Map>
-        <Head></Head>
+        <Map layerVisible={layerVisible}/>
+        <Head/>
         <div style={{ display: displayLeft }}>
           <div className="m-left">
             {/* <WeatherBox></WeatherBox>*/}
-            <WeatherDy></WeatherDy>
-            <WeatherChart></WeatherChart>
-            <WeatherTable></WeatherTable>
+            <WeatherDy/>
+            <WeatherChart/>
+            <WeatherTable/>
           </div>
         </div>
         <div style={{ display: displayRight }}>
           <div className="m-right">
-            <PannelBtn></PannelBtn>
-            {/* 
+            <PannelBtn/>
+
+            {/*
             <AlarmTable></AlarmTable>
             <WeatherPic></WeatherPic> */}
           </div>
         </div>
-        <div className="m-bottom" >
-          <RainLegend></RainLegend>
+        <div class="m-rain-button">
+          <RainSwitcher style={{width: 150}} onClick={this.onRainSwitch.bind(this)}/>
         </div>
-        <img onClick={() => {
-          this.setState({
-            visible: true,
-          });
-        }} className="m-set-img" src={setImg}></img>
+        <div className="m-bottom" >
+          <RainLegend/>
+        </div>
+        {/*<img onClick={() => {*/}
+        {/*  this.setState({*/}
+        {/*    visible: true,*/}
+        {/*  });*/}
+        {/*}} className="m-set-img" src={setImg}/>*/}
         <Drawer
           title={<SetTitle></SetTitle>}
           placement="right"
@@ -133,6 +138,10 @@ class Monitor extends React.PureComponent {
     );
   }
   componentDidMount() {
+    //this.props.actions.rainCurrent();
+    //加载雨量站基础信息
+    this.props.actions.getAllRainStation();
+    this.props.actions.rainCurrent();
   }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
@@ -142,11 +151,36 @@ class Monitor extends React.PureComponent {
       layerVisible: { ...layerVisible }
     });
   }
+
+  /**
+   * 切换雨量事件
+   * @param item
+   */
+  onRainSwitch(item){
+    switch (item.index) {
+      case 0:
+        this.props.actions.rainCurrent();
+        break;
+      case 1:
+        this.props.actions.rain1Hour();
+        break;
+      case 2:
+        this.props.actions.rain3Hours();
+        break;
+      case 3:
+        this.props.actions.rain12Hours();
+        break;
+      case 4:
+        this.props.actions.rain24Hours();
+        break;
+    }
+  }
 }
 // -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
   return {
+    store : state,
   };
 }
 
