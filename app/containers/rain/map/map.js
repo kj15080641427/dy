@@ -951,26 +951,41 @@ class Map extends React.PureComponent {
   drawFeatures(data) {
     const {stations} = this.props;
 
-    if(data && stations){
-      let features = [];
+    if(stations){
+      for(let key in stations){
+        stations[key].data = null;
+      }
+    }
+
+    if(data && stations) {
 
       data.forEach(item => {
         const {stcd} = item;
         let station = stations[stcd];
 
-        if(station){
-          features.push({
-            type: "Point",
-            id: stcd,
-            lonlat: [station.lon, station.lat],
-            data: {...item},
-            ...station
-          });
+        if (station) {
+          station.data = item;
         }
       });
+    }
+
+    let features = [];
+
+    for(let key in stations){
+      let station = stations[key];
+
+      features.push({
+        type: "Point",
+        id: station.stcd,
+        lonlat: [station.lon, station.lat],
+        data: {...station.data},
+        ...station
+      });
+    }
+
+      this.map.removeFeatures('rain', features);
       this.map.addFeatures('rain', features);
       this.addRainTagBox(data);
-    }
 
     // let { rain, water, details, ponding } = this.props;
     // if (!data) return;
@@ -994,18 +1009,19 @@ class Map extends React.PureComponent {
   }
   addRainTagBox(rain) {
     const {stations} = this.props;
-    if (rain && rain.length) {
-      rain.forEach((r) => {
+    if (stations) {
+
+      for (let key in stations) {
+        let r = stations[key];
         let station = stations[r.stcd];
-
-        if(station){
-          let name = station.aliasNme ? station.aliasNme : station.name;
-          const {lon, lat, stcd} = station;
-          const {avgDrp} = r;
-          this.map.addTagBox("rain_tag_" + stcd, [lon, lat], { title: name, subTitle: avgDrp === null || avgDrp === undefined ? '--' : (avgDrp * 1).toFixed(1) + "mm", prefix: "rain_tag" });
-        }
-
-      });
+        let name = station.aliasNme ? station.aliasNme : station.name;
+        const {lon, lat, stcd} = station;
+        let avgDrp = r.data ? r.data.avgDrp : null;
+        let tagId = "rain_tag_" + stcd;
+        let tagContent = (avgDrp === null || avgDrp === undefined) ? '--' : (avgDrp * 1).toFixed(1) + "mm";
+        this.map.removeTagBox(tagId);
+        this.map.addTagBox(tagId, [lon, lat], {title: name, subTitle: tagContent , prefix: "rain_tag"});
+      }
     }
   }
   addWaterTagBox(water) {

@@ -822,7 +822,7 @@ export default (function(window) {
       removeKeys.forEach((key) => {
         this.removeOverlay(key);
       })
-    }
+    };
     Map.prototype.addTagBox = function(id, coordinate, model) {
       let div = document.createElement("div");
       div.className = "ol-tag-container " + model.prefix;
@@ -840,21 +840,25 @@ export default (function(window) {
         offset: [14, -10],
         stopEvent: false,
       }, div);
-    }
+    };
     Map.prototype.showTagBox = function(prefix) {
       let tags = document.querySelectorAll(".ol-tag-container." + prefix);
       for(let i = 0; i < tags.length; i++) {
         let tg = tags[i];
         tg.classList.add("active");
       }
-    }
+    };
     Map.prototype.hideTagBox = function(prefix) {
       let tags = document.querySelectorAll(".ol-tag-container." + prefix);
       for(let i = 0; i < tags.length; i++) {
         let tg = tags[i];
         tg.classList.remove("active");
       }
-    }
+    };
+
+    Map.prototype.removeTagBox = function(id){
+        this.removeOverlay(id);
+    };
 
     //添加目标
     Map.prototype.addFeature = function(key, obj) {

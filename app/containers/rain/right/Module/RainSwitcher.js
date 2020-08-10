@@ -38,8 +38,6 @@ class RainSwitcher extends Component{
     this.state = {
       selectedButton :this.buttons[0]
     };
-
-
   }
   render(){
     let style = this.props.style? this.props.style : defaultStyle.container;
@@ -48,13 +46,14 @@ class RainSwitcher extends Component{
     return (
       <div style={style}>
         {
-          this.buttons.map(item => {
-            let type = (item === this.state.selectedButton) ? 'default' : 'primary';
+          this.buttons.map((item, index) => {
+            let type = (item.text === this.state.selectedButton.text) ? 'default' : 'primary';
+            let param = {...item, index};
 
             return (
               <Row style={itemStyle}>
                 <Col span={24}>
-                  <Button type={type} block onClick={this.onButtonClick.bind(this, item)} size={'large'}>
+                  <Button type={type} block onClick={this.onButtonClick.bind(this, param)} size={'large'}>
                     {item.text}
                   </Button>
                 </Col>
@@ -67,8 +66,10 @@ class RainSwitcher extends Component{
   }
 
   onButtonClick(item){
-    if(this.state.selectedButton !== item){
-      this.setState({selectedButton: item});
+    if(this.state.selectedButton.text !== item.text){
+      this.setState({selectedButton: item}, () => {
+        this.props.onClick && this.props.onClick(item);
+      });
     }
   }
 }

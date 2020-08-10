@@ -4,7 +4,7 @@ var webpack = require("webpack");
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 // const CopyPlugin = require('copy-webpack-plugin');
 const os = require('os');
-const isTao = os.hostname() === '66tao.local';
+const isTao = true;
 // const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 // const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
 module.exports = {

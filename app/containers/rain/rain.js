@@ -65,19 +65,19 @@ class Monitor extends React.PureComponent {
     let { layerVisible, displayRight, displayLeft } = this.state;
     return (
       <div className="monitor">
-        <Map layerVisible={layerVisible}></Map>
-        <Head></Head>
+        <Map layerVisible={layerVisible}/>
+        <Head/>
         <div style={{ display: displayLeft }}>
           <div className="m-left">
             {/* <WeatherBox></WeatherBox>*/}
-            <WeatherDy></WeatherDy>
-            <WeatherChart></WeatherChart>
-            <WeatherTable></WeatherTable>
+            <WeatherDy/>
+            <WeatherChart/>
+            <WeatherTable/>
           </div>
         </div>
         <div style={{ display: displayRight }}>
           <div className="m-right">
-            <PannelBtn></PannelBtn>
+            <PannelBtn/>
 
             {/*
             <AlarmTable></AlarmTable>
@@ -85,16 +85,16 @@ class Monitor extends React.PureComponent {
           </div>
         </div>
         <div class="m-rain-button">
-          <RainSwitcher style={{width: 150}}/>
+          <RainSwitcher style={{width: 150}} onClick={this.onRainSwitch.bind(this)}/>
         </div>
         <div className="m-bottom" >
-          <RainLegend></RainLegend>
+          <RainLegend/>
         </div>
-        <img onClick={() => {
-          this.setState({
-            visible: true,
-          });
-        }} className="m-set-img" src={setImg}></img>
+        {/*<img onClick={() => {*/}
+        {/*  this.setState({*/}
+        {/*    visible: true,*/}
+        {/*  });*/}
+        {/*}} className="m-set-img" src={setImg}/>*/}
         <Drawer
           title={<SetTitle></SetTitle>}
           placement="right"
@@ -150,6 +150,30 @@ class Monitor extends React.PureComponent {
     this.setState({
       layerVisible: { ...layerVisible }
     });
+  }
+
+  /**
+   * 切换雨量事件
+   * @param item
+   */
+  onRainSwitch(item){
+    switch (item.index) {
+      case 0:
+        this.props.actions.rainCurrent();
+        break;
+      case 1:
+        this.props.actions.rain1Hour();
+        break;
+      case 2:
+        this.props.actions.rain3Hours();
+        break;
+      case 3:
+        this.props.actions.rain12Hours();
+        break;
+      case 4:
+        this.props.actions.rain24Hours();
+        break;
+    }
   }
 }
 // -------------------redux react 绑定--------------------

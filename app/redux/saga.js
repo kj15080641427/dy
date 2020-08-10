@@ -1,6 +1,6 @@
 import {put, call, all, takeEvery} from 'redux-saga/effects';
 import * as RainTypes from './constants/rain';
-import {getByTimeMinute, getByTimeHour,getByTimeDay, getAll} from '../data/request';
+import {countHoursRain,countMinutesRain, getAll} from '../data/request';
 import moment from 'moment';
 
 
@@ -14,7 +14,7 @@ function *loadHourRain() {
   let data = [];
 
   try{
-    let result = yield call(getByTimeHour, {
+    let result = yield call(countHoursRain, {
       stcd: '',
       starttm: beginTime.format('YYYY-MM-DD HH:mm:ss'),
       endtm: endTime.format('YYYY-MM-DD HH:mm:ss')
@@ -42,7 +42,7 @@ function *loadCurrentRain() {
 
   try{
 
-    let result = yield call(getByTimeMinute, {current:1 ,size: 10000, starttm: beginTime, endtm:endTime});
+    let result = yield call(countMinutesRain, {current:1 ,size: 10000, starttm: beginTime, endtm:endTime});
     //let result = yield call(getByTimeMinute, {starttm: beginTime, endtm:endTime});
 
     if(result.code === 200){
@@ -68,7 +68,26 @@ function *loadCurrentRain() {
  * @returns {IterableIterator<*>}
  */
 function *load12HoursRain() {
+  let endTime = moment().startOf('hour');
+  let beginTime = moment().subtract(12,'hour').startOf('hour');
+  let data = [];
 
+  try{
+    let result = yield call(countHoursRain, {
+      stcd: '',
+      starttm: beginTime.format('YYYY-MM-DD HH:mm:ss'),
+      endtm: endTime.format('YYYY-MM-DD HH:mm:ss')
+    });
+
+    if(result.code === 200){
+      data = [...result.data];
+    }
+  }
+  catch (e) {
+    console.warn(e);
+  }
+
+  yield put({type: RainTypes.UPDATE_RAIN,payload:{rainDataType: 3, data: data}});
 }
 
 /**
@@ -76,7 +95,26 @@ function *load12HoursRain() {
  * @returns {IterableIterator<*>}
  */
 function *load24HourRain() {
+  let endTime = moment().startOf('hour');
+  let beginTime = moment().subtract(24,'hour').startOf('hour');
+  let data = [];
 
+  try{
+    let result = yield call(countHoursRain, {
+      stcd: '',
+      starttm: beginTime.format('YYYY-MM-DD HH:mm:ss'),
+      endtm: endTime.format('YYYY-MM-DD HH:mm:ss')
+    });
+
+    if(result.code === 200){
+      data = [...result.data];
+    }
+  }
+  catch (e) {
+    console.warn(e);
+  }
+
+  yield put({type: RainTypes.UPDATE_RAIN,payload:{rainDataType: 4, data: data}});
 }
 
 /**
@@ -84,13 +122,26 @@ function *load24HourRain() {
  * @returns {IterableIterator<*>}
  */
 function *load3HoursRain() {
-  yield put({
-    type: RainTypes.UPDATE_RAIN,
-    payload: {
-      data: 'test3',
-      rainType: 3
+  let endTime = moment().startOf('hour');
+  let beginTime = moment().subtract(3,'hour').startOf('hour');
+  let data = [];
+
+  try{
+    let result = yield call(countHoursRain, {
+      stcd: '',
+      starttm: beginTime.format('YYYY-MM-DD HH:mm:ss'),
+      endtm: endTime.format('YYYY-MM-DD HH:mm:ss')
+    });
+
+    if(result.code === 200){
+      data = [...result.data];
     }
-  })
+  }
+  catch (e) {
+    console.warn(e);
+  }
+
+  yield put({type: RainTypes.UPDATE_RAIN,payload:{rainDataType: 3, data: data}});
 }
 
 /**
