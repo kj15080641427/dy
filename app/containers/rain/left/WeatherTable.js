@@ -36,10 +36,12 @@ class WeatherTable extends React.PureComponent {
         <div className="m-div-rain">
           <Tabs type="card" defaultActiveKey="1" onChange={this.callback} animated="true" tabBarGutter={10} size="large" className="ant-tabs-nav-container">
             <TabPane tab={`雨量站(${this.state.count})`} key="1">
-              <Precipitation parent={this}></Precipitation>
+              <Precipitation parent={this}/>
             </TabPane>
             <TabPane tab={'雨量统计'} key={'2'}>
-              <RainStatistics dataSource={this.rainCatalog} />
+              <RainStatistics
+                dataSource={this.rainCatalog}
+                onRowClick={this.onStationClick.bind(this)} />
             </TabPane>
             {/* <TabPane tab="河道" key="2">
               <RiverWater></RiverWater>
@@ -70,11 +72,17 @@ class WeatherTable extends React.PureComponent {
 
   //即将更新
   componentWillUpdate(nextProps, nextState, nextContext) {
+    let stations = nextProps.stations ? {...nextProps.stations} : [];
+    let rainData = nextProps.rainData ? nextProps.rainData.data : [];
+    this.rainCatalog = this.getRainCatalog(stations, rainData);
+  }
+
+  /**
+   * 按照雨量级别分别返回各个级别雨量站的数组
+   */
+  getRainCatalog(stations, rainData){
     //rain1 - rain6 分别保存特大暴雨-小雨的站点信息
     let rain1 = [], rain2 =[] ,rain3 = [] , rain4 = [], rain5 =[], rain6=[];
-
-    let stations = this.props.stations ? {...nextProps.stations} : [];
-    let rainData = this.props.rainData ? nextProps.rainData.data : [];
 
     rainData.forEach(item => {
       let drp = item.avgDrp * 1;
@@ -106,7 +114,7 @@ class WeatherTable extends React.PureComponent {
       }
     });
 
-    this.rainCatalog = [rain1, rain2, rain3, rain4, rain5, rain6];
+    return [rain1, rain2, rain3, rain4, rain5, rain6];
   }
 
   locationClick(e) {
@@ -114,6 +122,21 @@ class WeatherTable extends React.PureComponent {
     let lat = e.target.dataset.lat * 1;
     if (lon == null && lat == null) return;
     emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
+  }
+
+  onStationClick(param){
+    const {stations} = this.props;
+    if(stations){
+      let station = stations[param.stcd];
+
+      if(station){
+        const {lon, lat} = station;
+
+        if(lon && lat){
+          emitter.emit("map-move-focus", [lon, lat], 3000);
+        }
+      }
+    }
   }
 }
 

@@ -1,3 +1,8 @@
+/**
+ * 雨量站点量级统计
+ * 2020-08-01
+ * phz
+ */
 import React, {PureComponent} from 'react';
 import {Table} from 'antd';
 import "../style.scss";
@@ -98,8 +103,22 @@ class RainStatistics extends PureComponent{
           defaultPageSize: 50,
         }}
         dataSource={record.dataSource}
+        onRow={this.onRow.bind(this)}
       />
     );
+  }
+
+  onRow(record){
+    return {
+      onClick: () => {
+        this.props.onRowClick &&
+          this.props.onRowClick(record);
+      },
+      onDoubleClick: () => {
+        this.props.onRowDoubleClick &&
+          this.props.onRowDoubleClick(record);
+      }
+    }
   }
 }
 
