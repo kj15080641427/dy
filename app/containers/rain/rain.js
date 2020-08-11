@@ -65,7 +65,7 @@ class Monitor extends React.PureComponent {
     let { layerVisible, displayRight, displayLeft } = this.state;
     return (
       <div className="monitor">
-        <Map layerVisible={layerVisible}/>
+        <Map layerVisible={layerVisible} />
         <Head/>
         <div style={{ display: displayLeft }}>
           <div className="m-left">
@@ -174,6 +174,10 @@ class Monitor extends React.PureComponent {
         this.props.actions.rain24Hours();
         break;
     }
+  }
+
+  onFeatureClick(param){
+    console.info('rain click');
   }
 }
 // -------------------redux react 绑定--------------------

@@ -752,13 +752,14 @@ class Precipitation extends React.PureComponent {
     }
     //初始化数据
     componentDidMount() {
-        this.selectInit()
+        this.selectInit();
         this.init = window.setInterval(() => {
             this.selectInit()
         }, 1000 * 5 * 60);
     }
     componentWillUnmount() {
-        clearTimeout(this.init);
+        clearInterval(this.init);
+        //clearTimeout(this.init);
     }
     locationClick(e) {
         console.log(e)
@@ -766,7 +767,7 @@ class Precipitation extends React.PureComponent {
         let lat = e.lat * 1;
         if (lon == null && lat == null) return;
         emitter.emit("map-move-focus", [lon, lat], 3000);
-        emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
+        //emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
     }
 }
 export default Precipitation;

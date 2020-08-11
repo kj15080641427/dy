@@ -7,6 +7,8 @@ import React from 'react';
 import "./style.scss";
 import imgURL from '../../../resource/title_bg.png';
 import { Table, Tabs } from 'antd';
+import {connect} from 'react-redux';
+import RainHelper from '@app/utils/rainhelper';
 import Precipitation from './WeatherModule/Precipitation';
 import WaterLevel from './WeatherModule/WaterLevel';
 import Video from './WeatherModule/Video';
@@ -14,6 +16,10 @@ import EasyFlood from './WeatherModule/easyFlood';
 import RiverWater from './WeatherModule/RiverWater';
 import emitter from "@app/utils/emitter.js";
 import FloodPeople from './WeatherModule/FloodPeople';
+import RainStatistics from "./WeatherModule/RainStatistics";
+
+
+const {TabPane} = Tabs;
 
 class WeatherTable extends React.PureComponent {
   constructor(props, context) {
@@ -24,7 +30,6 @@ class WeatherTable extends React.PureComponent {
   }
   render() {
     this.locationClick = this.locationClick.bind(this);
-    const { TabPane } = Tabs;
     return (
       <div className="m-wth-table-rain">
         <img className="m-table-img" src={imgURL} />
@@ -32,6 +37,9 @@ class WeatherTable extends React.PureComponent {
           <Tabs type="card" defaultActiveKey="1" onChange={this.callback} animated="true" tabBarGutter={10} size="large" className="ant-tabs-nav-container">
             <TabPane tab={`雨量站(${this.state.count})`} key="1">
               <Precipitation parent={this}></Precipitation>
+            </TabPane>
+            <TabPane tab={'雨量统计'} key={'2'}>
+              <RainStatistics dataSource={this.rainCatalog} />
             </TabPane>
             {/* <TabPane tab="河道" key="2">
               <RiverWater></RiverWater>
@@ -55,9 +63,52 @@ class WeatherTable extends React.PureComponent {
     this.setState({
       count: count
     })
-  }
+  };
+
   componentDidMount() {
   }
+
+  //即将更新
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    //rain1 - rain6 分别保存特大暴雨-小雨的站点信息
+    let rain1 = [], rain2 =[] ,rain3 = [] , rain4 = [], rain5 =[], rain6=[];
+
+    let stations = this.props.stations ? {...nextProps.stations} : [];
+    let rainData = this.props.rainData ? nextProps.rainData.data : [];
+
+    rainData.forEach(item => {
+      let drp = item.avgDrp * 1;
+      let station = stations[item.stcd];
+
+      if(station === null || station === undefined){
+        return;
+      }
+
+      let info = {
+        stcd: item.stcd,
+        name: station.name,
+        region: station.regionName,
+        drp: drp,
+      };
+      //特大暴雨
+      if(RainHelper.isRainHardStorm(drp)){
+        rain1.push(info);
+      } else if(RainHelper.isRainHeavyStorm(drp)){ //大暴雨
+        rain2.push(info)
+      } else if(RainHelper.isRainStorm(drp)){ //暴雨
+        rain3.push(info);
+      } else if(RainHelper.isRainHeavy(drp)){ //大雨
+        rain4.push(info);
+      } else if(RainHelper.isRainModerate(drp)){ //中雨
+        rain5.push(info);
+      } else if(RainHelper.isRainLight(drp)) {//小雨
+        rain6.push(info);
+      }
+    });
+
+    this.rainCatalog = [rain1, rain2, rain3, rain4, rain5, rain6];
+  }
+
   locationClick(e) {
     let lon = e.target.dataset.lon * 1;
     let lat = e.target.dataset.lat * 1;
@@ -65,4 +116,12 @@ class WeatherTable extends React.PureComponent {
     emitter.emit("map-move", [lon, lat], () => { console.log("moveend"); });
   }
 }
-export default WeatherTable;
+
+function mapStateToProps(state){
+  return{
+    rainData: state.rain.rainData,
+    stations: state.rain.stations
+  }
+}
+
+export default connect(mapStateToProps)(WeatherTable);

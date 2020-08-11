@@ -90,7 +90,9 @@ class Map extends React.PureComponent {
       this.toggleTagByMapZoom();
     }
 
-    this.drawFeatures(rainData.data);
+    if(rainData){
+      this.drawFeatures(rainData.data);
+    }
   }
   componentDidMount() {
     this.createMap();
@@ -449,28 +451,37 @@ class Map extends React.PureComponent {
     //   // }));
     // });
     this.map.startSelectFeature("rain", (param) => {
-      let { stations } = this.props;
-      if (stations[param.stcd]) {
-      // if (false) {
-      //   this.addOverlay(Rain.type, { ...param, ...details.rain[param.stcd] });
-      // } else {
-        getRainRealTime({ stcd: param.stcd, current: 1, size: 1 })
-          .then((res) => {
-            if (res.code === 200) {
-              let record = res.data.records && res.data.records[0] || null;
-              // this.props.actions.setDetailData({
-              //   key: "rain",
-              //   value: record
-              // });
-              this.addOverlay(Rain.type, record ? { ...param, ...record } : param);
-            } else {
-              return Promise.reject(res.msg || "未知错误");
-            }
-          })
-          .catch((e) => {
-            message.error("获取雨晴详情失败");
-          });
+      if(this.props.onFeatureClick){
+        this.props.onFeatureClick(param);
       }
+      else {
+        this.addOverlay(Rain.type, param);
+      }
+
+
+
+      // let { stations } = this.props;
+      // if (stations[param.stcd]) {
+      // // if (false) {
+      // //   this.addOverlay(Rain.type, { ...param, ...details.rain[param.stcd] });
+      // // } else {
+      //   getRainRealTime({ stcd: param.stcd, current: 1, size: 1 })
+      //     .then((res) => {
+      //       if (res.code === 200) {
+      //         let record = res.data.records && res.data.records[0] || null;
+      //         // this.props.actions.setDetailData({
+      //         //   key: "rain",
+      //         //   value: record
+      //         // });
+      //         this.addOverlay(Rain.type, record ? { ...param, ...record } : param);
+      //       } else {
+      //         return Promise.reject(res.msg || "未知错误");
+      //       }
+      //     })
+      //     .catch((e) => {
+      //       message.error("获取雨晴详情失败");
+      //     });
+      // }
 
     });
     // this.map.startSelectFeature("water", (param) => {
@@ -851,49 +862,49 @@ class Map extends React.PureComponent {
     //     console.log(e);
     //   });
     // 加载水闸数据
-    getGate({}).then((res) => {
-      if (res.code === 200) {
-        this.props.actions.addGates(res.data);
-        this.map.addFeatures("gate", res.data.filter((item) => { return item.lat > 3 && item.lat < 53 }).map((item) => {
-          return {
-            ...item,
-            type: "LineString",
-            id: item.gateID + "",
-            name: item.name,
-            rivername: item.rivername,
-            management: item.management,
-            isMuti: true,
-            rotate: 0,
-            rotateAnchor: [150, 50],
-            lonlats: [item.lon, item.lat],
-            coords: [
-              [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0], [0, 100], [300, 0], [0, 0], [300, 100]]
-
-            ]
-          };
-        }));
-      }
-    }).catch((e) => {
-      console.log(e);
-    });
+    // getGate({}).then((res) => {
+    //   if (res.code === 200) {
+    //     this.props.actions.addGates(res.data);
+    //     this.map.addFeatures("gate", res.data.filter((item) => { return item.lat > 3 && item.lat < 53 }).map((item) => {
+    //       return {
+    //         ...item,
+    //         type: "LineString",
+    //         id: item.gateID + "",
+    //         name: item.name,
+    //         rivername: item.rivername,
+    //         management: item.management,
+    //         isMuti: true,
+    //         rotate: 0,
+    //         rotateAnchor: [150, 50],
+    //         lonlats: [item.lon, item.lat],
+    //         coords: [
+    //           [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0], [0, 100], [300, 0], [0, 0], [300, 100]]
+    //
+    //         ]
+    //       };
+    //     }));
+    //   }
+    // }).catch((e) => {
+    //   console.log(e);
+    // });
     // 加载水泵数据
-    getPump({}).then((res) => {
-      if (res.code === 200) {
-        this.props.actions.addPumps(res.data);
-        this.map.addFeatures("pump", res.data.map((item) => {
-          return {
-            ...item,
-            type: "Point",
-            id: item.pumpID + "",
-            name: item.name,
-            lonlat: [item.lon, item.lat]
-          };
-        }));
-      }
-    })
-      .catch((e) => {
-        console.log(e);
-      });
+    // getPump({}).then((res) => {
+    //   if (res.code === 200) {
+    //     this.props.actions.addPumps(res.data);
+    //     this.map.addFeatures("pump", res.data.map((item) => {
+    //       return {
+    //         ...item,
+    //         type: "Point",
+    //         id: item.pumpID + "",
+    //         name: item.name,
+    //         lonlat: [item.lon, item.lat]
+    //       };
+    //     }));
+    //   }
+    // })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   });
     // // 防汛物资仓库
     // getWarehouse({}).then((res) => {
     //   if (res.code === 200) {
