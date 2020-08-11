@@ -60,7 +60,8 @@ export const tableColumnWater = [
         title: '积水深度(cm)',
         dataIndex: 'z',
         render: z => z != "-" ? (z * 100).toFixed(1) : "-",
-        className:'table-title-column'
+        className:'table-title-column',
+        // defaultSortOrder:'descend'
         // sorter: (a, b) => a.z - b.z,
         // defaultSortOrder: 'descend'
     },
