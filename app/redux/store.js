@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware  } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import initialize from './saga';
+import {sagaList} from './sagaList'
 import rootReducer from './reducers/index';
 
 let storeCach = {};
@@ -19,7 +19,9 @@ export default function configureStore(initialState) {
       applyMiddleware(sagaMiddleware)
     );
     storeCach = store;
-    sagaMiddleware.run(initialize);
+    sagaList.map(item=>{
+        sagaMiddleware.run(item);
+    })
     return store;
 }
 

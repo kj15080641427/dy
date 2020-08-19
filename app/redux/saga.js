@@ -1,6 +1,6 @@
 import {put, call, all, takeEvery} from 'redux-saga/effects';
 import * as RainTypes from './constants/rain';
-import {countHoursRain,countMinutesRain, getAll} from '../data/request';
+import {countHoursRain,countMinutesRain, getAll,queryPermission} from '../data/request';
 import moment from 'moment';
 
 
@@ -168,6 +168,8 @@ function *loadRainStations(){
     payload: {data: data},
   });
 }
+
+
 
 /**
  * 初始化

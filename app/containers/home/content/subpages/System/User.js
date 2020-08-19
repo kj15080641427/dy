@@ -11,6 +11,7 @@ import { Table, Row, Modal, Input, Button, Select, Form, Radio, DatePicker, Swit
 import { SearchOutlined, RedoOutlined, PlusCircleOutlined, CloseCircleOutlined, FormOutlined } from '@ant-design/icons';
 // import Form from 'antd/lib/form/Form';
 import UserForm from "./SystemForm/UserForm"
+import moment from 'moment'
 import { queryUser, deleteUser, updateUser, saveUser } from '@app/data/request';
 
 class User extends React.PureComponent {
@@ -36,7 +37,6 @@ class User extends React.PureComponent {
   render() {
     // const [form] = Form.useForm();
     this.formRef = React.createRef();
-    console.log("Test this.props.match", this.props.match, this.props.location);
     const { dataSource, loading, total, current, pageSize, modalvisible, rowObj } = this.state;
     const ckcolumns = [
       {
@@ -97,7 +97,6 @@ class User extends React.PureComponent {
     ];
 
     function cancel(e) {
-      console.log(e);
       message.error('取消删除！');
     }
 
@@ -112,14 +111,12 @@ class User extends React.PureComponent {
       onChange: (current) => this.changePage(current),
       pageSize: pageSize,
       onShowSizeChange: (current, pageSize) => {//设置每页显示数据条数，current表示当前页码，pageSize表示每页展示数据条数
-        console.log(pageSize);
         this.onShowSizeChange(current, pageSize)
       },
       showTotal: () => `共${total}条`,
     }
     //重置
     const onReset = () => {
-      console.log(this.formRef.current)
       this.setState({ loading: true });
       this.formRef.current.resetFields();
       queryUser({
@@ -142,7 +139,6 @@ class User extends React.PureComponent {
     }
     //查询表单提交
     const onFinish = values => {
-      console.log('Success:', values);
       this.setState({
         current: 1,
         pageSize: 10,
@@ -154,23 +150,21 @@ class User extends React.PureComponent {
     };
     //打开添加模态框
     const showModal = (event) => {
-      console.log(event)
       this.setState({
         modalvisible: true,
       });
       // this.setState({
       //   form: form
       // })
-      // console.log("form------", event.target.value)
     };
     //根据id查询并打开模态框
     const SelectById = (row) => {
+      row = {...row,createTime:moment(row.createTime).format('YYYY-MM-DD HH:mm:ss')}
       this.setState({
         modalvisible: true,
         rowObj: row
       })
       this.saveRef.current.setFieldsValue(row)
-      // console.log(row)
       // this.addform.current.setFieldsValue({
       //   name: row.name,
       //   lon: row.lon,
@@ -234,10 +228,9 @@ class User extends React.PureComponent {
 
   //根据id删除
   confirm(row) {
-    console.log(row);
-    deleteUser({
-      "userId": row.userId
-    }).then((result) => {
+    deleteUser(
+      row.userId
+    ).then((result) => {
       this.selectPage()
       message.success('删除成功！');
     })
@@ -258,7 +251,7 @@ class User extends React.PureComponent {
     queryUser({
       "current": current,
       "size": pageSize,
-      "username": this.state.selectObj.name
+      "realname": this.state.selectObj.name || ''
     })
       .then((result) => {
         this.setState({
@@ -272,12 +265,11 @@ class User extends React.PureComponent {
   }
   // 回调函数，切换下一页
   changePage(current) {
-    console.log(current)
     this.setState({ loading: true });
     queryUser({
       "current": current,
       "size": this.state.pageSize,
-      "username": this.state.selectObj.name
+      "realname": this.state.selectObj.name || ''
     })
       .then((result) => {
         this.setState({
@@ -296,9 +288,8 @@ class User extends React.PureComponent {
     queryUser({
       "current": this.state.current,
       "size": this.state.pageSize,
-      "username": this.state.selectObj.name
+      "realname": this.state.selectObj.name || ''
     }).then((result) => {
-      console.log(result)
       this.setState({
         loading: false,
         dataSource: result.data.records,

@@ -44,7 +44,7 @@ class VideoBasic extends React.PureComponent {
         const ckcolumns = [
             {
                 title: '视频名称',
-                dataIndex: 'sitename',
+                dataIndex: 'strname',
             },
             {
                 title: '详细地址',
@@ -129,6 +129,7 @@ class VideoBasic extends React.PureComponent {
             radioQuery({
                 "current": 1,
                 "size": 10,
+                "strname": " "
             })
                 .then((result) => {
                     this.setState({
@@ -198,13 +199,13 @@ class VideoBasic extends React.PureComponent {
                     >
                         <Form.Item
                             label="视频名称"
-                            name="name"
+                            name="strname"
                         >
                             <Input size="large" />
                         </Form.Item>
                         <Form.Item
                             label="站点Code"
-                            name="code"
+                            name="strtoken"
                         >
                             <Input size="large" />
                         </Form.Item>
@@ -286,9 +287,9 @@ class VideoBasic extends React.PureComponent {
     //根据id删除
     confirm(row) {
         console.log(row);
-        radioDelete({
-            "radioID": row.radioID
-        }).then((result) => {
+        radioDelete(
+            row.radioID
+        ).then((result) => {
             this.selectPage()
             message.success('删除成功！');
         })
@@ -316,7 +317,7 @@ class VideoBasic extends React.PureComponent {
         radioQuery({
             "current": current,
             "size": pageSize,
-            "sitename": this.state.selectObj.name,
+            "strname": this.state.selectObj.name,
             "dataSource": this.state.selectObj.dataSource,
             "code": this.state.selectObj.code,
         })
@@ -337,7 +338,7 @@ class VideoBasic extends React.PureComponent {
         radioQuery({
             "current": current,
             "size": this.state.pageSize,
-            "sitename": this.state.selectObj.name,
+            "strname": this.state.selectObj.name,
             "dataSource": this.state.selectObj.dataSource,
             "code": this.state.selectObj.code,
         })
@@ -358,7 +359,7 @@ class VideoBasic extends React.PureComponent {
         radioQuery({
             "current": this.state.current,
             "size": this.state.pageSize,
-            "sitename": this.state.selectObj.name,
+            "strname": this.state.selectObj.name,
             "dataSource": this.state.selectObj.dataSource,
             "code": this.state.selectObj.code,
         }).then((result) => {

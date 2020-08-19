@@ -86,9 +86,9 @@ class StoreManage extends React.PureComponent {
       },
       {
         title: '创建时间',
-        dataIndex: 'createTime',
+        dataIndex: 'CreateTime',
         className: 'column-money',
-        sorter: (a, b) => new Date(b.createTime).getTime() - new Date(a.createTime).getTime(),
+        sorter: (a, b) => new Date(b.CreateTime).getTime() - new Date(a.CreateTime).getTime(),
       },
       {
         title: '操作',
@@ -178,6 +178,7 @@ class StoreManage extends React.PureComponent {
     //模态框提交
     const onFinishmodal = values => {
       console.log("提交", values)
+      // values = {...values,reateTime:new Date()}
       this.setState({
         confirmLoading: true,
       });
@@ -315,11 +316,10 @@ class StoreManage extends React.PureComponent {
   //根据id删除
   confirm(row) {
     console.log(row);
-    deleteMaterialWarehouse({
-      "materialWarehouseId": row.materialWarehouseId
-    }).then((result) => {
+    deleteMaterialWarehouse( row.materialWarehouseId
+    ).then((result) => {
       this.selectPage()
-      message.success('删除成功！');
+      message.info('删除成功！');
     })
   }
 

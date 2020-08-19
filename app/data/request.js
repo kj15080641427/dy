@@ -9,7 +9,7 @@ export function login(data) {
 }
 //获取所有视频站点信息
 export function getAllVideo(data) {
-  return fetchJSONData("POST", "/radio/getAll", data);
+  return fetchJSONData("POST", "/base/StiteWaterRadio/page", data);
 }
 //分区获取视频站点
 export function getAllAreaVideo(data) {
@@ -48,11 +48,11 @@ export function getPump(data) {
 }
 // 获取河流
 export function getWfsRiver(data) {
-  return fetchJSONData("POST", "/river/getAll", data);
+  return fetchJSONData("POST", "/base/River/getAll", data);
 }
 // 获取河流下面的基础站点
 export function getWfsRiverByName(data) {
-  return fetchJSONData("POST", "/river/getByName", data);
+  return fetchJSONData("POST", "/base/River/getByName", data);
 }
 // 获取实时天气信息
 export function getWeatherdata() {
@@ -84,7 +84,7 @@ export function getBasicsAll(data) {
 }
 //获取所有视频站点信息
 export function getRadioAll(data) {
-  return fetchJSONData("POST", "/radio/getAll", data);
+  return fetchJSONData("POST", "/base/StiteWaterRadio/page", data);
 }
 //查询防汛队伍及下面的防汛人员
 export function getfloodRanksAll(data) {
@@ -104,63 +104,63 @@ export function GetProductsForecast() {
 }
 //分页查询防汛仓库
 export function QueryMaterialWarehouse(data) {
-  return fetchJSONData("POST", "/materialWarehouse/query", data);
+  return fetchJSONData("POST", "/base/MaterialWarehouse/page", data);
 }
 //获取所有防汛物资仓库
 export function getWarehouse(data) {
-  return fetchJSONData("POST", "/materialWarehouse/getAll", data);
+  return fetchJSONData("POST", "/base/MaterialWarehouse/getAll", data);
 }
 //增加防汛物资仓库
 export function saveMaterialWarehouse(data) {
-  return fetchJSONData("POST", "/materialWarehouse/save", data);
+  return fetchJSONData("POST", "/base/MaterialWarehouse/save", data);
 }
 //删除防汛物资仓库
 export function deleteMaterialWarehouse(data) {
-  return fetchJSONData("POST", "/materialWarehouse/delete", data);
+  return fetchJSONData("POST", "/base/MaterialWarehouse/delete", data);
 }
 //修改防汛物资仓库
 export function updateMaterialWarehouse(data) {
-  return fetchJSONData("POST", "/materialWarehouse/update", data);
+  return fetchJSONData("POST", "/base/MaterialWarehouse/update", data);
 }
 //获取所有防汛物资
 export function getWarehouseMt(data) {
-  return fetchJSONData("POST", "/material/getAll", data);
+  return fetchJSONData("POST", "/base/Material/page", data);
 }
 //分页查询防汛物资
 export function queryMaterial(data) {
-  return fetchJSONData("POST", "/material/query", data);
+  return fetchJSONData("POST", "/base/Material/page", data);
 }
 //增加防汛物资
 export function saveMaterial(data) {
-  return fetchJSONData("POST", "/material/save", data);
+  return fetchJSONData("POST", "/base/Material/save", data);
 }
 //删除防汛物资
 export function deleteMaterial(data) {
-  return fetchJSONData("POST", "/material/delete", data);
+  return fetchJSONData("POST", "/base/Material/delete", data);
 }
 //修改防汛物资
 export function updateMaterial(data) {
-  return fetchJSONData("POST", "/material/update", data);
+  return fetchJSONData("POST", "/base/Material/update", data);
 }
 //分页查询防汛人员
 export function queryFloodUser(data) {
-  return fetchJSONData("POST", "/floodUser/query", data);
+  return fetchJSONData("POST", "/base/floodUser/page", data);
 }
 //增加防汛人员
 export function saveFloodUser(data) {
-  return fetchJSONData("POST", "/floodUser/save", data);
+  return fetchJSONData("POST", "/base/floodUser/save", data);
 }
 //删除防汛人员
 export function deleteFloodUser(data) {
-  return fetchJSONData("POST", "/floodUser/delete", data);
+  return fetchJSONData("POST", "/base/floodUser/delete", data);
 }
 //修改防汛人员
 export function updateFloodUser(data) {
-  return fetchJSONData("POST", "/floodUser/update", data);
+  return fetchJSONData("POST", "/base/floodUser/update", data);
 }
 //查询所有专家库
 export function getFloodControlExpertAll(data) {
-  return fetchJSONData("POST", "/floodControlExpert/getAll", data);
+  return fetchJSONData("POST", "/base/FloodControlExpert/getAll", data);
 }
 //查询防汛专家分类下的防汛专家
 export function floodControlExpertCategoryAll(data) {
@@ -180,18 +180,19 @@ export function getByTimeDay(data) {
 }
 //=====================================统计==============================================================
 //统计分钟雨量数据
-export function countMinutesRain(data){
+export function countMinutesRain(data) {
   return fetchJSONData("POST", "/raindataMinute/getByCount", data);
 }
 
 //统计小时雨量数据
-export function countHoursRain(data){
+export function countHoursRain(data) {
   return fetchJSONData("POST", "/raindataHour/getByCount", data);
 }
 
 //统计各来源的站点数
 export function getCountStation(data) {
-  return fetchJSONData("POST", "/count/getCountStation", data);
+  // return fetchJSONData("POST", "/count/getCountStation", data);
+  return fetchJSONData("POST", "/base/SiteRain/page", data);
 }
 //统计各来源的视频站点数
 export function getCountRadio(data) {
@@ -205,51 +206,51 @@ export function getRotateRadio(data) {
 
 //分页查询用户
 export function queryUser(data) {
-  return fetchJSONData("POST", "/users/query", data);
+  return fetchJSONData("POST", "/base/Users/page", data);
 }
 //删除用户
 export function deleteUser(data) {
-  return fetchJSONData("POST", "/users/delete", data);
+  return fetchJSONData("POST", "/base/Users/delete", data);
 }
 //更新用户
 export function updateUser(data) {
-  return fetchJSONData("POST", "/users/update", data);
+  return fetchJSONData("POST", "/base/Users/update", data);
 }
 //保存用户
 export function saveUser(data) {
-  return fetchJSONData("POST", "/users/save", data);
+  return fetchJSONData("POST", "/base/Users/save", data);
 }
 //分页查询权限
 export function queryPermission(data) {
-  return fetchJSONData("POST", "/permission/query", data);
+  return fetchJSONData("POST", "/base/Permission/page", data);
 }
 //删除权限
 export function deletePermission(data) {
-  return fetchJSONData("POST", "/permission/delete", data);
+  return fetchJSONData("POST", "/base/Permission/delete", data);
 }
 //更新权限
 export function updatePermission(data) {
-  return fetchJSONData("POST", "/permission/update", data);
+  return fetchJSONData("POST", "/base/Permission/update", data);
 }
 //保存权限
 export function savePermission(data) {
-  return fetchJSONData("POST", "/permission/save", data);
+  return fetchJSONData("POST", "/base/Permission/save", data);
 }
 //分页查询角色
 export function queryRole(data) {
-  return fetchJSONData("POST", "/role/query", data);
+  return fetchJSONData("POST", "/base/Role/page", data);
 }
 //删除角色
 export function deleteRole(data) {
-  return fetchJSONData("POST", "/role/delete", data);
+  return fetchJSONData("POST", "/base/Role/delete", data);
 }
 //更新角色
 export function updateRole(data) {
-  return fetchJSONData("POST", "/role/update", data);
+  return fetchJSONData("POST", "/base/Role/update", data);
 }
 //保存角色
 export function saveRole(data) {
-  return fetchJSONData("POST", "/role/save", data);
+  return fetchJSONData("POST", "/base/Role/save", data);
 }
 //给角色授权
 export function rolePermission(data) {
@@ -257,16 +258,16 @@ export function rolePermission(data) {
 }
 //根据角色ID查询权限
 export function queryByRoleId(data) {
-  return fetchJSONData("POST", "/permission/queryByRoleId", data);
+  return fetchJSONData("POST", "/base/Permission/queryByRoleId", data);
 }
 //分页查询用户登录日志
 export function usersLoginLog(data) {
-  return fetchJSONData("POST", "/usersLoginLog/query", data);
+  return fetchJSONData("POST", "/base/UsersLoginLog/page", data);
 }
 //==============================================================业务基础站点配置接口=======================================================================
 //分页查询视频站点
 export function radioQuery(data) {
-  return fetchJSONData("POST", "/radio/query", data);
+  return fetchJSONData("POST", "/base/StiteWaterRadio/page", data);
 }
 //导出站点数据
 export function radioExportExcel(data) {
@@ -274,19 +275,19 @@ export function radioExportExcel(data) {
 }
 //新增视频站点
 export function radioSave(data) {
-  return fetchJSONData("POST", "/radio/save", data);
+  return fetchJSONData("POST", "/base/StiteWaterRadio/save", data);
 }
 //修改视频站点
 export function radioUpdate(data) {
-  return fetchJSONData("POST", "/radio/update", data);
+  return fetchJSONData("POST", "/base/StiteWaterRadio/update", data);
 }
 //删除视频站点
 export function radioDelete(data) {
-  return fetchJSONData("POST", "/radio/delete", data);
+  return fetchJSONData("POST", "/base/StiteWaterRadio/delete", data);
 }
 //分页查询基础站点
 export function stationQuery(data) {
-  return fetchJSONData("POST", "/station/query", data);
+  return fetchJSONData("POST", "/base/SiteBase/page", data);
 }
 //导出站点数据
 export function stationExportExcel(data) {
@@ -294,19 +295,19 @@ export function stationExportExcel(data) {
 }
 //新增基础站点
 export function stationSave(data) {
-  return fetchJSONData("POST", "/station/save", data);
+  return fetchJSONData("POST", "/base/SiteBase/save", data);
 }
 //修改基础站点
 export function stationUpdate(data) {
-  return fetchJSONData("POST", "/station/update", data);
+  return fetchJSONData("POST", "/base/SiteBase/update", data);
 }
 //删除基础站点
 export function stationDelete(data) {
-  return fetchJSONData("POST", "/station/delete", data);
+  return fetchJSONData("POST", "/base/SiteBase/delete", data);
 }
 //分页查询基础站点和视频站点关联信息
 export function stationRadioQuery(data) {
-  return fetchJSONData("POST", "/stationRadio/query", data);
+  return fetchJSONData("POST", "/base/SiteRelation/page", data);
 }
 //导出基础站点和视频站点关联信息
 export function stationRadioExportExcel(data) {
@@ -322,7 +323,7 @@ export function stationRadioUpdate(data) {
 }
 //删除基础站点和视频站点关联信息
 export function stationRadioDelete(data) {
-  return fetchJSONData("POST", "/stationRadio/delete", data);
+  return fetchJSONData("POST", "/base/SiteRelation/delete", data);
 }
 //==============================================================业务报表配置接口=======================================================================
 // 获取河道信息word

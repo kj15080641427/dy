@@ -15,12 +15,14 @@ import {
     Checkbox,
     Button,
     AutoComplete,
+    DatePicker,
     Radio,
     message,
     Modal
 } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { updateUser, saveUser, queryRole } from '@app/data/request';
+import moment from 'moment'
 // import ResizableTextArea from 'antd/lib/input/ResizableTextArea';
 
 
@@ -48,28 +50,24 @@ class JurisdicForm extends React.Component {
         this.formRef = this.props.form
     }
     onFinish = values => {
-        console.log(values.userId);
+        values = { ...values, createTime: moment(values.createTime).format('YYYY-MM-DD HH:mm:ss') }
         if (values.userId === undefined) {
             saveUser(values).then((result) => {
-                console.log(result)
                 if (result.code === 200) {
                     message.success('新增成功！');
                     this.props.selectPage();
                     this.onCancel();
                 } else {
-                    console.log(result.msg)
                     message.error(result.msg);
                 }
             })
         } else {
             updateUser(values).then((result) => {
-                console.log(result)
                 if (result.code === 200) {
                     message.success('修改成功！');
                     this.props.selectPage()
                     this.onCancel();
                 } else {
-                    console.log(result.msg)
                     message.error(result.msg);
                 }
             })
@@ -91,17 +89,17 @@ class JurisdicForm extends React.Component {
                 },
             },
         };
-        console.log("Test this.props.match", this.props.match, this.props.location);
-        console.log("11111111111111111111111111111111111111111111", this.props.rowObj)
-        console.log(this.formRef.current)
         const { roleArr } = this.state
         return (
             <>
+            {
+            console.log(this.props.rowObj,'------------------')
+            }
                 <Modal
                     forceRender={true}
                     onCancel={this.onCancel}
                     visible={this.props.visible}
-                    title='角色更新'
+                    title='角色更新???'
                     footer={null}
                 >
                     <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish}
@@ -116,9 +114,9 @@ class JurisdicForm extends React.Component {
                                 },
                             ]}
                         >
-                            <Input />
+                            <Input disabled={this.props.rowObj ? true : false} />
                         </Form.Item>
-                        {this.props.rowObj === null ?
+                        {
                             <>
                                 <Form.Item
                                     name="password"
@@ -157,29 +155,29 @@ class JurisdicForm extends React.Component {
                                     <Input.Password />
                                 </Form.Item>
                                 <Form.Item
-                            name="roleId"
-                            label="角色"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: '请选择角色!',
-                                },
-                            ]}
-                        >
-                            <Select
-                                style={{
-                                    width: "100%",
-                                }}
-                            >
-                                {
-                                    roleArr.map((item, i) => {
-                                        return (
-                                            <Option key={`${i}`} value={item.roleId+""}>{item.roleDesc}</Option>
-                                        )
-                                    })
-                                }
-                            </Select>
-                        </Form.Item>
+                                    name="roleId"
+                                    label="角色"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '请选择角色!',
+                                        },
+                                    ]}
+                                >
+                                    <Select
+                                        style={{
+                                            width: "100%",
+                                        }}
+                                    >
+                                        {
+                                            roleArr.map((item, i) => {
+                                                return (
+                                                    <Option key={`${i}`} value={item.roleId + ""}>{item.roleDesc}</Option>
+                                                )
+                                            })
+                                        }
+                                    </Select>
+                                </Form.Item>
                                 <Form.Item
                                     name="idcard"
                                     label={
@@ -190,7 +188,12 @@ class JurisdicForm extends React.Component {
                                 >
                                     <Input />
                                 </Form.Item>
-
+                                <Form.Item
+                                    name="areacode"
+                                    label={'区域'}
+                                >
+                                    <Input />
+                                </Form.Item>
                                 <Form.Item
                                     name="phone"
                                     label="手机号码"
@@ -201,7 +204,7 @@ class JurisdicForm extends React.Component {
                                         }}
                                     />
                                 </Form.Item>
-                            </> : null}
+                            </>}
                         <Form.Item
                             name="realname"
                             label="真实姓名"
@@ -212,8 +215,13 @@ class JurisdicForm extends React.Component {
                                 }}
                             />
                         </Form.Item>
+                        {/* <Form.Item
+                            name="createTime"
+                            label="创建时间"
+                        >
+                            <DatePicker format="YYYY-MM-DD HH:mm" />
+                        </Form.Item> */}
 
-                        
                         <Form.Item label="是否冻结账号" name="state">
 
                             <Radio.Group>
@@ -241,7 +249,6 @@ class JurisdicForm extends React.Component {
             current: 1,
             size: 1000
         }).then((result) => {
-            console.log(result.data.records)
             this.setState({
                 roleArr: result.data.records
             })

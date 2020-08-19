@@ -7,7 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '@app/redux/actions/home';
-import { queryMaterial, getWarehouse, saveMaterial, deleteMaterial } from '@app/data/request';
+import { queryMaterial, getWarehouse, saveMaterial, deleteMaterial, updateMaterial } from '@app/data/request';
 import { Table, Row, Modal, Input, Button, Select, Form, Radio, DatePicker, Switch, Popconfirm, message } from 'antd';
 import { SearchOutlined, RedoOutlined, PlusCircleOutlined, CloseCircleOutlined, FormOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -23,14 +23,14 @@ const layout = {
 };
 const tailFormItemLayout = {
   wrapperCol: {
-      xs: {
-          span: 24,
-          offset: 0,
-      },
-      sm: {
-          span: 16,
-          offset: 8,
-      },
+    xs: {
+      span: 24,
+      offset: 0,
+    },
+    sm: {
+      span: 16,
+      offset: 8,
+    },
   },
 };
 class MaterialsMange extends React.PureComponent {
@@ -56,7 +56,6 @@ class MaterialsMange extends React.PureComponent {
   }
 
   render() {
-    console.log("MaterialsMange this.props.match", this.props.match, this.props.location);
     const { dataSource, loading, ckdataSource, total, current, pageSize, modalvisible, confirmLoading, addObj } = this.state;
     const ckcolumns = [
       // {
@@ -155,7 +154,6 @@ class MaterialsMange extends React.PureComponent {
       },
     ];
     function cancel(e) {
-      console.log(e);
       message.error('取消删除！');
     }
     //根据id查询并打开模态框
@@ -164,7 +162,6 @@ class MaterialsMange extends React.PureComponent {
         modalvisible: true,
         isShow: row.isShow
       })
-      console.log(row)
       this.addform.current.setFieldsValue({
         name: row.name,
         company: row.company,
@@ -194,12 +191,9 @@ class MaterialsMange extends React.PureComponent {
       //     warningNumber: row.warningNumber
       //   }
       // })
-      // console.log(addObj)
-
     }
     //重置
     const onReset = () => {
-      console.log(this.formRef.current)
       this.setState({ loading: true });
       this.formRef.current.resetFields();
       queryMaterial({
@@ -222,7 +216,6 @@ class MaterialsMange extends React.PureComponent {
     };
     //查询表单提交
     const onFinish = values => {
-      console.log('Success:', values);
       this.setState({
         current: 1,
         pageSize: 10,
@@ -245,7 +238,6 @@ class MaterialsMange extends React.PureComponent {
       onChange: (current) => this.changePage(current),
       pageSize: pageSize,
       onShowSizeChange: (current, pageSize) => {//设置每页显示数据条数，current表示当前页码，pageSize表示每页展示数据条数
-        console.log(pageSize);
         this.onShowSizeChange(current, pageSize)
       },
       showTotal: () => `共${total}条`,
@@ -256,7 +248,7 @@ class MaterialsMange extends React.PureComponent {
     };
     //模态框提交save or updata
     const onFinishmodal = values => {
-      console.log(values)
+      console.log(values,)
       let obj = {
         "company": values.company,
         "expireDate": moment(values.expireDate).format("YYYY-MM-DD HH:mm:ss"),
@@ -267,25 +259,39 @@ class MaterialsMange extends React.PureComponent {
         "name": values.name,
         "saveTotal": values.saveTotal,
         "spec": values.spec,
-        "warningNumber": values.warningNumber
+        "warningNumber": values.warningNumber,
       }
       this.setState({
         confirmLoading: true,
       });
-      saveMaterial(obj).then((result) => {
-        console.log(result)
-        if (result.data) {
-          this.setState({
-            modalvisible: false,
-            confirmLoading: false,
-          });
-          this.addform.current.resetFields();
-          this.selectPage()
+      if (values.materialId) {
+        updateMaterial({ ...obj, materialId: values.materialId }).then((result) => {
+          if (result.data) {
+            this.setState({
+              modalvisible: false,
+              confirmLoading: false,
+            });
+            this.addform.current.resetFields();
+            this.selectPage()
 
-        } else {
-          console.log(result.msg)
-        }
-      })
+          } else {
+          }
+        })
+      } else {
+        saveMaterial(obj).then((result) => {
+          if (result.data) {
+            this.setState({
+              modalvisible: false,
+              confirmLoading: false,
+            });
+            this.addform.current.resetFields();
+            this.selectPage()
+
+          } else {
+          }
+        })
+      }
+
     };
     const layout = {
       labelCol: { span: 8 },
@@ -399,6 +405,8 @@ class MaterialsMange extends React.PureComponent {
             <Form.Item name={'warningNumber'} label="预警数量" >
               <Input />
             </Form.Item>
+            <Form.Item name={'materialId'} label="">
+            </Form.Item>
             <Form.Item {...tailFormItemLayout}>
               <Button type="primary" htmlType="submit">
                 确定
@@ -428,17 +436,13 @@ class MaterialsMange extends React.PureComponent {
       filteredInfo: filters,
       sortedInfo: sorter,
     });
-    console.log(pagination)
-    console.log(filters)
-    console.log(sorter)
   }
 
   //根据id删除
   confirm(row) {
-    console.log(row)
-    deleteMaterial({
-      "materialId": row.materialId
-    }).then((result) => {
+    deleteMaterial(
+      row.materialId
+    ).then((result) => {
       this.selectPage()
       message.success('删除成功！');
     })
@@ -483,7 +487,6 @@ class MaterialsMange extends React.PureComponent {
   }
   // 回调函数，切换下一页
   changePage(current) {
-    console.log(current)
     this.setState({ loading: true });
     queryMaterial({
       "current": current,
@@ -511,7 +514,6 @@ class MaterialsMange extends React.PureComponent {
       "query": this.state.selectObj.value
     })
       .then((result) => {
-        console.log(result)
         this.setState({
           loading: false,
           dataSource: result.data.records,
