@@ -12,6 +12,7 @@ import { SearchOutlined, RedoOutlined, PlusCircleOutlined, CloseCircleOutlined, 
 import { stationQuery, stationDelete } from '@app/data/request';
 import StationExcel from './StarionExcel'
 // import DataExcel from './DataExcel';
+import moment from 'moment'
 import AddStation from './AddStation';
 class StationBasic extends React.PureComponent {
     constructor(props, context) {
@@ -117,14 +118,12 @@ class StationBasic extends React.PureComponent {
             onChange: (current) => this.changePage(current),
             pageSize: pageSize,
             onShowSizeChange: (current, pageSize) => {//设置每页显示数据条数，current表示当前页码，pageSize表示每页展示数据条数
-                console.log(pageSize);
                 this.onShowSizeChange(current, pageSize)
             },
             showTotal: () => `共${total}条`,
         }
         //重置
         const onReset = () => {
-            console.log(this.formRef.current)
             this.setState({ loading: true });
             this.formRef.current.resetFields();
             stationQuery({
@@ -149,7 +148,6 @@ class StationBasic extends React.PureComponent {
         }
         //查询表单提交
         const onFinish = values => {
-            console.log('Success:', values);
             this.setState({
                 current: 1,
                 pageSize: 10,
@@ -173,7 +171,11 @@ class StationBasic extends React.PureComponent {
                 addvisible: true,
                 rowObj: row
             })
-            this.saveRef.current.setFieldsValue(row)
+            this.saveRef.current.setFieldsValue({
+                ...row,
+                gmtcreate: moment(row.gmtcreate),
+                gmtmodify: moment(row.gmtmodify)
+            })
             // console.log(row)
             // this.addform.current.setFieldsValue({
             //   name: row.name,
@@ -290,12 +292,11 @@ class StationBasic extends React.PureComponent {
     }
     //根据id删除
     confirm(row) {
-        console.log(row);
-        stationDelete({
-            "stationID": row.stationID
-        }).then((result) => {
+        stationDelete(
+            String(row.siteBaseID)
+        ).then((result) => {
             this.selectPage()
-            message.success('删除成功！');
+            message.info(result.msg);
         })
     }
 
@@ -330,7 +331,6 @@ class StationBasic extends React.PureComponent {
     }
     // 回调函数，切换下一页
     changePage(current) {
-        console.log(current)
         this.setState({ loading: true });
         stationQuery({
             "current": current,
@@ -360,7 +360,6 @@ class StationBasic extends React.PureComponent {
             "dataSource": this.state.selectObj.dataSource,
             "indtype": this.state.selectObj.indtype,
         }).then((result) => {
-            console.log(result)
             this.setState({
                 loading: false,
                 dataSource: result.data.records,

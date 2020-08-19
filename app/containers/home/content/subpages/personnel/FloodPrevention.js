@@ -387,9 +387,9 @@ class FloodPrevention extends React.PureComponent {
   //根据id删除
   confirm(row) {
     console.log(row)
-    deleteFloodUser({
-      "floodId": row.floodId
-    }).then((result) => {
+    deleteFloodUser(
+      row.floodId
+    ).then((result) => {
       this.selectPage()
       message.success('删除成功！');
     })

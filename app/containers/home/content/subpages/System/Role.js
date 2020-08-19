@@ -219,9 +219,9 @@ class Role extends React.PureComponent {
     //根据id删除
     confirm(row) {
         console.log(row);
-        deleteRole({
-            "roleId": row.roleId
-        }).then((result) => {
+        deleteRole(
+            row.roleId
+        ).then((result) => {
             this.selectPage()
             message.success('删除成功！');
         })

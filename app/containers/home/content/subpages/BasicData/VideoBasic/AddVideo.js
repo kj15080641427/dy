@@ -109,7 +109,7 @@ class AddVideo extends React.Component {
                         <Row>
                             <Col span={12}>
                                 <Form.Item
-                                    name="sitename"
+                                    name="strname"
                                     label="视频名称"
                                     rules={[
                                         {
@@ -232,7 +232,7 @@ class AddVideo extends React.Component {
                         <Row>
                             <Col span={12}>
                                 <Form.Item
-                                    name="dataSource"
+                                    name="siteDictionariesID"
                                     label="来源"
                                     rules={[
                                         {
@@ -258,7 +258,7 @@ class AddVideo extends React.Component {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    name="code"
+                                    name="strtoken"
                                     label="唯一编码"
                                     rules={[
                                         {

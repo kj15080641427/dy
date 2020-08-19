@@ -2,6 +2,7 @@
 /*
 雨量数据的actionType 定义
  */
+
 //实时雨量
 export const LOAD_CURRENT_RAIN = 'LoadCurrentRain';
 //1小时雨量

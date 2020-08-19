@@ -31,27 +31,22 @@ class JurisdicForm extends React.Component {
     }
 
     onFinish = values => {
-        console.log(values);
         if (values.permissionId === undefined) {
             savePermission(values).then((result) => {
-                console.log(result)
                 if (result.data) {
                     message.success('新增成功！');
                     this.props.selectPage();
                     this.props.onCancel();
                 } else {
-                    console.log(result.msg)
                 }
             })
         } else {
             updatePermission(values).then((result) => {
-                console.log(result)
                 if (result.data) {
                     message.success('修改成功！');
                     this.props.selectPage()
                     this.props.onCancel();
                 } else {
-                    console.log(result.msg)
                 }
             })
         }
@@ -60,7 +55,6 @@ class JurisdicForm extends React.Component {
         this.props.onCancel()//调用父组件给的方法
     };
     render() {
-        console.log("Test this.props.match", this.props.match, this.props.location);
         return (
             <>
                 <Modal

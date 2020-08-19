@@ -43,17 +43,24 @@ class VideoStation extends React.PureComponent {
         const { dataSource, loading, total, current, pageSize, addvisible, rowObj, Excelvisible, relevancevisible } = this.state;
         const ckcolumns = [
             {
-                title: '唯一ID',
-                dataIndex: 'stationRadioId',
+                title: '站点ID',
+                dataIndex: 'stateRelationID',
             },
             {
-                title: '基础站点编码',
-                dataIndex: 'stationCode',
+                title: '状态',
+                dataIndex: 'state',
+                render: (e) => {
+                    return e.state ? '启用' : '停用'
+                }
+            },
+            {
+                title: '关联',
+                dataIndex: 'relationID',
                 ellipsis: true,
             },
             {
-                title: '视频站点编码',
-                dataIndex: 'radioCode',
+                title: '站点关系类型',
+                dataIndex: 'siteDictionariesID',
             },
 
             {
@@ -111,6 +118,7 @@ class VideoStation extends React.PureComponent {
             stationRadioQuery({
                 "current": 1,
                 "size": 10,
+                "siteDictionariesID": 0,
             })
                 .then((result) => {
                     this.setState({
@@ -206,8 +214,6 @@ class VideoStation extends React.PureComponent {
                         </Form.Item>
                     </Form>
                 </Row>
-
-
                 <Table
                     loading={loading}
                     columns={ckcolumns}
@@ -249,9 +255,9 @@ class VideoStation extends React.PureComponent {
     //根据id删除
     confirm(row) {
         console.log(row);
-        stationRadioDelete({
-            "stationRadioId": row.stationRadioId
-        }).then((result) => {
+        stationRadioDelete(
+            row.stationRadioId
+        ).then((result) => {
             this.selectPage()
             message.success('删除成功！');
         })
