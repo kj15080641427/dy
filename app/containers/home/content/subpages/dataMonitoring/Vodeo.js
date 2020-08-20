@@ -109,7 +109,7 @@ class Water extends React.PureComponent {
     for (let i = 0; i < vodeocount.length; i++) {
       element.push(
         <>
-          < a > {vodeocount[i].dataSourceDesc}共计：{vodeocount[i].number}个</a >&nbsp;
+          < a key={i}> {vodeocount[i].dataSourceDesc}共计：{vodeocount[i].number}个</a >&nbsp;
         </>
       )
 

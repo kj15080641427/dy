@@ -5,3 +5,15 @@ export function addUserInfo(data) {
     data
   };
 }
+export function currency(data){
+  return {
+    type:actionTypes.CURRENCY,
+    data
+  }
+}
+export function showModal(data){
+  return {
+    type:actionTypes.SHOW_MODAL,
+    data
+  }
+}

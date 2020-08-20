@@ -36,7 +36,7 @@ class Menus extends React.PureComponent {
             theme="dark"
             inlineCollapsed={collapsed}
             onClick={this.onMenuClick}
-            defaultOpenKeys={['sub1', 'sub2', 'sub3', 'sub4']}
+            defaultOpenKeys={['sub1', 'sub2', 'sub3', 'sub4','sub5']}
           >
             <Menu.Item key="/" icon={<ContainerOutlined />}>
               首页
@@ -74,6 +74,11 @@ class Menus extends React.PureComponent {
               <Menu.Item key="/stationBasic">基础站点信息配置</Menu.Item>
               <Menu.Item key="/videoBasic">视频站点信息配置</Menu.Item>
               <Menu.Item key="/videoStation">站点关联信息配置</Menu.Item>
+            </SubMenu>
+            <SubMenu key="sub5" icon={<MailOutlined />} title="站点详情">
+              <Menu.Item key="/siteWater">站点水位</Menu.Item>
+              <Menu.Item key="/siteVideo">站点视频</Menu.Item>
+              <Menu.Item key="/siteRain">站点雨量</Menu.Item>
             </SubMenu>
           </Menu>
         </div>

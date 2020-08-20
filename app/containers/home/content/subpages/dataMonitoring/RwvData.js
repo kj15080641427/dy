@@ -24,7 +24,6 @@ class rwvData extends React.PureComponent {
         };
     }
     render() {
-        console.log("Test this.props.match", this.props.match, this.props.location);
         const { TabPane } = Tabs;
         const { raincount, watercount, floodcount } = this.state
         // const operations = <Button>Extra Action</Button>;
@@ -51,7 +50,10 @@ class rwvData extends React.PureComponent {
     }
     componentDidMount() {
         getCountStation({
-        }).then((result) => {
+            "current": 0,
+            "name": "",
+            "size": 10
+          }).then((result) => {
             this.setState({
                 raincount: result.data[0],
                 watercount: result.data[1],

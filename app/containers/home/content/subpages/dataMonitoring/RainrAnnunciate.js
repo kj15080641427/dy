@@ -368,7 +368,6 @@ class RainrAnnunciate extends React.PureComponent {
                 tm: result.data.tm,
                 z: result.data.z,
             })
-            console.log(result)
         })
     }
     componentDidMount() {
