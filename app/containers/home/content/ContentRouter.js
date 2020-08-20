@@ -23,7 +23,9 @@ import VideoStation from "./subpages/BasicData/VideoandStation/VideoStation"
 import RiverAnnunciate from "./subpages/DataMonitoring/RiverAnnunciate"
 import WaterAnnunciate from "./subpages/DataMonitoring/WaterAnnunciate"
 import RainrAnnunciate from "./subpages/DataMonitoring/RainrAnnunciate"
-
+import SiteWater from './subpages/site/siteWater'
+import SiteVideo from './subpages/site/siteVideo';
+import SiteRain from './subpages/site/siteRain';
 const NoMatch = () => {
     return (
         <div>
@@ -66,6 +68,10 @@ class ContentRouter extends React.PureComponent {
                                 <Route path={path + "/riverAnnunciate"} component={RiverAnnunciate} />
                                 <Route path={path + "/waterAnnunciate"} component={WaterAnnunciate} />
                                 <Route path={path + "/rainAnnunciate"} component={RainrAnnunciate} />
+
+                                <Route path={path + "/siteWater"} component={SiteWater} />
+                                <Route path={path + "/siteVideo"} component={SiteVideo} />
+                                <Route path={path + "/siteRain"} component={SiteRain} />
                             </>
                         }
                     </>

@@ -325,10 +325,15 @@ export function stationRadioUpdate(data) {
 export function stationRadioDelete(data) {
   return fetchJSONData("POST", "/base/SiteRelation/delete", data);
 }
+//获取基础站点字典
+export function getBaseSite(data){
+  return fetchJSONData('POST','/base/SiteDictionaries/page',data)
+}
 //==============================================================业务报表配置接口=======================================================================
 // 获取河道信息word
 export function downlRiverdata(data) {
-  return fetchGet("/download/riverdata", data);
+  // return fetchGet("/download/riverdata", data);
+  return fetchJSONData("POST","/base/River/page", data);
 }
 // 导出河道信息word
 export function downlRiver(data) {

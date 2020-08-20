@@ -3,80 +3,76 @@
  * 河道通告报表
  */
 import React from 'react';
-import { Table, DatePicker, Button, Row, Col } from 'antd';
+import { Table, DatePicker, Button, Input } from 'antd';
 import { tableColumnRiver } from './columns/columsData';
 import { downlRiver, downlRiverdata } from '@app/data/request';
-import moment from 'moment';
+import './river.scss'
 class RiverAnnunciate extends React.PureComponent {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            data: [],
-            loding: false,
-            time: '',
-        };
-        this.init = this.init.bind(this)
-    }
-    onChange(value, dateString) {
-        console.log('Selected Time: ', value);
-        console.log('Formatted Selected Time: ', dateString);
+	constructor(props, context) {
+		super(props, context);
+		this.state = {
+			data: [],
+			loding: false,
+			time: '',
+			name: ''
+		};
+		this.init = this.init.bind(this)
+	}
+	onChange = (e) => {
+		this.setState({
+			name: e.target.value
+		})
+		// this.setState({
+		// 	time: moment(value).format('YYYY-MM-DD HH:mm:ss')
+		// })
+	}
+	downl = () => {
+		var url = "/api/download/river";
+		if (this.state.time !== '') {
+			url += "?tm=" + this.state.time;
+		}
+		window.location.href = url;
+	}
+	render() {
 
-    }
-    onOk = (value) => {
-        this.setState({
-            time: moment(value).format('YYYY-MM-DD HH:mm:ss')
-        })
-    }
-    downl = () => {
-        var url = "/api/download/river";
-        if (this.state.time !== '') {
-            url += "?tm=" + this.state.time;
-        }
-        window.location.href = url;
-    }
-    render() {
+		return (
+			<>
+				<div className='view-query'>
+					<div className='view-query'>
+						<Input placeholder='输入河流名称' onChange={(e) => this.onChange(e)}></Input>
+					</div>
+					{/* <DatePicker size='large' showTime onChange={this.onChange} onOk={this.onOk} /> */}
+					<Button type='primary' size='large' onClick={this.init}>查询</Button>
+					<Button type='primary' size='large' onClick={this.downl}>导出</Button>
+				</div>
 
-        return (
-            <>
-                <Row>
-                    <Col span={5}>
-                    时间选择： <DatePicker size='large' showTime onChange={this.onChange} onOk={this.onOk} />
-                    </Col>
-                    <Col span={2}>
-                        <Button type='primary' size='large' onClick={this.init}>查询</Button>
-                    </Col>
-                    <Col span={2}>
-                        <Button type='primary' size='large' onClick={this.downl}>导出</Button>
-                    </Col>
-                    <Col span={12}></Col>
-                </Row>
-
-
-
-                <br />
-                <Table
-                    columns={tableColumnRiver}
-                    dataSource={this.state.data}
-                    loading={this.state.loding}
-                >
-                </Table>
-            </>
-        )
-    }
-    init() {
-        this.setState({
-            loding: true
-        })
-        downlRiverdata({ 'tm': this.state.time }).then((result) => {
-            this.setState({
-                data: result.data,
-                loding: false
-            })
-            console.log(result)
-        })
-    }
-    componentDidMount() {
-        this.init()
-    }
+				<br />
+				<Table
+					columns={tableColumnRiver}
+					dataSource={this.state.data}
+					loading={this.state.loding}
+				>
+				</Table>
+			</>
+		)
+	}
+	init() {
+		this.setState({
+			loding: true
+		})
+		downlRiverdata({
+			"current": 0,
+			"name": this.state.name,
+			"size": 10
+		}).then((result) => {
+			this.setState({
+				data: result.data.records,
+				loding: false
+			})
+		})
+	}
+	componentDidMount() {
+		this.init()
+	}
 }
 export default RiverAnnunciate;

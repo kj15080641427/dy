@@ -28,7 +28,7 @@ class Rain extends React.PureComponent {
     };
   }
   render() {
-    console.log("Test this.props.", this.props, this.props.location);
+    // console.log("Test this.props.", this.props, this.props.location);
 
     let { dataSource, loading, raincount, count } = this.state;
     const columns = [
@@ -289,7 +289,7 @@ class Rain extends React.PureComponent {
   selectRainSource = () => {
     getCountStation({
     }).then((result) => {
-      console.log(result)
+      // console.log(result)
       this.setState({
         count: result.data[0].number,
         raincount: result.data[0].list
@@ -370,9 +370,9 @@ class Rain extends React.PureComponent {
             okcount++;
           }
         }
-        console.log(okcount)
-        console.log(nocount)
-        console.log(thday)
+        // console.log(okcount)
+        // console.log(nocount)
+        // console.log(thday)
         var myChartcount = echarts.init(document.getElementById("rainisOnline"));
         myChartcount.setOption({
           title: {

@@ -1,33 +1,33 @@
 
 export const tableColumnRiver = [
     {
-        title: '行政区划',
-        dataIndex: 'areacode',
-        ellipsis: true,
-    },
-    {
-        title: '测站名称',
-        dataIndex: 'stnm',
-        ellipsis: true,
-    },
-    {
         title: '河流名称',
-        dataIndex: 'rvnm',
+        dataIndex: 'name',
         ellipsis: true,
     },
     {
-        title: '时间',
-        dataIndex: 'tm',
+        title: '流域名称',
+        dataIndex: 'basin',
         ellipsis: true,
     },
     {
-        title: '水位(m)',
-        dataIndex: 'z',
+        title: '流经范围',
+        dataIndex: 'flowrange',
         ellipsis: true,
     },
     {
-        title: '警戒水位(m)',
-        dataIndex: 'waning',
+        title: '河口地区',
+        dataIndex: 'regiondest',
+        ellipsis: true,
+    },
+    {
+        title: '河源地址',
+        dataIndex: 'regionsrs',
+        ellipsis: true,
+    },
+    {
+        title: '流域总面积',
+        dataIndex: 'riverarea',
         ellipsis: true,
     },
 ]
