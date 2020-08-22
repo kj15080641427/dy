@@ -1,115 +1,143 @@
 import React from "react";
-import { Table, Input, Button, Form, Modal, Radio, Popconfirm } from "antd";
+import { Input, Button, Modal } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../redux/actions";
-import { CloseCircleOutlined, FormOutlined } from "@ant-design/icons";
 import DYTable from "@app/components/home/table";
+import DYForm from "@app/components/home/form";
+import { getSiteWaterData } from "@app/data/home";
 import "../../../style.scss";
 
-const fromSet = [
+const formItem = [
   {
     label: "名称",
     name: "name",
+    rules: [{ required: true }],
     ele: <Input></Input>,
   },
   {
     label: "地址",
     name: "stlc",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "流域名称",
+    name: "bsnm",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+
+  {
+    label: "行政区划码",
+    name: "addvcd",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "距河口距离",
+    name: "distancetoport",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "河流名称",
+    name: "rvnm",
+    rules: [{ required: true }],
     ele: <Input></Input>,
   },
 ];
-    //表格配置
-    const columns = [
-      {
-        title: "名称",
-        dataIndex: "name",
-      },
-      {
-        title: "地址",
-        dataIndex: "stlc",
-      },
-    ];
+//表格配置
+const columns = [
+  {
+    title: "名称",
+    dataIndex: "name",
+  },
+  {
+    title: "地址",
+    dataIndex: "stlc",
+  },
+  {
+    title: "流域名称",
+    dataIndex: "bsnm",
+  },
+  {
+    title: "行政区划码",
+    dataIndex: "addvcd",
+  },
+  {
+    title: "距河口距离",
+    dataIndex: "distancetoport",
+  },
+  {
+    title: "河流名称",
+    dataIndex: "rvnm",
+  },
+];
 class SiteWater extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
       inputValue: "",
     };
+    this.formRef = React.createRef();
   }
 
   componentDidMount() {
-    this.props.actions.getSiteWaterAction();
+    // this.props.actions.hideModal()
+    this.props.actions.getBase({
+      request: getSiteWaterData,
+      key: "siteWater",
+    });
   }
 
   render() {
     const {
-      getSiteWaterAction,
+      getBase,
       addSiteWater,
       showModal,
       hideModal,
       deleteSiteWater,
+      updateSiteWater,
     } = this.props.actions;
     const { siteWater, loading, visible } = this.props;
     const { inputValue } = this.state;
-
+    const getBaseHoc = (param = { current: 1, size: 10 }) => {
+      return getBase({
+        request: getSiteWaterData,
+        key: "siteWater",
+        param: param,
+      });
+    };
     //翻页
     function changePage(current) {
-      getSiteWaterAction({
-        current: current,
-        size: 10,
-      });
+      getBaseHoc({ current: current, size: 10 });
     }
     //
     function onShowSizeChange(current, pagesize) {
-      getSiteWaterAction({
-        current: current,
-        size: pagesize,
-      });
+      getBaseHoc({ current: current, size: pagesize });
     }
     //删除
     function confirm(row) {
-      deleteSiteWater(row.siteWaterLevelsID);
+      deleteSiteWater({
+        id: row.siteWaterLevelsID,
+        current: siteWater?.current,
+        size: siteWater.size,
+        recordLength: siteWater.records.length,
+      });
     }
     /**
      * 修改
      * @param {id} values
      */
-    function update() {}
+    const update = (row) => {
+      this.formRef.current.setFieldsValue(row);
+      showModal();
+    };
     //提交
     function onFinish(values) {
-      addSiteWater(values);
+      values.siteWaterLevelsID ? updateSiteWater(values) : addSiteWater(values);
     }
-    let pagination = {
-      total: siteWater?.total,
-      size: "default",
-      current: siteWater?.current,
-      showQuickJumper: true,
-      showSizeChanger: true,
-      onChange: (current) => changePage(current),
-      pageSize: siteWater?.size,
-      onShowSizeChange: (current, pageSize) => {
-        //设置每页显示数据条数，current表示当前页码，pageSize表示每页展示数据条数
-        onShowSizeChange(current, pageSize);
-      },
-      showTotal: () => `共${siteWater.total}条`,
-    };
-    const testForm = (
-      <Form name="siteWater" onFinish={onFinish}>
-        {fromSet.map((item) => {
-          return (
-            <Form.Item label={item.label} name={item.name} key={item.name}>
-              {item.ele}
-            </Form.Item>
-          );
-        })}
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            提交
-          </Button>
-        </Form.Item>
-      </Form>
-    );
     return (
       <>
         <div className="view-query">
@@ -127,11 +155,7 @@ class SiteWater extends React.Component {
           <Button
             type="primary"
             onClick={() => {
-              getSiteWaterAction({
-                current: 1,
-                name: inputValue,
-                size: 10,
-              });
+              getBaseHoc({ current: 1, size: 10, name: inputValue });
             }}
           >
             查询
@@ -139,7 +163,7 @@ class SiteWater extends React.Component {
           <Button
             type="ghost"
             onClick={() => {
-              getSiteWaterAction();
+              getBaseHoc()
               this.setState({
                 inputValue: "",
               });
@@ -149,38 +173,44 @@ class SiteWater extends React.Component {
           </Button>
           <Button onClick={() => showModal()}>添加</Button>
         </div>
-        {/* <Table
-          columns={columns}
-          loading={loading}
-          dataSource={siteWater?.records}
-          scroll={{ y: 700 }}
-          rowKey={(row) => row.siteWaterLevelsID}
-          pagination={pagination}
-        /> */}
         <DYTable
           columns={columns}
           loading={loading}
+          total={siteWater?.total}
           dataSource={siteWater?.records}
+          current={siteWater?.current}
+          size={siteWater?.size}
           rowkey={(row) => row.siteWaterLevelsID}
-          pagination={pagination}
+          changePage={(cur) => changePage(cur)}
+          onShowSizeChange={(cur, size) => {
+            onShowSizeChange(cur, size);
+          }}
           confirm={confirm}
           update={update}
         ></DYTable>
         <Modal
           title="新增"
           visible={visible}
-          destroyOnClose
+          forceRender={true}
           onCancel={() => hideModal()}
           footer={null}
+          maskClosable={false}
+          afterClose={() => this.formRef.current.resetFields()}
         >
-          {testForm}
+          <DYForm
+            id="siteWaterLevelsID"
+            formRef={this.formRef}
+            name="siteWater"
+            formItem={formItem}
+            onFinish={onFinish}
+          ></DYForm>
         </Modal>
       </>
     );
   }
 }
 const mapStateToProps = (state) => {
-  console.log(state, "STATE");
+  // console.log(state, "STATE");
   return {
     siteWater: state.currency.siteWater,
     loading: state.management.loading,

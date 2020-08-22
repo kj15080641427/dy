@@ -6,9 +6,9 @@ export default function currency(state = {}, action) {
     case actionTypes.CURRENCY:
       //saga在put时在payload对象中传入key作为store的key值	payload: { data: data,key:'baseSite' }
       newState[action.payload.key] = action.payload.data;
+      // console.log(action,'ACTION')
       break;
     case actionTypes.SHOW_MODAL:
-      console.log(action,'ACTION')
       newState = { ...newState, visible: true };
       break;
     case actionTypes.HIDE_MODAL:

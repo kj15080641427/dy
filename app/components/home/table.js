@@ -10,7 +10,12 @@ export default (props) => {
     columns,
     dataSource,
     rowkey,
-    pagination,
+    total,
+    current,
+    size,
+    changePage,
+    onShowSizeChange,
+    rowSelection
   } = props;
   const columnsBase = [
     {
@@ -25,9 +30,8 @@ export default (props) => {
             <Popconfirm
               title="确定永久删除该数据吗?"
               onConfirm={() => confirm(row)}
-              // onCancel={cancel}
-              okText="Yes"
-              cancelText="No"
+              okText="确定"
+              cancelText="取消"
             >
               <Button icon={<CloseCircleOutlined />}>删除</Button>
             </Popconfirm>
@@ -39,6 +43,20 @@ export default (props) => {
       },
     },
   ];
+  let pagination = {
+    total: total,
+    size: "default",
+    current: current,
+    showQuickJumper: true,
+    showSizeChanger: true,
+    onChange: (current) => changePage(current),
+    pageSize: size,
+    onShowSizeChange: (current, pageSize) => {
+      //设置每页显示数据条数，current表示当前页码，pageSize表示每页展示数据条数
+      onShowSizeChange(current, pageSize);
+    },
+    showTotal: () => `共${total}条`,
+  };
   return (
     <Table
       columns={[...columns, ...columnsBase]}
@@ -47,6 +65,8 @@ export default (props) => {
       scroll={{ y: 700 }}
       rowKey={(row) => rowkey(row)}
       pagination={pagination}
+      rowSelection={rowSelection}
+      // {...props}
     />
   );
 };
