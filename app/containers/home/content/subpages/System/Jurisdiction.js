@@ -5,314 +5,215 @@
  */
 import React from "react";
 import { connect } from "react-redux";
-import configureStore from "@app/redux/store";
 import { bindActionCreators } from "redux";
-import * as actions from "./redux/actions";
+import DYTable from "@app/components/home/table";
+import DYForm from "@app/components/home/form";
+import { Modal, Input, Button } from "antd";
+import * as actions from "../../../redux/actions";
 import {
-  Table,
-  Row,
-  Modal,
-  Input,
-  Button,
-  Select,
-  Form,
-  Radio,
-  DatePicker,
-  Switch,
-  Popconfirm,
-  message,
-} from "antd";
-import {
-  SearchOutlined,
-  RedoOutlined,
-  PlusCircleOutlined,
-  CloseCircleOutlined,
-  FormOutlined,
-} from "@ant-design/icons";
-import { queryPermission, deletePermission } from "@app/data/request";
-import JurisdicForm from "./SystemForm/JurisdicForm";
-import { getQueryPermissionType } from "./redux/types";
-const store = configureStore({});
+  queryPermission,
+  deletePermission,
+  savePermission,
+  updatePermission,
+} from "@app/data/home";
+const columns = [
+  {
+    title: "权限名",
+    dataIndex: "permName",
+    className: "column-money",
+  },
+  {
+    title: "请求URL",
+    dataIndex: "url",
+    className: "column-money",
+  },
+  {
+    title: "权限标识符",
+    dataIndex: "permTag",
+    className: "column-money",
+  },
+];
+const formItem = [
+  {
+    name: "permName",
+    label: "权限名",
+    ele: <Input />,
+  },
+  {
+    name: "url",
+    label: "请求URL",
+    ele: <Input />,
+  },
+  {
+    name: "permTag",
+    label: "权限标识符",
+    ele: <Input />,
+  },
+];
 class Jurisdiction extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      dataSource: [], //数据源
-      loading: false, //数据源加载
-      total: 0,
-      current: 1,
-      pageSize: 10,
-      selectObj: {
-        name: "",
-      }, //条件查询对象
-      createPlanModalVisible: false,
-      rowObj: {},
+      inputValue: "",
     };
     this.formRef = React.createRef();
-    this.saveRef = React.createRef();
+  }
+  componentDidMount() {
+    // this.props.actions.getPermissionData();
+    this.props.actions.getBase({
+      request: queryPermission,
+      param: {
+        current: 1,
+        size: 10,
+      },
+      key: "permission",
+    });
   }
   render() {
     const {
-      getQueryPermissionActions,
-      getQueryBaseSiteActions,
+      hideModal,
+      showModal,
+      getBase,
+      delBase,
+      addOrUpdateBase,
     } = this.props.actions;
-    const {
-      dataSource,
-      loading,
-      total,
-      current,
-      pageSize,
-      rowObj,
-      confirmLoading,
-    } = this.state;
-    const ckcolumns = [
-      {
-        title: "权限名",
-        dataIndex: "permName",
-        className: "column-money",
-      },
-      {
-        title: "请求URL",
-        dataIndex: "url",
-        className: "column-money",
-      },
-      {
-        title: "权限标识符",
-        dataIndex: "permTag",
-        className: "column-money",
-      },
-      {
-        title: "操作",
-        dataIndex: "isShow",
-        className: "column-money",
-        width: 200,
-        fixed: "right",
-        render: (isShow, row) => {
-          return (
-            <Radio.Group value="large" onChange={this.handleSizeChange}>
-              <Popconfirm
-                title="确定永久删除该数据吗?"
-                onConfirm={() => this.confirm(row)}
-                onCancel={cancel}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button icon={<CloseCircleOutlined />}>删除</Button>
-              </Popconfirm>
-              <Button onClick={() => SelectById(row)} icon={<FormOutlined />}>
-                修改
-              </Button>
-            </Radio.Group>
-          );
-        },
-      },
-    ];
-
-    function cancel(e) {
-      message.error("取消删除！");
-    }
-
-    //分页设置
-    let pagination = {
-      total: total,
-      size: "default",
-      current: current,
-      // hideOnSinglePage: true,
-      showQuickJumper: true,
-      showSizeChanger: true,
-      onChange: (current) => this.changePage(current),
-      pageSize: pageSize,
-      onShowSizeChange: (current, pageSize) => {
-        //设置每页显示数据条数，current表示当前页码，pageSize表示每页展示数据条数
-        this.onShowSizeChange(current, pageSize);
-      },
-      showTotal: () => `共${total}条`,
-    };
-    //重置
-    const onReset = () => {
-      this.setState({ loading: true });
-      this.formRef.current.resetFields();
-      // getQueryPermissionActions() //dispatch查询权限
-      getQueryBaseSiteActions(); //查询字典
-      queryPermission({
-        current: 1,
-        size: 10,
-      }).then((result) => {
-        this.setState({
-          selectObj: {
-            name: "",
-          },
-          loading: false,
-          dataSource: result.data.records,
-          current: result.data.current,
-          pageSize: 10,
-          total: result.data.total,
-        });
+    const { permission, loading, visible,rowSelection } = this.props;
+    const { inputValue } = this.state;
+    const getBaseHoc = (param = { current: 1, size: 10 }) => {
+      return getBase({
+        request: queryPermission,
+        param: param,
+        key: "permission",
       });
     };
-    //查询表单提交
+    //提交
     const onFinish = (values) => {
-      this.setState({
-        current: 1,
-        pageSize: 10,
-        selectObj: {
-          name: values.name,
+      values.permissionId
+        ? addOrUpdateBase({
+            request: updatePermission,
+            key: "permission",
+            query: queryPermission,
+            param: values,
+          })
+        : addOrUpdateBase({
+            request: savePermission,
+            key: "permission",
+            query: queryPermission,
+            param: values,
+          });
+      console.log(values, "values");
+    };
+    //根据id删除
+    const confirm = (row) => {
+      delBase({
+        request: deletePermission,
+        key: "permission",
+        query: queryPermission,
+        param: {
+          id: row.permissionId,
+          current: permission?.current,
+          size: permission.size,
+          recordLength: permission.records.length,
         },
       });
-      this.selectPage();
+      // deleteSiteWater({
+      //   id: row.permissionId,
+      //   current: permission?.current,
+      //   size: permission.size,
+      //   recordLength: permission.records.length,
+      // });
     };
-    //增加打开对话框
-    const showModal = () => {
-      this.setState({
-        createPlanModalVisible: true,
-      });
+    //切换每页数量
+    const onShowSizeChange = (current, pageSize) => {
+      getBaseHoc({ current: current, size: pageSize });
     };
-    //查询打开对话框并传走数据
-    const SelectById = (row) => {
-      this.setState({
-        createPlanModalVisible: true,
-        rowObj: row,
-      });
-      this.saveRef.current.setFieldsValue(row);
+    // 回调函数，切换下一页
+    const changePage = (current) => {
+      getBaseHoc({ current: current, size: 10 });
+    };
+    const update = (row) => {
+      this.formRef.current.setFieldsValue(row);
+      showModal();
     };
     return (
       <>
         {/* 条件查询行 */}
-        <Row style={{ height: 60 }}>
-          <Form
-            ref={this.formRef}
-            name="basic"
-            initialValues={{
-              remember: true,
+        <div className="view-query">
+          <div>
+            <Input
+              value={inputValue}
+              onChange={(e) => {
+                this.setState({
+                  inputValue: e.target.value,
+                });
+              }}
+              placeholder="输入权限名称"
+            ></Input>
+          </div>
+          <Button
+            type="primary"
+            onClick={() => {
+              getBaseHoc({ current: 1, size: 10, permName: inputValue });
             }}
-            layout="inline"
-            onFinish={onFinish}
           >
-            <Form.Item label="权限名" name="name">
-              <Input size="large" />
-            </Form.Item>
-            <Form.Item>
-              <Button
-                size="large"
-                type="primary"
-                htmlType="submit"
-                icon={<SearchOutlined />}
-              >
-                查询
-              </Button>
-            </Form.Item>
-            <Form.Item>
-              <Button
-                size="large"
-                htmlType="button"
-                onClick={onReset}
-                icon={<RedoOutlined />}
-              >
-                重置
-              </Button>
-            </Form.Item>
-            <Form.Item>
-              <Button
-                size="large"
-                htmlType="button"
-                onClick={showModal}
-                icon={<PlusCircleOutlined />}
-              >
-                增加
-              </Button>
-            </Form.Item>
-          </Form>
-        </Row>
-        <Table
+            查询
+          </Button>
+          <Button
+            type="ghost"
+            onClick={() => {
+              getBaseHoc();
+              this.setState({
+                inputValue: "",
+              });
+            }}
+          >
+            重置
+          </Button>
+          <Button onClick={() => showModal()}>添加</Button>
+        </div>
+        <DYTable
+          rowSelection={rowSelection}
+          columns={columns}
           loading={loading}
-          columns={ckcolumns}
-          dataSource={dataSource}
-          scroll={{ y: 700 }}
-          rowKey={(row) => row.materialWarehouseId}
-          pagination={pagination}
-        ></Table>
-        <JurisdicForm
-          visible={this.state.createPlanModalVisible}
-          onCancel={this.handleCancel}
-          rowObj={rowObj}
-          form={this.saveRef}
-          selectPage={this.selectPage}
-        ></JurisdicForm>
+          total={permission?.total}
+          dataSource={permission?.records}
+          current={permission?.current}
+          size={permission?.size}
+          rowkey={(row) => row.permissionId}
+          changePage={(cur) => changePage(cur)}
+          onShowSizeChange={(cur, size) => {
+            onShowSizeChange(cur, size);
+          }}
+          confirm={confirm}
+          update={update}
+        ></DYTable>
+        <Modal
+          title="新增"
+          visible={visible}
+          forceRender={true}
+          onCancel={() => hideModal()}
+          footer={null}
+          maskClosable={false}
+          afterClose={() => this.formRef.current.resetFields()}
+        >
+          <DYForm
+            id="permissionId"
+            formRef={this.formRef}
+            name="siteWater"
+            formItem={formItem}
+            onFinish={onFinish}
+          ></DYForm>
+        </Modal>
       </>
     );
   }
-  handleCancel = () => {
-    this.setState({
-      createPlanModalVisible: false,
-    });
-    this.saveRef.current.resetFields();
-  };
-  //根据id删除
-  confirm(row) {
-    deletePermission(row.permissionId).then((result) => {
-      this.selectPage();
-      message.success("删除成功！");
-    });
-  }
-  //切换每页数量
-  onShowSizeChange(current, pageSize) {
-    this.setState({ loading: true });
-    queryPermission({
-      current: current,
-      size: pageSize,
-      permName: this.state.selectObj.name,
-    }).then((result) => {
-      this.setState({
-        loading: false,
-        dataSource: result.data.records,
-        pageSize: pageSize,
-        total: result.data.total,
-        current: result.data.current,
-      });
-    });
-  }
-  // 回调函数，切换下一页
-  changePage(current) {
-    this.setState({ loading: true });
-    queryPermission({
-      current: current,
-      size: this.state.pageSize,
-      permName: this.state.selectObj.name,
-    }).then((result) => {
-      this.setState({
-        loading: false,
-        dataSource: result.data.records,
-        pageSize: result.data.pageSize,
-        total: result.data.total,
-        current: result.data.current,
-      });
-    });
-  }
-  selectPage = () => {
-    this.setState({
-      loading: true,
-    });
-    queryPermission({
-      current: this.state.current,
-      size: this.state.pageSize,
-      permName: this.state.selectObj.name,
-    }).then((result) => {
-      this.setState({
-        loading: false,
-        dataSource: result.data.records,
-        total: result.data.total,
-        current: result.data.current,
-      });
-    });
-  };
-  componentDidMount() {
-    this.selectPage();
-  }
 }
 function mapStateToProps(state) {
+  // console.log(state, "STATE");
   return {
-    test: state.home.test,
-    baseSite: state.currency.baseSite,
+    permission: state.currency.permission,
+    visible: state.currency.visible,
+    loading: state.management.loading,
   };
 }
 
@@ -323,3 +224,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Jurisdiction);
+//322行

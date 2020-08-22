@@ -10,46 +10,63 @@ import DYTable from "@app/components/home/table";
 import DYForm from "@app/components/home/form";
 import { Modal, Input, Button } from "antd";
 import * as actions from "../../../redux/actions";
-import { UserSwitchOutlined } from "@ant-design/icons";
 import {
-  getRole,
-  addRole,
-  updateRole,
-  delRole,
-  setRollPermission,
-  getPermissionById,
+  queryPermission,
+  deletePermission,
+  savePermission,
+  updatePermission,
 } from "@app/data/home";
-import Jurisdiction from "./Jurisdiction";
+const columns = [
+  {
+    title: "权限名",
+    dataIndex: "permName",
+    className: "column-money",
+  },
+  {
+    title: "请求URL",
+    dataIndex: "url",
+    className: "column-money",
+  },
+  {
+    title: "权限标识符",
+    dataIndex: "permTag",
+    className: "column-money",
+  },
+];
 const formItem = [
   {
-    name: "roleName",
-    label: "角色名称",
+    name: "permName",
+    label: "权限名",
     ele: <Input />,
   },
   {
-    name: "roleDesc",
-    label: "角色说明",
+    name: "url",
+    label: "请求URL",
+    ele: <Input />,
+  },
+  {
+    name: "permTag",
+    label: "权限标识符",
     ele: <Input />,
   },
 ];
-class Role extends React.PureComponent {
+class Jurisdiction extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
       inputValue: "",
-      row: {},
     };
     this.formRef = React.createRef();
   }
   componentDidMount() {
     // this.props.actions.getPermissionData();
     this.props.actions.getBase({
-      request: getRole,
+      request: queryPermission,
       param: {
         current: 1,
         size: 10,
       },
-      key: "role",
+      key: "permission",
     });
   }
   render() {
@@ -59,82 +76,52 @@ class Role extends React.PureComponent {
       getBase,
       delBase,
       addOrUpdateBase,
-      getPermissionDataById,
-      hideRPModal,
-      setSelectList, //设置选中项
-      setRolePermission,
     } = this.props.actions;
-    const { role, loading, visible, permissionList, modalVisible } = this.props;
-    const { inputValue, row } = this.state;
-    const columns = [
-      {
-        title: "角色名称",
-        dataIndex: "roleName",
-      },
-      {
-        title: "角色说明",
-        dataIndex: "roleDesc",
-      },
-      {
-        title: "授权",
-        dataIndex: "",
-        render: (e) => {
-          return (
-            <Button
-              onClick={() => rolePermission(e)}
-              icon={<UserSwitchOutlined />}
-            >
-              授权
-            </Button>
-          );
-        },
-      },
-    ];
-
+    const { permission, loading, visible,rowSelection } = this.props;
+    const { inputValue } = this.state;
     const getBaseHoc = (param = { current: 1, size: 10 }) => {
       return getBase({
-        request: getRole,
+        request: queryPermission,
         param: param,
-        key: "role",
+        key: "permission",
       });
-    };
-    //授权
-    const rolePermission = async (row) => {
-      this.setState({
-        row: row,
-      });
-      getPermissionDataById(row.roleId);
     };
     //提交
     const onFinish = (values) => {
-      values.roleId
+      values.permissionId
         ? addOrUpdateBase({
-            //
-            request: updateRole,
-            key: "role",
-            query: getRole,
+            request: updatePermission,
+            key: "permission",
+            query: queryPermission,
             param: values,
           })
         : addOrUpdateBase({
-            request: addRole,
-            key: "role",
-            query: getRole,
+            request: savePermission,
+            key: "permission",
+            query: queryPermission,
             param: values,
           });
+      console.log(values, "values");
     };
     //根据id删除
     const confirm = (row) => {
       delBase({
-        request: delRole,
-        key: "role",
-        query: getRole,
+        request: deletePermission,
+        key: "permission",
+        query: queryPermission,
         param: {
-          id: row.roleId,
-          current: role?.current,
-          size: role.size,
-          recordLength: role.records.length,
+          id: row.permissionId,
+          current: permission?.current,
+          size: permission.size,
+          recordLength: permission.records.length,
         },
       });
+      // deleteSiteWater({
+      //   id: row.permissionId,
+      //   current: permission?.current,
+      //   size: permission.size,
+      //   recordLength: permission.records.length,
+      // });
     };
     //切换每页数量
     const onShowSizeChange = (current, pageSize) => {
@@ -166,7 +153,7 @@ class Role extends React.PureComponent {
           <Button
             type="primary"
             onClick={() => {
-              getBaseHoc({ current: 1, size: 10, roleName: inputValue });
+              getBaseHoc({ current: 1, size: 10, permName: inputValue });
             }}
           >
             查询
@@ -185,13 +172,14 @@ class Role extends React.PureComponent {
           <Button onClick={() => showModal()}>添加</Button>
         </div>
         <DYTable
+          rowSelection={rowSelection}
           columns={columns}
           loading={loading}
-          total={role?.total}
-          dataSource={role?.records}
-          current={role?.current}
-          size={role?.size}
-          rowkey={(row) => row.roleId}
+          total={permission?.total}
+          dataSource={permission?.records}
+          current={permission?.current}
+          size={permission?.size}
+          rowkey={(row) => row.permissionId}
           changePage={(cur) => changePage(cur)}
           onShowSizeChange={(cur, size) => {
             onShowSizeChange(cur, size);
@@ -209,59 +197,30 @@ class Role extends React.PureComponent {
           afterClose={() => this.formRef.current.resetFields()}
         >
           <DYForm
-            id="roleId"
+            id="permissionId"
             formRef={this.formRef}
-            name="role"
+            name="siteWater"
             formItem={formItem}
             onFinish={onFinish}
           ></DYForm>
-        </Modal>
-        <Modal
-          width={"80%"}
-          title={`${row.roleName}授权`}
-          visible={modalVisible}
-          maskClosable={false}
-          destroyOnClose
-          okText="授权"
-          onOk={() => {
-            setRolePermission({
-              roleId: row.roleId,
-              permissionIdList: permissionList,
-            });
-          }}
-          onCancel={() => {
-            hideRPModal();
-          }}
-        >
-          <Jurisdiction
-            rowSelection={{
-              fixed: true,
-              selectedRowKeys: permissionList,
-              onChange: (keys, row) => {
-                setSelectList(keys);
-              },
-            }}
-          ></Jurisdiction>
         </Modal>
       </>
     );
   }
 }
-function mapStateToProps(state) {
-  console.log(state, "STATE");
-  return {
-    role: state.currency.role,
-    visible: state.currency.visible,
-    loading: state.management.loading,
-    permissionList: state.management.permissionList,
-    modalVisible: state.management.modalVisible,
-  };
-}
+// function mapStateToProps(state) {
+//   // console.log(state, "STATE");
+//   return {
+//     permission: state.currency.permission,
+//     visible: state.currency.visible,
+//     loading: state.management.loading,
+//   };
+// }
 
-function mapDispatchToProps(dispatch) {
-  // bindActionCreators 合并action
-  return {
-    actions: bindActionCreators(actions, dispatch),
-  };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Role);
+// function mapDispatchToProps(dispatch) {
+//   // bindActionCreators 合并action
+//   return {
+//     actions: bindActionCreators(actions, dispatch),
+//   };
+// }
+// export default connect(mapStateToProps, mapDispatchToProps)(Jurisdiction);

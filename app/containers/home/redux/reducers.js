@@ -2,12 +2,16 @@ import {
   setPagination,
   startLoading,
   endLoading,
-  addSiteWaterType,
-  DELETE_SITE_WATER
+  SHOW_R_P_MODAL,
+  HIDE_R_P_MODAL,
+  SET_R_P_SELECT_LIST,
+  SET_SELECT_LIST,
 } from "./types";
 
 const initState = {
   loading: false,
+  permissionList: [],
+  modalVisible: false,
 };
 
 export default function management(state = initState, action) {
@@ -22,11 +26,21 @@ export default function management(state = initState, action) {
     case endLoading:
       newState = { ...newState, loading: false };
       break;
-    case addSiteWaterType: //添加
-      newState = { ...newState, showModal: true };
+    case SET_R_P_SELECT_LIST: //添加
+      newState = {
+        ...newState,
+        // modalVisible: true,
+        permissionList: action.data,
+      };
       break;
-    case DELETE_SITE_WATER: //删除
-      // newState = { ...newState, showModal: true };
+    case HIDE_R_P_MODAL:
+      newState = { ...newState, modalVisible: false,permissionList:[] };
+      break;
+    case SHOW_R_P_MODAL:
+      newState = { ...newState, modalVisible: true };
+      break;
+    case SET_SELECT_LIST:
+      newState = { ...newState, permissionList: action.data };
       break;
     default:
       break;
