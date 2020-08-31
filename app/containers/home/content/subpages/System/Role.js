@@ -11,14 +11,7 @@ import DYForm from "@app/components/home/form";
 import { Modal, Input, Button } from "antd";
 import * as actions from "../../../redux/actions";
 import { UserSwitchOutlined } from "@ant-design/icons";
-import {
-  getRole,
-  addRole,
-  updateRole,
-  delRole,
-  setRollPermission,
-  getPermissionById,
-} from "@app/data/home";
+import { getRole, addRole, updateRole, delRole } from "@app/data/home";
 import Jurisdiction from "./Jurisdiction";
 const formItem = [
   {
@@ -61,11 +54,24 @@ class Role extends React.PureComponent {
       addOrUpdateBase,
       getPermissionDataById,
       hideRPModal,
-      setSelectList, //设置选中项
+      setSelectList, // 设置选中项
       setRolePermission,
     } = this.props.actions;
-    const { role, loading, visible, permissionList, modalVisible } = this.props;
+    const {
+      role = {},
+      loading,
+      visible,
+      permissionList,
+      modalVisible,
+    } = this.props;
     const { inputValue, row } = this.state;
+    // 授权
+    const rolePermission = (row) => {
+      this.setState({
+        row: row,
+      });
+      getPermissionDataById(row.roleId);
+    };
     const columns = [
       {
         title: "角色名称",
@@ -78,34 +84,25 @@ class Role extends React.PureComponent {
       {
         title: "授权",
         dataIndex: "",
-        render: (e) => {
-          return (
-            <Button
-              onClick={() => rolePermission(e)}
-              icon={<UserSwitchOutlined />}
-            >
-              授权
-            </Button>
-          );
-        },
+        render: (e) => (
+          <Button
+            onClick={() => rolePermission(e)}
+            icon={<UserSwitchOutlined />}
+          >
+            授权
+          </Button>
+        ),
       },
     ];
 
-    const getBaseHoc = (param = { current: 1, size: 10 }) => {
-      return getBase({
+    const getBaseHoc = (param = { current: 1, size: 10 }) =>
+      getBase({
         request: getRole,
         param: param,
         key: "role",
       });
-    };
-    //授权
-    const rolePermission = async (row) => {
-      this.setState({
-        row: row,
-      });
-      getPermissionDataById(row.roleId);
-    };
-    //提交
+
+    // 提交
     const onFinish = (values) => {
       values.roleId
         ? addOrUpdateBase({
@@ -122,7 +119,7 @@ class Role extends React.PureComponent {
             param: values,
           });
     };
-    //根据id删除
+    // 根据id删除
     const confirm = (row) => {
       delBase({
         request: delRole,
@@ -136,7 +133,7 @@ class Role extends React.PureComponent {
         },
       });
     };
-    //切换每页数量
+    // 切换每页数量
     const onShowSizeChange = (current, pageSize) => {
       getBaseHoc({ current: current, size: pageSize });
     };
@@ -239,6 +236,7 @@ class Role extends React.PureComponent {
               selectedRowKeys: permissionList,
               onChange: (keys, row) => {
                 setSelectList(keys);
+                console.log(keys, "KEYS");
               },
             }}
           ></Jurisdiction>
@@ -248,7 +246,7 @@ class Role extends React.PureComponent {
   }
 }
 function mapStateToProps(state) {
-  console.log(state, "STATE");
+  console.log(state.management.permissionList, "STATE");
   return {
     role: state.currency.role,
     visible: state.currency.visible,

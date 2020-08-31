@@ -231,8 +231,8 @@ class WeatherPic extends React.PureComponent {
     );
   }
   selectInit() {
-    let startTime = moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YYYY-MM-DD")
-    let entTime = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("YYYY-MM-DD")
+    let startTime = moment(new Date().getTime() - 24 * 60 * 60 * 1000).format("YYYY-MM-DD hh:mm:ss")
+    let entTime = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("YYYY-MM-DD hh:mm:ss")
     //获取卫星云图
     getSatellite({
       "startTime": startTime,

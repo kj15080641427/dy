@@ -112,6 +112,19 @@ function* setRolePermission({ data }) {
     }
   } catch (e) {}
 }
+/**
+ * 关联站点
+ */
+function* siteRelation({data}){
+  try {
+    console.log('-00000')
+    yield put({
+      type: types.SHOW_R_P_MODAL,
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
 export default function* management() {
   yield all([
     takeEvery(types.GET_BASE, getbaseData),
@@ -119,5 +132,6 @@ export default function* management() {
     takeEvery(types.ADD_OR_UPD_BASE, addOrUpdateBaseData),
     takeEvery(types.GET_PERMISSION_DATA_BY_ID, rolePermission),
     takeEvery(types.SET_ROLE_PERMISSION, setRolePermission),
+    takeEvery(types.SITE_RELATION,siteRelation)
   ]);
 }

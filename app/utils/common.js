@@ -76,6 +76,27 @@ export function fetchJSONData(method, url, data) {
     }
   });
 }
+//
+export const testLogin = (url,data)=>{
+  fetch('http://218.56.180.250:9110/'+url, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'token': token
+    },
+    // 注意 post 时候参数的形式
+    body: data ? JSON.stringify(data) : null
+  }).then((res) => {
+    if (url === '/api/users/login') {
+      return res.ok ? res : Promise.reject("接口出错");
+    } else {
+      return res.ok ? res.json() : Promise.reject("接口出错");
+    }
+  })
+}
+
 /*
 *   请求数据
 */

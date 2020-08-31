@@ -26,8 +26,8 @@ class Water extends React.PureComponent {
             //     </tr>
             // )
             let name = data[i].name + "(" + data[i].dataSourceDesc + ")";
-            let z = (data[i].z * 1).toFixed(2);
-            let warning = (data[i].warning === 99 ? "--" : data[i].warning.toFixed(2));
+            let z = data[i]?.siteWaterLevels[0]?.mdbz|| '--' ;
+            let warning = (data[i].siteWaterLevels[0]?.warning === 99 ? "--" : data[i]?.siteWaterLevels[0]?.warning);
             let time = (data[i].ztm === null ? "--" : moment(data[i].ztm).format("MM-DD HH:mm"));
             if (z - warning > 0 && warning !== "--") {
                 elements.push(

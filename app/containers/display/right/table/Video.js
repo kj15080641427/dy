@@ -57,7 +57,7 @@ class Video extends React.PureComponent {
         for (let i = 0; i < data.length; i++) {
             elements.push(
                 <tr key={i}>
-                    <td style={{ width: 200 }}>{data[i].sitename}</td>
+                    <td style={{ width: 200 }}>{data[i].name}</td>
                     {/* <td>{data[i].address}</td> */}
                     <td>{data[i].isOnline == 0 ? "在线" : <a>离线</a>}</td>
                     <td>

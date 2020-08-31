@@ -3,494 +3,177 @@
  * zdl
  * 防汛人员
  */
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actions from '@app/redux/actions/home';
-import { queryFloodUser, saveFloodUser, deleteFloodUser, updateFloodUser } from '@app/data/request';
-import { Table, Row, Modal, Input, Button, Select, Form, Radio, DatePicker, Switch, Popconfirm, message } from 'antd';
-import { SearchOutlined, RedoOutlined, PlusCircleOutlined, CloseCircleOutlined, FormOutlined } from '@ant-design/icons';
-import moment from 'moment';
+import React from "react";
+import BaseLayout from "../connectComponents";
+import {
+  queryFloodUser,
+  saveFloodUser,
+  deleteFloodUser,
+  updateFloodUser,
+} from "@app/data/request";
+import { Input, Select, Radio } from "antd";
 
-class FloodPrevention extends React.PureComponent {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      dataSource: [],//物资数据源
-      loading: false,//物资数据源加载
-      total: 0,
-      current: 1,
-      pageSize: 10,
-      ckdataSource: [],//仓库数据源
-      modalvisible: false,//模态框
-      confirmLoading: false,//模态框提交动画
-      selectObj: {
-        grade: "",
-        query: ""
-      },//条件查询对象
-    };
-    this.formRef = React.createRef();
-    this.addform = React.createRef();
+const { Option } = Select;
+const selectList = (
+  <Select size="large" style={{ width: 250 }} defaultValue={null}>
+    <Option value={null}>所有</Option>
+    <Option value={1}>队长</Option>
+    <Option value={2}>副队长</Option>
+    <Option value={3}>组长</Option>
+    <Option value={4}>组员</Option>
+  </Select>
+);
+const columns = [
+  {
+    title: "姓名",
+    dataIndex: "name",
+    className: "column-money",
+    fixed: "left",
+  },
+  {
+    title: "性别",
+    dataIndex: "sex",
+    className: "column-money",
+    render: (sex) => (sex === "1" ? "男" : sex === "2" ? "女" : "未知"),
+  },
+  {
+    title: "年龄",
+    dataIndex: "age",
+    className: "column-money",
+    sorter: (a, b) => a.age - b.age,
+    render: (age) => (age === null ? "未知" : age),
+  },
+  {
+    title: "单位",
+    dataIndex: "unit",
+    className: "column-money",
+  },
+  {
+    title: "联系电话",
+    dataIndex: "phone",
+    className: "column-money",
+  },
+  {
+    title: "备注",
+    dataIndex: "remark",
+    className: "column-money",
+  },
+  {
+    title: "是否显示",
+    dataIndex: "isShow",
+    className: "column-money",
+    render: (isShow) => (isShow === "0" ? "是" : "否"),
+  },
+  {
+    title: "创建时间",
+    dataIndex: "createTime",
+    className: "column-money",
+    width: 170,
+  },
+  {
+    title: "等级",
+    dataIndex: "grade",
+    className: "column-money",
+    render: (grade) =>
+      grade === "1"
+        ? "队长"
+        : grade === "2"
+        ? "副队长"
+        : grade === "3"
+        ? "组长"
+        : grade === "4"
+        ? "组员"
+        : "未知",
+  },
+];
+const formItem = [
+  {
+    label: "名称",
+    name: "name",
+    rules: [{ required: true }],
+    ele: <Input />,
+  },
+  {
+    label: "性别",
+    name: "sex",
+    rules: [{ required: true }],
+    ele: (
+      <Radio.Group defaultValue={''}>
+        <Radio value={''}>未知性别</Radio>
+        <Radio value={"1"}>男</Radio>
+        <Radio value={"2"}>女</Radio>
+      </Radio.Group>
+    ),
+  },
+  {
+    label: "年龄",
+    name: "age",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "单位",
+    name: "unit",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "电话",
+    name: "phone",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "备注",
+    name: "remark",
+    ele: <Input></Input>,
+  },
+  {
+    label: "上一级",
+    name: "parent",
+    ele: <Input></Input>,
+  },
+  {
+    label: "是否显示",
+    name: "isShow",
+    ele: (
+      <Radio.Group defaultValue={0}>
+        <Radio value={"0"}>是</Radio>
+        <Radio value={"1"}>否</Radio>
+      </Radio.Group>
+    ),
+  },
+  {
+    label: "等级",
+    name: "grade",
+    ele: selectList,
+  },
+];
+const rowSelect = [
+  { label: "全文检索", name: "name", element: <Input></Input> },
+  // { label: "等级", name: "grade", element: selectList },
+];
+class FloodPrevention extends React.Component {
+  constructor(props) {
+    super(props);
   }
   render() {
-    console.log("FloodPrevention this.props.match", this.props.match, this.props.location);
-    const { dataSource, loading, ckdataSource, total, current, pageSize, modalvisible, confirmLoading, selectObj } = this.state;
-    const ckcolumns = [
-      // {
-      //   title: '防汛人员ID',
-      //   dataIndex: 'floodId',
-      //   className: 'column-money',
-      //   fixed: 'left',
-      // },
-      {
-        title: '姓名',
-        dataIndex: 'name',
-        className: 'column-money',
-        fixed: 'left',
-      },
-      {
-        title: '性别',
-        dataIndex: 'sex',
-        className: 'column-money',
-        render: sex => { return (sex === "1" ? "男" : sex === "2" ? "女" : "未知") }
-      },
-      {
-        title: '年龄',
-        dataIndex: 'age',
-        className: 'column-money',
-        sorter: (a, b) => a.age - b.age,
-        render: age => { return (age === null ? "未知" : age) }
-      },
-      {
-        title: '单位',
-        dataIndex: 'unit',
-        className: 'column-money',
-      },
-      {
-        title: '联系电话',
-        dataIndex: 'phone',
-        className: 'column-money',
-      },
-      {
-        title: '备注',
-        dataIndex: 'remark',
-        className: 'column-money',
-      },
-      // {
-      //   title: '上一级',
-      //   dataIndex: 'parent',
-      //   className: 'column-money',
-      // },
-      {
-        title: '是否显示',
-        dataIndex: 'isShow',
-        className: 'column-money',
-        render: isShow => { return (isShow === "0" ? "是" : "否") }
-      },
-      {
-        title: '创建时间',
-        dataIndex: 'createTime',
-        className: 'column-money',
-        width: 170,
-      },
-      {
-        title: '等级',
-        dataIndex: 'grade',
-        className: 'column-money',
-        render: grade => { return (grade === "1" ? "队长" : grade === "2" ? "副队长" : grade === "3" ? "组长" : grade === "4" ? "组员" : "未知") }
-      },
-      {
-        title: '操作',
-        dataIndex: 'isShow',
-        className: 'column-money',
-        width: 200,
-        fixed: 'right',
-        render: (isShow, row) => {
-          return (
-            <Radio.Group value="large" onChange={this.handleSizeChange}>
-              <Popconfirm
-                title="确定永久删除该数据吗?"
-                onConfirm={() => this.confirm(row)}
-                onCancel={cancel}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button icon={<CloseCircleOutlined />}>删除</Button>
-              </Popconfirm>
-              <Button onClick={() => SelectById(row)} icon={<FormOutlined />}>修改</Button>
-            </Radio.Group>
-          )
-        }
-      },
-    ];
-    function cancel(e) {
-      console.log(e);
-      message.error('取消删除！');
-    }
-    //根据id查询并打开模态框
-    const SelectById = (row) => {
-      this.setState({
-        modalvisible: true
-      })
-      console.log(row)
-      this.addform.current.setFieldsValue(
-        row
-        //   {
-        //   name: row.name,
-        //   company: row.company,
-        //   createTime: row.createTime,
-        //   expireDate: row.expireDate,
-        //   isShow: row.isShow,
-        //   manufactureDate: moment(row.manufactureDate).valueOf(),
-        //   materialId: row.materialId,
-        //   materialWarehouseId: row.materialWarehouseId,
-        //   money: row.money,
-        //   saveTotal: row.saveTotal,
-        //   spec: row.spec,
-        //   warningNumber: row.warningNumber
-        // }
-      )
-    }
-    //重置
-    const onReset = () => {
-      console.log(this.formRef.current)
-      this.formRef.current.resetFields();
-      this.setState({
-        loading: true
-      })
-      queryFloodUser({
-        "current": 1,
-        "size": 10,
-      }).then((result) => {
-        console.log(result)
-        this.setState({
-          loading: false,
-          dataSource: result.data.records,
-          total: result.data.total,
-          current: result.data.current
-        })
-      })
-    };
-    //查询表单提交
-    const onFinish = values => {
-      console.log('Success:', values);
-      this.setState({
-        current: 1,
-        pageSize: 10,
-        selectObj: {
-          grade: values.grade,
-          query: values.value
-        }
-      })
-      this.selectPage()
-    };
-    //分页设置
-    let pagination = {
-      total: total,
-      size: "default",
-      current: current,
-      hideOnSinglePage: true,
-      showQuickJumper: true,
-      showSizeChanger: true,
-      onChange: (current) => this.changePage(current),
-      pageSize: pageSize,
-      onShowSizeChange: (current, pageSize) => {//设置每页显示数据条数，current表示当前页码，pageSize表示每页展示数据条数
-        console.log(pageSize);
-        this.onShowSizeChange(current, pageSize)
-      },
-      showTotal: () => `共${total}条`,
-    }
-    //表单验证
-    const validateMessages = {
-      required: '${label} 不能为空！',
-    };
-    //模态框提交
-    const onFinishmodal = values => {
-      console.log(values)
-      this.formRef.current.validateFields();
-      if (values.floodId === undefined) {
-        saveFloodUser(values).then((result) => {
-          console.log(result)
-          if (result.data) {
-            this.setState({
-              modalvisible: false,
-            });
-            this.selectPage()
-            message.success("新增成功！")
-            this.addform.current.resetFields();
-          } else {
-            console.log(result.msg)
-          }
-        })
-      } else {
-        updateFloodUser(values).then((result) => {
-          console.log(result)
-          if (result.data) {
-            this.setState({
-              modalvisible: false,
-            });
-            this.selectPage()
-            message.success("更新成功！")
-            this.addform.current.resetFields();
-          } else {
-            console.log(result.msg)
-          }
-        })
-      }
-    };
-    const layout = {
-      labelCol: {
-        span: 5,
-      },
-      wrapperCol: {
-        span: 19,
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 8,
-        },
-      },
-    };
     return (
       <>
-        {/* 条件查询行 */}
-        <Row style={{ height: 60 }}>
-          <Form
-            ref={this.formRef}
-            name="basic"
-            initialValues={{
-              remember: true,
-            }}
-            layout="inline"
-            onFinish={onFinish}
-          >
-            <Form.Item
-              label="全文检索："
-              name="value"
-            >
-              <Input size="large" />
-            </Form.Item>
-
-            <Form.Item
-              label="等级"
-              name="grade"
-            >
-              <Select size="large" style={{ width: 250 }} defaultValue={null}>
-                <Select.Option value={null}>所有</Select.Option>
-                <Select.Option value={1}>队长</Select.Option>
-                <Select.Option value={2}>副队长</Select.Option>
-                <Select.Option value={3}>组长</Select.Option>
-                <Select.Option value={4}>组员</Select.Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item>
-              <Button size="large" type="primary" htmlType="submit" icon={<SearchOutlined />}>
-                查询
-        </Button>
-            </Form.Item>
-            <Form.Item>
-              <Button size="large" htmlType="button" onClick={onReset} icon={<RedoOutlined />}>重置</Button>
-            </Form.Item>
-            <Form.Item>
-              <Button htmlType="button" size="large" onClick={this.showModal} icon={<PlusCircleOutlined />}>增加</Button>
-            </Form.Item>
-          </Form>
-        </Row>
-        {/* 模态框 */}
-        <Modal
-          title="Title"
-          visible={modalvisible}
-          confirmLoading={confirmLoading}
-          onCancel={this.handleCancel}
-          footer={null}
-          forceRender={true}
-        >
-          {/* 模态框面板 */}
-          <Form {...layout} name="save" onFinish={onFinishmodal} validateMessages={validateMessages} ref={this.addform}
-            initialValues={{
-              remember: true,
-            }}>
-            <Form.Item name={'name'} label="姓名" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item name={'sex'} label="性别" rules={[{ required: true }]}>
-              <Radio.Group defaultValue={null} >
-                <Radio value={null}>未知性别</Radio>
-                <Radio value={'1'}>男</Radio>
-                <Radio value={'2'}>女</Radio>
-              </Radio.Group>
-            </Form.Item>
-            <Form.Item name={'age'} label="年龄" >
-              <Input />
-            </Form.Item>
-            <Form.Item name={'unit'} label="单位">
-              <Input />
-            </Form.Item>
-            <Form.Item name={'phone'} label="电话" >
-              <Input />
-            </Form.Item>
-            <Form.Item name={'remark'} label="备注" >
-              <Input />
-            </Form.Item>
-            <Form.Item name={'parent'} label="上一级" >
-              <Input />
-            </Form.Item>
-            <Form.Item name={'isShow'} label="是否显示">
-              <Radio.Group defaultValue={0} >
-                <Radio value={'0'}>是</Radio>
-                <Radio value={'1'}>否</Radio>
-              </Radio.Group>
-            </Form.Item>
-            <Form.Item
-              label="等级"
-              name="grade"
-            >
-              <Select>
-                <Select.Option value={1}>队长</Select.Option>
-                <Select.Option value={2}>副队长</Select.Option>
-                <Select.Option value={3}>组长</Select.Option>
-                <Select.Option value={4}>组员</Select.Option>
-              </Select>
-            </Form.Item>
-            <Form.Item name={'floodId'}>
-            </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-              <Button type="primary" htmlType="submit">
-                确定
-        </Button>
-              <Button onClick={this.handleCancel}>
-                取消
-        </Button>
-            </Form.Item>
-          </Form>
-        </Modal>
-        {/* 主要表格 */}
-        <Table
-          loading={loading}
-          columns={ckcolumns}
-          dataSource={dataSource}
-          scroll={{ y: 700 }}
-          rowKey={row => row.materialId}
-          pagination={pagination}
-        ></Table>
+        <BaseLayout
+          get={queryFloodUser} // 分页查询接口
+          add={saveFloodUser} // 添加数据接口
+          upd={updateFloodUser} // 更新数据接口
+          del={deleteFloodUser} // 删除数据接口
+          columns={columns} // 表格配置项
+          formItem={formItem} // 表单配置项
+          keyId={"floodId"} // 数据的唯一ID
+          storeKey={"floodPerson"} // store中的key值
+          rowSelect={rowSelect}
+        ></BaseLayout>
       </>
     );
   }
-  //根据id删除
-  confirm(row) {
-    console.log(row)
-    deleteFloodUser(
-      row.floodId
-    ).then((result) => {
-      this.selectPage()
-      message.success('删除成功！');
-    })
-  }
-  //表单的单选互斥
-  onChange = e => {
-    this.setState({
-      value: e.target.value,
-    });
-  };
-  //打开添加模态框
-  showModal = () => {
-    this.setState({
-      modalvisible: true,
-    });
-  };
-  //关闭添加模态框
-  handleCancel = () => {
-    this.setState({
-      modalvisible: false,
-    });
-    this.addform.current.resetFields();
-  };
-  //切换每页数量
-  onShowSizeChange(current, pageSize) {
-    this.setState({ loading: true });
-    queryFloodUser({
-      "current": current,
-      "size": pageSize,
-      "grade": this.state.selectObj.grade,
-      "query": this.state.selectObj.query,
-    })
-      .then((result) => {
-        this.setState({
-          loading: false,
-          dataSource: result.data.records,
-          pageSize: pageSize,
-          total: result.data.total,
-          current: result.data.current,
-        })
-      })
-  }
-  // 回调函数，切换下一页
-  changePage(current) {
-    console.log(current)
-    this.setState({ loading: true });
-    queryFloodUser({
-      "current": current,
-      "size": this.state.pageSize,
-      "grade": this.state.selectObj.grade,
-      "query": this.state.selectObj.query,
-    })
-      .then((result) => {
-        this.setState({
-          loading: false,
-          dataSource: result.data.records,
-          pageSize: result.data.pageSize,
-          total: result.data.total,
-          current: result.data.current,
-        })
-      })
-  }
-  //初始查询
-  selectPage() {
-    this.setState({ loading: true });
-    queryFloodUser({
-      "current": this.state.current,
-      "size": this.state.pageSize,
-      "grade": this.state.selectObj.grade,
-      "query": this.state.selectObj.query,
-    })
-      .then((result) => {
-        console.log(result)
-        this.setState({
-          loading: false,
-          dataSource: result.data.records,
-          total: result.data.total,
-          current: result.data.current
-        })
-      })
-  }
-  //初始化
-  componentDidMount() {
-    this.selectPage()
-  }
-  componentDidUpdate() {
-    // this.addform.current.setFieldsValue(this.props.rowObj)
-  }
-}
-function mapStateToProps(state) {
-  return {
-    test: state.home.test,
-  };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(actions, dispatch),
-  };
-}
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FloodPrevention);
+export default FloodPrevention;
