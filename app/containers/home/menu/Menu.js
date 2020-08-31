@@ -36,7 +36,8 @@ class Menus extends React.PureComponent {
             theme="dark"
             inlineCollapsed={collapsed}
             onClick={this.onMenuClick}
-            defaultOpenKeys={['sub1', 'sub2', 'sub3', 'sub4','sub5']}
+            // defaultOpenKeys={['sub1', 'sub2', 'sub3', 'sub4','sub5']}
+            defaultOpenKeys={['sub5']}
           >
             <Menu.Item key="/" icon={<ContainerOutlined />}>
               首页
@@ -79,6 +80,13 @@ class Menus extends React.PureComponent {
               <Menu.Item key="/siteWater">站点水位</Menu.Item>
               <Menu.Item key="/siteVideo">站点视频</Menu.Item>
               <Menu.Item key="/siteRain">站点雨量</Menu.Item>
+              <Menu.Item key="/sitePump">泵站信息</Menu.Item>
+
+              <Menu.Item key="/siteDict">站点字典</Menu.Item>
+              <Menu.Item key="/siteWaterPonit">站点积水点</Menu.Item>
+              <Menu.Item key="/siteDike">站点堤防工程</Menu.Item>
+              <Menu.Item key="/siteReservoir">水库信息</Menu.Item>
+              <Menu.Item key="/siteGate">闸信息</Menu.Item>
             </SubMenu>
           </Menu>
         </div>

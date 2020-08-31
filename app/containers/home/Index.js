@@ -53,7 +53,9 @@ class Home extends React.PureComponent {
       </Layout>
     );
   }
-  componentDidMount() { }
+  componentDidMount() {
+    
+   }
   onCollapsClick() {
     this.setState({
       collapsed: !this.state.collapsed

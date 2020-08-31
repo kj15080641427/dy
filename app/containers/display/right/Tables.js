@@ -1,15 +1,15 @@
 /**
  * Tables 2020-07-06
  */
-import React from 'react';
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 import "./style.scss";
 import TableWrap from "./table/TableWrap";
-import { Table, Row, Col, Button } from 'antd';
-import EasyFlood from "./table/easyFlood"
-import Precipitation from "./table/Precipitation"
-import Video from "./table/Video"
-import Water from "./table/Water"
+import { Table, Row, Col, Button } from "antd";
+import EasyFlood from "./table/easyFlood";
+import Precipitation from "./table/Precipitation";
+import Video from "./table/Video";
+import Water from "./table/Water";
 import { getBasicsAll, getRadioAll } from "@app/data/request";
 class Tables extends React.PureComponent {
   constructor(props, context) {
@@ -26,50 +26,50 @@ class Tables extends React.PureComponent {
       rainlod: false,
       easylod: false,
       waterlod: false,
-      videolod: false
+      videolod: false,
     };
   }
 
   render() {
     const columns = [
       {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        render: text => <a>{text}</a>,
+        title: "Name",
+        dataIndex: "name",
+        key: "name",
+        render: (text) => <a>{text}</a>,
       },
       {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
+        title: "Age",
+        dataIndex: "age",
+        key: "age",
       },
       {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-      }
+        title: "Address",
+        dataIndex: "address",
+        key: "address",
+      },
     ];
     const data = [
       {
-        key: '1',
-        name: 'John Brown',
+        key: "1",
+        name: "John Brown",
         age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
+        address: "New York No. 1 Lake Park",
+        tags: ["nice", "developer"],
       },
       {
-        key: '2',
-        name: 'Jim Green',
+        key: "2",
+        name: "Jim Green",
         age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
+        address: "London No. 1 Lake Park",
+        tags: ["loser"],
       },
       {
-        key: '3',
-        name: 'Joe Black',
+        key: "3",
+        name: "Joe Black",
         age: 32,
-        address: 'Sidney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
+        address: "Sidney No. 1 Lake Park",
+        tags: ["cool", "teacher"],
       },
     ];
     // onClickRow = (record) => {
@@ -82,17 +82,31 @@ class Tables extends React.PureComponent {
     //   };
     // }
     const setRowClassName = (record) => {
-      return 'clickRowStyle';
-    }
-    let { waterData, rainData, easyData, videoData, waterCount, rainCount, videoCount, easyCount, rainlod, easylod, waterlod, videolod } = this.state
+      return "clickRowStyle";
+    };
+    let {
+      waterData,
+      rainData,
+      easyData,
+      videoData,
+      waterCount,
+      rainCount,
+      videoCount,
+      easyCount,
+      rainlod,
+      easylod,
+      waterlod,
+      videolod,
+    } = this.state;
     return (
       <div className="dis-tables">
         <div className="dis-table-btns">
           <Row>
-            <Col span={22}>
-            </Col>
+            <Col span={22}></Col>
             <Col span={2}>
-              <Button className="button-color-yello" size="large" ><Link to="/water">进入系统</Link></Button>
+              <Button className="button-color-yello" size="large">
+                <Link to="/water">进入系统</Link>
+              </Button>
             </Col>
             {/* <Col span={2}>
               <Button size="large" className="button-color-green"><Link to="/rain">雨情监测</Link></Button>
@@ -120,7 +134,7 @@ class Tables extends React.PureComponent {
           <TableWrap title={"雨量站(" + rainCount + ")"} extra={"单位：mm"}>
             <Precipitation dataSource={rainData} lod={rainlod}></Precipitation>
           </TableWrap>
-          <TableWrap title={"视频站点(" + videoCount + ")"} >
+          <TableWrap title={"视频站点(" + videoCount + ")"}>
             <Video dataSource={videoData} lod={videolod}></Video>
           </TableWrap>
           <TableWrap title={"易涝点(" + easyCount + ")"} extra={"单位：m"}>
@@ -139,67 +153,66 @@ class Tables extends React.PureComponent {
       rainlod: true,
       easylod: true,
       waterlod: true,
-      videolod: true
-    })
+      videolod: true,
+    });
     getBasicsAll({
-      'type': 1
+      type: 1,
     }).then((result) => {
       this.setState({
         rainData: result.data,
         rainCount: result.data.length,
-        rainlod: false
-      })
-    })
+        rainlod: false,
+      });
+    });
     getBasicsAll({
-      'type': 2
+      type: 2,
     }).then((result) => {
       this.setState({
         waterData: result.data,
         waterCount: result.data.length,
-        waterlod: false
-      })
-    })
+        waterlod: false,
+      });
+    });
     getBasicsAll({
-      'type': 3
+      type: 3,
     }).then((result) => {
-      console.log(result)
+      console.log(result);
       let arr = [];
       for (let i = 0; i < result.data.length; i++) {
         if (result.data[i].indtype !== 11) {
-          arr.push(result.data[i])
+          arr.push(result.data[i]);
         }
       }
       this.setState({
         easyData: arr,
         easyCount: arr.length,
-        easylod: false
-      })
-    })
+        easylod: false,
+      });
+    });
     getRadioAll({
-      "isShow": "0"
-    })
-      .then((result) => {
-        console.log(result)
-        let arr = [];
-        for (let i = 0; i < result.data.length; i++) {
-          if (result.data[i].isOnline * 1 === 0) {
-            arr.push(result.data[i])
-          }
+      isShow: "0",
+    }).then((result) => {
+      console.log(result.data, "Result");
+      let arr = [];
+      for (let i = 0; i < result.data.length; i++) {
+        if (result.data[i].isOnline * 1 === 0) {
+          arr.push(result.data[i]);
         }
-        console.log(arr)
-        this.setState({
-          videoData: arr,
-          videoCount: arr.length,
-          videolod: false
-        });
-      })
+      }
+      console.log(arr);
+      this.setState({
+        videoData: arr,
+        videoCount: arr.length,
+        videolod: false,
+      });
+    });
   }
 
   componentDidMount() {
-    this.selectInit()
+    this.selectInit();
     this.init = window.setInterval(() => {
-      this.selectInit()
-    }, 1000 * 5 * 60)
+      this.selectInit();
+    }, 1000 * 5 * 60);
   }
   componentWillUnmount() {
     clearTimeout(this.init);

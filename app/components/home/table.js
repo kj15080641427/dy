@@ -7,7 +7,6 @@ export default (props) => {
     confirm,
     update,
     loading,
-    columns,
     dataSource,
     rowkey,
     total,
@@ -15,7 +14,9 @@ export default (props) => {
     size,
     changePage,
     onShowSizeChange,
-    rowSelection
+    rowSelection,
+    columns = [],
+    showEdit=true
   } = props;
   const columnsBase = [
     {
@@ -59,7 +60,7 @@ export default (props) => {
   };
   return (
     <Table
-      columns={[...columns, ...columnsBase]}
+      columns={showEdit?[...columns,...columnsBase]:columns}
       loading={loading}
       dataSource={dataSource}
       scroll={{ y: 700 }}

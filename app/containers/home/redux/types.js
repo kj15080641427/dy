@@ -19,6 +19,8 @@ export const DELETE_PERMISSION_DATA = 'DELETE_PERMISSION_DATA'//删除权限数�
 export const ADD_PERMISSION_DATA  = 'ADD_PERMISSION_DATA' //增加权限
 export const UPDATE_PERMISSON_DATA = 'UPDATE_PERMISSION_DATA'//修改权限
 
+export const SITE_RELATION = 'SITE_RELATION' //站点关系
+
 
 
 

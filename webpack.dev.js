@@ -133,14 +133,21 @@ module.exports = {
     devServer: {
         contentBase: path.resolve(__dirname, "./dist"),
         historyApiFallback: true,
-        host: "localhost",
+        host: "0.0.0.0",
         compress: true,
         port: 8888,
         hot: true,
+        disableHostCheck:true,
         proxy: {
             //请求东营市气象局代理接口
             '/Forecast/*': {
                 target: "http://api.dyqxj.com:8091/api/1/",
+                // pathRewrite: {'^/api' : ''},
+                secure: true,
+                changeOrigin: true,
+            },
+            '/api/users/login': {
+                target: isTao ? "http://218.56.180.250:9110/" : 'http://172.19.112.76:8080',
                 // pathRewrite: {'^/api' : ''},
                 secure: true,
                 changeOrigin: true,
@@ -151,6 +158,7 @@ module.exports = {
                 secure: true,
                 changeOrigin: true,
             },
+           
         }
     }
 };

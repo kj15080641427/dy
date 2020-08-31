@@ -139,3 +139,10 @@ export const delBase = (data) => {
   };
 };
 
+
+export const siteRelation = (data)=>{
+  return {
+    type:types.SITE_RELATION,
+    data
+  }
+}
