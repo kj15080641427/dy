@@ -7,6 +7,7 @@ import * as actions from "../../redux/actions";
 import "../../style.scss";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import moment from "moment";
 let storeLabel = "base";
 class BaseLayout extends React.Component {
   constructor(props, context) {
@@ -37,6 +38,7 @@ class BaseLayout extends React.Component {
       rowSelection,
       showEdit = true,
       handleQuery,
+      formatList = [],
     } = this.props;
     storeLabel = storeKey;
     const {
@@ -67,10 +69,10 @@ class BaseLayout extends React.Component {
       });
     };
     //
-    const onShowSizeChange = (current, pagesize) => {
+    const onShowSizeChange = (current, pageSize) => {
       getBaseHoc({
         current: current,
-        size: pagesize,
+        size: pageSize,
       });
     };
     // 删除
@@ -94,6 +96,13 @@ class BaseLayout extends React.Component {
     };
     // 提交
     function onFinish(values) {
+      formatList.forEach((item) => {
+        values = {
+          ...values,
+          [item]: moment(values[item]).format("YYYY-MM-DD HH:mm:ss"),
+        };
+      });
+      // values = {}
       values[keyId]
         ? addOrUpdateBase({
             request: upd,
@@ -110,7 +119,6 @@ class BaseLayout extends React.Component {
     }
     // 查询
     const rowFinish = (values) => {
-      console.log(values, "VALUES");
       handleQuery
         ? handleQuery({ ...values, current: 1, size: 10 })
         : getBaseHoc({ current: 1, size: 10, ...values });
@@ -201,12 +209,15 @@ BaseLayout.propTypes = {
   handleQuery: PropTypes.func,
   loading: PropTypes.bool,
   visible: PropTypes.bool,
+  formatList: PropTypes.array,
 };
-const mapStateToProps = (state) => ({
-  [storeLabel]: state.currency[storeLabel],
-  loading: state.management.loading,
-  visible: state.currency.visible,
-});
+const mapStateToProps = (state) => {
+  return {
+    [storeLabel]: state.currency[storeLabel],
+    loading: state.management.loading,
+    visible: state.currency.visible,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(actions, dispatch),

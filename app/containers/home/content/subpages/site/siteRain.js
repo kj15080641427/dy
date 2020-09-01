@@ -1,5 +1,6 @@
 import React from "react";
 import BaseLayout from "../connectComponents";
+import ReadOnlyTable from "../readOnlyTable";
 import { Input } from "antd";
 import {
   getSIteRainData,
@@ -104,3 +105,14 @@ class SiteRain extends React.Component {
 }
 
 export default SiteRain;
+
+export const ReadonlyRain = () => {
+  return (
+    <ReadOnlyTable
+      get={getSIteRainData}
+      columns={columns}
+      rowSelect={rowSelect}
+      rowKey={"siteRainID"}
+    />
+  );
+};

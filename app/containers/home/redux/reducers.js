@@ -6,10 +6,14 @@ import {
   HIDE_R_P_MODAL,
   SET_R_P_SELECT_LIST,
   SET_SELECT_LIST,
+  HAND_ONLY_TABLE,
+  READ_ONLY_TABLE_LOADING,
+  SELECT_TABLE,
 } from "./types";
 
 const initState = {
   loading: false,
+  readOnlyLoading: false,
   permissionList: [],
   modalVisible: false,
 };
@@ -17,7 +21,7 @@ const initState = {
 export default function management(state = initState, action) {
   let newState = Object.assign({}, state);
   switch (action.type) {
-    case setPagination: //查询
+    case setPagination: // 查询
       newState = { ...newState, ...action.data };
       break;
     case startLoading:
@@ -26,7 +30,7 @@ export default function management(state = initState, action) {
     case endLoading:
       newState = { ...newState, loading: false };
       break;
-    case SET_R_P_SELECT_LIST: //根据角色获取权限 选中已有权限
+    case SET_R_P_SELECT_LIST: // 根据角色获取权限 选中已有权限
       newState = {
         ...newState,
         // modalVisible: true,
@@ -37,7 +41,16 @@ export default function management(state = initState, action) {
       newState = { ...newState, modalVisible: false, permissionList: [] };
       break;
     case SHOW_R_P_MODAL:
-      newState = { ...newState, modalVisible: true };
+      newState.modalVisible = true;
+      break;
+    case HAND_ONLY_TABLE: //只读table赋值
+      newState = { ...newState, readOnlyGetAll: action.data };
+      break;
+    case READ_ONLY_TABLE_LOADING: //只读table赋值
+      newState = { ...newState, readOnlyLoading: action.data };
+      break;
+    case SELECT_TABLE: //选中
+      newState = { ...newState, selected: action.data };
       break;
     case SET_SELECT_LIST:
       newState = {

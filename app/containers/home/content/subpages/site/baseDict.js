@@ -27,7 +27,7 @@ const formItem = [
     ele: <Input></Input>,
   },
 ];
-//表格配置
+// 表格配置
 const columns = [
   {
     title: "名称",

@@ -254,21 +254,47 @@ export function getFloodControlExpertAll(data = {}) {
 export function getMaterialWarehouse(data) {
   return fetchJSONData("POST", "/base/MaterialWarehouse/page", data);
 }
-// 获取所有防汛物资仓库
+// 获取所有防汛仓库
 export function getMaterialWarehouseAll(data) {
   return fetchJSONData("POST", "/base/MaterialWarehouse/getAll", data);
 }
-// 增加防汛物资仓库
+// 增加防汛仓库
 export function addMaterialWarehouse(data) {
   return fetchJSONData("POST", "/base/MaterialWarehouse/save", data);
 }
-// 删除防汛物资仓库
+// 删除防汛仓库
 export function delMaterialWarehouse(data) {
   return fetchJSONData("POST", "/base/MaterialWarehouse/delete", data);
 }
-// 修改防汛物资仓库
+// 修改防汛仓库
 export function updMaterialWarehouse(data) {
   return fetchJSONData("POST", "/base/MaterialWarehouse/update", data);
+}
+
+// 获取所有防汛物资
+export function getMaterialAll(data) {
+  return fetchJSONData("POST", "/base/Material/getAll", data);
+}
+// 分页查询防汛物资
+export function getMaterial(data) {
+  return fetchJSONData("POST", "/base/Material/page", data);
+}
+// 增加防汛物资
+export function addMaterial(data) {
+  return fetchJSONData("POST", "/base/Material/save", data);
+}
+// 删除防汛物资
+export function delMaterial(data) {
+  return fetchJSONData("POST", "/base/Material/delete", data);
+}
+// 修改防汛物资
+export function updMaterial(data) {
+  return fetchJSONData("POST", "/base/Material/update", data);
+}
+
+//添加站点关系
+export function addSiteRelation(data) {
+  return fetchJSONData("POST", "/base/SiteRelation/save", data);
 }
 // 获取卫星云图
 //  export function getSatellite(data) {

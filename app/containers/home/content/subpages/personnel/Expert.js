@@ -88,6 +88,7 @@ const rowSelect = [
 
 const Expert = () => (
   <ReadOnlyTable
+    getAll
     get={getFloodControlExpertAll}
     columns={columns}
     rowSelect={rowSelect}

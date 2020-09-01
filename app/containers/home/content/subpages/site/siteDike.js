@@ -38,6 +38,7 @@ const rowSelect = [
 ];
 const SiteDike = () => (
   <ReadOnlyTable
+    getAll
     get={getSiteDikeAll}
     columns={columns}
     rowSelect={rowSelect}

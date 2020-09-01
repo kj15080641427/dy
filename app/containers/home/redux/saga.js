@@ -8,6 +8,7 @@ const initSelect = {
   current: 1,
   size: 10,
 };
+const successCode = 200;
 /**
  * getbase //获取数据
  * @param {request} 请求地址
@@ -20,7 +21,7 @@ function* getbaseData({ data }) {
   let res = [];
   try {
     const result = yield call(request, param);
-    if (result.code === 200) {
+    if (result.code === successCode) {
       res = result.data;
     }
   } catch (e) {
@@ -41,7 +42,7 @@ function* delBaseData({ data }) {
   const { id, current, recordLength, size } = param;
   try {
     const result = yield call(request, id);
-    if (result.code == 200) {
+    if (result.code == successCode) {
       yield put({
         type: types.GET_BASE,
         data: {
@@ -56,7 +57,9 @@ function* delBaseData({ data }) {
     } else {
       message.error(result.msg);
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
 }
 /**
  * 添加数据
@@ -64,10 +67,9 @@ function* delBaseData({ data }) {
  */
 function* addOrUpdateBaseData({ data }) {
   const { request, key, param, query } = data;
-  const {} = param;
   try {
     const result = yield call(request, param);
-    if (result.code == 200) {
+    if (result.code == successCode) {
       yield put({
         type: types.HIDE_MODAL,
       });
@@ -76,7 +78,9 @@ function* addOrUpdateBaseData({ data }) {
         data: { request: query, key: key, param: { current: 1, size: 10 } },
       });
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 /**
@@ -89,14 +93,16 @@ function* rolePermission({ data }) {
   try {
     let res = [];
     const result = yield call(req.getPermissionById, data);
-    if (result.code == 200) {
+    if (result.code == successCode) {
       res = result ? result.data.map((item) => item.permissionId) : [];
       yield put({
         type: types.SET_R_P_SELECT_LIST,
         data: res,
       });
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
 }
 /**
  * 授权
@@ -104,25 +110,65 @@ function* rolePermission({ data }) {
 function* setRolePermission({ data }) {
   try {
     const result = yield call(req.setRollPermission, data);
-    if (result.code == 200) {
+    if (result.code == successCode) {
       yield put({
-        type:types.HIDE_R_P_MODAL
-      })
+        type: types.HIDE_R_P_MODAL,
+      });
       message.success(result.msg);
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
+}
+/**
+ * 显示关联站点modal
+ */
+function* showSiteRelationModal() {
+  try {
+    console.log("-00000");
+    yield put({
+      type: types.SHOW_R_P_MODAL,
+    });
+  } catch (e) {
+    console.error(e);
+  }
 }
 /**
  * 关联站点
  */
-function* siteRelation({data}){
+function* addSiteRelation({ data }) {
   try {
-    console.log('-00000')
-    yield put({
-      type: types.SHOW_R_P_MODAL,
-    })
+    const result = yield call(req.addSiteRelation, data);
+    if (result.code == successCode) {
+      message.info("关联成功");
+    }
   } catch (e) {
-    console.error(e)
+    console.error(e);
+  }
+}
+/**
+ * 只读table  getAll
+ */
+function* readOnlyGetAll({ data }) {
+  const { request, getAll, param } = data;
+  try {
+    yield put({
+      type: types.READ_ONLY_TABLE_LOADING,
+      data: true,
+    });
+    const result = yield call(request, param);
+    if (result.code == successCode) {
+      yield put({
+        type: types.READ_ONLY_TABLE_LOADING,
+        data: false,
+      });
+      yield put({
+        type: types.HAND_ONLY_TABLE,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
   }
 }
 export default function* management() {
@@ -132,6 +178,8 @@ export default function* management() {
     takeEvery(types.ADD_OR_UPD_BASE, addOrUpdateBaseData),
     takeEvery(types.GET_PERMISSION_DATA_BY_ID, rolePermission),
     takeEvery(types.SET_ROLE_PERMISSION, setRolePermission),
-    takeEvery(types.SITE_RELATION,siteRelation)
+    takeEvery(types.SITE_RELATION_MODAL, showSiteRelationModal),
+    takeEvery(types.READ_ONLY_TABLE_GETALL, readOnlyGetAll),
+    takeEvery(types.ADD_SITE_RELATION, addSiteRelation),
   ]);
 }

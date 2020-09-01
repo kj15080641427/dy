@@ -1,5 +1,6 @@
 import React from "react";
 import BaseLayout from "../connectComponents";
+import ReadOnlyTable from "../readOnlyTable";
 import { Input } from "antd";
 import {
   delSitePump,
@@ -99,3 +100,14 @@ class SitePump extends React.Component {
 }
 
 export default SitePump;
+
+export const ReadonlyPump = () => {
+  return (
+    <ReadOnlyTable
+      get={getSitePump}
+      columns={columns}
+      rowSelect={rowSelect}
+      rowKey={"pumpID"}
+    />
+  );
+};
