@@ -10,6 +10,7 @@ import {} from "./types";
 import { SHOW_MODAL, HIDE_MODAL } from "../../../redux/constants/home";
 export const getSiteWaterAction = (data) => {
   // 获取站点数据
+
   return {
     type: getSiteWaterType,
     data,
@@ -17,6 +18,7 @@ export const getSiteWaterAction = (data) => {
 };
 export const setPaginationType = (data) => {
   // 分页
+
   return {
     type: setPagination,
     data,
@@ -96,6 +98,7 @@ export const hideRPModal = (data) => {
   };
 };
 // 授权
+
 export const setRolePermission = (data) => {
   return {
     type: types.SET_ROLE_PERMISSION,
@@ -111,6 +114,7 @@ export const setSelectList = (data) => {
 };
 
 // 查询
+
 export const getBase = (data) => {
   return {
     type: types.GET_BASE,
@@ -118,6 +122,7 @@ export const getBase = (data) => {
   };
 };
 // 添加 /修改
+
 export const addOrUpdateBase = (data) => {
   return {
     type: types.ADD_OR_UPD_BASE,
@@ -125,6 +130,7 @@ export const addOrUpdateBase = (data) => {
   };
 };
 // 删除
+
 export const delBase = (data) => {
   return {
     type: types.DEL_BASE,

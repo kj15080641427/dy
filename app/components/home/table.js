@@ -17,6 +17,7 @@ export default (props) => {
     rowSelection, //查询配置
     columns = [], //表格配置
     showEdit = true, //是否可以编辑
+
   } = props;
   const columnsBase = [
     {

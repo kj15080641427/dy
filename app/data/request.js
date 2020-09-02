@@ -130,6 +130,7 @@ export function updateMaterialWarehouse(data) {
 // 获取所有防汛物资
 export function getWarehouseMt(data) {
   return fetchJSONData("POST", "/base/Material/getAll", data);
+
 }
 // 分页查询防汛物资
 export function queryMaterial(data) {
@@ -198,6 +199,7 @@ export function countHoursRain(data) {
 export function getCountStation(data) {
   //  return fetchJSONData("POST", "/count/getCountStation", data);
   return fetchJSONData("POST", "/base/SiteBase/getCountStation", data);
+
 }
 // 统计各来源的视频站点数
 export function getCountRadio(data) {

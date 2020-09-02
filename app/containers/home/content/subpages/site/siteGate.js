@@ -94,6 +94,7 @@ class SiteGate extends React.Component {
         storeKey={"siteGate"} // store中的key值
         rowSelect={rowSelect}
       ></BaseLayout>
+
     );
   }
 }
@@ -123,3 +124,4 @@ export const ReadonlyGate = () => {
     />
   );
 };
+

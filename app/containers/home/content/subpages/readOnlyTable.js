@@ -108,7 +108,7 @@ class ReadOnlyTable extends React.Component {
             fixed: true,
             type: "radio",
             selectedRowKeys: selected,
-            onChange: (e) => selectTable(e),
+            onChange: (e) => {console.log(e,'?????????????'),selectTable(e)},
           }}
           columns={columns}
           dataSource={getAll ? readOnlyData : readOnlyData?.records}

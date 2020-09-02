@@ -8,6 +8,7 @@ import "../../style.scss";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import moment from "moment";
+
 let storeLabel = "base";
 class BaseLayout extends React.Component {
   constructor(props, context) {

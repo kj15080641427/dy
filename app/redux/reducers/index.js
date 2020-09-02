@@ -5,10 +5,12 @@ import home from "./home";
 import rain from "./rain";
 import currency from "./currency";
 import management from "../../containers/home/redux/reducers";
+
 export default combineReducers({
   monitor,
   home,
   rain,
   currency,
   management,
+
 });

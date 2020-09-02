@@ -296,6 +296,7 @@ export function updMaterial(data) {
 export function addSiteRelation(data) {
   return fetchJSONData("POST", "/base/SiteRelation/save", data);
 }
+
 // 获取卫星云图
 //  export function getSatellite(data) {
 //    return fetchJSONData("POST", "/base/satellite/getSatellite", data);

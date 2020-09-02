@@ -15,6 +15,16 @@ import { ReadonlyPump } from "../../site/sitePump";
 import { ReadonlyRain } from "../../site/siteRain";
 //  import SiteGate from "../../site/siteGate";
 //  import SiteVideo from "../../site/siteVideo";
+import BaseDict from "../../site/baseDict";
+import SiteDike from "../../site/siteDike";
+import SiteGate from "../../site/siteGate";
+// import SiteVideo from "../../site/siteVideo";
+
+import SitePump from "../../site/sitePump";
+
+// import SiteVideo from "../../site/siteVideo";
+// import SiteGate from "../../site/siteGate";
+// import SiteVideo from "../../site/siteVideo";
 import {
   getSiteBase,
   delSiteBase,
@@ -115,6 +125,7 @@ class BaseStation extends React.Component {
     } = this.props.actions;
     const { modalVisible, selected } = this.props;
     const { rowId, option } = this.state;
+
     const columns = [
       {
         title: "站名",
@@ -154,9 +165,6 @@ class BaseStation extends React.Component {
         render: (row) => (
           <Button
             onClick={() => {
-              this.setState({
-                rowId: row.siteBaseID,
-              });
               showSiteRelationModal();
             }}
             icon={<SwapOutlined />}
@@ -187,6 +195,7 @@ class BaseStation extends React.Component {
           destroyOnClose
           okText="关联"
           onOk={() => {
+            console.log(selected, "---------------------");
             addSiteRelation({
               relationID: selected[0],
               siteBaseID: rowId,
@@ -239,14 +248,18 @@ BaseStation.propTypes = {
   modalVisible: PropTypes.bool,
   selected: PropTypes.array,
 };
-const parentMapStateToProps = (state) => ({
-  modalVisible: state.management.modalVisible,
-  selected: state.management.selected,
-});
 
-const parentMapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(actions, dispatch),
-});
+const parentMapStateToProps = (state) => {
+  return {
+    modalVisible: state.management.modalVisible,
+    selected:state.management.selected
+  };
+};
+const parentMapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(actions, dispatch),
+  };
+};
 export default connect(
   parentMapStateToProps,
   parentMapDispatchToProps

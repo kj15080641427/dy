@@ -1,3 +1,4 @@
+
 export const GET_BASE = "GET_BASE"; //查询
 export const ADD_OR_UPD_BASE = "ADD_OR_UPD_BASE"; //添加修改
 export const DEL_BASE = "DEL_BASE"; //删除

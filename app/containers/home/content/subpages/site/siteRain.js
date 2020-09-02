@@ -1,6 +1,7 @@
 import React from "react";
 import BaseLayout from "../connectComponents";
 import ReadOnlyTable from "../readOnlyTable";
+
 import { Input } from "antd";
 import {
   getSIteRainData,
@@ -116,3 +117,4 @@ export const ReadonlyRain = () => {
     />
   );
 };
+
