@@ -76,10 +76,10 @@ class ContentRouter extends React.PureComponent {
                   path={path + "/riverAnnunciate"}
                   component={RiverAnnunciate}
                 />
-                <Route
+                {/* <Route
                   path={path + "/waterAnnunciate"}
                   component={WaterAnnunciate}
-                />
+                /> */}
                 <Route
                   path={path + "/rainAnnunciate"}
                   component={RainrAnnunciate}

@@ -1,5 +1,6 @@
 import React from "react";
 import BaseLayout from "../connectComponents";
+import ReadOnlyTable from "../readOnlyTable";
 import { Input } from "antd";
 import {
   addSiteVideoData,
@@ -100,3 +101,13 @@ class SiteVideo extends React.Component {
 }
 
 export default SiteVideo;
+export const ReadonlyVideo = () => {
+  return (
+    <ReadOnlyTable
+      get={getSiteVideoData}
+      columns={columns}
+      rowSelect={rowSelect}
+      rowKey={"radioID"}
+    />
+  );
+};

@@ -19,8 +19,7 @@ class ReadOnlyTable extends React.Component {
   componentDidMount() {
     this.props.actions.readOnlyTableGetAll({
       request: this.props.get,
-      getAll: this.props.getAll,
-      param: initSelect,
+      param: this.props.getAll ? { ...this.props.type } : { ...initSelect },
     });
   }
 
@@ -34,6 +33,9 @@ class ReadOnlyTable extends React.Component {
       readOnlyData,
       selected,
       readOnlyLoading,
+      rowSelection,
+      type, //getall 参数
+      footer,
     } = this.props;
 
     const { readOnlyTableGetAll, selectTable } = this.props.actions;
@@ -41,15 +43,13 @@ class ReadOnlyTable extends React.Component {
     const changePage = (current) => {
       readOnlyTableGetAll({
         request: get,
-        getAll: getAll,
-        param: { current: current, size: 10 },
+        param: { current: current, size: 10, ...type },
       });
     };
     const onShowSizeChange = (current, pageSize) => {
       readOnlyTableGetAll({
         request: get,
-        getAll: getAll,
-        param: { current: current, size: pageSize },
+        param: { current: current, size: pageSize, ...type },
       });
     };
 
@@ -65,22 +65,21 @@ class ReadOnlyTable extends React.Component {
         // 设置每页显示数据条数，current表示当前页码，pageSize表示每页展示数据条数
         onShowSizeChange(current, pageSize);
       },
-      showTotal: () => `共${readOnlyData?.total}条`,
+      showTotal: () =>
+        `共${getAll ? readOnlyData?.length : readOnlyData?.total}条`,
     };
 
     const onFinish = (values) => {
       readOnlyTableGetAll({
         request: get,
-        getAll: getAll,
-        param: { ...values, ...initSelect },
+        param: getAll ? { ...type, ...values } : { ...values, ...initSelect },
       });
     };
     const onReset = () => {
       this.formRef.current.resetFields();
       readOnlyTableGetAll({
         request: get,
-        getAll: getAll,
-        param: initSelect,
+        param: getAll ? { ...type } : { ...initSelect },
       });
     };
     return (
@@ -103,17 +102,31 @@ class ReadOnlyTable extends React.Component {
           </Form.Item>
         </Form>
         <Table
-          pagination={pagination}
-          rowSelection={{
-            fixed: true,
-            type: "radio",
-            selectedRowKeys: selected,
-            onChange: (e) => {console.log(e,'?????????????'),selectTable(e)},
+          pagination={getAll ? {} : pagination}
+          onRow={(record) => {
+            return {
+              onClick: () => {
+                selectTable({ key: rowKey, value: [record[rowKey]] });
+              },
+            };
           }}
+          rowSelection={
+            rowSelection
+              ? {
+                  fixed: true,
+                  type: "radio",
+                  selectedRowKeys: selected?.[rowKey],
+                  onChange: (e) => {
+                    selectTable({ key: rowKey, value: e });
+                  },
+                }
+              : null
+          }
           columns={columns}
           dataSource={getAll ? readOnlyData : readOnlyData?.records}
           rowKey={(row) => row[rowKey]}
           loading={readOnlyLoading}
+          footer={footer}
         />
       </>
     );
@@ -130,12 +143,13 @@ ReadOnlyTable.propTypes = {
   rowSelection: PropTypes.object,
   actions: PropTypes.any,
   readOnlyData: PropTypes.any,
-  selected: PropTypes.array,
+  selected: PropTypes.object,
+  type: PropTypes.object,
+  footer: PropTypes.any,
 };
 const mapStateToProps = (state) => {
-  // console.log(state, "STATE");
   return {
-    readOnlyData: state.management.readOnlyGetAll,
+    readOnlyData: state.management.readOnlyData,
     readOnlyLoading: state.management.readOnlyLoading,
     selected: state.management.selected,
   };

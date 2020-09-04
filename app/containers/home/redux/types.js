@@ -1,4 +1,3 @@
-
 export const GET_BASE = "GET_BASE"; //查询
 export const ADD_OR_UPD_BASE = "ADD_OR_UPD_BASE"; //添加修改
 export const DEL_BASE = "DEL_BASE"; //删除
@@ -36,3 +35,6 @@ export const HAND_ONLY_TABLE = "HAND_ONLY_TABLE"; //处理getall数据
 export const READ_ONLY_TABLE_LOADING = "READ_ONLY_TABLE_LOADING"; //只读table loading
 
 export const SELECT_TABLE = "SELECT_TABLE";
+
+export const GET_DICT = "GET_DICT"; //获取字典
+export const SET_DICT = "SET_DICT"; //设置字典

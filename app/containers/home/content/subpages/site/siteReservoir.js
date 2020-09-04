@@ -1,5 +1,6 @@
 import React from "react";
 import BaseLayout from "../connectComponents";
+import ReadOnlyTable from "../readOnlyTable";
 import { Input } from "antd";
 import {
   getSiteReservoir,
@@ -107,3 +108,13 @@ class SiteReservoir extends React.Component {
 }
 
 export default SiteReservoir;
+export const ReadonlyReservoir = () => {
+  return (
+    <ReadOnlyTable
+      get={getSiteReservoir}
+      columns={columns}
+      rowSelect={rowSelect}
+      rowKey={"reservoirID"}
+    />
+  );
+};

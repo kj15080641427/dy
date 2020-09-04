@@ -16,6 +16,7 @@ const initState = {
   readOnlyLoading: false,
   permissionList: [],
   modalVisible: false,
+  readOnlyData: [],
 };
 
 export default function management(state = initState, action) {
@@ -44,13 +45,19 @@ export default function management(state = initState, action) {
       newState.modalVisible = true;
       break;
     case HAND_ONLY_TABLE: //只读table赋值
-      newState = { ...newState, readOnlyGetAll: action.data };
+      newState = { ...newState, readOnlyData: action.data };
       break;
     case READ_ONLY_TABLE_LOADING: //只读table赋值
       newState = { ...newState, readOnlyLoading: action.data };
       break;
     case SELECT_TABLE: //选中
-      newState = { ...newState, selected: action.data };
+      newState = {
+        ...newState,
+        selected: {
+          ...newState.selected,
+          [action.data.key]: action.data.value,
+        },
+      };
       break;
     case SET_SELECT_LIST:
       newState = {

@@ -296,7 +296,18 @@ export function updMaterial(data) {
 export function addSiteRelation(data) {
   return fetchJSONData("POST", "/base/SiteRelation/save", data);
 }
-
+//查询站点关系
+export function getSiteRelation(data) {
+  return fetchJSONData("POST", "/base/SiteRelation/page", data);
+}
+//修改站点关系
+export function updSiteRelation(data) {
+  return fetchJSONData("POST", "/base/SiteRelation/update", data);
+}
+//删除站点关系
+export function delSiteRelation(data) {
+  return fetchJSONData("POST", "/base/SiteRelation/delete", data);
+}
 // 获取卫星云图
 //  export function getSatellite(data) {
 //    return fetchJSONData("POST", "/base/satellite/getSatellite", data);

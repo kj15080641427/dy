@@ -12,7 +12,7 @@ import { Modal, Input, Button } from "antd";
 import * as actions from "../../../redux/actions";
 import { UserSwitchOutlined } from "@ant-design/icons";
 import { getRole, addRole, updateRole, delRole } from "@app/data/home";
-import Jurisdiction from "./Jurisdiction";
+import Jurisdiction, { ReadonlyPermission } from "./Jurisdiction";
 const formItem = [
   {
     name: "roleName",
@@ -31,6 +31,7 @@ class Role extends React.PureComponent {
     this.state = {
       inputValue: "",
       row: {},
+      list: [],
     };
     this.formRef = React.createRef();
   }
@@ -230,7 +231,21 @@ class Role extends React.PureComponent {
             hideRPModal();
           }}
         >
-          <Jurisdiction
+          <ReadonlyPermission
+            rowSelection={{
+              fixed: true,
+              type: "checkbox",
+              selectedRowKeys: permissionList,
+              onChange: (keys) => {
+                setSelectList(keys);
+                this.setState({
+                  list: keys,
+                });
+                console.log(keys, "KEYS");
+              },
+            }}
+          />
+          {/* <Jurisdiction
             rowSelection={{
               fixed: true,
               selectedRowKeys: permissionList,
@@ -239,7 +254,7 @@ class Role extends React.PureComponent {
                 console.log(keys, "KEYS");
               },
             }}
-          ></Jurisdiction>
+          ></Jurisdiction> */}
         </Modal>
       </>
     );

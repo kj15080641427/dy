@@ -1,5 +1,5 @@
 import React from "react";
-import { Input} from "antd";
+import { Input } from "antd";
 import { getSiteDikeAll } from "@app/data/home";
 import ReadOnlyTable from "../readOnlyTable";
 // 表格配置
@@ -33,12 +33,10 @@ const columns = [
     dataIndex: "dikeID",
   },
 ];
-const rowSelect = [
-  { label: "名称", name: "name", element: <Input></Input> },
-];
+const rowSelect = [{ label: "名称", name: "name", element: <Input></Input> }];
 const SiteDike = () => (
   <ReadOnlyTable
-    getAll
+    getAll={true}
     get={getSiteDikeAll}
     columns={columns}
     rowSelect={rowSelect}
@@ -47,3 +45,14 @@ const SiteDike = () => (
 );
 
 export default SiteDike;
+export const ReadonlyDike = () => {
+  return (
+    <ReadOnlyTable
+      getAll
+      get={getSiteDikeAll}
+      columns={columns}
+      rowSelect={rowSelect}
+      rowKey={"gateID"}
+    />
+  );
+};

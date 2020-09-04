@@ -52,12 +52,12 @@ class Menus extends React.PureComponent {
               <Menu.Item key="/riverAnnunciate">
                 河道信息
               </Menu.Item>
-              <Menu.Item key="/waterAnnunciate">
+              {/* <Menu.Item key="/waterAnnunciate">
                 水情通报
               </Menu.Item>
               <Menu.Item key="/rainAnnunciate">
                 雨情通报
-              </Menu.Item>
+              </Menu.Item> */}
             </SubMenu>
             <SubMenu key="sub2" icon={<MailOutlined />} title="防汛管理">
               <Menu.Item key="/storemanage">仓库管理</Menu.Item>

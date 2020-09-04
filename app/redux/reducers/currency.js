@@ -14,6 +14,9 @@ export default function currency(state = {}, action) {
     case actionTypes.HIDE_MODAL:
       newState = { ...newState, visible: false };
       break;
+    case actionTypes.SET_DICT:
+      newState = { ...newState, dict: action.data };
+      break;
     default:
       return state;
   }

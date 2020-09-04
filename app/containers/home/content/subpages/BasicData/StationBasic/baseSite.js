@@ -1,26 +1,21 @@
 import React from "react";
 import BaseLayout from "../../connectComponents";
-import ReadOnlyTable from "../../readOnlyTable";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../../redux/actions";
 import { Input, Select, Button, Modal } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-// import SiteDike from "../../site/siteDike";
-import { gateSet } from "../../site/siteGate";
-import SiteVideo from "../../site/siteVideo";
-
+import { ReadonlyGate } from "../../site/siteGate";
+import { ReadonlyVideo } from "../../site/siteVideo";
 import { ReadonlyPump } from "../../site/sitePump";
 import { ReadonlyRain } from "../../site/siteRain";
-//  import SiteGate from "../../site/siteGate";
-//  import SiteVideo from "../../site/siteVideo";
-import BaseDict from "../../site/baseDict";
-import SiteDike from "../../site/siteDike";
-import SiteGate from "../../site/siteGate";
+import { ReadonlyWater } from "../../site/siteWater";
+import { ReadonlyWaterPoint } from "../../site/siteWaterPoint";
+import { ReadonlyReservoir } from "../../site/siteReservoir";
+// import SiteDike from "../../site/siteR";
+// import SiteGate from "../../site/siteGate";
 // import SiteVideo from "../../site/siteVideo";
-
-import SitePump from "../../site/sitePump";
 
 // import SiteVideo from "../../site/siteVideo";
 // import SiteGate from "../../site/siteGate";
@@ -30,6 +25,7 @@ import {
   delSiteBase,
   addSiteBase,
   updSiteBase,
+  getSiteDict,
 } from "@app/data/home";
 const formItem = [
   {
@@ -112,11 +108,26 @@ class BaseStation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      option: "",
+      option: "radioID",
       rowId: "",
     };
   }
-
+  componentDidMount() {
+    this.props.actions.getBase({
+      request: getSiteDict,
+      key: "dict",
+      param: {
+        current: 1,
+        size: 10,
+        type: 3,
+      },
+    });
+    // getSiteDict({
+    //   current: 1,
+    //   siteDictionariesID: 0,
+    //   size: 10,
+    // });
+  }
   render() {
     const {
       hideRPModal,
@@ -125,7 +136,12 @@ class BaseStation extends React.Component {
     } = this.props.actions;
     const { modalVisible, selected } = this.props;
     const { rowId, option } = this.state;
-
+    const dict = {
+      radioID: 21,
+      siteRainID: 18,
+      siteWaterLevelsID: 19,
+      siteWaterPointID: 20,
+    };
     const columns = [
       {
         title: "站名",
@@ -165,7 +181,10 @@ class BaseStation extends React.Component {
         render: (row) => (
           <Button
             onClick={() => {
-              showSiteRelationModal();
+              this.setState({
+                rowId: row.siteBaseID,
+              });
+              showSiteRelationModal(dict[option]);
             }}
             icon={<SwapOutlined />}
           >
@@ -174,6 +193,7 @@ class BaseStation extends React.Component {
         ),
       },
     ];
+
     return (
       <>
         <BaseLayout
@@ -195,12 +215,11 @@ class BaseStation extends React.Component {
           destroyOnClose
           okText="关联"
           onOk={() => {
-            console.log(selected, "---------------------");
             addSiteRelation({
-              relationID: selected[0],
+              relationID: selected[option][0],
               siteBaseID: rowId,
-              siteDictionariesID: 1,
-              state: 0,
+              siteDictionariesID: dict[option],
+              state: 1,
             });
           }}
           onCancel={() => {
@@ -209,35 +228,41 @@ class BaseStation extends React.Component {
         >
           <Select
             style={{ width: 200 }}
-            defaultValue="video"
+            defaultValue="radioID"
             onChange={(e) =>
               this.setState({
                 option: e,
               })
             }
           >
-            <Option value="video">视频</Option>
-            <Option value="rain">雨量</Option>
-            <Option value="water">水位</Option>
-            <Option value="point">积水点</Option>
-            <Option value="dike">堤防工程</Option>
-            <Option value="reservoir">水库信息</Option>
+            <Option value="radioID">视频</Option>
+            <Option value="siteRainID">雨量</Option>
+            <Option value="siteWaterLevelsID">水位</Option>
+            <Option value="siteWaterPointID">积水点</Option>
+            {/* <Option value="dike">堤防工程1</Option> */}
+            {/* <Option value="reservoirID">水库信息</Option>
             <Option value="river">河流信息</Option>
-            <Option value="pump">泵站信息</Option>
-            <Option value="gate">闸信息</Option>
+            <Option value="pumpID">泵站信息</Option>
+            <Option value="gateID">闸信息</Option> */}
           </Select>
-          <ReadOnlyTable {...gateSet} />
-          {/* {selected == "video" ? (
-            <SiteVideo />
-          ) : selected === "gate" ? (
-            <ReadonlyGate />
-          ) : selected === "rain" ? (
+
+          {option == "radioID" ? (
+            <ReadonlyVideo />
+          ) : option === "siteRainID" ? (
             <ReadonlyRain />
-          ) : selected === "pump" ? (
+          ) : option === "siteWaterLevelsID" ? (
+            <ReadonlyWater />
+          ) : option === "siteWaterPointID" ? (
+            <ReadonlyWaterPoint />
+          ) : option === "reservoirID" ? (
+            <ReadonlyReservoir />
+          ) : option === "pumpID" ? (
             <ReadonlyPump />
+          ) : option === "gateID" ? (
+            <ReadonlyGate />
           ) : (
             ""
-          )} */}
+          )}
         </Modal>
       </>
     );
@@ -246,13 +271,15 @@ class BaseStation extends React.Component {
 BaseStation.propTypes = {
   actions: PropTypes.any,
   modalVisible: PropTypes.bool,
-  selected: PropTypes.array,
+  selected: PropTypes.object,
 };
 
 const parentMapStateToProps = (state) => {
+  console.log(state, "STATE");
   return {
+    dict: state.currency.dict,
     modalVisible: state.management.modalVisible,
-    selected:state.management.selected
+    selected: state.management.selected,
   };
 };
 const parentMapDispatchToProps = (dispatch) => {

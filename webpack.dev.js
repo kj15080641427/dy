@@ -137,8 +137,6 @@ module.exports = {
     },
     extensions: [".ts", ".tsx", ".js", ".json"],
   },
-
-<<<<<<< HEAD
   devServer: {
     contentBase: path.resolve(__dirname, "./dist"),
     historyApiFallback: true,
@@ -173,37 +171,4 @@ module.exports = {
       },
     },
   },
-=======
-    devServer: {
-        contentBase: path.resolve(__dirname, "./dist"),
-        historyApiFallback: true,
-        host: "0.0.0.0",
-        compress: true,
-        port: 8888,
-        hot: true,
-        disableHostCheck:true,
-        proxy: {
-            //请求东营市气象局代理接口
-            '/Forecast/*': {
-                target: "http://api.dyqxj.com:8091/api/1/",
-                // pathRewrite: {'^/api' : ''},
-                secure: true,
-                changeOrigin: true,
-            },
-            '/api/users/login': {
-                target: isTao ? "http://218.56.180.250:9110/" : 'http://172.19.112.76:8080',
-                // pathRewrite: {'^/api' : ''},
-                secure: true,
-                changeOrigin: true,
-            },
-            '/api/*': {
-                target: isTao ? "http://218.56.180.250:9109/tuhui-base/" : 'http://172.19.112.76:8080',
-                // pathRewrite: {'^/api' : ''},
-                secure: true,
-                changeOrigin: true,
-            },
-           
-        }
-    }
->>>>>>> 02443b032261702a9be5b7500468b7be9e64a25b
 };

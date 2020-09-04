@@ -94,7 +94,7 @@ function* rolePermission({ data }) {
     let res = [];
     const result = yield call(req.getPermissionById, data);
     if (result.code == successCode) {
-      res = result ? result.data.map((item) => item.permissionId) : [];
+      res = result.data ? result.data.map((item) => item.permissionId) : [];
       yield put({
         type: types.SET_R_P_SELECT_LIST,
         data: res,
@@ -123,12 +123,18 @@ function* setRolePermission({ data }) {
 /**
  * 显示关联站点modal
  */
-function* showSiteRelationModal() {
+function* showSiteRelationModal({ data }) {
   try {
-    console.log("-00000");
     yield put({
       type: types.SHOW_R_P_MODAL,
     });
+    const result = yield call(req.getSiteRelation, {
+      ...initSelect,
+      siteDictionariesID: data,
+    });
+    if (result.code == successCode) {
+      console.log(result.data.records, "result");
+    }
   } catch (e) {
     console.error(e);
   }
@@ -150,7 +156,7 @@ function* addSiteRelation({ data }) {
  * 只读table  getAll
  */
 function* readOnlyGetAll({ data }) {
-  const { request, getAll, param } = data;
+  const { request, param } = data;
   try {
     yield put({
       type: types.READ_ONLY_TABLE_LOADING,
@@ -171,6 +177,24 @@ function* readOnlyGetAll({ data }) {
     console.error(e);
   }
 }
+//获取字典数据
+function* getDict({ data }) {
+  try {
+    const result = yield call(req.getSiteDict, data);
+    if ((result.code = successCode)) {
+      let obj = {};
+      result.data.records.map((item) => {
+        obj[item.stateRelationID] = item.name;
+      });
+      yield put({
+        type: types.SET_DICT,
+        data: obj,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
 export default function* management() {
   yield all([
     takeEvery(types.GET_BASE, getbaseData),
@@ -181,5 +205,6 @@ export default function* management() {
     takeEvery(types.SITE_RELATION_MODAL, showSiteRelationModal),
     takeEvery(types.READ_ONLY_TABLE_GETALL, readOnlyGetAll),
     takeEvery(types.ADD_SITE_RELATION, addSiteRelation),
+    takeEvery(types.GET_DICT, getDict),
   ]);
 }

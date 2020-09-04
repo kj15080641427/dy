@@ -5,6 +5,7 @@
  */
 import React from "react";
 import BaseLayout from "../connectComponents";
+import ReadOnlyTable from "../readOnlyTable";
 import { Input } from "antd";
 import {
   queryPermission,
@@ -74,3 +75,14 @@ class Jurisdiction extends React.Component {
 }
 
 export default Jurisdiction;
+export const ReadonlyPermission = (props) => {
+  return (
+    <ReadOnlyTable
+      rowSelection={props.rowSelection}
+      get={queryPermission}
+      columns={columns}
+      rowSelect={rowSelect}
+      rowKey={"permissionId"}
+    />
+  );
+};

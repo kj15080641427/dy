@@ -1,5 +1,6 @@
 import React from "react";
 import BaseLayout from "../connectComponents";
+import ReadOnlyTable from "../readOnlyTable";
 import { Input } from "antd";
 import {
   getSiteWaterPonit,
@@ -78,3 +79,13 @@ class SiteWaterPoint extends React.Component {
 }
 
 export default SiteWaterPoint;
+export const ReadonlyWaterPoint = () => {
+  return (
+    <ReadOnlyTable
+      get={getSiteWaterPonit}
+      columns={columns}
+      rowSelect={rowSelect}
+      rowKey={"siteWaterPointID"}
+    />
+  );
+};

@@ -94,29 +94,15 @@ class SiteGate extends React.Component {
         storeKey={"siteGate"} // store中的key值
         rowSelect={rowSelect}
       ></BaseLayout>
-
     );
   }
 }
 
 export default SiteGate;
 
-export const gateSet = {
-  get: getSiteGate,
-  columns: columns,
-  rowSelect: rowSelect,
-  rowKey: "gateID",
-};
-
 export const ReadonlyGate = () => {
   return (
     <ReadOnlyTable
-      // rowSelection={{
-      //   fixed: true,
-      //   type: "radio",
-      //   selectedRowKeys: [1],
-      //   onChange: (e) => console.log(e, "EEE"),
-      // }}
       get={getSiteGate}
       columns={columns}
       rowSelect={rowSelect}
@@ -124,4 +110,3 @@ export const ReadonlyGate = () => {
     />
   );
 };
-

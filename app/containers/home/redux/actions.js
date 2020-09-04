@@ -166,3 +166,10 @@ export const selectTable = (data) => {
     data,
   };
 };
+// 获取字典
+export const getDict = (data) => {
+  return {
+    type: types.GET_DICT,
+    data,
+  };
+};
