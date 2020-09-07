@@ -49,7 +49,7 @@ class PannelBtn extends React.PureComponent {
                 className="m-btn-flood-index"
                 style={{
                   border: '3px solid #007ed7', height: 79,
-                  '-webkit-filter': 'opacity(0.5)'
+                  'WebkitFilter': 'opacity(0.5)'
                 }}
                 src={sqjk}
               // onClick={this.handlefxyj}

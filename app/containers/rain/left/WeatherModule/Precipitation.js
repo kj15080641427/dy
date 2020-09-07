@@ -268,7 +268,6 @@ class Precipitation extends React.PureComponent {
             "endtm": moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss"),
         })
             .then((result) => {
-                console.log(result)
                 this.setState({
                     qydataSourceByHour: result.data,
                     mloading: false,
@@ -281,7 +280,6 @@ class Precipitation extends React.PureComponent {
             "endtm": moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss"),
         })
             .then((result) => {
-                console.log(result)
                 this.setState({
                     qydataSourceByDay: result.data,
                     mloading: false,
@@ -525,7 +523,6 @@ class Precipitation extends React.PureComponent {
             },
         ];
         const expandedRowRendertype = (record, index, indent, expanded) => {
-            console.log(record)
             const qycolumns = [
                 {
                     title: '站名',
@@ -673,7 +670,6 @@ class Precipitation extends React.PureComponent {
         );
     }
     callback(key) {
-        console.log(key);
     }
     // //切换每页数量
     // onShowSizeChange(current, pageSize) {
@@ -713,7 +709,6 @@ class Precipitation extends React.PureComponent {
             "type": 1
         })
             .then((result) => {
-                console.log(result)
                 let dataArr = SpliceSite(result)
                 let dyarr = [];
                 let klarr = [];
@@ -762,7 +757,6 @@ class Precipitation extends React.PureComponent {
         //clearTimeout(this.init);
     }
     locationClick(e) {
-        console.log(e)
         let lon = e.lon * 1;
         let lat = e.lat * 1;
         if (lon == null && lat == null) return;

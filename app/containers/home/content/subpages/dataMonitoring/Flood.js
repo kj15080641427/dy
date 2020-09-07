@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
+import ReadonlyTable from '../readOnlyTable';
 import { bindActionCreators } from 'redux';
 import * as actions from '@app/redux/actions/home';
 import { Table, Input, Button, Select, Tabs, Form, Row, Space, Popover } from 'antd';
@@ -15,6 +16,11 @@ import echarts from 'echarts/lib/echarts';
 import 'echarts';
 import moment from 'moment';
 import { getBasicsAll, getCountStation } from '@app/data/request';
+
+// const Flood = ()=>{
+
+// }
+
 class Rain extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
@@ -31,10 +37,6 @@ class Rain extends React.PureComponent {
         console.log("Test this.props.match", this.props.match, this.props.location);
         let { dataSource, loading, floodcount, count } = this.state;
         const columns = [
-            // {
-            //     title: 'id',
-            //     dataIndex: 'stcd'
-            //   },
             {
                 title: '站名',
                 dataIndex: 'name',
@@ -43,14 +45,6 @@ class Rain extends React.PureComponent {
                 ellipsis: true,
                 key: 'riverwaterdataID',
                 ...this.getColumnSearchProps('name'),
-                // render:
-                //   (SpliceSiteName, key) => {
-                //     return (
-                //       <Popover content={SpliceSiteName} title="站名全称">
-                //         {SpliceSiteName.toString().substring(0, 4) + "..."}
-                //       </Popover>
-                //     )
-                //   },
                 render: value => value === null ? '-' : value,
             },
             {
@@ -64,36 +58,8 @@ class Rain extends React.PureComponent {
                 title: '地址',
                 dataIndex: 'address',
                 ellipsis: true,
-                // ...this.getColumnSearchProps('address'),
                 render: value => value === null ? '-' : value,
             },
-            // {
-            //     title: '集水面积(k㎡)',
-            //     dataIndex: 'areawatercoll',
-            //     render: value => value === null ? '-' : value,
-            //     sorter: (a, b) => a.areawatercoll - b.areawatercoll,
-            // },
-            // {
-            //     title: '测站监测类型名称',
-            //     dataIndex: 'indname',
-            //     render: value => value === null ? '-' : value,
-            // },
-            // {
-            //     title: '流域',
-            //     dataIndex: 'flowarea',
-            //     render: value => value === null ? '-' : value,
-            // },
-            // {
-            //     title: '至河口距离',
-            //     dataIndex: 'distancetoport',
-            //     render: value => value === null ? '-' : value,
-            //     sorter: (a, b) => a.distancetoport - b.distancetoport,
-            // },
-            // {
-            //     title: '河流名称',
-            //     dataIndex: 'rivername',
-            //     render: value => value === null ? '-' : value,
-            // },
             {
                 title: '纬度',
                 dataIndex: 'lat',
@@ -112,26 +78,9 @@ class Rain extends React.PureComponent {
                 render: minuteAvg => minuteAvg == '-' ? '-' : (minuteAvg * 1).toFixed(1),
                 sorter: (a, b) => a.minuteAvg - b.minuteAvg,
             },
-            // {
-            //     title: '1小时(mm)',
-            //     dataIndex: 'hourAvg',
-            //     width: 90,
-            //     className: 'column-money',
-            //     render: hourAvg => hourAvg == '-' ? '-' : (hourAvg * 1).toFixed(1),
-            //     sorter: (a, b) => a.hourAvg - b.hourAvg,
-            // },
-            // {
-            //     title: '24小时(mm)',
-            //     dataIndex: 'dayAvg',
-            //     width: 90,
-            //     className: 'column-money',
-            //     render: dayAvg => dayAvg == '-' ? '-' : (dayAvg * 1).toFixed(1),
-            //     sorter: true
-            // },
             {
                 title: '更新时间',
                 dataIndex: 'ztm',
-                // width: 140,
                 className: 'column-money',
                 sorter: (a, b) => new Date(b.ztm).getTime() - new Date(a.ztm).getTime(),
                 render: value => value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
@@ -143,7 +92,7 @@ class Rain extends React.PureComponent {
                 className: 'column-money',
                 render: (value) => {
                     let startdata = new Date().getTime();
-                    var date = new Date(value).getTime();
+                    let date = new Date(value).getTime();
                     if (value == null) {
                         return (
                             <a style={{ color: 'red' }}>离线</a>

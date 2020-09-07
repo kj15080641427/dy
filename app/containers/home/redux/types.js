@@ -38,3 +38,6 @@ export const SELECT_TABLE = "SELECT_TABLE";
 
 export const GET_DICT = "GET_DICT"; //获取字典
 export const SET_DICT = "SET_DICT"; //设置字典
+
+export const GET_COUNT_STATION = "GET_COUNT_STATION"; //获取站点来源  getCountStation
+export const SET_COUNT_STATION = "SET_COUNT_STATION";//设置数据

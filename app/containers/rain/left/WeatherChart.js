@@ -119,7 +119,6 @@ class WeatherChart extends React.PureComponent {
         var myChart = echarts.init(document.getElementById('main'));
         for (var i = result.data.length - 1; i >= 0; i--) {
           hourData.push((result.data[i].prd * 1).toFixed(1))
-          console.log(result,'===')
           let areaName = areaMap[result.data[i].areaId]
           addData.push(areaName);
         }

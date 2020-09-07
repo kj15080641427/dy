@@ -138,7 +138,7 @@
     // 使用 === 替代 == allow-null允许null和undefined==
     "eqeqeq": [0, "allow-null"],
     // 要求 for-in 循环中有一个 if 语句
-    "guard-for-in": 2,
+    "guard-for-in": 0,
     // 禁用 alert、confirm 和 prompt
     "no-alert": 0,
     // 禁用 arguments.caller 或 arguments.callee
@@ -576,7 +576,7 @@
     // 禁止不必要的计算性能键对象的文字
     "no-useless-computed-key": 0,
     // 要求使用 let 或 const 而不是 var
-    "no-var": 2,
+    "no-var": 0,
     // 要求或禁止对象字面量中方法和属性使用简写语法
     "object-shorthand": 0,
     // 要求使用箭头函数作为回调

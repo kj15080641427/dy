@@ -4,8 +4,8 @@ import {
   fetchGet,
 } from "@app/utils/common";
 //  获取所有基础数据
-export function getAll() {
-  return fetchJSONData("POST", "/base/SiteBase/getAll", {});
+export function getAll(data = {}) {
+  return fetchJSONData("POST", "/base/SiteBase/getAll", data);
 }
 // 用户登录
 export function login(data) {
@@ -21,11 +21,11 @@ export function getAllAreaVideo(data) {
   return fetchJSONData("POST", "/base/StiteWaterRadio/getAllArea", data);
 }
 export function getVideosByCode(data) {
-  return fetchJSONData("POST", "/station/code", data);
+  return fetchJSONData("POST", "/base/SiteBase/code", data);
 }
 // 根据视频站点唯一编码获取关联的水位站点
 export function getWaterStationByVideoCode(data) {
-  return fetchJSONData("POST", "/station/radioCode", data);
+  return fetchJSONData("POST", "/base/SiteBase/radioCode", data);
 }
 //  获取雨晴实时信息
 export function getRainRealTime(data) {
@@ -187,12 +187,12 @@ export function getByTimeDay(data) {
 // =====================================统计==============================================================
 // 统计分钟雨量数据
 export function countMinutesRain(data) {
-  return fetchJSONData("POST", "/base/RaindataMinute/getByTime", data);
+  return fetchJSONData("POST", "/base/Raindata/realTime", data);
 }
 
 // 统计小时雨量数据
 export function countHoursRain(data) {
-  return fetchJSONData("POST", "/raindataHour/getByCount", data);
+  return fetchJSONData("POST", "/base/RaindataHour/getByTime", data);
 }
 
 // 统计各来源的站点数

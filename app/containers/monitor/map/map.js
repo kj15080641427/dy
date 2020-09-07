@@ -111,8 +111,8 @@ class Map extends React.PureComponent {
     this.map.stopSelectFeature("pump");
     this.map.stopSelectFeature("person");
     this.map.stopSelectFeature("warehouse");
-    // this.map.getMap().un("movestart");
-    // this.map.getMap().un("moveend");
+    this.map.getMap().un("movestart");
+    this.map.getMap().un("moveend");
     this.map.unView("change:resolution", this.mapViewChanged.bind(this));
 
     this._mapMove && this._mapMove.remove();

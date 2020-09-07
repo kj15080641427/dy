@@ -42,14 +42,14 @@ const columns = [
     title: "流域名称",
     dataIndex: "siteRain",
     render: (value) => {
-      return value ? value[0].bsnm : "-";
+      return value && value[0] ? value[0].bsnm : "-";
     },
   },
   {
     title: "河流名称",
     dataIndex: "siteRain",
     render: (value) => {
-      return value ? value[0].rvnm : "-";
+      return value && value[0] ? value[0].rvnm : "-";
     },
   },
   {
@@ -64,35 +64,37 @@ const columns = [
   },
   {
     title: "雨量(mm)",
-    dataIndex: "minuteAvg",
+    dataIndex: "raindataList",
     width: 140,
     className: "column-money",
-    render: (minuteAvg) =>
-      minuteAvg == "-" ? "-" : (minuteAvg * 1).toFixed(1),
-    sorter: (a, b) => a.minuteAvg - b.minuteAvg,
+    render: (value) => {
+      return value && value[0] ? value[0].drp.toFixed(2) : "-";
+    },
   },
   {
     title: "更新时间",
-    dataIndex: "tm",
+    dataIndex: "raindataList",
     width: 160,
     className: "column-money",
-    sorter: (a, b) => new Date(b.tm).getTime() - new Date(a.tm).getTime(),
-    render: (value) => (value ? "-" : moment(value).format("YYYY-MM-DD HH:mm")),
+    render: (value) =>
+      value && value[0] ? moment(value[0]?.tm).format("YYYY-MM-DD HH:mm") : "-",
   },
   {
     title: "更新状态",
-    dataIndex: "tm",
+    dataIndex: "raindataList",
     width: 160,
     className: "column-money",
     render: (value) => {
-      let startdata = new Date().getTime();
-      let date = new Date(value).getTime();
-      if (!value) {
-        return <a style={{ color: "red" }}>离线</a>;
-      } else if (startdata - date >= 1000 * 60 * 60 * 24 * 3) {
-        return <a style={{ color: "orange" }}>三天前</a>;
+      if (value && value[0]) {
+        let startdata = new Date().getTime();
+        let date = new Date(value[0]?.tm).getTime();
+        if (startdata - date >= 1000 * 60 * 60 * 24 * 3) {
+          return <a>三天前</a>;
+        } else {
+          return <a>最近更新</a>;
+        }
       } else {
-        return <a>最近更新</a>;
+        return <a>离线</a>;
       }
     },
   },
@@ -115,19 +117,24 @@ const Rain = (props) => {
 
     initecharts("raincount", "雨量站点来源统计图", nameArr, data);
   };
+  //在线图
   const onlineSite = () => {
     let okcount = 0;
     let nocount = 0;
     let thday = 0;
     let startdata = new Date().getTime();
     readOnlyData.map((item) => {
-      if (!item.tm) {
-        nocount++;
-      }
-      if (startdata - new Date(item.tm).getTime() >= 1000 * 60 * 60 * 24 * 3) {
-        thday++;
+      if (item.raindataList && item.raindataList[0]) {
+        if (
+          startdata - new Date(item?.raindataList[0]?.tm).getTime() >=
+          1000 * 60 * 60 * 24 * 3
+        ) {
+          thday++;
+        } else {
+          okcount++;
+        }
       } else {
-        okcount++;
+        nocount++;
       }
     });
     initecharts(

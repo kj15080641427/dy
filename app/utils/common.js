@@ -30,7 +30,6 @@ export function fetchOutData(method, url, data) {
     // 注意 post 时候参数的形式
     body: data ? JSON.stringify(data) : null
   }).then((res) => {
-    console.log(res)
     return res.ok ? res.json() : Promise.reject("接口出错");
   });
 }
@@ -112,7 +111,6 @@ export function fetchGet(url, params) {
       url += '&' + paramsArray.join('&')
     }
   }
-  console.log(url, params)
   // fetch 请求
   return fetch(url, {
     method: 'GET',

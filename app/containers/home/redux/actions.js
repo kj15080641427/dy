@@ -173,3 +173,17 @@ export const getDict = (data) => {
     data,
   };
 };
+
+//
+export const getCountStation = (data) => {
+  return {
+    type: types.GET_COUNT_STATION,
+    data,
+  };
+};
+export const setCountStation = (data) => {
+  return {
+    type: types.SET_COUNT_STATION,
+    data,
+  };
+};

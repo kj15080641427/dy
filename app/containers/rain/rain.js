@@ -1,10 +1,10 @@
 /**
  * Monitor 2020-05-12
  */
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, compose } from 'redux';
-import * as actions from '@app/redux/actions/rain';
+import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators, compose } from "redux";
+import * as actions from "@app/redux/actions/rain";
 import Map from "./map/map";
 // import Map from '../monitor/map/map';
 import "./style.scss";
@@ -18,10 +18,10 @@ import WeatherPic from "./right/WeatherPic";
 import WeatherDy from "./right/WeatherDy";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import RainLegend from "./bottom/RainLegend";
-import setImg from "@app/resource/setsys.png"
-import { Drawer, Switch, Row, Divider, Checkbox } from 'antd';
-import { none } from 'ol/centerconstraint';
-import SetTitle from '@app/components/setting/SetTitle';
+import setImg from "@app/resource/setsys.png";
+import { Drawer, Switch, Row, Divider, Checkbox } from "antd";
+import { none } from "ol/centerconstraint";
+import SetTitle from "@app/components/setting/SetTitle";
 import RainSwitcher from "./right/Module/RainSwitcher";
 class Monitor extends React.PureComponent {
   constructor(props, context) {
@@ -31,8 +31,8 @@ class Monitor extends React.PureComponent {
       showRight: true,
       // showBottom: true,
       visible: false,
-      dispalyLeft: 'block',
-      displayRight: 'block',
+      dispalyLeft: "block",
+      displayRight: "block",
       // dispalyBottom: 'block',
       layerVisible: {
         tiandi: true, // 天地图底图
@@ -51,10 +51,10 @@ class Monitor extends React.PureComponent {
         pump: false, // 水泵
         ponding: false, // 积水
         warehouse: false, //物资仓库
-      }
+      },
     };
-    this.onChecked = this.onChecked.bind(this)
-  };
+    this.onChecked = this.onChecked.bind(this);
+  }
   //设置抽屉页
   onClose = () => {
     this.setState({
@@ -66,29 +66,32 @@ class Monitor extends React.PureComponent {
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible} />
-        <Head/>
+        <Head />
         <div style={{ display: displayLeft }}>
           <div className="m-left">
             {/* <WeatherBox></WeatherBox>*/}
-            <WeatherDy/>
-            <WeatherChart/>
-            <WeatherTable/>
+            <WeatherDy />
+            <WeatherChart />
+            <WeatherTable />
           </div>
         </div>
         <div style={{ display: displayRight }}>
           <div className="m-right">
-            <PannelBtn/>
+            <PannelBtn />
 
             {/*
             <AlarmTable></AlarmTable>
             <WeatherPic></WeatherPic> */}
           </div>
         </div>
-        <div class="m-rain-button">
-          <RainSwitcher style={{width: 150}} onClick={this.onRainSwitch.bind(this)}/>
+        <div className="m-rain-button">
+          <RainSwitcher
+            style={{ width: 150 }}
+            onClick={this.onRainSwitch.bind(this)}
+          />
         </div>
-        <div className="m-bottom" >
-          <RainLegend/>
+        <div className="m-bottom">
+          <RainLegend />
         </div>
         {/*<img onClick={() => {*/}
         {/*  this.setState({*/}
@@ -103,24 +106,42 @@ class Monitor extends React.PureComponent {
           visible={this.state.visible}
           width={320}
         >
-          <a style={{ fontSize: 18, color: '#000000fd', fontWeight: 'bold ' }}>主界面</a>
+          <a style={{ fontSize: 18, color: "#000000fd", fontWeight: "bold " }}>
+            主界面
+          </a>
           <Divider />
           <Row>
-            <div><Checkbox checked={this.state.showLeft} onClick={() => {
-              this.setState({
-                showLeft: !this.state.showLeft,
-                displayLeft: this.state.showLeft ? 'none' : 'block'
-              });
-            }} defaultChecked />&nbsp;&nbsp;<a style={{ fontSize: 15, color: '#000000fd' }}>左侧栏</a></div>
+            <div>
+              <Checkbox
+                checked={this.state.showLeft}
+                onClick={() => {
+                  this.setState({
+                    showLeft: !this.state.showLeft,
+                    displayLeft: this.state.showLeft ? "none" : "block",
+                  });
+                }}
+                defaultChecked
+              />
+              &nbsp;&nbsp;
+              <a style={{ fontSize: 15, color: "#000000fd" }}>左侧栏</a>
+            </div>
           </Row>
           <br />
           <Row>
-            <div><Checkbox checked={this.state.showRight} onClick={() => {
-              this.setState({
-                showRight: !this.state.showRight,
-                displayRight: this.state.showRight ? 'none' : 'block'
-              });
-            }} defaultChecked />&nbsp;&nbsp;<a style={{ fontSize: 15, color: '#000000fd' }}>右侧栏</a></div>
+            <div>
+              <Checkbox
+                checked={this.state.showRight}
+                onClick={() => {
+                  this.setState({
+                    showRight: !this.state.showRight,
+                    displayRight: this.state.showRight ? "none" : "block",
+                  });
+                }}
+                defaultChecked
+              />
+              &nbsp;&nbsp;
+              <a style={{ fontSize: 15, color: "#000000fd" }}>右侧栏</a>
+            </div>
           </Row>
 
           {/* <br /> */}
@@ -132,7 +153,10 @@ class Monitor extends React.PureComponent {
               });
             }} defaultChecked />下栏目
           </Row> */}
-          <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked}></CheckBoxs>
+          <CheckBoxs
+            layerVisible={layerVisible}
+            onChecked={this.onChecked}
+          ></CheckBoxs>
         </Drawer>
       </div>
     );
@@ -148,7 +172,7 @@ class Monitor extends React.PureComponent {
     if (layerVisible[layerKey] === checked) return;
     layerVisible[layerKey] = checked;
     this.setState({
-      layerVisible: { ...layerVisible }
+      layerVisible: { ...layerVisible },
     });
   }
 
@@ -156,7 +180,7 @@ class Monitor extends React.PureComponent {
    * 切换雨量事件
    * @param item
    */
-  onRainSwitch(item){
+  onRainSwitch(item) {
     switch (item.index) {
       case 0:
         this.props.actions.rainCurrent();
@@ -173,18 +197,19 @@ class Monitor extends React.PureComponent {
       case 4:
         this.props.actions.rain24Hours();
         break;
+      default:
+        return 1;
     }
+    // renturn null
   }
 
-  onFeatureClick(param){
-    console.info('rain click');
-  }
+  onFeatureClick(param) {}
 }
 // -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
   return {
-    store : state,
+    store: state,
   };
 }
 
@@ -193,7 +218,4 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(actions, dispatch),
   };
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Monitor);
+export default connect(mapStateToProps, mapDispatchToProps)(Monitor);

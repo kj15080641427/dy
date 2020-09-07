@@ -608,9 +608,11 @@ class PannelBtn extends React.PureComponent {
     // window.setInterval(() => {
     //   this.selectInit()
     // }, 1000 * 12);
-    getWaterRealTime({
+    getWaterRealTime({//TODO
       stcd: "41850517,41850519,41800261,41800264,41800253",
-      isOrder: "1"
+      isOrder: "1",
+      "current": 1,
+      "size": 10,
     }).then((result) => {
       console.log(result)
       let arr = []

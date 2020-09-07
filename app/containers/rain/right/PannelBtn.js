@@ -55,13 +55,12 @@ class PannelBtn extends React.PureComponent {
               </Link></Col>
             <Col span={4}><Link to={"/rain"}><img
               style={{ border: '3px solid #007ed7', height: 79 ,
-              '-webkit-filter': 'opacity(0.5)'}}
+              'WebkitFilter': 'opacity(0.5)'}}
               className="m-btn-flood-index"
               src={yqjk}
             // onClick={this.handleysgq}
             ></img>
             </Link></Col>
-           
             <Col span={4}>
               <Link to={"/easyFlood"}><img
                 className="m-btn-flood-index"

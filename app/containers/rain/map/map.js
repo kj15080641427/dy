@@ -1,23 +1,16 @@
 /**
  * map 2020-05-12
  */
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actions from '@app/redux/actions/rain';
+import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "@app/redux/actions/rain";
 import UbiMap from "../../monitor/map/ubimap";
-import FloodAnimation from "./FloodAnimation";
-import addEventListener from 'rc-util/lib/Dom/addEventListener';
+import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
-import moment from 'moment';
 
 import "./style.scss";
-import { templateWater, templateRain, templatePonding, templateWareHouse } from "./template";
-import {
-  getAll, getRainRealTime, getWaterRealTime, getAllVideo, getWaterWarning, getGate,
-  getPump, getWfsRiver, getWarehouse, getWarehouseMt, getVideosByCode, getWaterStationByVideoCode
-} from "@app/data/request";
-import VideoControl from '@app/components/video/VideoControl';
+import VideoControl from "@app/components/video/VideoControl";
 
 import Person from "./overlays/Person";
 import Rain from "./overlays/Rain";
@@ -28,28 +21,26 @@ import Gate from "./overlays/Gate";
 import Pump from "./overlays/Pump";
 import WfsRiver from "./overlays/WfsRiver";
 import Warehouse from "./overlays/Warehouse";
-import { message } from 'antd';
-import TileSource from 'ol/source/Tile';
-import { getWaterHistory } from '../../../data/request';
 class Map extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      overlays: {
-        // [Person.type]: {},
-        // [Rain.type]: {},
-        // [Water.type]: {},
-        // [Video.type]: {},
-        // [Gate.type]: {},
-        // [Pump.type]: {},
-        // [WfsRiver.type]: {},
-        // [Ponding.type]: {},
-        // [Warehouse.type]: {}
-      }
+      overlays: {},
     };
-    this.type = [Person, Rain, Water, Video, Gate, Pump, WfsRiver, Ponding, Warehouse];
-    // eslint-disable-next-line react/no-direct-mutation-state
-    this.type.forEach((Ovl) => { this.state.overlays[Ovl.type] = {}; });
+    this.type = [
+      Person,
+      Rain,
+      Water,
+      Video,
+      Gate,
+      Pump,
+      WfsRiver,
+      Ponding,
+      Warehouse,
+    ];
+    this.type.forEach((Ovl) => {
+      this.state.overlays[Ovl.type] = {};
+    });
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this._windowCloseFlag = true; // window关闭事件是否开启
     this.onOverlayClose = this.onOverlayClose.bind(this);
@@ -65,7 +56,14 @@ class Map extends React.PureComponent {
           if (this.type[i].type === type) {
             Comp = this.type[i];
             let comps = Object.keys(overlays[type]).map((key) => {
-              return <Comp key={key} map={this.map} model={overlays[type][key]} onClose={this.onOverlayClose}></Comp>;
+              return (
+                <Comp
+                  key={key}
+                  map={this.map}
+                  model={overlays[type][key]}
+                  onClose={this.onOverlayClose}
+                ></Comp>
+              );
             });
             domArr = domArr.concat(comps);
             break;
@@ -75,6 +73,7 @@ class Map extends React.PureComponent {
     }
     return (
       <>
+        {console.log(domArr, "domAAA")}
         <div id="map"></div>
         {domArr}
       </>
@@ -85,12 +84,15 @@ class Map extends React.PureComponent {
     if (layerVisible !== prevProps.layerVisible) {
       this.setVisible();
     }
-    if (layerVisible.water !== prevProps.layerVisible.water || layerVisible.rain !== prevProps.layerVisible.rain) {
+    if (
+      layerVisible.water !== prevProps.layerVisible.water ||
+      layerVisible.rain !== prevProps.layerVisible.rain
+    ) {
       this._zoom = null;
       this.toggleTagByMapZoom();
     }
 
-    if(rainData){
+    if (rainData) {
       this.drawFeatures(rainData.data);
     }
   }
@@ -130,21 +132,20 @@ class Map extends React.PureComponent {
   }
   createMap() {
     this.map = new UbiMap({
-      target: 'map',
-      center: [118.67, 37.60],
+      target: "map",
+      center: [118.67, 37.6],
       zoom: 9.7,
       minZoom: 3,
       maxZoom: 18,
-      mouseControl: false
+      mouseControl: false,
     });
 
     this.map.addTile({
-      // url: "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}",
       url: `https://t0.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
       opacity: 1,
       key: "tiandi",
-      projection: true
+      projection: true,
     });
     // this.map.addTile({
     //   url: require("../../../resource/tile2.png")["default"],
@@ -158,16 +159,16 @@ class Map extends React.PureComponent {
       visible: true,
       opacity: 1,
       key: "tiandi2",
-      projection: true
+      projection: true,
     });
     this.map.addGeo({
-      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
       params: {
-        'LAYERS': 'dy:DYWater',
-        'TILED': true
+        LAYERS: "dy:DYWater",
+        TILED: true,
       },
       zIndex: 10,
-      key: "river"
+      key: "river",
     });
     // this.map.addImageTile({
     //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
@@ -179,13 +180,13 @@ class Map extends React.PureComponent {
     //   key: "river40"
     // });
     this.map.addGeo({
-      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
       params: {
-        'LAYERS': 'dy:河流40',
-        'TILED': true
+        LAYERS: "dy:河流40",
+        TILED: true,
       },
       zIndex: 10,
-      key: "river40"
+      key: "river40",
     });
 
     //加入交通实况图
@@ -287,15 +288,15 @@ class Map extends React.PureComponent {
       key: "rain",
       zIndex: 20,
       style: {
-        src: function (featureObj) { //
+        src: function (featureObj) {
+          //
           //let num = parseInt(featureObj.minuteAvg*1);
-          const {data} = featureObj;
+          const { data } = featureObj;
           let num = 0.0;
 
           try {
             num = parseFloat(data.avgDrp * 1);
-          }
-          catch (e) {
+          } catch (e) {
             num = 0.0;
           }
 
@@ -324,8 +325,8 @@ class Map extends React.PureComponent {
         fontText: function (featureObj) {
           return featureObj.name + "";
         },
-        font: '16px sans-serif'
-      }
+        font: "16px sans-serif",
+      },
     });
     // this.map.addVector({
     //   key: "water",
@@ -451,14 +452,11 @@ class Map extends React.PureComponent {
     //   // }));
     // });
     this.map.startSelectFeature("rain", (param) => {
-      if(this.props.onFeatureClick){
+      if (this.props.onFeatureClick) {
         this.props.onFeatureClick(param);
-      }
-      else {
+      } else {
         this.addOverlay(Rain.type, param);
       }
-
-
 
       // let { stations } = this.props;
       // if (stations[param.stcd]) {
@@ -482,7 +480,6 @@ class Map extends React.PureComponent {
       //       message.error("获取雨晴详情失败");
       //     });
       // }
-
     });
     // this.map.startSelectFeature("water", (param) => {
     //   let { details } = this.props;
@@ -674,7 +671,6 @@ class Map extends React.PureComponent {
     onZoomChanged && onZoomChanged(zoom);
     //console.log(zoom);
     this.toggleTagByMapZoom();
-
   }
   toggleTagByMapZoom() {
     let zoom = this.map.getView().getZoom();
@@ -707,7 +703,6 @@ class Map extends React.PureComponent {
       // this.map.hideTagBox("water_tag");
       this.map.hideTagBox("rain_tag");
       // this.map.hideTagBox("ponding_tag");
-
     }
     this._zoom = zoom;
   }
@@ -750,13 +745,13 @@ class Map extends React.PureComponent {
     });
     if (isSingle) {
       overlays[key] = {
-        [id]: param
+        [id]: param,
       };
     } else {
       elements[id] = param;
     }
     this.setState({
-      overlays: { ...overlays }
+      overlays: { ...overlays },
     });
   }
   setVisible() {
@@ -780,23 +775,32 @@ class Map extends React.PureComponent {
       }, 300);
     });
     this._mapMove = emitter.addListener("map-move", (lonlat, onMoveEnd) => {
-      this.map && this.map.animate({
-        center: lonlat,
-        duration: 250,
-      }, () => {
-        onMoveEnd && onMoveEnd();
-      });
+      this.map &&
+        this.map.animate(
+          {
+            center: lonlat,
+            duration: 250,
+          },
+          () => {
+            onMoveEnd && onMoveEnd();
+          }
+        );
     });
-    this._mapMoveFocus = emitter.addListener("map-move-focus", (lonlat, duration = 2000) => {
-      this.map && this.map.animate({
-        center: lonlat,
-        duration: 250,
-      }, () => {
-        this.addFocusBox(lonlat, duration);
-      });
-    });
-
-
+    this._mapMoveFocus = emitter.addListener(
+      "map-move-focus",
+      (lonlat, duration = 2000) => {
+        this.map &&
+          this.map.animate(
+            {
+              center: lonlat,
+              duration: 250,
+            },
+            () => {
+              this.addFocusBox(lonlat, duration);
+            }
+          );
+      }
+    );
   }
   addWindowCloseEvent() {
     this._windowCloseFlag = false;
@@ -808,41 +812,43 @@ class Map extends React.PureComponent {
       if (!this._windowCloseFlag) return;
       if (this._isMapMoved) return;
       let obj = {};
-      this.type.forEach((Ovl) => { obj[Ovl.type] = {}; });
+      this.type.forEach((Ovl) => {
+        obj[Ovl.type] = {};
+      });
       this.setState({
-        overlays: obj
+        overlays: obj,
       });
       this._clickToken.remove();
     });
     setTimeout(() => {
       this._windowCloseFlag = true;
-    }, 0)
+    }, 0);
   }
 
   loadData() {
-  //   // 加载雨量站和水位站,水位站报警信息
-  //   let warningPro = getWaterWarning({});
-  //   let allPro = getAll();
-  //   let _this = this;
-  //   Promise.all([allPro, warningPro]).then((res) => {
-  //     if (res[0].code === 200) {
-  //       let data = this.transformData(res[0].data);
-  //
-  //       this.props.actions.initBaseData(data);
-  //       //如果显示报警
-  //       if (_this.props.layerVisible.waterWarning === true) {
-  //         this.props.actions.setMutiDetailData({
-  //           key: "water",
-  //           value: res[1] && res[1].data || []
-  //         });
-  //       }
-  //
-  //       this.drawFeatures(data);
-  //     }
-  //   })
-  //     .catch((e) => {
-  //       message.error('获取基础资料失败');
-  //     });
+    //   // 加载雨量站和水位站,水位站报警信息
+    //   let warningPro = getWaterWarning({});
+    //   let allPro = getAll();
+    //   let _this = this;
+    //   Promise.all([allPro, warningPro]).then((res) => {
+    //     if (res[0].code === 200) {
+    //       let data = this.transformData(res[0].data);
+    //
+    //       this.props.actions.initBaseData(data);
+    //       //如果显示报警
+    //       if (_this.props.layerVisible.waterWarning === true) {
+    //         this.props.actions.setMutiDetailData({
+    //           key: "water",
+    //           value: res[1] && res[1].data || []
+    //         });
+    //       }
+    //
+    //       this.drawFeatures(data);
+    //     }
+    //   })
+    //     .catch((e) => {
+    //       message.error('获取基础资料失败');
+    //     });
     // // 加载视频数据
     // getAllVideo({}).then((res) => {
     //   if (res.code === 200) {
@@ -932,7 +938,6 @@ class Map extends React.PureComponent {
     //         }
     //       });
     //   }, 30000);
-
     // // 模拟洪水
     // setInterval(() => {
     //   let data = [];
@@ -957,21 +962,22 @@ class Map extends React.PureComponent {
     //     heading: 0
     //   },
     // ]);
-
   }
   drawFeatures(data) {
-    const {stations} = this.props;
+    // data 实时雨量
+    const { stations } = this.props;
 
-    if(stations){
-      for(let key in stations){
+    console.log(stations, "stations", data);
+
+    if (stations) {
+      for (let key in stations) {
         stations[key].data = null;
       }
     }
 
-    if(data && stations) {
-
-      data.forEach(item => {
-        const {stcd} = item;
+    if (data && stations) {
+      data.forEach((item) => {
+        const { stcd } = item;
         let station = stations[stcd];
 
         if (station) {
@@ -982,56 +988,44 @@ class Map extends React.PureComponent {
 
     let features = [];
 
-    for(let key in stations){
+    for (let key in stations) {
       let station = stations[key];
-
       features.push({
         type: "Point",
         id: station.stcd,
         lonlat: [station.lon, station.lat],
-        data: {...station.data},
-        ...station
+        data: { ...(station.data || []) },
+        ...station,
       });
     }
 
-      this.map.removeFeatures('rain', features);
-      this.map.addFeatures('rain', features);
-      this.addRainTagBox(data);
-
-    // let { rain, water, details, ponding } = this.props;
-    // if (!data) return;
-    // if (rain && rain.length) {
-    //   this.map.addFeatures("rain", templateRain(rain, details.rain));
-    //   this.addRainTagBox(rain);
-    // }
-    // if (water && water.length) {
-    //   this.map.addFeatures("water", templateWater(water, details.water));
-    //   this.addWaterWaring(Object.values(details.water));
-    //   this.addWaterTagBox(water);
-    //   // this.map.startTagOnLayer("water");
-    // }
-    // if (ponding && ponding.length) {
-    //   this.map.addFeatures("ponding", templatePonding(ponding, details.water));
-    //   this.addPondingTagBox(ponding);
-    // }
+    this.map.removeFeatures("rain", features);
+    this.map.addFeatures("rain", features);
+    this.addRainTagBox(data);
     // 计算是或否显示tagbox
     this._zoom = null;
     this.toggleTagByMapZoom();
   }
   addRainTagBox(rain) {
-    const {stations} = this.props;
+    const { stations } = this.props;
     if (stations) {
-
       for (let key in stations) {
         let r = stations[key];
         let station = stations[r.stcd];
-        let name = station.aliasNme ? station.aliasNme : station.name;
-        const {lon, lat, stcd} = station;
-        let avgDrp = r.data ? r.data.avgDrp : null;
+        let name = r.aliasNme || r.name;
+        const { lon, lat, stcd } = r;
+        let avgDrp = r.drp;
         let tagId = "rain_tag_" + stcd;
-        let tagContent = (avgDrp === null || avgDrp === undefined) ? '--' : (avgDrp * 1).toFixed(1) + "mm";
+        let tagContent =
+          avgDrp === null || avgDrp === undefined
+            ? "--"
+            : (avgDrp * 1).toFixed(1) + "mm";
         this.map.removeTagBox(tagId);
-        this.map.addTagBox(tagId, [lon, lat], {title: name, subTitle: tagContent , prefix: "rain_tag"});
+        this.map.addTagBox(tagId, [lon, lat], {
+          title: name,
+          subTitle: tagContent,
+          prefix: "rain_tag",
+        });
       }
     }
   }
@@ -1039,7 +1033,14 @@ class Map extends React.PureComponent {
     if (water && water.length) {
       water.forEach((r) => {
         let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("water_tag_" + r.stcd, [r.lon, r.lat], { title: name, subTitle: r.z === null || r.z === undefined ? '--' : (r.z * 1).toFixed(2) + "m", prefix: "water_tag" });
+        this.map.addTagBox("water_tag_" + r.stcd, [r.lon, r.lat], {
+          title: name,
+          subTitle:
+            r.z === null || r.z === undefined
+              ? "--"
+              : (r.z * 1).toFixed(2) + "m",
+          prefix: "water_tag",
+        });
       });
     }
   }
@@ -1048,7 +1049,14 @@ class Map extends React.PureComponent {
     if (water && water.length) {
       water.forEach((r) => {
         let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("ponding_tag_" + r.stcd, [r.lon, r.lat], { title: name, subTitle: r.z === null || r.z === undefined ? '--' : (r.z * 100).toFixed(1) + "cm", prefix: "ponding_tag" });
+        this.map.addTagBox("ponding_tag_" + r.stcd, [r.lon, r.lat], {
+          title: name,
+          subTitle:
+            r.z === null || r.z === undefined
+              ? "--"
+              : (r.z * 100).toFixed(1) + "cm",
+          prefix: "ponding_tag",
+        });
       });
     }
   }
@@ -1090,7 +1098,7 @@ class Map extends React.PureComponent {
     if (!obj || !obj[id]) return;
     delete obj[id];
     this.setState({
-      overlays: { ...overlays }
+      overlays: { ...overlays },
     });
   }
   addFocusBox(lonlat, duration = 2000) {
@@ -1106,12 +1114,16 @@ class Map extends React.PureComponent {
     div4.className = "ol-focus-box";
     div.append(div1, div2, div3, div4);
     this.map.removeOverlay("focus");
-    this.map.addOverlay("focus", {
-      Coordinate: lonlat,
-      positioning: "center-center",
-      offset: [0, 0],
-      stopEvent: false,
-    }, div);
+    this.map.addOverlay(
+      "focus",
+      {
+        Coordinate: lonlat,
+        positioning: "center-center",
+        offset: [0, 0],
+        stopEvent: false,
+      },
+      div
+    );
     if (this._focusToken) {
       clearTimeout(this._focusToken);
     }
@@ -1122,7 +1134,6 @@ class Map extends React.PureComponent {
   // onFloodClick(featureProp) {
   //   console.log(featureProp);
   // }
-
 }
 function mapStateToProps(state) {
   return {
@@ -1132,7 +1143,7 @@ function mapStateToProps(state) {
     // details: state.monitor.details,
     // warehouse: state.monitor.warehouse,
     rainData: state.rain.rainData,
-    stations: state.rain.stations
+    stations: state.rain.stations,
   };
 }
 
@@ -1141,8 +1152,5 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(actions, dispatch),
   };
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Map);
 
+export default connect(mapStateToProps, mapDispatchToProps)(Map);

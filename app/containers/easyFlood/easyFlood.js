@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
 import * as actions from '@app/redux/actions/monitor';
 //import Map from "./map/map";
-import Map from '../monitor/map/map';
+import Map from './map/map';
 import "./style.scss";
 import Head from "./head/Head";
 import WeatherBox from "./left/WeatherBox";

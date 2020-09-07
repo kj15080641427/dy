@@ -308,6 +308,13 @@ export function updSiteRelation(data) {
 export function delSiteRelation(data) {
   return fetchJSONData("POST", "/base/SiteRelation/delete", data);
 }
+
+// 统计各来源的站点数
+export function getCountStation(data) {
+  //  return fetchJSONData("POST", "/count/getCountStation", data);
+  return fetchJSONData("POST", "/base/SiteBase/getCountStation", data);
+
+}
 // 获取卫星云图
 //  export function getSatellite(data) {
 //    return fetchJSONData("POST", "/base/satellite/getSatellite", data);

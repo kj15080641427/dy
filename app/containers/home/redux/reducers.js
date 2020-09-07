@@ -10,7 +10,7 @@ import {
   READ_ONLY_TABLE_LOADING,
   SELECT_TABLE,
 } from "./types";
-
+import * as types from "./types";
 const initState = {
   loading: false,
   readOnlyLoading: false,
@@ -63,6 +63,15 @@ export default function management(state = initState, action) {
       newState = {
         ...newState,
         permissionList: action.data,
+      };
+      break;
+    case types.SET_COUNT_STATION:
+      newState = {
+        ...newState,
+        raincount: action.data[0],
+        watercount: action.data[1],
+        floodcount: action.data[2],
+        vodeocount: action.data[3],
       };
       break;
     default:

@@ -748,11 +748,13 @@ class TowBtn extends React.PureComponent {
         );
     }
     componentDidMount() {
-        getWaterRealTime({
+        getWaterRealTime({//TODO
             stcd: "41850517,41850519,41800261,41800264,41800253",
-            isOrder: "1"
+            isOrder: "1",
+            "current": 1,
+            "size": 10,
         }).then((result) => {
-            console.log(result)
+            // console.log(result)
             let arr = []
             for (let i = 0; i < result.data.records.length; i++) {
                 arr.push(result.data.records[i].z)

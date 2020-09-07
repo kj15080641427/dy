@@ -195,6 +195,20 @@ function* getDict({ data }) {
     console.error(error);
   }
 }
+// 获取站点来源
+function* getCountStation() {
+  try {
+    const result = yield call(req.getCountStation, initSelect);
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_COUNT_STATION,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
 export default function* management() {
   yield all([
     takeEvery(types.GET_BASE, getbaseData),
@@ -206,5 +220,6 @@ export default function* management() {
     takeEvery(types.READ_ONLY_TABLE_GETALL, readOnlyGetAll),
     takeEvery(types.ADD_SITE_RELATION, addSiteRelation),
     takeEvery(types.GET_DICT, getDict),
+    takeEvery(types.GET_COUNT_STATION, getCountStation),
   ]);
 }
