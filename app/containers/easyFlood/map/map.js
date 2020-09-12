@@ -111,16 +111,19 @@ class Map extends React.PureComponent {
     );
   }
   componentDidUpdate(prevProps, prevState) {
-    let { layerVisible } = this.props;
+    let { layerVisible, flood } = this.props;
     if (layerVisible !== prevProps.layerVisible) {
       this.setVisible();
+    }
+    if (flood != prevProps.flood) {
+      this.drawFeatures();
     }
   }
   componentDidMount() {
     this.createMap();
     this.setVisible();
     this.addEvent();
-    this.loadData();
+    // this.loadData();
     this.videoControl.login();
   }
   componentWillUnmount() {
@@ -397,98 +400,98 @@ class Map extends React.PureComponent {
     // this.map.addGate({
     //   key: "gata1"
     // })
-    this.map.startHighlightFeatureonLayer("person");
-    this.map.startHighlightFeatureonLayer("video");
-    this.map.startHighlightFeatureonLayer("rain");
-    this.map.startHighlightFeatureonLayer("water");
+    // this.map.startHighlightFeatureonLayer("person");
+    // this.map.startHighlightFeatureonLayer("video");
+    // this.map.startHighlightFeatureonLayer("rain");
+    // this.map.startHighlightFeatureonLayer("water");
     this.map.startHighlightFeatureonLayer("ponding");
-    this.map.startHighlightFeatureonLayer("gate");
-    this.map.startHighlightFeatureonLayer("pump");
-    this.map.startHighlightFeatureonLayer("wfsRiver");
-    this.map.startHighlightFeatureonLayer("warehouse");
-    this.map.startSelectFeature("person", (param) => {
-      this.addOverlay(Person.type, param);
-      // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
-      //   onVideoClick: () => {
-      //     console.log(param.id);
-      //   },
-      //   onClose: () => {
-      //     this.map.removeOverlay(param.id);
-      //   }
-      // }));
-    });
-    this.map.startSelectFeature("rain", (param) => {
-      let { details } = this.props;
-      //if (details.rain[param.stcd]) {
-      if (false) {
-        this.addOverlay(Rain.type, { ...param, ...details.rain[param.stcd] });
-      } else {
-        getRainRealTime({ stcd: param.stcd, current: 1, size: 1 })
-          .then((res) => {
-            if (res.code === 200) {
-              let record = (res.data.records && res.data.records[0]) || null;
-              this.props.actions.setDetailData({
-                key: "rain",
-                value: record,
-              });
-              this.addOverlay(
-                Rain.type,
-                record ? { ...param, ...record } : param
-              );
-            } else {
-              return Promise.reject(res.msg || "未知错误");
-            }
-          })
-          .catch((e) => {
-            message.error("获取雨晴详情失败");
-          });
-      }
-    });
-    this.map.startSelectFeature("water", (param) => {
-      let { details } = this.props;
-      //if (details.water[param.stcd]) {
-      //phz 修改，所有的水位都从接口获取
-      if (false) {
-        this.addOverlay(Water.type, { ...param, ...details.water[param.stcd] });
-      } else {
-        getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 })
-          .then((res) => {
-            if (res.code === 200) {
-              let record = (res.data.records && res.data.records[0]) || null;
-              this.props.actions.setDetailData({
-                key: "water",
-                value: record,
-              });
-              this.addOverlay(
-                Water.type,
-                record ? { ...param, ...record } : param
-              );
-            } else {
-              return Promise.reject(res.msg || "未知错误");
-            }
-          })
-          .catch((e) => {
-            message.error("获取水位详情失败");
-          });
-      }
-    });
+    // this.map.startHighlightFeatureonLayer("gate");
+    // this.map.startHighlightFeatureonLayer("pump");
+    // this.map.startHighlightFeatureonLayer("wfsRiver");
+    // this.map.startHighlightFeatureonLayer("warehouse");
+    // this.map.startSelectFeature("person", (param) => {
+    //   this.addOverlay(Person.type, param);
+    //   // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
+    //   //   onVideoClick: () => {
+    //   //     console.log(param.id);
+    //   //   },
+    //   //   onClose: () => {
+    //   //     this.map.removeOverlay(param.id);
+    //   //   }
+    //   // }));
+    // });
+    // this.map.startSelectFeature("rain", (param) => {
+    //   let { details } = this.props;
+    //   //if (details.rain[param.stcd]) {
+    //   if (false) {
+    //     this.addOverlay(Rain.type, { ...param, ...details.rain[param.stcd] });
+    //   } else {
+    //     getRainRealTime({ stcd: param.stcd, current: 1, size: 1 })
+    //       .then((res) => {
+    //         if (res.code === 200) {
+    //           let record = (res.data.records && res.data.records[0]) || null;
+    //           this.props.actions.setDetailData({
+    //             key: "rain",
+    //             value: record,
+    //           });
+    //           this.addOverlay(
+    //             Rain.type,
+    //             record ? { ...param, ...record } : param
+    //           );
+    //         } else {
+    //           return Promise.reject(res.msg || "未知错误");
+    //         }
+    //       })
+    //       .catch((e) => {
+    //         message.error("获取雨晴详情失败");
+    //       });
+    //   }
+    // });
+    // this.map.startSelectFeature("water", (param) => {
+    //   let { details } = this.props;
+    //   //if (details.water[param.stcd]) {
+    //   //phz 修改，所有的水位都从接口获取
+    //   if (false) {
+    //     this.addOverlay(Water.type, { ...param, ...details.water[param.stcd] });
+    //   } else {
+    //     getWaterRealTime({ stcd: param.stcd, current: 1, size: 1 })
+    //       .then((res) => {
+    //         if (res.code === 200) {
+    //           let record = (res.data.records && res.data.records[0]) || null;
+    //           this.props.actions.setDetailData({
+    //             key: "water",
+    //             value: record,
+    //           });
+    //           this.addOverlay(
+    //             Water.type,
+    //             record ? { ...param, ...record } : param
+    //           );
+    //         } else {
+    //           return Promise.reject(res.msg || "未知错误");
+    //         }
+    //       })
+    //       .catch((e) => {
+    //         message.error("获取水位详情失败");
+    //       });
+    //   }
+    // });
     this.map.startSelectFeature("ponding", (param) => {
       this.addOverlay(Ponding.type, { ...param });
     });
-    this.map.startSelectFeature("video", (param) => {
-      //this.addOverlay(Video.type, param);
-      let newParam = { ...param };
-      newParam.videoControl = this.videoControl;
-      this.addOverlay(Video.type, newParam);
-    });
-    this.map.startSelectFeature("gate", (param) => {
-      let newParam = { ...param };
-      this.addOverlay(Gate.type, newParam);
-    });
-    this.map.startSelectFeature("pump", (param) => {
-      let newParam = { ...param };
-      this.addOverlay(Pump.type, newParam);
-    });
+    // this.map.startSelectFeature("video", (param) => {
+    //   //this.addOverlay(Video.type, param);
+    //   let newParam = { ...param };
+    //   newParam.videoControl = this.videoControl;
+    //   this.addOverlay(Video.type, newParam);
+    // });
+    // this.map.startSelectFeature("gate", (param) => {
+    //   let newParam = { ...param };
+    //   this.addOverlay(Gate.type, newParam);
+    // });
+    // this.map.startSelectFeature("pump", (param) => {
+    //   let newParam = { ...param };
+    //   this.addOverlay(Pump.type, newParam);
+    // });
     this.map.startSelectFeature("warehouse", (param) => {
       let { details } = this.props;
       console.log(1);
@@ -773,26 +776,16 @@ class Map extends React.PureComponent {
   }
   drawFeatures(data) {
     console.log(data, "DDDDDDDD");
-    let { rain, water, details, ponding } = this.props;
-    let test = [];
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].riverwaterdataList && data[i].riverwaterdataList[0]) {
-        test.push({
-          ...data[i],
-          ...data[i].riverwaterdataList[0],
-          ...data[i].siteWaterPoints[0],
-        });
-      }
-    }
-    if (!data) return;
+    const { flood } = this.props;
+
     // if (rain && rain.length) {
     //   this.map.addFeatures("rain", templateRain(rain, details.rain));
     // }
     // if (water && water.length) {
     //   this.map.addFeatures("water", templateWater(water, details.water));
     // }
-    if (test && test.length) {
-      this.map.addFeatures("ponding", templatePonding(test, details.water));
+    if (flood && flood[0]) {
+      this.map.addFeatures("ponding", templatePonding(flood));
     }
   }
   transformData(data) {
@@ -828,11 +821,12 @@ class Map extends React.PureComponent {
 }
 function mapStateToProps(state) {
   return {
-    water: state.monitor.water,
-    rain: state.monitor.rain,
-    ponding: state.monitor.ponding,
-    details: state.monitor.details,
-    warehouse: state.monitor.warehouse,
+    // water: state.monitor.water,
+    // rain: state.monitor.rain,
+    // ponding: state.monitor.ponding,
+    // details: state.monitor.details,
+    // warehouse: state.monitor.warehouse,
+    flood: state.mapAboutReducers.flood,
   };
 }
 

@@ -10,26 +10,21 @@ import { bindActionCreators } from "redux";
 import * as actions from "../../../redux/actions";
 import ReadonlyTable from "../readOnlyTable";
 import { Tabs } from "antd";
-import Rain from "./Rain";
-import Water from "./Water";
-import Vodeo from "./Vodeo";
-import Flood from "./Flood";
-import { getCountStation, getBasicsAll } from "@app/data/request";
-import { rain, water, flood, rowSelect } from "./columns/rwvCloumns";
+import "./style.scss";
+import { getBasicsAll, getAllVideo } from "@app/data/request";
+import { rain, water, flood, video, rowSelect } from "./columns/rwvCloumns";
 import initecharts from "./echarts";
 
 const rwvData = (props) => {
   const { TabPane } = Tabs;
-  const { raincount, watercount, floodcount, vodeocount, readOnlyData } = props;
-  //   const { siteData } = props;
+  const { count, readOnlyData } = props;
   const { getCountStation } = props.actions;
   const [config, setConfig] = useState({
     type: 1,
     columns: rain,
-    source: raincount,
+    source: "raincount",
     name: "雨量",
     onlineListName: "raindataList",
-    // onlinetm:
   });
   //站点来源
   const selectRainSource = (result) => {
@@ -45,7 +40,7 @@ const rwvData = (props) => {
     initecharts("count", `${config.name}来源统计图`, nameArr, data);
   };
   //站点在线图
-  const waterOnline = () => {
+  const waterOnline = (name = "雨量") => {
     let okcount = 0;
     let nocount = 0;
     let thday = 0;
@@ -66,7 +61,7 @@ const rwvData = (props) => {
     });
     initecharts(
       "online",
-      "水位站点在线统计图",
+      `${name}站点在线统计图`,
       ["最近更新", "三天前", "离线"],
       [
         {
@@ -88,19 +83,36 @@ const rwvData = (props) => {
   useEffect(() => {
     getCountStation();
   }, []);
-
   //在线图
   useEffect(() => {
-    waterOnline();
-  }, [readOnlyData]);
-  //画图
+    waterOnline(config.name);
+  }, [readOnlyData, config.name]);
+  //来源图
   useEffect(() => {
-    if (config.source) {
-      selectRainSource(config.source);
-    } else {
-      selectRainSource(raincount);
+    console.log(count, "COUNT");
+    if (count) {
+      selectRainSource(count[config.source]);
     }
-  }, [raincount, config.type]);
+  }, [count, config.name]);
+
+  const footer = () =>
+    count && (
+      <>
+        <a>
+          {count[config.source]?.indTypeName}站共计：
+          {count[config.source]?.number}个
+        </a>
+        &nbsp;其中：&nbsp;
+        {count[config.source]?.list?.map((item) => (
+          <>
+            <a>
+              {item.dataSourceDesc}共计：{item.number}个
+            </a>
+            &nbsp;
+          </>
+        ))}
+      </>
+    );
 
   return (
     <>
@@ -110,7 +122,7 @@ const rwvData = (props) => {
             setConfig({
               type: 1,
               columns: rain,
-              source: raincount,
+              source: "raincount",
               name: "雨量",
               onlineListName: "raindataList",
             });
@@ -118,49 +130,57 @@ const rwvData = (props) => {
             setConfig({
               type: 2,
               columns: water,
-              source: watercount,
+              source: "watercount",
               name: "水位",
               onlineListName: "riverwaterdataList",
             });
           } else if (e === "flood") {
-            // setType(3);
-            // setColumns(flood);
-            // setEchartSource(floodcount);
-            // setEchartName("易涝点");
+            setConfig({
+              type: 3,
+              columns: flood,
+              source: "floodcount",
+              name: "易涝点",
+              onlineListName: "riverwaterdataList",
+            });
+          } else if (e === "video") {
+            setConfig({
+              source: "vodeocount",
+              name: "视频",
+            });
           }
         }}
       >
-        <TabPane tab="雨量站" key="rain">
-          {/* <Rain raincount={raincount}></Rain> */}
-        </TabPane>
-        <TabPane tab="水位站" key="water">
-          {/* <Water watercount={watercount}></Water> */}
-        </TabPane>
-        <TabPane tab="易涝点" key="flood">
-          {/* <Flood floodcount={floodcount}></Flood> */}
-        </TabPane>
-        <TabPane tab="视频站点" key="video">
-          {/* <Vodeo></Vodeo> */}
-        </TabPane>
+        <TabPane tab="雨量站" key="rain"></TabPane>
+        <TabPane tab="水位站" key="water"></TabPane>
+        <TabPane tab="易涝点" key="flood"></TabPane>
+        <TabPane tab="视频站点" key="video"></TabPane>
       </Tabs>
       <div className="div-left-echarts">
         <div className="echarts-count" id="count"></div>
         <div className="echarts-isOnline" id="online"></div>
       </div>
-      <ReadonlyTable
-        getAll
-        get={getBasicsAll}
-        type={config.type}
-        columns={config.columns}
-        rowSelect={rowSelect}
-        rowKey={"siteBaseID"}
-        footer={() => (
-          <>
-            <a>雨量站共计：{watercount?.number}个</a>&nbsp;其中：&nbsp;
-            {/* {element} */}
-          </>
-        )}
-      />
+      {config.name === "视频" ? (
+        <ReadonlyTable
+          getAll
+          rowSelection={{}}
+          get={getAllVideo}
+          columns={video}
+          rowSelect={rowSelect}
+          rowKey={"siteBaseID"}
+          footer={() => footer()}
+        />
+      ) : (
+        <ReadonlyTable
+          getAll
+          rowSelection={{}}
+          get={getBasicsAll}
+          type={config.type}
+          columns={config.columns}
+          rowSelect={rowSelect}
+          rowKey={"siteBaseID"}
+          footer={() => footer()}
+        />
+      )}
     </>
   );
 };
@@ -172,6 +192,7 @@ rwvData.propTypes = {
   floodcount: PropTypes.object,
   vodeocount: PropTypes.object,
   siteData: PropTypes.object,
+  count: PropTypes.object,
 };
 function mapStateToProps(state) {
   return {
@@ -180,6 +201,7 @@ function mapStateToProps(state) {
     watercount: state.management.watercount,
     floodcount: state.management.floodcount,
     vodeocount: state.management.vodeocount,
+    count: state.management.count,
   };
 }
 

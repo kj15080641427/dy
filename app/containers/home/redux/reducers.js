@@ -17,6 +17,7 @@ const initState = {
   permissionList: [],
   modalVisible: false,
   readOnlyData: [],
+  selected: [],
 };
 
 export default function management(state = initState, action) {
@@ -68,10 +69,12 @@ export default function management(state = initState, action) {
     case types.SET_COUNT_STATION:
       newState = {
         ...newState,
-        raincount: action.data[0],
-        watercount: action.data[1],
-        floodcount: action.data[2],
-        vodeocount: action.data[3],
+        count: {
+          raincount: action.data[0],
+          watercount: action.data[1],
+          floodcount: action.data[2],
+          vodeocount: action.data[3],
+        },
       };
       break;
     default:

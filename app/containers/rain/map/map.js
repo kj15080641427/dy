@@ -290,29 +290,29 @@ class Map extends React.PureComponent {
       style: {
         src: function (featureObj) {
           //
-          //let num = parseInt(featureObj.minuteAvg*1);
+          //let drp = parseInt(featureObj.minuteAvg*1);
           const { data } = featureObj;
-          let num = 0.0;
+          let drp = 0.0;
 
           try {
-            num = parseFloat(data.avgDrp * 1);
+            drp = parseFloat(data.avgDrp * 1);
           } catch (e) {
-            num = 0.0;
+            drp = 0.0;
           }
 
-          if (num === 0) {
+          if (drp === 0) {
             return require("../../../resource/icon/1.svg")["default"];
-          } else if (num > 0 && num <= 10) {
+          } else if (drp > 0 && drp <= 10) {
             return require("../../../resource/icon/2.svg")["default"];
-          } else if (num > 10 && num <= 25) {
+          } else if (drp > 10 && drp <= 25) {
             return require("../../../resource/icon/3.svg")["default"];
-          } else if (num > 25 && num <= 50) {
+          } else if (drp > 25 && drp <= 50) {
             return require("../../../resource/icon/4.svg")["default"];
-          } else if (num > 50 && num <= 100) {
+          } else if (drp > 50 && drp <= 100) {
             return require("../../../resource/icon/5.svg")["default"];
-          } else if (num > 100 && num <= 250) {
+          } else if (drp > 100 && drp <= 250) {
             return require("../../../resource/icon/6.svg")["default"];
-          } else if (num > 250) {
+          } else if (drp > 250) {
             return require("../../../resource/icon/7.svg")["default"];
           }
         },
@@ -967,7 +967,6 @@ class Map extends React.PureComponent {
     // data 实时雨量
     const { stations } = this.props;
 
-    console.log(stations, "stations", data);
 
     if (stations) {
       for (let key in stations) {
@@ -998,6 +997,8 @@ class Map extends React.PureComponent {
         ...station,
       });
     }
+
+    console.log(stations, "stations", features);
 
     this.map.removeFeatures("rain", features);
     this.map.addFeatures("rain", features);

@@ -6,7 +6,7 @@ import rain from "./rain";
 import currency from "./currency";
 import management from "../../containers/home/redux/reducers";
 import rainReducers from "./rain";
-
+import mapAboutReducers from "./map";
 export default combineReducers({
   monitor,
   home,
@@ -14,4 +14,5 @@ export default combineReducers({
   currency,
   management,
   rainReducers,
+  mapAboutReducers,
 });

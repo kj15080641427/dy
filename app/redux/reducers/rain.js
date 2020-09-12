@@ -8,7 +8,7 @@ import * as ActionType from "../constants/rain";
 export default function rainReducers(state = {}, action) {
   let newState = Object.assign({}, state);
   let list = [];
-  
+
   switch (action.type) {
     case ActionType.UPDATE_RAIN:
       newState = {
@@ -28,21 +28,10 @@ export default function rainReducers(state = {}, action) {
           });
         }
       }
-      // list = action.payload.data.map((item) => {
-      //   if (item.raindataList && item.raindataList[0]) {
-      //     return {
-      //       ...item,
-      //       ...item.raindataList[0],
-      //       ...item.siteRain[0],
-      //       type: "Point",
-      //     };
-      //   } else {
-      //     return {};
-      //   }
-      // });
       newState = {
         ...state,
         stations: list,
+        rain: action.payload.data,
       };
       break;
     default:

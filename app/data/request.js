@@ -1,16 +1,12 @@
-import {
-  fetchJSONData,
-  fetchOutData,
-  fetchGet,
-} from "@app/utils/common";
+import { fetchJSONData, fetchOutData, fetchGet,testLogin } from "@app/utils/common";
 //  获取所有基础数据
 export function getAll(data = {}) {
   return fetchJSONData("POST", "/base/SiteBase/getAll", data);
 }
 // 用户登录
 export function login(data) {
-  //  return testLogin('/users/login',data)
-  return fetchJSONData("POST", "/users/login", data);
+  // return testLogin("api/users/login", data);
+  return fetchJSONData("POST", "/base/Users/login", data);
 }
 // 获取所有视频站点信息
 export function getAllVideo(data) {
@@ -130,7 +126,6 @@ export function updateMaterialWarehouse(data) {
 // 获取所有防汛物资
 export function getWarehouseMt(data) {
   return fetchJSONData("POST", "/base/Material/getAll", data);
-
 }
 // 分页查询防汛物资
 export function queryMaterial(data) {
@@ -199,7 +194,6 @@ export function countHoursRain(data) {
 export function getCountStation(data) {
   //  return fetchJSONData("POST", "/count/getCountStation", data);
   return fetchJSONData("POST", "/base/SiteBase/getCountStation", data);
-
 }
 // 统计各来源的视频站点数
 export function getCountRadio(data) {

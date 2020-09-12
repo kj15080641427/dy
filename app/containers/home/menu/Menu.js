@@ -1,7 +1,7 @@
 /**
  * Menu 2020-05-26
  */
-import React from 'react';
+import React from "react";
 import { Menu } from "antd";
 import { Link, withRouter } from "react-router-dom";
 const { SubMenu } = Menu;
@@ -14,22 +14,19 @@ import {
   DesktopOutlined,
   ContainerOutlined,
   MailOutlined,
-} from '@ant-design/icons';
+} from "@ant-design/icons";
 import "./style.scss";
 class Menus extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
-    this.state = {
-    };
+    this.state = {};
     this.onMenuClick = this.onMenuClick.bind(this);
   }
   render() {
     let { collapsed } = this.props;
     return (
       <div className={"hm-menu"}>
-        <div className="hm-logo">
-          东营水务
-          </div >
+        <div className="hm-logo">东营水务</div>
         <div className="hm-content">
           <Menu
             mode="inline"
@@ -37,21 +34,22 @@ class Menus extends React.PureComponent {
             inlineCollapsed={collapsed}
             onClick={this.onMenuClick}
             // defaultOpenKeys={['sub1', 'sub2', 'sub3', 'sub4','sub5']}
-            defaultOpenKeys={['sub5']}
+            defaultOpenKeys={["sub5"]}
           >
             <Menu.Item key="/" icon={<ContainerOutlined />}>
               首页
             </Menu.Item>
-            <SubMenu key="sub1" icon={<FundViewOutlined />} title="监测数据" inlineCollapsed={false}>
+            <SubMenu
+              key="sub1"
+              icon={<FundViewOutlined />}
+              title="监测数据"
+              inlineCollapsed={false}
+            >
               <Menu.Item title={"站点数据"} key="/rwvdata">
                 站点数据
               </Menu.Item>
-              <Menu.Item key="/model">
-                模型演示
-              </Menu.Item>
-              <Menu.Item key="/riverAnnunciate">
-                河道信息
-              </Menu.Item>
+              <Menu.Item key="/model">模型演示</Menu.Item>
+              <Menu.Item key="/riverAnnunciate">河道信息</Menu.Item>
               {/* <Menu.Item key="/waterAnnunciate">
                 水情通报
               </Menu.Item>
@@ -73,17 +71,18 @@ class Menus extends React.PureComponent {
             </SubMenu>
             <SubMenu key="sub4" icon={<MailOutlined />} title="基础信息配置">
               <Menu.Item key="/stationBasic">基础站点信息配置</Menu.Item>
-              <Menu.Item key="/videoBasic">视频站点信息配置</Menu.Item>
-              <Menu.Item key="/videoStation">站点关联信息配置</Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub5" icon={<MailOutlined />} title="站点详情">
               <Menu.Item key="/siteWater">站点水位</Menu.Item>
               <Menu.Item key="/siteVideo">站点视频</Menu.Item>
               <Menu.Item key="/siteRain">站点雨量</Menu.Item>
-              <Menu.Item key="/sitePump">泵站信息</Menu.Item>
-
-              <Menu.Item key="/siteDict">站点字典</Menu.Item>
               <Menu.Item key="/siteWaterPonit">站点积水点</Menu.Item>
+
+              {/* <Menu.Item key="/videoBasic">视频站点信息配置</Menu.Item> */}
+              <Menu.Item key="/videoStation">站点关联信息配置</Menu.Item>
+            </SubMenu>
+            <SubMenu key="sub5" icon={<MailOutlined />} title="站点详情">
+              <Menu.Item key="/chart">图表</Menu.Item>
+              <Menu.Item key="/sitePump">泵站信息</Menu.Item>
+              <Menu.Item key="/siteDict">站点字典</Menu.Item>
               <Menu.Item key="/siteDike">站点堤防工程</Menu.Item>
               <Menu.Item key="/siteReservoir">水库信息</Menu.Item>
               <Menu.Item key="/siteGate">闸信息</Menu.Item>
@@ -93,14 +92,14 @@ class Menus extends React.PureComponent {
       </div>
     );
   }
-  componentDidMount() { }
+  componentDidMount() {}
   onMenuClick({ item, key, keyPath, domEvent, title }) {
     let { history } = this.props;
-    history.push('/home' + key);
-    console.log(item)
-    console.log(key)
-    console.log(keyPath)
-    console.log(title)
+    history.push("/home" + key);
+    console.log(item);
+    console.log(key);
+    console.log(keyPath);
+    console.log(title);
   }
 }
 export default withRouter(Menus);

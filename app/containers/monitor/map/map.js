@@ -111,8 +111,8 @@ class Map extends React.PureComponent {
     this.map.stopSelectFeature("pump");
     this.map.stopSelectFeature("person");
     this.map.stopSelectFeature("warehouse");
-    this.map.getMap().un("movestart");
-    this.map.getMap().un("moveend");
+    // this.map.getMap().un("movestart");
+    // this.map.getMap().un("moveend");
     this.map.unView("change:resolution", this.mapViewChanged.bind(this));
 
     this._mapMove && this._mapMove.remove();
@@ -542,7 +542,7 @@ class Map extends React.PureComponent {
     });
     this.map.startSelectFeature("video", (param) => {
       //查询站点的水位
-      getWaterStationByVideoCode({ code: param.code })
+      getWaterStationByVideoCode({ queryId: param.radioID })
         .then(result => {
           //查询失败
           if (result.code !== 200) {

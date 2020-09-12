@@ -241,8 +241,12 @@ class Role extends React.PureComponent {
                 this.setState({
                   list: keys,
                 });
-                console.log(keys, "KEYS");
               },
+              // onSelectAll: (statu, selectedRows, changeRows) => {
+              //   if (statu) {
+              //   }
+              //   console.log(statu, selectedRows, changeRows);
+              // },
             }}
           />
           {/* <Jurisdiction
@@ -261,7 +265,6 @@ class Role extends React.PureComponent {
   }
 }
 function mapStateToProps(state) {
-  console.log(state.management.permissionList, "STATE");
   return {
     role: state.currency.role,
     visible: state.currency.visible,

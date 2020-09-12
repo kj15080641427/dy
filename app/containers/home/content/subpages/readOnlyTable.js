@@ -10,7 +10,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { SearchOutlined, RedoOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-const initSelect = { current: 1, size: 10 };
 const ReadOnlyTable = (props) => {
   const formRef = useRef();
   const { readOnlyTableGetAll, selectTable } = props.actions;
@@ -26,6 +25,8 @@ const ReadOnlyTable = (props) => {
     rowSelection,
     type, //getall 参数
     footer,
+    initSelect = { current: 1, size: 10 },
+    handPage,
   } = props;
   useEffect(() => {
     readOnlyTableGetAll({
@@ -96,7 +97,7 @@ const ReadOnlyTable = (props) => {
         </Form.Item>
       </Form>
       <Table
-        pagination={getAll ? {} : pagination}
+        pagination={handPage ? handPage : pagination}
         onRow={(record) => {
           return {
             onClick: () => {
@@ -106,7 +107,8 @@ const ReadOnlyTable = (props) => {
         }}
         rowSelection={
           rowSelection
-            ? {
+            ? null
+            : {
                 fixed: true,
                 type: "radio",
                 selectedRowKeys: selected?.[rowKey],
@@ -114,10 +116,9 @@ const ReadOnlyTable = (props) => {
                   selectTable({ key: rowKey, value: e });
                 },
               }
-            : null
         }
         columns={columns}
-        dataSource={getAll ? readOnlyData : readOnlyData?.records}
+        dataSource={getAll ? readOnlyData || [] : readOnlyData?.records || []}
         rowKey={(row) => row[rowKey]}
         loading={readOnlyLoading}
         footer={footer}
@@ -140,6 +141,8 @@ ReadOnlyTable.propTypes = {
   selected: PropTypes.object,
   type: PropTypes.object,
   footer: PropTypes.any,
+  initSelect: PropTypes.object,
+  handPage: PropTypes.object,
 };
 const mapStateToProps = (state) => {
   return {

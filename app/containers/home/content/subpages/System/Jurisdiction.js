@@ -78,6 +78,8 @@ export default Jurisdiction;
 export const ReadonlyPermission = (props) => {
   return (
     <ReadOnlyTable
+      handPage={{}}
+      initSelect={{ current: 1, size: -1 }}
       rowSelection={props.rowSelection}
       get={queryPermission}
       columns={columns}

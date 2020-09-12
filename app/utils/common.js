@@ -3,12 +3,12 @@ const host = "http://172.19.112.74:8080/";
 //const host = "http://10.1.4.187:8080/";
 // element判断是否含有className
 //拿到token值
-const token = localStorage.getItem("token")
-
+const token = localStorage.getItem("token");
+// const hostUrl = "http://218.56.180.250:9109/tuhui-base";
 
 export function hasClassName(obj, name) {
   let tmpName = obj.className;
-  let tmpReg = new RegExp(name, 'g');
+  let tmpReg = new RegExp(name, "g");
   if (tmpReg.test(tmpName)) {
     return true;
   } else {
@@ -16,59 +16,56 @@ export function hasClassName(obj, name) {
   }
 }
 /*
-*   请求外部数据
-*/
+ *   请求外部数据
+ */
 export function fetchOutData(method, url, data) {
   return fetch(url, {
     method: method,
-    credentials: 'include',
+    credentials: "include",
     headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json',
-      'token': token
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      token: token,
     },
     // 注意 post 时候参数的形式
-    body: data ? JSON.stringify(data) : null
+    body: data ? JSON.stringify(data) : null,
   }).then((res) => {
     return res.ok ? res.json() : Promise.reject("接口出错");
   });
 }
 /*
-*   请求数据
-*/
+ *   请求数据
+ */
 export function fetchData(method, url, data) {
-  url = ("/api" + url);
+  url = "/api" + url;
   return fetch(url, {
     method: method,
-    credentials: 'include',
+    credentials: "include",
     headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'token': token
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/x-www-form-urlencoded",
+      token: token,
     },
     // 注意 post 时候参数的形式
-    body: data ? appendParam(url, data) : null
-
+    body: data ? appendParam(url, data) : null,
   }).then((res) => {
-
     return res.ok ? res.json() : Promise.reject("接口出错");
   });
-
 }
 export function fetchJSONData(method, url, data) {
-  url = ("/api" + url);
+  url = "/api" + url;
   return fetch(url, {
     method: method,
-    credentials: 'include',
+    credentials: "include",
     headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json',
-      'token': token
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      token: token,
     },
     // 注意 post 时候参数的形式
-    body: data ? JSON.stringify(data) : null
+    body: data ? JSON.stringify(data) : null,
   }).then((res) => {
-    if (url === '/api/users/login') {
+    if (url === "/api/users/login") {
       return res.ok ? res : Promise.reject("接口出错");
     } else {
       return res.ok ? res.json() : Promise.reject("接口出错");
@@ -76,62 +73,66 @@ export function fetchJSONData(method, url, data) {
   });
 }
 //
-export const testLogin = (url,data)=>{
-  fetch('http://218.56.180.250:9110/'+url, {
-    method: 'POST',
-    credentials: 'include',
+export const testLogin = (url, data) => {
+  fetch("http://218.56.180.250:9109/" + url, {
+    method: "POST",
+    credentials: "include",
     headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json',
-      'token': token
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      token: token,
     },
     // 注意 post 时候参数的形式
-    body: data ? JSON.stringify(data) : null
+    body: data ? JSON.stringify(data) : null,
   }).then((res) => {
-    if (url === '/api/users/login') {
+    if (url === "/api/users/login") {
       return res.ok ? res : Promise.reject("接口出错");
     } else {
       return res.ok ? res.json() : Promise.reject("接口出错");
     }
-  })
-}
+  });
+};
 
 /*
-*   请求数据
-*/
+ *   请求数据
+ */
 export function fetchGet(url, params) {
-  url = ("/api" + url);
+  url = "/api" + url;
   if (params) {
     let paramsArray = [];
     //拼接参数
-    Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
+    Object.keys(params).forEach((key) =>
+      paramsArray.push(key + "=" + params[key])
+    );
     if (url.search(/\?/) === -1) {
-      url += '?' + paramsArray.join('&')
+      url += "?" + paramsArray.join("&");
     } else {
-      url += '&' + paramsArray.join('&')
+      url += "&" + paramsArray.join("&");
     }
   }
   // fetch 请求
   return fetch(url, {
-    method: 'GET',
-    credentials: 'include',
+    method: "GET",
+    credentials: "include",
     headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json',
-      'token': token
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      token: token,
     },
   }).then((res) => {
     // download(res)
     return res.ok ? res.json() : Promise.reject("接口出错");
   });
-
 }
 //下载文件
 function download(data) {
   if (!data) {
-    return
+    return;
   }
-  var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' })
+  var blob = new Blob([data], {
+    type:
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8",
+  });
   var url = window.URL.createObjectURL(blob);
   var aLink = document.createElement("a");
   aLink.style.display = "none";
@@ -143,8 +144,8 @@ function download(data) {
   window.URL.revokeObjectURL(url); //释放掉blob对象
 }
 /*
-*   拼接参数
-*/
+ *   拼接参数
+ */
 function appendParam(url, params) {
   if (data) {
     var str = "";
@@ -153,18 +154,18 @@ function appendParam(url, params) {
         str += key + "=" + data[key] + "&";
       }
     }
-    return '?' + str;
+    return "?" + str;
   }
-
 }
 /*
-*   拼接基础信息中站点名称和来源
-*/
+ *   拼接基础信息中站点名称和来源
+ */
 export function SpliceSite(result) {
-  let dataArr = []
+  let dataArr = [];
   for (let i = 0; i < result.data.length; i++) {
     dataArr.push({
-      SpliceSiteName: result.data[i].name + "(" + result.data[i].dataSourceDesc + ")",
+      SpliceSiteName:
+        result.data[i].name + "(" + result.data[i].dataSourceDesc + ")",
       warning: result.data[i].warning,
       dataSource: result.data[i].dataSource,
       hourAvg: result.data[i].hourAvg,
@@ -209,8 +210,8 @@ export function SpliceSite(result) {
       gmtcreate: result.data[i].gmtcreate,
       lat: result.data[i].lat,
       lon: result.data[i].lon,
-      minuteAvg: result.data[i].minuteAvg
-    })
+      minuteAvg: result.data[i].minuteAvg,
+    });
   }
   return dataArr;
 }

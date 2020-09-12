@@ -1,12 +1,12 @@
 /**
  * Monitor 2020-05-12
  */
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, compose } from 'redux';
-import * as actions from '@app/redux/actions/monitor';
+import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators, compose } from "redux";
+import * as actions from "@app/redux/actions/map";
 //import Map from "./map/map";
-import Map from './map/map';
+import Map from "./map/map";
 import "./style.scss";
 import Head from "./head/Head";
 import WeatherBox from "./left/WeatherBox";
@@ -17,10 +17,10 @@ import AlarmTable from "./right/AlarmTable";
 import WeatherPic from "./right/WeatherPic";
 import WeatherDy from "./right/WeatherDy";
 import CheckBoxs from "../monitor/bottom/CheckBox";
-import setImg from "@app/resource/setsys.png"
-import { Drawer, Switch, Row, Divider, Checkbox } from 'antd';
-import { none } from 'ol/centerconstraint';
-import SetTitle from '@app/components/setting/SetTitle';
+import setImg from "@app/resource/setsys.png";
+import { Drawer, Switch, Row, Divider, Checkbox } from "antd";
+import { none } from "ol/centerconstraint";
+import SetTitle from "@app/components/setting/SetTitle";
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -29,8 +29,8 @@ class Monitor extends React.PureComponent {
       showRight: true,
       // showBottom: true,
       visible: false,
-      dispalyLeft: 'block',
-      displayRight: 'block',
+      dispalyLeft: "block",
+      displayRight: "block",
       // dispalyBottom: 'block',
       layerVisible: {
         tiandi: true, // 天地图底图
@@ -49,10 +49,10 @@ class Monitor extends React.PureComponent {
         pump: false, // 水泵
         ponding: true, // 积水
         warehouse: false, //物资仓库
-      }
+      },
     };
-    this.onChecked = this.onChecked.bind(this)
-  };
+    this.onChecked = this.onChecked.bind(this);
+  }
   //设置抽屉页
   onClose = () => {
     this.setState({
@@ -80,14 +80,16 @@ class Monitor extends React.PureComponent {
             <WeatherPic></WeatherPic> */}
           </div>
         </div>
-        <div className="m-bottom" >
-          {/* <RainLegend></RainLegend> */}
-        </div>
-        <img onClick={() => {
-          this.setState({
-            visible: true,
-          });
-        }} className="m-set-img" src={setImg}></img>
+        <div className="m-bottom">{/* <RainLegend></RainLegend> */}</div>
+        <img
+          onClick={() => {
+            this.setState({
+              visible: true,
+            });
+          }}
+          className="m-set-img"
+          src={setImg}
+        ></img>
         <Drawer
           title={<SetTitle></SetTitle>}
           placement="right"
@@ -96,24 +98,42 @@ class Monitor extends React.PureComponent {
           visible={this.state.visible}
           width={320}
         >
-          <a style={{ fontSize: 18, color: '#000000fd', fontWeight: 'bold ' }}>主界面</a>
+          <a style={{ fontSize: 18, color: "#000000fd", fontWeight: "bold " }}>
+            主界面
+          </a>
           <Divider />
           <Row>
-            <div><Checkbox checked={this.state.showLeft} onClick={() => {
-              this.setState({
-                showLeft: !this.state.showLeft,
-                displayLeft: this.state.showLeft ? 'none' : 'block'
-              });
-            }} defaultChecked />&nbsp;&nbsp;<a style={{ fontSize: 15, color: '#000000fd' }}>左侧栏</a></div>
+            <div>
+              <Checkbox
+                checked={this.state.showLeft}
+                onClick={() => {
+                  this.setState({
+                    showLeft: !this.state.showLeft,
+                    displayLeft: this.state.showLeft ? "none" : "block",
+                  });
+                }}
+                defaultChecked
+              />
+              &nbsp;&nbsp;
+              <a style={{ fontSize: 15, color: "#000000fd" }}>左侧栏</a>
+            </div>
           </Row>
           <br />
           <Row>
-            <div><Checkbox checked={this.state.showRight} onClick={() => {
-              this.setState({
-                showRight: !this.state.showRight,
-                displayRight: this.state.showRight ? 'none' : 'block'
-              });
-            }} defaultChecked />&nbsp;&nbsp;<a style={{ fontSize: 15, color: '#000000fd' }}>右侧栏</a></div>
+            <div>
+              <Checkbox
+                checked={this.state.showRight}
+                onClick={() => {
+                  this.setState({
+                    showRight: !this.state.showRight,
+                    displayRight: this.state.showRight ? "none" : "block",
+                  });
+                }}
+                defaultChecked
+              />
+              &nbsp;&nbsp;
+              <a style={{ fontSize: 15, color: "#000000fd" }}>右侧栏</a>
+            </div>
           </Row>
 
           {/* <br /> */}
@@ -125,27 +145,30 @@ class Monitor extends React.PureComponent {
               });
             }} defaultChecked />下栏目
           </Row> */}
-          <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked}></CheckBoxs>
+          <CheckBoxs
+            layerVisible={layerVisible}
+            onChecked={this.onChecked}
+          ></CheckBoxs>
         </Drawer>
       </div>
     );
   }
   componentDidMount() {
+    this.props.actions.getFloodType();
   }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
     if (layerVisible[layerKey] === checked) return;
     layerVisible[layerKey] = checked;
     this.setState({
-      layerVisible: { ...layerVisible }
+      layerVisible: { ...layerVisible },
     });
   }
 }
 // -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
-  return {
-  };
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -153,7 +176,4 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(actions, dispatch),
   };
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Monitor);
+export default connect(mapStateToProps, mapDispatchToProps)(Monitor);

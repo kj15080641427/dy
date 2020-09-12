@@ -8,26 +8,8 @@ import * as actions from "@app/redux/actions/monitor";
 import UbiMap from "./ubimap";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
-import moment from "moment";
-
 import "./style.scss";
-import {
-  templateWater,
-  templateRain,
-  templatePonding,
-  templateWareHouse,
-} from "./template";
-import {
-  getAll,
-  getWaterRealTime,
-  getWaterWarning,
-  getGate,
-  getPump,
-  getWfsRiver,
-  getWarehouse,
-  getWarehouseMt,
-  getVideosByCode,
-} from "@app/data/request";
+import { templateWater } from "./template";
 import VideoControl from "@app/components/video/VideoControl";
 
 import Person from "./overlays/Person";
@@ -39,8 +21,6 @@ import Gate from "./overlays/Gate";
 import Pump from "./overlays/Pump";
 import WfsRiver from "./overlays/WfsRiver";
 import Warehouse from "./overlays/Warehouse";
-import { message } from "antd";
-import { getWaterHistory } from "../../../data/request";
 class Map extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -99,23 +79,22 @@ class Map extends React.PureComponent {
     );
   }
   componentDidUpdate(prevProps, prevState) {
-    let { layerVisible } = this.props;
+    let { layerVisible, water } = this.props;
     if (layerVisible !== prevProps.layerVisible) {
       this.setVisible();
     }
-    if (
-      layerVisible.water !== prevProps.layerVisible.water ||
-      layerVisible.rain !== prevProps.layerVisible.rain
-    ) {
+    if (layerVisible.water !== prevProps.layerVisible.water) {
       this._zoom = null;
       this.toggleTagByMapZoom();
+    }
+    if (water) {
+      this.drawFeatures(water);
     }
   }
   componentDidMount() {
     this.createMap();
     this.setVisible();
     this.addEvent();
-    this.loadData();
     this.videoControl.login();
   }
   componentWillUnmount() {
@@ -124,14 +103,7 @@ class Map extends React.PureComponent {
       clearTimeout(this._resizeTimeout);
     }
 
-    this.map.stopSelectFeature("video");
-    this.map.stopSelectFeature("ponding");
-    this.map.stopSelectFeature("rain");
     this.map.stopSelectFeature("water");
-    this.map.stopSelectFeature("gate");
-    this.map.stopSelectFeature("pump");
-    this.map.stopSelectFeature("person");
-    this.map.stopSelectFeature("warehouse");
     this.map.unView("change:resolution", this.mapViewChanged.bind(this));
 
     this._mapMove && this._mapMove.remove();
@@ -187,13 +159,13 @@ class Map extends React.PureComponent {
 
     //加入交通实况图
     this.map.addGeo({
-      url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
       params: {
-        'LAYERS': 'dy:traffic',
-        'TILED': true
+        LAYERS: "dy:traffic",
+        TILED: true,
       },
       zIndex: 11,
-      key: 'traffic'
+      key: "traffic",
     });
 
     this.map.addVector({
@@ -215,213 +187,64 @@ class Map extends React.PureComponent {
         font: "16px sans-serif",
       },
     });
-   
-    this.map.addVector({
-      key: "gate",
-      zIndex: 30,
-      style: {
-        anchor: [0.5, 0.5],
-        strokeColor: "#ff0000",
-        width: 1,
-        fillColor: "#1890ff",
-        fontColor: "#82B2FF",
-        fontOffset: [0, 0],
-        fontText: function (featureObj) {
-          return featureObj.name + "";
-        },
-        font: "16px sans-serif",
-      },
-    });
-    this.map.addVector({
-      key: "pump",
-      zIndex: 30,
-      style: {
-        anchor: [0.5, 0.5],
-        strokeColor: "#ff0000",
-        width: 1,
-        fillColor: "#1890ff",
-        fontColor: "#82B2FF",
-        fontOffset: [0, 0],
-        src: function (featureObj) {
-          return require("../../../resource/pump.svg")["default"];
-        },
-        fontText: function (featureObj) {
-          return featureObj.name + "";
-        },
-        font: "16px sans-serif",
-      },
-    });
-    this.map.addVector({
-      key: "warehouse",
-      zIndex: 30,
-      style: {
-        anchor: [0.5, 0.5],
-        strokeColor: "#ff0000",
-        width: 1,
-        fillColor: "#1890ff",
-        fontColor: "#82B2FF",
-        fontOffset: [20, 0],
-        src: function (featureObj) {
-          return require("../../../resource/icon/warehouse.svg")["default"];
-        },
-        fontText: function (featureObj) {
-          return featureObj.name + "";
-        },
-        font: "16px sans-serif",
-      },
-    });
-    this.map.startHighlightFeatureonLayer("person");
-    this.map.startHighlightFeatureonLayer("video");
-    this.map.startHighlightFeatureonLayer("rain");
+
     this.map.startHighlightFeatureonLayer("water");
-    this.map.startHighlightFeatureonLayer("ponding");
-    this.map.startHighlightFeatureonLayer("gate");
-    this.map.startHighlightFeatureonLayer("pump");
-    this.map.startHighlightFeatureonLayer("warehouse");
     this.map.startSelectFeature("person", (param) => {
       this.addOverlay(Person.type, param);
-
     });
-    this.map.startSelectFeature("water", (param) => {
-      //查询实时水位
-      let queryWater = getWaterRealTime({
-        stcd: param.stcd,
-        current: 1,
-        size: 1,
-      });
-      //查询站点视频信息
-      console.log(param, "PARAM");
-      let queryVideo = getVideosByCode({ queryId: param.siteBaseID });
-      let endTime = new moment().format("YYYY-MM-DD HH:mm:ss");
-      let beginTime = moment()
-        .subtract(24, "hours")
-        .format("YYYY-MM-DD HH:mm:ss");
-      //查询24小时水位
-      let queryWaterHistory = getWaterHistory({
-        stcd: param.stcd,
-        current: 1,
-        size: 10000,
-        starttm: beginTime,
-        endtm: endTime,
-      });
-      Promise.all([queryWater, queryVideo, queryWaterHistory])
-        .then((result) => {
-          let res = result[0];
-          if (res.code === 200) {
-            let records = (res.data.records && res.data.records[0]) || null;
-            this.props.actions.setDetailData({
-              key: "water",
-              value: records,
-            });
-            let videoObject = result[1].data;
-            let waterLevels = result[2].data.records;
-            let newParam = records ? { ...param, ...records } : param;
-            newParam = videoObject
-              ? { ...newParam, videos: [...videoObject] }
-              : newParam;
-            newParam = waterLevels
-              ? { ...newParam, waters: [...waterLevels] }
-              : newParam;
-            newParam.videoControl = this.videoControl;
-            this.addOverlay(Water.type, newParam);
-          } else {
-            return Promise.reject(res.msg || "未知错误");
-          }
-        })
-        .catch((e) => {
-          console.log(e, "=========");
-          message.error("获取水位详情失败");
-        });
-    });
-    this.map.startSelectFeature("ponding", (param) => {
-      let queryWater = getWaterRealTime({
-        stcd: param.stcd,
-        current: 1,
-        size: 1,
-      });
-      let queryVideo = getVideosByCode({ code: param.code });
-      let endTime = new moment().format("YYYY-MM-DD HH:mm:ss");
-      let beginTime = moment()
-        .subtract(24, "hours")
-        .format("YYYY-MM-DD HH:mm:ss");
-      let queryWaterHistory = getWaterHistory({
-        stcd: param.stcd,
-        current: 1,
-        size: 10000,
-        starttm: beginTime,
-        endtm: endTime,
-      });
-      Promise.all([queryWater, queryVideo, queryWaterHistory])
-        .then((result) => {
-          let res = result[0];
-          if (res.code === 200) {
-            let records = (res.data.records && res.data.records[0]) || null;
-            this.props.actions.setDetailData({
-              key: "water",
-              value: records,
-            });
-            let videoObject = result[1].data;
-            let waterLevels = result[2].data.records;
-            let newParam = records ? { ...param, ...records } : param;
-            newParam = videoObject
-              ? { ...newParam, videos: [...videoObject] }
-              : newParam;
-            newParam = waterLevels
-              ? { ...newParam, waters: [...waterLevels] }
-              : newParam;
-            newParam.videoControl = this.videoControl;
-            this.addOverlay(Water.type, newParam);
-          } else {
-            return Promise.reject(res.msg || "未知错误");
-          }
-        })
-        .catch((e) => {
-          message.error("获取水位详情失败");
-        });
-    });
-   
-    this.map.startSelectFeature("gate", (param) => {
-      let newParam = { ...param };
-      this.addOverlay(Gate.type, newParam);
-    });
-    this.map.startSelectFeature("pump", (param) => {
-      let newParam = { ...param };
-      this.addOverlay(Pump.type, newParam);
-    });
-    this.map.startSelectFeature("warehouse", (param) => {
-      // return emitter.emit("map-move-focus", [118.333, 37.333], 3000);
-      let { details } = this.props;
-      if (details.warehouse[param.id]) {
-        this.addOverlay(Warehouse.type, {
-          ...param,
-          ...details.warehouse[param.id],
-        });
-      } else {
-        getWarehouseMt({ materialWarehouseId: param.id })
-          .then((res) => {
-            if (res.code === 200) {
-              let record = res.data || [];
-              this.props.actions.setDetailData({
-                key: "warehouse",
-                value: { materials: record, id: param.id },
-                idKey: "id",
-              });
-              this.addOverlay(
-                Warehouse.type,
-                record ? { ...param, materials: record, id: param.id } : param
-              );
-            } else {
-              return Promise.reject(res.msg || "未知错误");
-            }
-          })
-          .catch((e) => {
-            message.error("获取仓库详情失败");
-          });
-      }
-    });
+    // this.map.startSelectFeature("water", (param) => {
+    //   //查询实时水位
+    //   let queryWater = getWaterRealTime({
+    //     stcd: param.stcd,
+    //     current: 1,
+    //     size: 1,
+    //   });
+    //   //查询站点视频信息
+    //   console.log(param, "PARAM");
+    //   let queryVideo = getVideosByCode({ queryId: param.siteBaseID });
+    //   let endTime = new moment().format("YYYY-MM-DD HH:mm:ss");
+    //   let beginTime = moment()
+    //     .subtract(24, "hours")
+    //     .format("YYYY-MM-DD HH:mm:ss");
+    //   //查询24小时水位
+    //   let queryWaterHistory = getWaterHistory({
+    //     stcd: param.stcd,
+    //     current: 1,
+    //     size: 10000,
+    //     starttm: beginTime,
+    //     endtm: endTime,
+    //   });
+    //   Promise.all([queryWater, queryVideo, queryWaterHistory])
+    //     .then((result) => {
+    //       let res = result[0];
+    //       if (res.code === 200) {
+    //         let records = (res.data.records && res.data.records[0]) || null;
+    //         this.props.actions.setDetailData({
+    //           key: "water",
+    //           value: records,
+    //         });
+    //         let videoObject = result[1].data;
+    //         let waterLevels = result[2].data.records;
+    //         let newParam = records ? { ...param, ...records } : param;
+    //         newParam = videoObject
+    //           ? { ...newParam, videos: [...videoObject] }
+    //           : newParam;
+    //         newParam = waterLevels
+    //           ? { ...newParam, waters: [...waterLevels] }
+    //           : newParam;
+    //         newParam.videoControl = this.videoControl;
+    //         this.addOverlay(Water.type, newParam);
+    //       } else {
+    //         return Promise.reject(res.msg || "未知错误");
+    //       }
+    //     })
+    //     .catch((e) => {
+    //       console.log(e, "=========");
+    //       message.error("获取水位详情失败");
+    //     });
+    // });
     this.map.on("moveend", () => {
       let a = this.map.getView().calculateExtent();
-      console.log(a);
     });
     this.map.onFeatureClicked((feature) => {
       if (feature) {
@@ -462,60 +285,13 @@ class Map extends React.PureComponent {
       } else {
         this.map.hideTagBox("water_tag");
       }
-      // if (layerVisible.rain) {
-      //   this.map.showTagBox("rain_tag");
-      // } else {
-      //   this.map.hideTagBox("rain_tag");
-      // }
-      //
-      // if (layerVisible.ponding) {
-      //   this.map.showTagBox('ponding_tag');
-      // } else {
-      //   this.map.hideTagBox('ponding_tag');
-      // }
-
-      // this.map.showTagOnLayer("water");
-      // this.map.showTagOnLayer("rain");
     } else {
       if (this._zoom && this._zoom < 11) return;
-      //console.log("hide");
       this.map.hideTagBox("water_tag");
-      // this.map.hideTagBox("rain_tag");
-      // this.map.hideTagBox("ponding_tag");
     }
     this._zoom = zoom;
   }
-  onWfsRiverClick(props) {
-    props.id = props.NAME;
-    let { details } = this.props;
-    if (details.wfsRiver[props.NAME]) {
-      this.addOverlay(WfsRiver.type, {
-        ...props,
-        ...details.wfsRiver[props.NAME],
-      });
-    } else {
-      getWfsRiver({ name: props.NAME })
-        .then((res) => {
-          if (res.code === 200) {
-            let record = (res.data && res.data[0]) || null;
-            this.props.actions.setDetailData({
-              key: "wfsRiver",
-              value: record,
-              idKey: "name",
-            });
-            this.addOverlay(
-              WfsRiver.type,
-              record ? { ...props, ...record } : props
-            );
-          } else {
-            return Promise.reject(res.msg || "未知错误");
-          }
-        })
-        .catch((e) => {
-          message.error("获取河流详情失败");
-        });
-    }
-  }
+
   addOverlay(key, param) {
     let id = param.id;
     let { overlays } = this.state;
@@ -547,7 +323,6 @@ class Map extends React.PureComponent {
         this.map.setVisible(layerKey, show);
       });
       // 特殊几个layer, 如洪水
-      // this.flood.setVisible(layerVisible.flood);
     }
   }
   addEvent() {
@@ -609,216 +384,60 @@ class Map extends React.PureComponent {
       this._windowCloseFlag = true;
     }, 0);
   }
-  loadData() {
-    // 加载雨量站和水位站,水位站报警信息
-    let warningPro = getWaterWarning({});
-    let allPro = getAll({ type: 2 });
-    let _this = this;
-    Promise.all([allPro, warningPro])
-      .then((res) => {
-        if (res[0].code === 200) {
-          let data = this.transformData(res[0].data);
+  // loadData() {
+  //   // 加载雨量站和水位站,水位站报警信息
+  //   let warningPro = getWaterWarning({});
+  //   let allPro = getAll({ type: 2 });
+  //   let _this = this;
+  //   Promise.all([allPro, warningPro])
+  //     .then((res) => {
+  //       if (res[0].code === 200) {
+  //         let data = this.transformData(res[0].data);
 
-          this.props.actions.initBaseData(data);
-          //如果显示报警
-          if (_this.props.layerVisible.waterWarning === true) {
-            this.props.actions.setMutiDetailData({
-              key: "water",
-              value: (res[1] && res[1].data) || [],
-            });
-          }
+  //         this.props.actions.initBaseData(data);
+  //         //如果显示报警
+  //         if (_this.props.layerVisible.waterWarning === true) {
+  //           this.props.actions.setMutiDetailData({
+  //             key: "water",
+  //             value: (res[1] && res[1].data) || [],
+  //           });
+  //         }
 
-          this.drawFeatures(res[0].data);
-        }
-      })
-      .catch((e) => {
-        message.error("获取基础资料失败");
-      });
-    // 加载视频数据
-    // getAllVideo({}).then((res) => {
-    //   if (res.code === 200) {
-    //     this.props.actions.addVideos(res.data);
-    //     this.map.addFeatures("video", res.data.map((item) => {
-    //       return {
-    //         ...item,
-    //         type: "Point",
-    //         id: item.radioID + "",
-    //         lonlat: [item.lon, item.lat],
-    //
-    //       };
-    //     }));
-    //   }
-    // })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
-    // 加载水闸数据
-    getGate({})
-      .then((res) => {
-        if (res.code === 200) {
-          this.props.actions.addGates(res.data);
-          this.map.addFeatures(
-            "gate",
-            res.data
-              .filter((item) => {
-                return item.lat > 3 && item.lat < 53;
-              })
-              .map((item) => {
-                return {
-                  ...item,
-                  type: "LineString",
-                  id: item.gateID + "",
-                  name: item.name,
-                  rivername: item.rivername,
-                  management: item.management,
-                  isMuti: true,
-                  rotate: 0,
-                  rotateAnchor: [150, 50],
-                  lonlats: [item.lon, item.lat],
-                  coords: [
-                    [
-                      [0, 0],
-                      [0, 100],
-                      [300, 100],
-                      [300, 0],
-                      [0, 0],
-                      [0, 100],
-                      [300, 0],
-                      [0, 0],
-                      [300, 100],
-                    ],
-                  ],
-                };
-              })
-          );
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    // 加载水泵数据
-    getPump({})
-      .then((res) => {
-        if (res.code === 200) {
-          this.props.actions.addPumps(res.data);
-          this.map.addFeatures(
-            "pump",
-            res.data.map((item) => {
-              return {
-                ...item,
-                type: "Point",
-                id: item.pumpID + "",
-                name: item.name,
-                lonlat: [item.lon, item.lat],
-              };
-            })
-          );
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    // 防汛物资仓库
-    getWarehouse({})
-      .then((res) => {
-        if (res.code === 200) {
-          this.props.actions.addWarehouse(res.data);
-          this.map.addFeatures("warehouse", templateWareHouse(res.data));
-        }
-      })
-      .catch(() => {
-        console.log(e);
-      });
-    // 轮询预警更新
-    if (this.props.layerVisible.waterWarning === true)
-      this.alarmTimer = window.setInterval(() => {
-        getWaterWarning({}).then((res) => {
-          if (res.code === 200) {
-            //res.data.records[0].stcd = "31106670";
-            this.props.actions.setMutiDetailData({
-              key: "water",
-              value: (res && res.data) || [],
-            });
-            let { water, details } = this.props;
-            this.map.updateFeatures(
-              "water",
-              templateWater(water, details.water)
-            );
-            this.addWaterWaring(res.data);
-          }
-        });
-      }, 30000);
+  //       }
+  //     })
+  //     .catch((e) => {
+  //       message.error("获取基础资料失败");
+  //     });
+  //   // 轮询预警更新
+  //   if (this.props.layerVisible.waterWarning === true)
+  //     this.alarmTimer = window.setInterval(() => {
+  //       getWaterWarning({}).then((res) => {
+  //         if (res.code === 200) {
+  //           this.props.actions.setMutiDetailData({
+  //             key: "water",
+  //             value: (res && res.data) || [],
+  //           });
+  //           let { water, details } = this.props;
+  //           this.map.updateFeatures(
+  //             "water",
+  //             templateWater(water, details.water)
+  //           );
+  //           this.addWaterWaring(res.data);
+  //         }
+  //       });
+  //     }, 30000);
+  // }
+  drawFeatures() {
+    const { water } = this.props;
+    if (water && water[0]) {
+      this.map.addFeatures("water", templateWater(water, {}));
+      this.addWaterWaring(Object.values({}));
+      this.addWaterTagBox(water);
+    }
 
-    // // 模拟洪水
-    // setInterval(() => {
-    //   let data = [];
-    //   for (let i = 0; i < 195; i++){
-    //     let r = 'R' + i;
-    //     data.push({ r: r, d: Math.random() });
-    //   }
-    //   this.flood.updateData(data)
-    // }, 1000);
-    // this.map.addAlarm("alarm001", [118.67, 37.43]);
-    // this.map.addFeatures("person", [
-    //   {
-    //     type: "Point",
-    //     id: "person001",
-    //     lonlat: [118.67, 37.43],
-    //     heading: 0
-    //   },
-    //   {
-    //     type: "Point",
-    //     id: "person002",
-    //     lonlat: [118.37, 37.43],
-    //     heading: 0
-    //   },
-    // ]);
-  }
-  drawFeatures(data) {
-    let { rain, water, details, ponding } = this.props;
-    var test = [];
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].riverwaterdataList && data[i].riverwaterdataList[0]) {
-        test.push({
-          ...data[i],
-          ...data[i].riverwaterdataList[0],
-          ...data[i].siteWaterLevels[0],
-        });
-      }
-    }
-    if (!data) return;
-    if (test && test.length) {
-      this.map.addFeatures("rain", templateRain(test, data));
-      this.addRainTagBox(test);
-    }
-    if (test && test.length) {
-      this.map.addFeatures("water", templateWater(test, details.water));
-      this.addWaterWaring(Object.values(details.water));
-      this.addWaterTagBox(test);
-      // this.map.startTagOnLayer("water");
-    }
-    if (ponding && ponding.length) {
-      this.map.addFeatures("ponding", templatePonding(ponding, details.water));
-      this.addPondingTagBox(ponding);
-    }
     // 计算是或否显示tagbox
     this._zoom = null;
     this.toggleTagByMapZoom();
-  }
-  addRainTagBox(rain) {
-    if (rain && rain.length) {
-      rain.forEach((r) => {
-        let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("rain_tag_" + r.stcd, [r.lon, r.lat], {
-          title: name,
-          subTitle:
-            r.dayAvg === null || r.dayAvg === undefined
-              ? "--"
-              : (r.dayAvg * 1).toFixed(1) + "mm",
-          prefix: "rain_tag",
-        });
-      });
-    }
   }
   addWaterTagBox(water) {
     if (water && water.length) {
@@ -836,21 +455,6 @@ class Map extends React.PureComponent {
     }
   }
 
-  addPondingTagBox(water) {
-    if (water && water.length) {
-      water.forEach((r) => {
-        let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("ponding_tag_" + r.stcd, [r.lon, r.lat], {
-          title: name,
-          subTitle:
-            r.z === null || r.z === undefined
-              ? "--"
-              : (r.z * 100).toFixed(1) + "cm",
-          prefix: "ponding_tag",
-        });
-      });
-    }
-  }
   addWaterWaring(warningWater) {
     this.map.removeAlarmByString("alarm_water_");
     if (!warningWater || !warningWater.length) return;
@@ -859,29 +463,6 @@ class Map extends React.PureComponent {
         this.map.addAlarm("alarm_water_" + w.stcd, [w.lon, w.lat]);
       });
     }
-  }
-  transformData(data) {
-    if (!data || !data.length) return {};
-    let obj = {
-      rain: [],
-      water: [],
-      ponding: [],
-    };
-    data.forEach((item) => {
-      //雨量站点
-      if ([3, 5, 6, 10].indexOf(item.indtype) > -1) {
-        obj.rain.push(item);
-      }
-      //水位站点
-      if ([1, 2, 7, 8, 11].indexOf(item.indtype) > -1) {
-        obj.water.push(item);
-      }
-      //积水点站点
-      if ([9, 11].indexOf(item.indtype) > -1) {
-        obj.ponding.push(item);
-      }
-    });
-    return obj;
   }
   onOverlayClose(id, type) {
     let { overlays } = this.state;
@@ -922,17 +503,10 @@ class Map extends React.PureComponent {
       this.map.removeOverlay("focus");
     }, duration);
   }
-  // onFloodClick(featureProp) {
-  //   console.log(featureProp);
-  // }
 }
 function mapStateToProps(state) {
   return {
-    water: state.monitor.water,
-    rain: state.monitor.rain,
-    ponding: state.monitor.ponding,
-    details: state.monitor.details,
-    warehouse: state.monitor.warehouse,
+    water: state.mapAboutReducers.water,
   };
 }
 

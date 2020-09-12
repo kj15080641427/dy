@@ -49,7 +49,6 @@ export const water = [
     render: (value) => {
       return value && value[0] ? value[0].z.toFixed(2) : "-";
     },
-    // sorter: (a, b) => a.z - b.z,
   },
   {
     title: "警戒水位(m)",
@@ -58,7 +57,6 @@ export const water = [
     render: (value) => {
       return value && value[0] ? (value[0].warning * 1).toFixed(2) : "-";
     },
-    // sorter: (a, b) => a.warning - b.warning,
   },
   {
     title: "更新时间",
@@ -208,35 +206,64 @@ export const flood = [
   },
   {
     title: "水深(m)",
-    dataIndex: "minuteAvg",
+    dataIndex: "riverwaterdataList",
     width: 120,
-    className: "column-money",
-    render: (minuteAvg) =>
-      minuteAvg == "-" ? "-" : (minuteAvg * 1).toFixed(1),
-    sorter: (a, b) => a.minuteAvg - b.minuteAvg,
+    render: (value) => (value && value[0] ? value[0].z : "--"),
   },
   {
     title: "更新时间",
-    dataIndex: "ztm",
-    className: "column-money",
-    sorter: (a, b) => new Date(b.ztm).getTime() - new Date(a.ztm).getTime(),
-    render: (value) =>
-      !value ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
+    dataIndex: "riverwaterdataList",
+    render: (value) => (value && value[0] ? value[0].tm : "--"),
   },
   {
     title: "更新状态",
-    dataIndex: "ztm",
-    width: 160,
+    dataIndex: "riverwaterdataList",
     className: "column-money",
     render: (value) => {
-      let startdata = new Date().getTime();
-      let date = new Date(value).getTime();
-      if (!value) {
-        return <a style={{ color: "red" }}>离线</a>;
-      } else if (startdata - date >= 1000 * 60 * 60 * 24 * 3) {
-        return <a style={{ color: "orange" }}>三天前</a>;
+      if (value && value[0]) {
+        let startdata = new Date().getTime();
+        let date = new Date(value[0].tm).getTime();
+        if (startdata - date >= 1000 * 60 * 60 * 24 * 3) {
+          return <a style={{ color: "orange" }}>三天前</a>;
+        } else {
+          return <a>最近更新</a>;
+        }
       } else {
-        return <a>最近更新</a>;
+        return <a>离线</a>;
+      }
+    },
+  },
+];
+export const video = [
+  {
+    title: "站点名称",
+    dataIndex: "name",
+    render: (value) => value || "-",
+  },
+  {
+    title: "地址",
+    dataIndex: "address",
+    ellipsis: true,
+    render: (value) => (value === null ? "-" : value),
+  },
+  {
+    title: "纬度",
+    dataIndex: "lat",
+    render: (value) => (value === null ? "-" : value),
+  },
+  {
+    title: "经度",
+    dataIndex: "lon",
+    render: (value) => (value === null ? "-" : value),
+  },
+  {
+    title: "状态",
+    dataIndex: "isOnline",
+    render: (isOnline) => {
+      if (isOnline === "0") {
+        return <a>在线</a>;
+      } else {
+        return <a style={{ color: "red" }}>离线</a>;
       }
     },
   },

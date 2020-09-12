@@ -1,0 +1,74 @@
+.table-background {
+  color: white;
+  background: #003366;
+}
+
+.set-table-style {
+  // height: 400px;
+  width: 100%;
+  padding: 0 10px;
+  //翻页样式
+  .ant-pagination-item a {
+    color: rgb(0, 160, 234);
+  }
+  .anticon svg {
+    color: rgb(0, 160, 234);
+  }
+  .ant-pagination-jump-prev
+    .ant-pagination-item-container
+    .ant-pagination-item-ellipsis,
+  .ant-pagination-jump-next
+    .ant-pagination-item-container
+    .ant-pagination-item-ellipsis {
+    color: rgb(0, 160, 234);
+  }
+  .ant-select-single.ant-select-sm:not(.ant-select-customize-input)
+    .ant-select-selector {
+    color: rgb(0, 160, 234);
+  }
+  .ant-table-tbody:hover {
+    background: red;
+  }
+  .ant-table-tbody > tr.ant-table-row:hover > td {
+    background: #003366;
+  }
+  .ant-table-tbody > tr > td {
+    border-bottom: 1px solid rgb(0, 99, 164);
+    -webkit-transition: background 0.3s;
+    transition: background 0.3s;
+  }
+  //
+  .ant-table-pagination.ant-pagination {
+    color: rgb(20, 100, 216);
+  }
+  .ant-pagination-simple .ant-pagination-simple-pager input {
+    margin-right: 0px;
+    padding: 0 0px;
+  }
+  .ant-table-container table > thead > tr:first-child th:first-child :hover {
+    color: white;
+    background: rgb(20, 100, 216);
+  }
+  .ant-table-container table > thead > tr:first-child th:last-child :hover {
+    color: white;
+    background: rgb(20, 100, 216);
+  }
+  .ant-table-small .ant-table-thead > tr > th {
+    color: white;
+    background: rgb(20, 100, 216);
+  }
+}
+.router-item {
+  position: absolute;
+  right: 10px;
+  top: 80px;
+  background: rgba(255, 255, 255, 0);
+  padding-top: 10px;
+  margin-left: 15px;
+  img {
+    border-radius: 10px;
+    padding-bottom: 5px;
+    height: 80px;
+    width: 80px;
+  }
+}

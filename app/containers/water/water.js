@@ -3,24 +3,27 @@
  */
 import React from "react";
 import { connect } from "react-redux";
-import { bindActionCreators, compose } from "redux";
-import * as actions from "@app/redux/actions/monitor";
-//import Map from "./map/map";
+import { bindActionCreators } from "redux";
+import * as actions from "@app/redux/actions/map";
+import PropTypes from "prop-types";
 import Map from "./map/map";
 import "./style.scss";
 import Head from "./head/Head";
-import WeatherBox from "./left/WeatherBox";
-import WeatherChart from "./left/WeatherChart";
-import WeatherTable from "./left/WeatherTable";
-import PannelBtn from "./right/PannelBtn";
-import AlarmTable from "../floodWarning/right/AlarmTable";
-import WeatherPic from "./right/WeatherPic";
-import WeatherDy from "./right/WeatherDy";
+// import PannelBtn from "./right/PannelBtn";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
-import { Drawer, Switch, Row, Divider, Checkbox } from "antd";
-import { none } from "ol/centerconstraint";
+import { Drawer, Row, Divider, Checkbox } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
+import moment from "moment";
+import { BoxTitle, BoxHead, RenderBox } from "../../components/chart/decorate";
+import {
+  radarChart,
+  barChart,
+  pieChart,
+  lineChart,
+} from "../../components/chart/chart";
+import { TableShow } from "../../components/chart/table";
+import RouterList from "../../components/routerLiis";
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -60,29 +63,196 @@ class Monitor extends React.PureComponent {
       visible: false,
     });
   };
+  //来源图
+  sourceChart = () => {
+    const { count } = this.props;
+    let data = [];
+    count?.watercount?.list?.map((item) => {
+      data.push({
+        name: item.dataSourceDesc || "暂无数据",
+        value: item.number,
+      });
+    });
+    pieChart("pie-chart", data);
+  };
+  //在线图
+  onlineChart = () => {
+    const { water } = this.props;
+    let dyOnline = 0; //东营
+    let dyLine = 0;
+    let grOnline = 0; //广饶
+    let grLine = 0;
+    let ljOnlie = 0; //利津
+    let ljLine = 0;
+    let klOnline = 0; //垦利
+    let klLine = 0;
+    let hkOnline = 0; //河口
+    let hkLine = 0;
+    let startdata = new Date().getTime();
+    // 1000 * 60 * 60 * 24 * 3
+    water.map((item) => {
+      if (item.z) {
+        if (
+          startdata - new Date(item?.tm).getTime() <
+          259200000
+          // item.region == "370502"
+        ) {
+          switch (item.region) {
+            case "370502":
+              dyOnline++;
+              break;
+            case "370523":
+              grOnline++;
+              break;
+            case "370522":
+              ljOnlie++;
+              break;
+            case "370505":
+              klOnline++;
+              break;
+            case "370503":
+              hkOnline++;
+              break;
+            default:
+              break;
+          }
+        } else {
+          switch (item.region) {
+            case "370502":
+              dyLine++;
+              break;
+            case "370523":
+              grLine++;
+              break;
+            case "370522":
+              ljLine++;
+              break;
+            case "370505":
+              klLine++;
+              break;
+            case "370503":
+              hkLine++;
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    });
+    barChart(
+      "bar-chart",
+      ["在线", "不在线"],
+      [dyOnline, grOnline, ljOnlie, hkOnline, klOnline],
+      [dyLine, grLine, ljLine, hkLine, klLine]
+    );
+  };
+  componentDidUpdate() {
+    const { water, count } = this.props;
+    if (count) {
+      this.sourceChart();
+    }
+    if (water) {
+      console.log(moment().format("Do"), "WAYER");
+      this.onlineChart();
+      // barChart("bar-chart");
+      radarChart("radar-chart");
+      lineChart("line-chart");
+    }
+  }
   render() {
+    const { water, count } = this.props;
+
     let { layerVisible, displayRight, displayLeft } = this.state;
+
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible}></Map>
         <Head></Head>
         <div style={{ display: displayLeft }}>
-          <div className="m-left">
-            {/* <WeatherBox></WeatherBox>
-            <WeatherChart></WeatherChart> */}
-            <AlarmTable></AlarmTable>
-            <WeatherTable></WeatherTable>
+          <div className="chart-left">
+            <BoxHead />
+            <div className="table-backgrpund">
+              <div className="table-title-text">
+                超警戒水位<span>{5}</span>次
+              </div>
+              <TableShow
+                columns={[
+                  { name: "站点名称", dataIndex: "name" },
+                  { name: "警戒水位", dataIndex: "warning" },
+                  { name: "水位", dataIndex: "z" },
+                  {
+                    name: "更新时间",
+                    dataIndex: "tm",
+                    render: (value) => {
+                      let a = value.split(" ");
+                      let b = a[1].split(":");
+                      return `${a[0]} ${b[0]}:${b[1]}`;
+                    },
+                  },
+                ]}
+                dataSource={water || []}
+              />
+            </div>
+            <RenderBox title={"报警统计"} hasTitle>
+              <div className="pie-flex-layout">
+                <div className="radar-chart" id="radar-chart"></div>
+                <div className="flex-layout-right">
+                  <div>
+                    今日累计报警<a>1</a>次
+                  </div>
+                  <div>
+                    过去七天累计报警<a>2</a>次
+                  </div>
+                  <div>
+                    上月累计报警<a>3</a>次
+                  </div>
+                </div>
+              </div>
+            </RenderBox>
+            <RenderBox title={"报警信息"} hasTitle>
+              <div className="line-chart" id="line-chart"></div>
+            </RenderBox>
           </div>
+          {/* <WeatherTable></WeatherTable> */}
         </div>
+
         <div style={{ display: displayRight }}>
-          <div className="m-right">
-            <PannelBtn></PannelBtn>
-            {/* <WeatherDy></WeatherDy>
-            <AlarmTable></AlarmTable>
-            <WeatherPic></WeatherPic> */}
+          <div className="chart-right">
+            <div>
+              {/* 水位站点在线统计图 */}
+              <RenderBox title={"水位站点在线统计图"} hasTitle>
+                <div className="bar-chart" id="bar-chart"></div>
+              </RenderBox>
+              {/* 来源图 */}
+              <RenderBox title={"水位站点在线统计图"} hasTitle>
+                <div className="pie-flex-layout">
+                  <div className="pie-chart" id="pie-chart"></div>
+                  <div style={{ width: "200px" }}>
+                    {count?.watercount?.list.map((item) => {
+                      return (
+                        <div key={item.dataSourceDesc} className="flex-layout">
+                          <div>{item.dataSourceDesc || "暂无数据"}</div>
+                          <div className="pie-number">{item.number}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </RenderBox>
+              {/* 视频 */}
+              <div className="radar-box">
+                <BoxTitle title="水位站点来源统计图" />
+                {/* <div className="bar-chart" id="bar-chart"></div> */}
+              </div>
+            </div>
+          </div>
+          {/* 路由 */}
+          <div className="router-list">
+            <RouterList></RouterList>
           </div>
         </div>
-        <div className="m-bottom">{/* <RainLegend></RainLegend> */}</div>
+
+        <div className="m-bottom"></div>
         <img
           onClick={() => {
             this.setState({
@@ -155,20 +325,31 @@ class Monitor extends React.PureComponent {
       </div>
     );
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.actions.getWaterType();
+    this.props.actions.getCountStation();
+  }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
-    if (layerVisible[layerKey] === checked) return;
+    if (layerVisible[layerKey] === checked) {
+      return;
+    }
     layerVisible[layerKey] = checked;
     this.setState({
       layerVisible: { ...layerVisible },
     });
   }
 }
-// -------------------redux react 绑定--------------------
-
+Monitor.propTypes = {
+  actions: PropTypes.object,
+  water: PropTypes.object,
+  count: PropTypes.object,
+};
 function mapStateToProps(state) {
-  return {};
+  return {
+    water: state.mapAboutReducers.water,
+    count: state.mapAboutReducers.count,
+  };
 }
 
 function mapDispatchToProps(dispatch) {

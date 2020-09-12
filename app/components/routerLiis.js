@@ -6,19 +6,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./style.scss";
-import "./style.scss";
 import { Col } from "antd";
 import ddfa from "@app/resource/ddfa.png";
 import hyyb from "@app/resource/hyyb.png";
 import hhsq from "@app/resource/hhsq.png";
-import fxyj from "../../../resource/fxyj.png";
-import sjzx from "../../../resource/sjzx.png";
-import spjk from "../../../resource/spjk.png";
-import yqjk from "../../../resource/yqjk.png";
-import sqjk from "../../../resource/sqjk.png";
-import yld from "../../../resource/yld.png";
+import fxyj from "../resource/fxyj.png";
+import sjzx from "../resource/sjzx.png";
+import spjk from "../resource/spjk.png";
+import yqjk from "../resource/yqjk.png";
+import sqjk from "../resource/sqjk.png";
+import yld from "../resource/yld.png";
 import xqkb from "@app/resource/xqkb.png";
-class PannelBtn extends React.PureComponent {
+class RouterList extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -103,4 +102,4 @@ class PannelBtn extends React.PureComponent {
     clearTimeout(this.time);
   }
 }
-export default PannelBtn;
+export default RouterList;

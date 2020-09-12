@@ -3,37 +3,32 @@
  */
 import React from "react";
 import { connect } from "react-redux";
-import { bindActionCreators, compose } from "redux";
+import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/rain";
+import * as mapActions from "@app/redux/actions/map";
 import Map from "./map/map";
-// import Map from '../monitor/map/map';
 import "./style.scss";
 import Head from "./head/Head";
-import WeatherBox from "./left/WeatherBox";
 import WeatherChart from "./left/WeatherChart";
 import WeatherTable from "./left/WeatherTable";
-import PannelBtn from "./right/PannelBtn";
-import AlarmTable from "./right/AlarmTable";
-import WeatherPic from "./right/WeatherPic";
 import WeatherDy from "./right/WeatherDy";
 import CheckBoxs from "../monitor/bottom/CheckBox";
-import RainLegend from "./bottom/RainLegend";
-import setImg from "@app/resource/setsys.png";
-import { Drawer, Switch, Row, Divider, Checkbox } from "antd";
-import { none } from "ol/centerconstraint";
+import { Drawer, Row, Divider, Checkbox } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
-import RainSwitcher from "./right/Module/RainSwitcher";
+
+import RouterList from "../../components/routerLiis";
+import { RenderBox } from "../../components/chart/decorate";
+import { rotateBarChart, pieChart } from "../../components/chart/chart";
+import { TableShow } from "../../components/chart/table";
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
       showLeft: true,
       showRight: true,
-      // showBottom: true,
       visible: false,
       dispalyLeft: "block",
       displayRight: "block",
-      // dispalyBottom: 'block',
       layerVisible: {
         tiandi: true, // 天地图底图
         tiandi2: true, // 天地图标注
@@ -63,89 +58,112 @@ class Monitor extends React.PureComponent {
   };
   render() {
     let { layerVisible, displayRight, displayLeft } = this.state;
+    const { stations } = this.props;
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible} />
         <Head />
-        <div style={{ display: displayLeft }}>
-          <div className="m-left">
-            {/* <WeatherBox></WeatherBox>*/}
-            <WeatherDy />
-            <WeatherChart />
-            <WeatherTable />
+        <div className="rain">
+          <div style={{ display: displayLeft }}>
+            <div className="m-left">
+              {/* <RenderBox hasTitle title="24小时降雨量"> */}
+              {/* <WeatherDy /> */}
+              <div className="chart-left">
+                <WeatherChart />
+                <RenderBox hasTitle title="基本统计信息" width="514">
+                  <div className="rain-pie-chart" id="rain-pie-chart"></div>
+                  {/* <div className="rotateBarChart" id="rotateBarChart"></div> */}
+                  {/* <TableShow
+                  columns={[
+                    { name: "站点名称", dataIndex: "name" },
+                    { name: "所属区县", dataIndex: "stlc" },
+                    { name: "降雨量", dataIndex: "drp" },
+                  ]}
+                  dataSource={stations || []}
+                /> */}
+                </RenderBox>
+              </div>
+              {/* <WeatherTable /> */}
+              {/* </RenderBox> */}
+            </div>
           </div>
-        </div>
-        <div style={{ display: displayRight }}>
-          <div className="m-right">
-            <PannelBtn />
-
-            {/*
-            <AlarmTable></AlarmTable>
-            <WeatherPic></WeatherPic> */}
+          <div style={{ display: displayRight }}>
+            <div className="chart-right">
+              <RenderBox hasTitle title="24小时降雨量">
+                <div className="rotateBarChart" id="rotateBarChart"></div>
+                <div className="rain-set-table">
+                  <TableShow
+                    columns={[
+                      { name: "站点名称", dataIndex: "name" },
+                      { name: "所属区县", dataIndex: "stlc" },
+                      { name: "降雨量", dataIndex: "drp" },
+                    ]}
+                    dataSource={stations || []}
+                  />
+                </div>
+              </RenderBox>
+            </div>
+            <div className="router-list">
+              <RouterList />
+            </div>
           </div>
-        </div>
-        <div className="m-rain-button">
-          <RainSwitcher
+          <div className="m-rain-button">
+            {/* <RainSwitcher //切换雨晴数据
             style={{ width: 150 }}
             onClick={this.onRainSwitch.bind(this)}
-          />
-        </div>
-        <div className="m-bottom">
-          <RainLegend />
-        </div>
-        {/*<img onClick={() => {*/}
-        {/*  this.setState({*/}
-        {/*    visible: true,*/}
-        {/*  });*/}
-        {/*}} className="m-set-img" src={setImg}/>*/}
-        <Drawer
-          title={<SetTitle></SetTitle>}
-          placement="right"
-          closable={false}
-          onClose={this.onClose}
-          visible={this.state.visible}
-          width={320}
-        >
-          <a style={{ fontSize: 18, color: "#000000fd", fontWeight: "bold " }}>
-            主界面
-          </a>
-          <Divider />
-          <Row>
-            <div>
-              <Checkbox
-                checked={this.state.showLeft}
-                onClick={() => {
-                  this.setState({
-                    showLeft: !this.state.showLeft,
-                    displayLeft: this.state.showLeft ? "none" : "block",
-                  });
-                }}
-                defaultChecked
-              />
-              &nbsp;&nbsp;
-              <a style={{ fontSize: 15, color: "#000000fd" }}>左侧栏</a>
-            </div>
-          </Row>
-          <br />
-          <Row>
-            <div>
-              <Checkbox
-                checked={this.state.showRight}
-                onClick={() => {
-                  this.setState({
-                    showRight: !this.state.showRight,
-                    displayRight: this.state.showRight ? "none" : "block",
-                  });
-                }}
-                defaultChecked
-              />
-              &nbsp;&nbsp;
-              <a style={{ fontSize: 15, color: "#000000fd" }}>右侧栏</a>
-            </div>
-          </Row>
+          /> */}
+          </div>
+          <div className="m-bottom">{/* <RainLegend /> 图例*/}</div>
+          <Drawer
+            title={<SetTitle></SetTitle>}
+            placement="right"
+            closable={false}
+            onClose={this.onClose}
+            visible={this.state.visible}
+            width={320}
+          >
+            <a
+              style={{ fontSize: 18, color: "#000000fd", fontWeight: "bold " }}
+            >
+              主界面
+            </a>
+            <Divider />
+            <Row>
+              <div>
+                <Checkbox
+                  checked={this.state.showLeft}
+                  onClick={() => {
+                    this.setState({
+                      showLeft: !this.state.showLeft,
+                      displayLeft: this.state.showLeft ? "none" : "block",
+                    });
+                  }}
+                  defaultChecked
+                />
+                &nbsp;&nbsp;
+                <a style={{ fontSize: 15, color: "#000000fd" }}>左侧栏</a>
+              </div>
+            </Row>
+            <br />
+            <Row>
+              <div>
+                <Checkbox
+                  checked={this.state.showRight}
+                  onClick={() => {
+                    this.setState({
+                      showRight: !this.state.showRight,
+                      displayRight: this.state.showRight ? "none" : "block",
+                    });
+                  }}
+                  defaultChecked
+                />
+                &nbsp;&nbsp;
+                <a style={{ fontSize: 15, color: "#000000fd" }}>右侧栏</a>
+              </div>
+            </Row>
 
-          {/* <br /> */}
-          {/* <Row>
+            {/* <br /> */}
+            {/* <Row>
             <Switch checkedChildren="开" unCheckedChildren="关" checked={this.state.showBottom} onClick={() => {
               this.setState({
                 showBottom: !this.state.showBottom,
@@ -153,19 +171,42 @@ class Monitor extends React.PureComponent {
               });
             }} defaultChecked />下栏目
           </Row> */}
-          <CheckBoxs
-            layerVisible={layerVisible}
-            onChecked={this.onChecked}
-          ></CheckBoxs>
-        </Drawer>
+            <CheckBoxs
+              layerVisible={layerVisible}
+              onChecked={this.onChecked}
+            ></CheckBoxs>
+          </Drawer>
+        </div>
       </div>
     );
+  }
+  componentDidUpdate() {
+    const { count } = this.props;
+    
+    if (count) {
+      let data = [];
+      count?.raincount?.list?.map((item) => {
+        data.push({
+          name: item.dataSourceDesc || "暂无数据",
+          value: item.number,
+          // itemStyle: {
+          //   color: "red",
+          // },
+        });
+      });
+      pieChart("rain-pie-chart", data, 500);
+    }
   }
   componentDidMount() {
     //this.props.actions.rainCurrent();
     //加载雨量站基础信息
+
+    rotateBarChart("rotateBarChart");
     this.props.actions.getAllRainStation();
     this.props.actions.rainCurrent();
+    this.props.mapActions.getCountStation();
+
+    // this.props.mapActions.getWaterType();
   }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
@@ -202,20 +243,21 @@ class Monitor extends React.PureComponent {
     }
     // renturn null
   }
-
-  onFeatureClick(param) {}
 }
 // -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
+  console.log(state, "STATE");
   return {
-    store: state,
+    stations: state.rain.stations,
+    count: state.mapAboutReducers.count,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions, dispatch),
+    mapActions: bindActionCreators(mapActions, dispatch),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Monitor);

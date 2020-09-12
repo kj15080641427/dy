@@ -56,7 +56,6 @@ function* loadCurrentRain() {
     //let result = yield call(getByTimeMinute, {starttm: beginTime, endtm:endTime});
 
     if (result.code === 200) {
-      console.log(result, "RESULT");
       data = [...result.data];
     }
   } catch (e) {
@@ -89,7 +88,6 @@ function* load12HoursRain() {
     });
 
     if (result.code === 200) {
-      console.log(data, "?????");
       data = [...result.data];
     }
   } catch (e) {
@@ -170,14 +168,13 @@ function* loadRainStations() {
   try {
     let result = yield call(getAll, { type: 1 });
 
-    if (result.code === 200) {
+    if (result.code == 200) {
       data = [...result.data];
-      // console.log(data, "DATA");
     }
   } catch (e) {
     console.warn(e);
   }
-
+  console.log(data, "rain=========");
   //更新数据
   yield put({
     type: RainTypes.UPDATE_RAIN_STATION,
