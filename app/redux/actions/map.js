@@ -27,3 +27,17 @@ export const getCountStation = (data) => {
     data,
   };
 };
+
+export const getWaterHistory = (data) => {
+  return {
+    type: types.GET_WATER_HISTORY,
+    data,
+  };
+};
+
+export const getWaterWarning = (data) => {
+  return {
+    type: types.GET_WATER_WARNING,
+    data,
+  };
+};

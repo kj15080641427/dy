@@ -73,7 +73,6 @@ class Map extends React.PureComponent {
     }
     return (
       <>
-        {console.log(domArr, "domAAA")}
         <div id="map"></div>
         {domArr}
       </>
@@ -453,8 +452,10 @@ class Map extends React.PureComponent {
     // });
     this.map.startSelectFeature("rain", (param) => {
       if (this.props.onFeatureClick) {
+        console.log(param, "PARAM");
         this.props.onFeatureClick(param);
       } else {
+        console.log(param, "PARAM");
         this.addOverlay(Rain.type, param);
       }
 
@@ -632,7 +633,7 @@ class Map extends React.PureComponent {
     // this.map.activeMeasure();
     this.map.on("moveend", () => {
       let a = this.map.getView().calculateExtent();
-      console.log(a);
+      // console.log(a);
     });
     this.map.onFeatureClicked((feature) => {
       // console.log("featureclick", feature);
@@ -967,7 +968,6 @@ class Map extends React.PureComponent {
     // data 实时雨量
     const { stations } = this.props;
 
-
     if (stations) {
       for (let key in stations) {
         stations[key].data = null;
@@ -993,12 +993,12 @@ class Map extends React.PureComponent {
         type: "Point",
         id: station.stcd,
         lonlat: [station.lon, station.lat],
-        data: { ...(station.data || []) },
+        data: { ...(data || []) },
         ...station,
       });
     }
 
-    console.log(stations, "stations", features);
+    // console.log(stations, "stations", features);
 
     this.map.removeFeatures("rain", features);
     this.map.addFeatures("rain", features);

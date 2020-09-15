@@ -2,6 +2,7 @@ import { call, put, all, takeEvery } from "redux-saga/effects";
 import * as types from "../constants/map";
 // import { getAll, getRadioAll } from "../../data/request";
 import * as req from "../../data/request";
+import moment from "moment";
 const code = 200;
 const initSelect = {
   current: 1,
@@ -72,11 +73,55 @@ function* getCountStation() {
     console.error(e);
   }
 }
+//获取水位日志
+function* getWaterHistory() {
+  const startTime = moment(new Date()).format("YYYY-MM-DD");
+  console.log(startTime, "startTime");
+  try {
+    const result = yield call(req.getWaterHistory, {
+      current: 1,
+      starttm: `${startTime} 00:00:00`,
+      isOrder: "1",
+      size: -1,
+      endtm: `${startTime} 24:00:00`,
+      stcd: "20070501",
+    });
+    if (result.code == code) {
+      yield put({
+        type: types.SET_WATER_HISTORY,
+        data: result,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+//获取水位报警日志
+function* getWaterWarning() {
+  try {
+    const result = yield call(req.getwaterlevelAlarmLog, {
+      alarmtype: 1,
+      startTime: "2020-01-10 00:00:00",
+      endTime: "2020-09-15 00:00:00",
+      stcd: "41800250"
+    });
+    if ((result.code = code)) {
+      yield put({
+        type: types.SET_WATER_WARNING,
+        data: result.data,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
 export default function* mapAbout() {
   yield all([
     takeEvery(types.GET_WATER, getWater),
     takeEvery(types.GET_FLOOD, getFlood),
     takeEvery(types.GET_VIDEO, getVideo),
     takeEvery(types.GET_COUNT_STATION, getCountStation),
+    takeEvery(types.GET_WATER_HISTORY, getWaterHistory),
+    takeEvery(types.GET_WATER_WARNING, getWaterWarning),
   ]);
 }

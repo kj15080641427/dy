@@ -167,33 +167,97 @@ export const pieChart = (domId, data, width, legend) => {
     },
     series: [
       {
+        clockwise: false,
+        startAngle: 140,
         name: "访问来源",
         type: "pie",
         radius: ["50%", "55%"],
         data: data,
         left: "center",
-        width: width || 330,
+        width: width || 400,
+        labelLine: {
+          lineStyle: {
+            color: "white",
+          },
+        },
+        label: {
+          fontSize: "18",
+          color: "white",
 
-        // itemStyle: {
-        //   color: "red",
-        // },
+          // formatter: "{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ",
+          // backgroundColor: "#eee",
+          // borderColor: "#aaa",
+          // borderWidth: 1,
+          // borderRadius: 4,
+          // // shadowBlur:3,
+          // // shadowOffsetX: 2,
+          // // shadowOffsetY: 2,
+          // // shadowColor: '#999',
+          // // padding: [0, 7],
+          // rich: {
+          //   a: {
+          //     color: "#999",
+          //     lineHeight: 22,
+          //     align: "center",
+          //   },
+          //   // abg: {
+          //   //     backgroundColor: '#333',
+          //   //     width: '100%',
+          //   //     align: 'right',
+          //   //     height: 22,
+          //   //     borderRadius: [4, 4, 0, 0]
+          //   // },
+          //   hr: {
+          //     borderColor: "#aaa",
+          //     width: "100%",
+          //     borderWidth: 0.5,
+          //     height: 0,
+          //   },
+          //   b: {
+          //     fontSize: 16,
+          //     lineHeight: 33,
+          //   },
+          //   per: {
+          //     color: "#eee",
+          //     backgroundColor: "#334455",
+          //     padding: [2, 4],
+          //     borderRadius: 2,
+          //   },
+          // },
+        },
       },
     ],
   };
   myChartcount.setOption(option);
 };
-export const lineChart = (domId) => {
+export const lineChart = (domId, data) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let option = {
     xAxis: {
       type: "category",
       show: true,
-      data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      data: [
+        "00:00",
+        "02:00",
+        "04:00",
+        "06:00",
+        "08:00",
+        "10:00",
+        "12:00",
+        "14:00",
+        "16:00",
+        "18:00",
+        "20:00",
+        "22:00",
+        "24:00",
+      ],
       axisTick: {
         show: false,
       },
       axisLabel: {
         color: "white",
+        interval: 0,
+        rotate: 50,
       },
     },
     yAxis: {
@@ -206,11 +270,11 @@ export const lineChart = (domId) => {
       trigger: "axis",
     },
     grid: {
-      width: 350,
+      width: 450,
     },
     series: [
       {
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        data: data,
         type: "line",
       },
     ],
@@ -219,7 +283,7 @@ export const lineChart = (domId) => {
 };
 
 //
-export const rotateBarChart = (domId) => {
+export const rotateBarChart = (domId, data) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let option = {
     tooltip: {
@@ -242,12 +306,16 @@ export const rotateBarChart = (domId) => {
       boundaryGap: [0, 0.01],
       inverse: true,
       show: true,
+      splitLine: {
+        show: false,
+      },
     },
     yAxis: {
       position: "right",
       splitLine: {
         show: false,
       },
+
       show: true,
       type: "category",
       data: [
@@ -263,9 +331,14 @@ export const rotateBarChart = (domId) => {
     },
     series: [
       {
-        name: "2011年",
+        name: "24小时降雨",
         type: "bar",
-        data: [
+        label: {
+          show: true,
+          position: "left",
+          color: "white",
+        },
+        data: data || [
           { value: 188, itemStyle: { color: "rgb(229,229,229)" } },
           { value: 181, itemStyle: { color: "rgb(175,233,159)" } },
           { value: 181, itemStyle: { color: "rgb(91,175,51)" } },
@@ -280,6 +353,79 @@ export const rotateBarChart = (domId) => {
   };
   myChartcount.setOption(option);
 };
+
+//漏斗图
+export const funnelChart = (domId, data) => {
+  let myChartcount = echarts.init(document.getElementById(domId));
+  let option = {
+    title: {
+      text: "易涝点积水情况",
+      // subtext: "纯属虚构",
+    },
+    tooltip: {
+      trigger: "item",
+      formatter: "{a} <br/>{b} : {c}%",
+    },
+    toolbox: {
+      feature: {
+        dataView: { readOnly: false },
+        restore: {},
+        saveAsImage: {},
+      },
+    },
+    legend: {
+      data: ["展现", "点击", "访问", "咨询", "订单"],
+    },
+
+    series: [
+      {
+        name: "漏斗图",
+        type: "funnel",
+        left: "10%",
+        top: 60,
+        //x2: 80,
+        bottom: 60,
+        width: "80%",
+        // height: {totalHeight} - y - y2,
+        min: 0,
+        max: 100,
+        minSize: "0%",
+        maxSize: "100%",
+        sort: "descending",
+        gap: 2,
+        label: {
+          show: true,
+          position: "inside",
+        },
+        labelLine: {
+          length: 10,
+          lineStyle: {
+            width: 1,
+            type: "solid",
+          },
+        },
+        itemStyle: {
+          borderColor: "#fff",
+          borderWidth: 1,
+        },
+        emphasis: {
+          label: {
+            fontSize: 20,
+          },
+        },
+        data: [
+          { value: 31, name: "访问" },
+          { value: 4, name: "咨询" },
+          { value: 1, name: "订单" },
+          { value: 1, name: "点击" },
+          { value: 1, name: "展现" },
+        ],
+      },
+    ],
+  };
+  myChartcount.setOption(option);
+};
+
 const Chart = () => {
   useEffect(() => {
     barChart("chartlint");

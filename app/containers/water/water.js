@@ -73,7 +73,7 @@ class Monitor extends React.PureComponent {
         value: item.number,
       });
     });
-    pieChart("pie-chart", data);
+    pieChart("pie-chart", data, 400);
   };
   //在线图
   onlineChart = () => {
@@ -147,16 +147,17 @@ class Monitor extends React.PureComponent {
     );
   };
   componentDidUpdate() {
-    const { water, count } = this.props;
+    const { water, count, historyWater } = this.props;
     if (count) {
       this.sourceChart();
     }
     if (water) {
       console.log(moment().format("Do"), "WAYER");
       this.onlineChart();
-      // barChart("bar-chart");
       radarChart("radar-chart");
-      lineChart("line-chart");
+    }
+    if (historyWater) {
+      lineChart("line-chart", historyWater);
     }
   }
   render() {
@@ -209,7 +210,7 @@ class Monitor extends React.PureComponent {
                 </div>
               </div>
             </RenderBox>
-            <RenderBox title={"报警信息"} hasTitle>
+            <RenderBox title={"超警戒信息"} hasTitle>
               <div className="line-chart" id="line-chart"></div>
             </RenderBox>
           </div>
@@ -227,7 +228,7 @@ class Monitor extends React.PureComponent {
               <RenderBox title={"水位站点在线统计图"} hasTitle>
                 <div className="pie-flex-layout">
                   <div className="pie-chart" id="pie-chart"></div>
-                  <div style={{ width: "200px" }}>
+                  <div>
                     {count?.watercount?.list.map((item) => {
                       return (
                         <div key={item.dataSourceDesc} className="flex-layout">
@@ -326,8 +327,10 @@ class Monitor extends React.PureComponent {
     );
   }
   componentDidMount() {
-    this.props.actions.getWaterType();
-    this.props.actions.getCountStation();
+    this.props.actions.getWaterType(); //水位站点
+    this.props.actions.getCountStation(); //来源统计
+    this.props.actions.getWaterHistory(); //水位日志
+    this.props.actions.getWaterWarning(); //报警日志
   }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
@@ -346,7 +349,9 @@ Monitor.propTypes = {
   count: PropTypes.object,
 };
 function mapStateToProps(state) {
+  // console.log(state, "STATE");
   return {
+    historyWater: state.mapAboutReducers.historyWater,
     water: state.mapAboutReducers.water,
     count: state.mapAboutReducers.count,
   };

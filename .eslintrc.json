@@ -606,6 +606,7 @@
     // 禁止未使用的变量
     "no-unused-vars": 2,
     //
-    "arrow-body-style": [0, "always"]
+    "arrow-body-style": [0, "always"],
+    "react/prop-types": [0]
   }
 }

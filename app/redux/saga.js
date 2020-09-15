@@ -174,7 +174,6 @@ function* loadRainStations() {
   } catch (e) {
     console.warn(e);
   }
-  console.log(data, "rain=========");
   //更新数据
   yield put({
     type: RainTypes.UPDATE_RAIN_STATION,

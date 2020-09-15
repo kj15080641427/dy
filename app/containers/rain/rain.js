@@ -10,8 +10,8 @@ import Map from "./map/map";
 import "./style.scss";
 import Head from "./head/Head";
 import WeatherChart from "./left/WeatherChart";
-import WeatherTable from "./left/WeatherTable";
-import WeatherDy from "./right/WeatherDy";
+// import WeatherTable from "./left/WeatherTable";
+// import WeatherDy from "./right/WeatherDy";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import { Drawer, Row, Divider, Checkbox } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
@@ -58,7 +58,7 @@ class Monitor extends React.PureComponent {
   };
   render() {
     let { layerVisible, displayRight, displayLeft } = this.state;
-    const { stations } = this.props;
+    const { tableList } = this.props;
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible} />
@@ -72,7 +72,6 @@ class Monitor extends React.PureComponent {
                 <WeatherChart />
                 <RenderBox hasTitle title="基本统计信息" width="514">
                   <div className="rain-pie-chart" id="rain-pie-chart"></div>
-                  {/* <div className="rotateBarChart" id="rotateBarChart"></div> */}
                   {/* <TableShow
                   columns={[
                     { name: "站点名称", dataIndex: "name" },
@@ -96,9 +95,9 @@ class Monitor extends React.PureComponent {
                     columns={[
                       { name: "站点名称", dataIndex: "name" },
                       { name: "所属区县", dataIndex: "stlc" },
-                      { name: "降雨量", dataIndex: "drp" },
+                      { name: "降雨量", dataIndex: "dayDrp" },
                     ]}
-                    dataSource={stations || []}
+                    dataSource={tableList || []}
                   />
                 </div>
               </RenderBox>
@@ -181,27 +180,92 @@ class Monitor extends React.PureComponent {
     );
   }
   componentDidUpdate() {
-    const { count } = this.props;
-    
+    const { count, stations } = this.props;
     if (count) {
       let data = [];
       count?.raincount?.list?.map((item) => {
+        const desc = item.dataSourceDesc;
         data.push({
-          name: item.dataSourceDesc || "暂无数据",
+          name: desc || "暂无数据",
           value: item.number,
-          // itemStyle: {
-          //   color: "red",
-          // },
+          textStyle: { fontSize: "24px" },
+          itemStyle: {
+            color:
+              desc == "气象局"
+                ? "rgb(145,151,222)"
+                : desc == "农村基层防汛监测预警平台"
+                ? "rgb(78,82,232)"
+                : desc == "河口区水利局"
+                ? "red"
+                : desc == "经开区"
+                ? "rgb(29,37,182)"
+                : "rgb(78,32,232)",
+          },
         });
       });
       pieChart("rain-pie-chart", data, 500);
+    }
+    if (stations) {
+      let noRain = 0;
+      let small = 0;
+      let c = 0;
+      let d = 0;
+      let e = 0;
+      let f = 0;
+      let g = 0;
+      let h = 0;
+      stations.map((item) => {
+        // console.log(item.dayDrp);
+        if (item.dayDrp == 0) {
+          noRain++;
+          return;
+        }
+        if (item.dayDrp < 10) {
+          small++;
+          return;
+        }
+        if (item.dayDrp < 25) {
+          c++;
+          return;
+        }
+        if (item.dayDrp < 50) {
+          d++;
+          return;
+        }
+        if (item.dayDrp < 100) {
+          e++;
+          return;
+        }
+        if (item.dayDrp < 250) {
+          f++;
+          return;
+        }
+        if (item.dayDrp > 250) {
+          g++;
+          return;
+        }
+        // noRain.push({
+        //   value: item.drp,
+        // });
+      });
+      console.log(noRain, small, "???");
+      let list = [
+        { value: noRain, itemStyle: { color: "rgb(229,229,229)" } },
+        { value: small, itemStyle: { color: "rgb(175,233,159)" } },
+        { value: c, itemStyle: { color: "rgb(91,175,51)" } },
+        { value: d, itemStyle: { color: "rgb(121,190,255)" } },
+        { value: e, itemStyle: { color: "rgb(57,53,255)" } },
+        { value: f, itemStyle: { color: "rgb(228,41,255)" } },
+        { value: g, itemStyle: { color: "rgb(123,42,51)" } },
+        { value: h, itemStyle: { color: "rgb(228,41,50)" } },
+      ];
+      rotateBarChart("rotateBarChart", list);
     }
   }
   componentDidMount() {
     //this.props.actions.rainCurrent();
     //加载雨量站基础信息
 
-    rotateBarChart("rotateBarChart");
     this.props.actions.getAllRainStation();
     this.props.actions.rainCurrent();
     this.props.mapActions.getCountStation();
@@ -249,6 +313,7 @@ class Monitor extends React.PureComponent {
 function mapStateToProps(state) {
   console.log(state, "STATE");
   return {
+    tableList: state.rain.tableList,
     stations: state.rain.stations,
     count: state.mapAboutReducers.count,
   };

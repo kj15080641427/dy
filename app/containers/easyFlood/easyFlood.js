@@ -21,6 +21,11 @@ import setImg from "@app/resource/setsys.png";
 import { Drawer, Switch, Row, Divider, Checkbox } from "antd";
 import { none } from "ol/centerconstraint";
 import SetTitle from "@app/components/setting/SetTitle";
+
+import RouterList from "../../components/routerLiis";
+import { RenderBox } from "../../components/chart/decorate";
+import { funnelChart } from "../../components/chart/chart";
+import { TableShow } from "../../components/chart/table";
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -59,28 +64,52 @@ class Monitor extends React.PureComponent {
       visible: false,
     });
   };
+  componentDidMount() {
+    this.props.actions.getFloodType();
+    funnelChart("funnel-chart");
+  }
+  componentDidUpdate() {
+    if (true) {
+      funnelChart("funnel-chart");
+    }
+  }
   render() {
     let { layerVisible, displayRight, displayLeft } = this.state;
+    const { flood } = this.props;
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible}></Map>
         <Head></Head>
         <div style={{ display: displayLeft }}>
           <div className="m-left">
-            {/* <WeatherBox></WeatherBox>
-            <WeatherChart></WeatherChart> */}
+            {/* <div className="easy-flood"> */}
+            <div className="easyFlood-left">
+              <RenderBox hasTitle title="易涝点积水情况">
+                <div className="funnel-chart" id="funnel-chart"></div>
+                <TableShow
+                  columns={[
+                    { name: "易涝点名称", dataIndex: "name" },
+                    { name: "积水水深", dataIndex: "z" },
+                    { name: "更新时间", dataIndex: "tm" },
+                  ]}
+                  dataSource={flood || []}
+                />
+              </RenderBox>
+            </div>
+            {/* </div> */}
             <WeatherTable></WeatherTable>
           </div>
         </div>
         <div style={{ display: displayRight }}>
           <div className="m-right">
-            <PannelBtn></PannelBtn>
-            {/* <WeatherDy></WeatherDy>
-            <AlarmTable></AlarmTable>
-            <WeatherPic></WeatherPic> */}
+            <div className="easyFlood-right">
+              <RenderBox hasTitle title="易涝点基本信息"></RenderBox>
+              <RenderBox hasTitle title="易涝点24小时信息"></RenderBox>
+            </div>
+            <RouterList />
           </div>
         </div>
-        <div className="m-bottom">{/* <RainLegend></RainLegend> */}</div>
+        <div className="m-bottom"></div>
         <img
           onClick={() => {
             this.setState({
@@ -153,9 +182,7 @@ class Monitor extends React.PureComponent {
       </div>
     );
   }
-  componentDidMount() {
-    this.props.actions.getFloodType();
-  }
+
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
     if (layerVisible[layerKey] === checked) return;
@@ -168,7 +195,10 @@ class Monitor extends React.PureComponent {
 // -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
-  return {};
+  console.log(state, "STATE");
+  return {
+    flood: state.mapAboutReducers.flood,
+  };
 }
 
 function mapDispatchToProps(dispatch) {

@@ -107,7 +107,7 @@ const ReadOnlyTable = (props) => {
         }}
         rowSelection={
           rowSelection
-            ? null
+            ? rowSelection
             : {
                 fixed: true,
                 type: "radio",

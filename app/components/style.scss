@@ -7,6 +7,12 @@
   // height: 400px;
   width: 100%;
   padding: 0 10px;
+  .ant-table-tbody > tr.ant-table-placeholder > td {
+    background: #003366;
+  }
+  .ant-empty-description {
+    color: white;
+  }
   //翻页样式
   .ant-pagination-item a {
     color: rgb(0, 160, 234);
