@@ -74,7 +74,7 @@ class Map extends React.PureComponent {
     }
     return (
       <>
-        <div id="map"></div>
+        <div id="map" className={'display-map'}/>
         {domArr}
       </>
     );
@@ -128,14 +128,17 @@ class Map extends React.PureComponent {
     this.map.addTile({
       url: `https://t0.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
+      className: "ol-layer-tiandi",
       opacity: 1,
       key: "tiandi",
       projection: true,
     });
     this.map.addTile({
-      url: `https://t[0-9].tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
+      // eslint-disable-next-line max-len
+      url: `https://t0.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
       opacity: 1,
+      className: "ol-layer-tiandi",
       key: "tiandi2",
       projection: true,
     });

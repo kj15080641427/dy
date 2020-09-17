@@ -63,7 +63,7 @@ class Map extends React.PureComponent {
     this.map.addTile({
       // url: "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}",
       url: `https://t0.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
-      className:"ol-layer-tiandi",
+      className: "ol-layer-tiandi",
       visible: true,
       opacity: 1,
       key: "tiandi",
@@ -72,7 +72,7 @@ class Map extends React.PureComponent {
 
     this.map.addTile({
       url: `https://t0.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
-      className:"ol-layer-tiandi",
+      className: "ol-layer-tiandi",
       visible: true,
       opacity: 1,
       key: "tiandi2",
@@ -114,12 +114,12 @@ class Map extends React.PureComponent {
     this.toggleRainBox();
   }
   loadData() {
-    getFiveCitydata({type:2}).then((res) => {
+    getFiveCitydata({type: 2}).then((res) => {
       if (res.code === 200) {
         this._zoom = null;
         this.addRainBoxes(res.data);
         this.toggleRainBox();
-      }else {
+      } else {
         return Promise.reject(res.msg || "未知错误")
       }
     }).catch(() => {
