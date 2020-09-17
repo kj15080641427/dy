@@ -141,7 +141,7 @@ class OverView extends React.PureComponent {
   selectInit() {
     getFiveCitydata({ "type": 1 })
       .then((result) => {
-        console.log(result)
+        // console.log(result)
         let hourData = [];
         let towData = [];
         let dayData = [];

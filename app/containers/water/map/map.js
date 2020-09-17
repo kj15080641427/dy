@@ -5,6 +5,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/monitor";
+import * as mapActions from "@app/redux/actions/map";
 import UbiMap from "./ubimap";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
@@ -191,6 +192,11 @@ class Map extends React.PureComponent {
     this.map.startHighlightFeatureonLayer("water");
     this.map.startSelectFeature("person", (param) => {
       this.addOverlay(Person.type, param);
+    });
+    this.map.startSelectFeature("water", (param) => {
+      //TODO
+      this.props.mapActions.changeWaterId(param);
+      this.addOverlay(Rain.type, { ...param });
     });
     // this.map.startSelectFeature("water", (param) => {
     //   //查询实时水位
@@ -512,6 +518,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    mapActions: bindActionCreators(mapActions, dispatch),
     actions: bindActionCreators(actions, dispatch),
   };
 }

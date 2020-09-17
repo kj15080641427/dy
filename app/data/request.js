@@ -352,3 +352,7 @@ export function downlRaindata(data) {
 export function downlWordData(data) {
   return fetchGet("/base/SiteBase/worddata", data);
 }
+//  导出统计信息数据word
+export function downloadExcel(data) {
+  return fetchGet("/base/SiteBase/word", data);
+}

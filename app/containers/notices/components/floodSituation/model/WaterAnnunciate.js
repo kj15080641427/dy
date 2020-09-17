@@ -24,6 +24,7 @@ class WaterAnnunciate extends React.PureComponent {
                     dataSource={data}
                     loading={loding}
                     rowKey={row => row.number}
+                    size='small'
                 >
                 </Table>
             </>

@@ -24,6 +24,7 @@ class RiverAnnunciate extends React.PureComponent {
                     dataSource={data}
                     loading={loding}
                     rowKey={row => row.stnm}
+                    size='small'
                 >
                 </Table>
             </>

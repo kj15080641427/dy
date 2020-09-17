@@ -41,3 +41,31 @@ export const getWaterWarning = (data) => {
     data,
   };
 };
+
+export const getFloodRain = (data) => {
+  return {
+    type: types.GET_FLOOD_RAIN,
+    data,
+  };
+};
+//根据id获取易涝点实时数据
+export const getFloodInfoRealTime = (data) => {
+  return {
+    type: types.GET_FLOOD_INFO_REALTIME,
+    data,
+  };
+};
+//改变易涝点ID
+export const changeFloodId = (data) => {
+  return {
+    type: types.CHANGE_FLOOD_ID,
+    data,
+  };
+};
+//改变水位ID
+export const changeWaterId = (data) => {
+  return {
+    type: types.CHANGE_WATER_ID,
+    data,
+  };
+};

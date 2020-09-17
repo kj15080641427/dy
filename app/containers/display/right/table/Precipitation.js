@@ -15,7 +15,7 @@ class Precipitation extends React.PureComponent {
   }
   render() {
     let data = this.props.dataSource;
-    console.log(data, "DATA");
+    // console.log(data, "DATA");
     let elements = [];
     for (let i = 0; i < data.length; i++) {
       elements.push(

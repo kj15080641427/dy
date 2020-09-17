@@ -9,22 +9,18 @@ import * as actions from "@app/redux/actions/map";
 import Map from "./map/map";
 import "./style.scss";
 import Head from "./head/Head";
-import WeatherBox from "./left/WeatherBox";
-import WeatherChart from "./left/WeatherChart";
-import WeatherTable from "./left/WeatherTable";
-import PannelBtn from "./right/PannelBtn";
-import AlarmTable from "./right/AlarmTable";
-import WeatherPic from "./right/WeatherPic";
-import WeatherDy from "./right/WeatherDy";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
-import { Drawer, Switch, Row, Divider, Checkbox } from "antd";
-import { none } from "ol/centerconstraint";
+import { Drawer, Row, Divider, Checkbox } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
 
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
-import { funnelChart } from "../../components/chart/chart";
+import {
+  funnelChart,
+  rotateBarChart,
+  lineChart,
+} from "../../components/chart/chart";
 import { TableShow } from "../../components/chart/table";
 class Monitor extends React.PureComponent {
   constructor(props, context) {
@@ -65,46 +61,191 @@ class Monitor extends React.PureComponent {
     });
   };
   componentDidMount() {
-    this.props.actions.getFloodType();
-    funnelChart("funnel-chart");
+    const { floodId } = this.props;
+    this.props.actions.getFloodType(); //易涝点基本信息
+    this.props.actions.getFloodRain(); //获取防汛雨量站 {type: "1",isshow: "1",datasource: "3",}
+    this.props.actions.getFloodInfoRealTime(floodId); //根据易涝点id获取实时数据
+
+    lineChart("easyfloodLine", [1, 2, 3, 4, 5]);
   }
-  componentDidUpdate() {
-    if (true) {
-      funnelChart("funnel-chart");
+  componentDidUpdate(pre) {
+    const { flood, floodId, historyFlood, floodRain } = this.props;
+    if (floodId != pre.floodId) {
+      this.props.actions.getFloodInfoRealTime(floodId);
+    }
+    if (historyFlood != pre.historyFlood) {
+      lineChart("easyfloodLine", historyFlood);
+    }
+    if (floodRain != pre.floodRain) {
+      let noRain = 0;
+      let small = 0;
+      let c = 0;
+      let d = 0;
+      let e = 0;
+      let f = 0;
+      let g = 0;
+      let h = 0;
+      floodRain.map((item) => {
+        // console.log(item.dayDrp);
+        if (item.dayDrp == 0) {
+          noRain++;
+          return;
+        }
+        if (item.dayDrp < 10) {
+          small++;
+          return;
+        }
+        if (item.dayDrp < 25) {
+          c++;
+          return;
+        }
+        if (item.dayDrp < 50) {
+          d++;
+          return;
+        }
+        if (item.dayDrp < 100) {
+          e++;
+          return;
+        }
+        if (item.dayDrp < 250) {
+          f++;
+          return;
+        }
+        if (item.dayDrp > 250) {
+          g++;
+          return;
+        }
+      });
+      console.log(noRain, small, "???");
+      let list = [
+        { value: noRain, itemStyle: { color: "rgb(229,229,229)" } },
+        { value: small, itemStyle: { color: "rgb(175,233,159)" } },
+        { value: c, itemStyle: { color: "rgb(91,175,51)" } },
+        { value: d, itemStyle: { color: "rgb(121,190,255)" } },
+        { value: e, itemStyle: { color: "rgb(57,53,255)" } },
+        { value: f, itemStyle: { color: "rgb(228,41,255)" } },
+        { value: g, itemStyle: { color: "rgb(123,42,51)" } },
+        { value: h, itemStyle: { color: "rgb(228,41,50)" } },
+      ];
+      rotateBarChart("easyfloodInfo", list);
+    }
+    if (flood) {
+      let a = 0;
+      let b = 0;
+      let c = 0;
+      let d = 0;
+      let e = 0;
+      let f = 0;
+      flood.map((item) => {
+        if (item.z == 0) {
+          a++;
+          return;
+        }
+        if (item.z < 10) {
+          b++;
+          return;
+        }
+        if (item.z < 20) {
+          c++;
+          return;
+        }
+        if (item.z < 30) {
+          d++;
+          return;
+        }
+        if (item.z < 40) {
+          e++;
+          return;
+        }
+        if (item.z > 40) {
+          f++;
+          return;
+        }
+      });
+      const data = [
+        {
+          value: a,
+          name: "0cm 无积水",
+          itemStyle: { color: "rgb(255,255,255)" },
+        },
+        {
+          value: b,
+          name: "0-10cm",
+          itemStyle: { color: "rgb(0,191,243)" },
+        },
+        {
+          value: c,
+          name: "10-20cm",
+          itemStyle: { color: "rgb(0,255,1)" },
+        },
+        {
+          value: d,
+          name: "20-30cm",
+          itemStyle: { color: "rgb(255,255,1)" },
+        },
+        {
+          value: e,
+          name: "30-40cm",
+          itemStyle: { color: "rgb(143,101,35)" },
+        },
+        {
+          value: f,
+          name: "40cm以上",
+          itemStyle: { color: "rgb(237,28,34)" },
+        },
+      ];
+      funnelChart("funnel-chart", data);
     }
   }
   render() {
     let { layerVisible, displayRight, displayLeft } = this.state;
-    const { flood } = this.props;
+    const { flood, floodRain } = this.props;
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible}></Map>
         <Head></Head>
         <div style={{ display: displayLeft }}>
-          <div className="m-left">
-            {/* <div className="easy-flood"> */}
+          <div className="easy-flood">
             <div className="easyFlood-left">
-              <RenderBox hasTitle title="易涝点积水情况">
-                <div className="funnel-chart" id="funnel-chart"></div>
+              <RenderBox>
                 <TableShow
                   columns={[
-                    { name: "易涝点名称", dataIndex: "name" },
-                    { name: "积水水深", dataIndex: "z" },
-                    { name: "更新时间", dataIndex: "tm" },
+                    { name: "站点名称", dataIndex: "name" },
+                    { name: "所属区县", dataIndex: "stlc" },
+                    { name: "降雨量", dataIndex: "dayDrp" },
                   ]}
-                  dataSource={flood || []}
+                  dataSource={
+                    floodRain.filter((item) => item.dayDrp > 25) || []
+                  }
                 />
               </RenderBox>
+              <div className="easyflood-left-bottom">
+                <RenderBox hasTitle title="易涝点积水情况">
+                  <div className="funnel-chart" id="funnel-chart"></div>
+                  <TableShow
+                    columns={[
+                      { name: "易涝点名称", dataIndex: "name" },
+                      { name: "积水水深(cm)", dataIndex: "z" },
+                      { name: "更新时间", dataIndex: "tm" },
+                    ]}
+                    dataSource={flood || []}
+                  />
+                </RenderBox>
+              </div>
             </div>
-            {/* </div> */}
-            <WeatherTable></WeatherTable>
+            {/* <WeatherTable></WeatherTable> */}
           </div>
         </div>
         <div style={{ display: displayRight }}>
           <div className="m-right">
             <div className="easyFlood-right">
-              <RenderBox hasTitle title="易涝点基本信息"></RenderBox>
-              <RenderBox hasTitle title="易涝点24小时信息"></RenderBox>
+              <RenderBox hasTitle title="易涝点基本信息">
+                <div className="easyfloodInfo" id="easyfloodInfo"></div>
+              </RenderBox>
+              <RenderBox hasTitle title="易涝点24小时信息">
+                <div className="easyfloodLine" id="easyfloodLine"></div>
+              </RenderBox>
+              <RenderBox></RenderBox>
             </div>
             <RouterList />
           </div>
@@ -185,7 +326,9 @@ class Monitor extends React.PureComponent {
 
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
-    if (layerVisible[layerKey] === checked) return;
+    if (layerVisible[layerKey] === checked) {
+      return;
+    }
     layerVisible[layerKey] = checked;
     this.setState({
       layerVisible: { ...layerVisible },
@@ -195,8 +338,10 @@ class Monitor extends React.PureComponent {
 // -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
-  console.log(state, "STATE");
   return {
+    floodRain: state.mapAboutReducers.floodRain,
+    historyFlood: state.mapAboutReducers.historyFlood,
+    floodId: state.mapAboutReducers.floodId,
     flood: state.mapAboutReducers.flood,
   };
 }

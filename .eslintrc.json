@@ -144,7 +144,7 @@
     // 禁用 arguments.caller 或 arguments.callee
     "no-caller": 2,
     // 不允许在 case 子句中使用词法声明
-    "no-case-declarations": 2,
+    "no-case-declarations": 0,
     // 禁止除法操作符显式的出现在正则表达式开始的位置
     "no-div-regex": 2,
     // 禁止 if 语句中有 return 之后有 else
@@ -183,9 +183,10 @@
     "no-lone-blocks": 0,
     // 禁止在循环中出现 function 声明和表达式
     "no-loop-func": 1,
+    "ignoreChainWithDepth": 0,
     // 禁用魔术数字(3.14什么的用常量代替)
     "no-magic-numbers": [
-      1,
+      0,
       {
         "ignore": [0, -1, 1]
       }
@@ -295,7 +296,7 @@
     // require return statements after callbacks
     "callback-return": 0,
     // 要求 require() 出现在顶层模块作用域中
-    "global-require": 1,
+    "global-require": 0,
     // 要求回调函数中有容错处理
     "handle-callback-err": [2, "^(err|error)$"],
     // 禁止混合常规 var 声明和 require 调用
@@ -386,7 +387,7 @@
     // 强制在关键字前后使用一致的空格 (前后腰需要)
     "keyword-spacing": 2,
     // 强制一行的最大长度
-    "max-len": [1, 200],
+    "max-len": [1, 250],
     // 强制最大行数
     "max-lines": 0,
     // 强制 function 定义中最多允许的参数数量

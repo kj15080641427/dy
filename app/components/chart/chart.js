@@ -158,7 +158,9 @@ export const radarChart = (domId, legend, data) => {
 export const pieChart = (domId, data, width, legend) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let option = {
-    tooltip: {},
+    tooltip: {
+      formatter: "{a} <br/>{b} : {c} ({d}%)",
+    },
     legend: {
       data: legend ? legend : [],
       textStyle: {
@@ -182,8 +184,9 @@ export const pieChart = (domId, data, width, legend) => {
         },
         label: {
           fontSize: "18",
+          width: "30px",
           color: "white",
-
+          formatter: "{b}: {@2012}",
           // formatter: "{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ",
           // backgroundColor: "#eee",
           // borderColor: "#aaa",
@@ -274,7 +277,7 @@ export const lineChart = (domId, data) => {
     },
     series: [
       {
-        data: data,
+        data: data || [6, 3, 1, 8, 2, 4, 6, 2, 3, 1],
         type: "line",
       },
     ],
@@ -358,13 +361,9 @@ export const rotateBarChart = (domId, data) => {
 export const funnelChart = (domId, data) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let option = {
-    title: {
-      text: "易涝点积水情况",
-      // subtext: "纯属虚构",
-    },
     tooltip: {
       trigger: "item",
-      formatter: "{a} <br/>{b} : {c}%",
+      formatter: "{a} <br/>{b} : {c}",
     },
     toolbox: {
       feature: {
@@ -373,53 +372,63 @@ export const funnelChart = (domId, data) => {
         saveAsImage: {},
       },
     },
-    legend: {
-      data: ["展现", "点击", "访问", "咨询", "订单"],
-    },
 
     series: [
       {
         name: "漏斗图",
         type: "funnel",
-        left: "10%",
-        top: 60,
-        //x2: 80,
-        bottom: 60,
-        width: "80%",
-        // height: {totalHeight} - y - y2,
+        left: "center",
+        width: "100%",
         min: 0,
-        max: 100,
+        max: 94,
         minSize: "0%",
         maxSize: "100%",
         sort: "descending",
-        gap: 2,
         label: {
           show: true,
-          position: "inside",
+          position: "left",
         },
-        labelLine: {
-          length: 10,
-          lineStyle: {
-            width: 1,
-            type: "solid",
-          },
-        },
-        itemStyle: {
-          borderColor: "#fff",
-          borderWidth: 1,
+        markLine: {
+          silent: true,
         },
         emphasis: {
           label: {
-            fontSize: 20,
+            fontSize: 15,
           },
         },
-        data: [
-          { value: 31, name: "访问" },
-          { value: 4, name: "咨询" },
-          { value: 1, name: "订单" },
-          { value: 1, name: "点击" },
-          { value: 1, name: "展现" },
-        ],
+        data: data,
+        // [
+        //   {
+        //     value: 31,
+        //     name: "0cm 无积水",
+        //     itemStyle: { color: "rgb(255,255,255)" },
+        //   },
+        //   {
+        //     value: 14,
+        //     name: "0-10cm",
+        //     itemStyle: { color: "rgb(0,191,243)" },
+        //   },
+        //   {
+        //     value: 12,
+        //     name: "10-20cm",
+        //     itemStyle: { color: "rgb(0,255,1)" },
+        //   },
+        //   {
+        //     value: 6,
+        //     name: "20-30cm",
+        //     itemStyle: { color: "rgb(255,255,1)" },
+        //   },
+        //   {
+        //     value: 9,
+        //     name: "30-40cm",
+        //     itemStyle: { color: "rgb(143,101,35)" },
+        //   },
+        //   {
+        //     value: 3,
+        //     name: "40cm以上",
+        //     itemStyle: { color: "rgb(237,28,34)" },
+        //   },
+        // ],
       },
     ],
   };

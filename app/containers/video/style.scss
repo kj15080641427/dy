@@ -1,87 +1,95 @@
-@import "@app/variable.scss";
-.monitor {
-  position: relative;
-  min-height: $monitorMinHeight;
-  height: 100%;
-  .m-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
+.video {
+  .chart-left-video {
+    width: 550px;
     position: absolute;
-    left: 0;
+    left: 10px;
     top: 0;
     bottom: 0;
-    width: $monitor_left_w;
     z-index: 10;
-    padding-top: $monitor_left_pd_top;
-    padding-left: $monitor_left_pd_left;
-    padding-bottom: $monitor_left_pd_bottom;
+    margin-top: 80px;
+    // padding: 4px;
+    .line-chart {
+      width: 500px;
+      height: 280px;
+    }
+    .videoLinechart2 {
+      width: 500px;
+      height: 280px;
+    }
+    .videoBarChart {
+      width: 500px;
+      height: 300px;
+    }
   }
-  .m-right {
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
+  .chart-right-video {
+    width: 550px;
     position: absolute;
-    right: 0;
+    right: 100px;
     top: 0;
     bottom: 0;
-    width: $monitor_right_w;
     z-index: 10;
-    padding-top: $monitor_right_pd_top;
-    padding-right: $monitor_right_pd_right;
-    padding-bottom: $monitor_right_pd_bottom;
+    margin-top: 80px;
+    .video-table {
+      .ant-table table {
+        table-layout: fixed;
+        color: white;
+        background: #003366;
+        width: 100%;
+        text-align: left;
+        border-radius: 2px 2px 0 0;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+      tr.ant-table-expanded-row > td,
+      tr.ant-table-expanded-row:hover > td {
+        background: #003366;
+      }
+      .ant-table.ant-table-small
+        .ant-table-thead
+        .ant-table-filter-column-title {
+        padding: 8px 2.3em 8px 8px;
+        color: white;
+        background: #003366;
+      }
+      .ant-table.ant-table-small
+        .ant-table-thead
+        th.ant-table-column-has-sorters {
+        padding: 0;
+        color: white;
+        background: #003366;
+      }
+      .ant-table.ant-table-small .ant-table-thead > tr > th {
+        padding: 8px 8px;
+        color: white;
+        background: #003366;
+      }
+      .ant-table.ant-table-small .ant-table-tbody > tr > td {
+        background: #003366;
+      }
+      tr.ant-table-row ant-table-row-level-0 {
+        background: #000000;
+      }
+      .ant-table-row-expand-icon-collapsed::before {
+        color: black;
+      }
+      .ant-table-row-expand-icon-collapsed::after {
+        color: black;
+      }
+      .ant-table-row-expand-icon::after{
+        color: black;
+      }
+    }
+
+    .radar-box {
+      height: 400px;
+    }
+    .bar-chart {
+      width: 535px;
+      height: 280px;
+    }
+    .videoLinechart {
+      width: 500px;
+      height: 350px;
+    }
   }
-  .m-bottom {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    pointer-events: none;
-  }
 }
-.m-set-img {
-  position:absolute;
-  z-index:999;
-  top: 12px;
-  right: 29px;
-  width: 25px;
-  height: 25px;
-}
-.tooltip {
-  position: relative;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
-  color: white;
-  padding: 4px 8px;
-  opacity: 0.7;
-  white-space: nowrap;
-}
-.tooltip-measure {
-  opacity: 1;
-  font-weight: bold;
-}
-.tooltip-static {
-  background-color: #ffcc33;
-  color: black;
-  border: 1px solid white;
-}
-.tooltip-measure:before,
-.tooltip-static:before {
-  border-top: 6px solid rgba(0, 0, 0, 0.5);
-  border-right: 6px solid transparent;
-  border-left: 6px solid transparent;
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  margin-left: -7px;
-  left: 50%;
-}
-.tooltip-static:before {
-  border-top-color: #ffcc33;
-} 

@@ -192,14 +192,14 @@ class Tables extends React.PureComponent {
     getRadioAll({
       isShow: "0",
     }).then((result) => {
-      console.log(result.data, "Result");
+      // console.log(result.data, "Result");
       let arr = [];
       for (let i = 0; i < result.data.length; i++) {
         if (result.data[i].isOnline * 1 === 0) {
           arr.push(result.data[i]);
         }
       }
-      console.log(arr);
+      // console.log(arr);
       this.setState({
         videoData: arr,
         videoCount: arr.length,

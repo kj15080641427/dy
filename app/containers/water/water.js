@@ -107,7 +107,7 @@ class Monitor extends React.PureComponent {
             case "370522":
               ljOnlie++;
               break;
-            case "370505":
+            case "370521":
               klOnline++;
               break;
             case "370503":
@@ -127,7 +127,7 @@ class Monitor extends React.PureComponent {
             case "370522":
               ljLine++;
               break;
-            case "370505":
+            case "370521":
               klLine++;
               break;
             case "370503":
@@ -146,17 +146,27 @@ class Monitor extends React.PureComponent {
       [dyLine, grLine, ljLine, hkLine, klLine]
     );
   };
-  componentDidUpdate() {
-    const { water, count, historyWater } = this.props;
+  componentDidMount() {
+    const { waterId } = this.props;
+    this.props.actions.getWaterType(); //水位站点
+    this.props.actions.getCountStation(); //来源统计
+    this.props.actions.getWaterHistory(waterId); //水位日志
+    this.props.actions.getWaterWarning(waterId); //报警日志
+  }
+  componentDidUpdate(pre) {
+    const { water, count, historyWater, waterId } = this.props;
+    if (waterId != pre.waterId) {
+      this.props.actions.getWaterHistory(waterId);
+      this.props.actions.getWaterWarning(waterId);
+    }
     if (count) {
       this.sourceChart();
     }
     if (water) {
-      console.log(moment().format("Do"), "WAYER");
       this.onlineChart();
       radarChart("radar-chart");
     }
-    if (historyWater) {
+    if (historyWater != pre.historyWater) {
       lineChart("line-chart", historyWater);
     }
   }
@@ -242,7 +252,7 @@ class Monitor extends React.PureComponent {
               </RenderBox>
               {/* 视频 */}
               <div className="radar-box">
-                <BoxTitle title="水位站点来源统计图" />
+                <BoxTitle title="水位站点视频" />
                 {/* <div className="bar-chart" id="bar-chart"></div> */}
               </div>
             </div>
@@ -326,12 +336,7 @@ class Monitor extends React.PureComponent {
       </div>
     );
   }
-  componentDidMount() {
-    this.props.actions.getWaterType(); //水位站点
-    this.props.actions.getCountStation(); //来源统计
-    this.props.actions.getWaterHistory(); //水位日志
-    this.props.actions.getWaterWarning(); //报警日志
-  }
+
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
     if (layerVisible[layerKey] === checked) {
@@ -345,13 +350,14 @@ class Monitor extends React.PureComponent {
 }
 Monitor.propTypes = {
   actions: PropTypes.object,
-  water: PropTypes.object,
+  water: PropTypes.array,
   count: PropTypes.object,
 };
 function mapStateToProps(state) {
   // console.log(state, "STATE");
   return {
-    historyWater: state.mapAboutReducers.historyWater,
+    waterId: state.mapAboutReducers.waterId, //水位ID
+    historyWater: state.mapAboutReducers.historyWater, //历史水位
     water: state.mapAboutReducers.water,
     count: state.mapAboutReducers.count,
   };

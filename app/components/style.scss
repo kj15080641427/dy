@@ -2,7 +2,9 @@
   color: white;
   background: #003366;
 }
-
+.ant-table-thead > tr > th {
+  border-bottom: 0;
+}
 .set-table-style {
   // height: 400px;
   width: 100%;

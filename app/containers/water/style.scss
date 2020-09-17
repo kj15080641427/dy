@@ -100,11 +100,9 @@
   position: absolute;
   left: 10px;
   top: 0;
-  opacity: 0.7;
   bottom: 0;
   z-index: 10;
   margin-top: 80px;
-  // padding: 4px;
   .line-chart {
     width: 500px;
     height: 280px;
@@ -112,14 +110,12 @@
 }
 .chart-right {
   width: 550px;
-  opacity: 0.7;
   position: absolute;
   right: 100px;
   top: 0;
   bottom: 0;
   z-index: 10;
   margin-top: 80px;
-  // padding: 4px;
   display: flex;
   justify-content: center;
   .bar-chart {

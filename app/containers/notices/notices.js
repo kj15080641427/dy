@@ -2,7 +2,7 @@
  * notices 2020-07-31
  */
 import React from "react";
-import { downlWordData } from "@app/data/request";
+import { downlWordData, downloadExcel } from "@app/data/request";
 import "./style.scss";
 import Head from "./head/Head";
 import FloodSituation from "./components/floodSituation/FloodSituation";
@@ -38,7 +38,7 @@ class notices extends React.PureComponent {
     } = this.state;
     return (
       <div className="monitor">
-        <Head></Head>
+        {/* <Head></Head> */}
         <div className="m-left-notices">
           <FloodSituation
             pointdata={pointdata}
@@ -59,7 +59,7 @@ class notices extends React.PureComponent {
     );
   }
   downl = () => {
-    var url = "/api/download/word";
+    var url = "/api/base/SiteBase/word?";
     if (this.state.time !== "") {
       url +=
         "?startTime=" + this.state.starttime + "&endTime=" + this.state.endtime;
@@ -106,7 +106,7 @@ class notices extends React.PureComponent {
         //   }
         // }
         let abnormalList = []; //z值为 '-' 的数据
-        let normalList = [];//z值正常的数据
+        let normalList = []; //z值正常的数据
         _arrayList.map((item) => {
           item.z == "-" ? abnormalList.push(item) : normalList.push(item);
         });
