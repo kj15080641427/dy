@@ -37,9 +37,9 @@ class Monitor extends React.PureComponent {
         tiandi: true, // 天地图底图
         tiandi2: true, // 天地图标注
         wfsRiver: false, // wfs河道图
-        river40: false, //40条河图片 用于解决河道标注很多的问题
+        river40: true, //40条河图片 用于解决河道标注很多的问题
         flood: false, // 洪水图层
-        river: false, // 水系图
+        river: true, // 水系图
         heatmap: true, // 热力图
         traffic: false, // 交通图层
         person: true, // 防汛人员
@@ -208,6 +208,7 @@ class Monitor extends React.PureComponent {
           <div className="easy-flood">
             <div className="easyFlood-left">
               <RenderBox>
+                <div className='table-title'>特大暴雨(250mm以上)</div>
                 <TableShow
                   columns={[
                     { name: "站点名称", dataIndex: "name" },
@@ -215,7 +216,7 @@ class Monitor extends React.PureComponent {
                     { name: "降雨量", dataIndex: "dayDrp" },
                   ]}
                   dataSource={
-                    floodRain.filter((item) => item.dayDrp > 25) || []
+                    floodRain.filter((item) => item.dayDrp > 250) || []
                   }
                 />
               </RenderBox>
@@ -245,7 +246,7 @@ class Monitor extends React.PureComponent {
               <RenderBox hasTitle title="易涝点24小时信息">
                 <div className="easyfloodLine" id="easyfloodLine"></div>
               </RenderBox>
-              <RenderBox></RenderBox>
+              <RenderBox style={{ height: "280px" }}></RenderBox>
             </div>
             <RouterList />
           </div>

@@ -30,7 +30,7 @@ class FloodSituation extends React.PureComponent {
     const element = (
       <Row>
         <Col span={5}>
-          开始时间
+          开始时间&nbsp;&nbsp;&nbsp;
           <DatePicker
             format={"YYYY-MM-DD HH"}
             size="large"
@@ -40,7 +40,7 @@ class FloodSituation extends React.PureComponent {
           />
         </Col>
         <Col span={5}>
-          结束时间
+          结束时间&nbsp;&nbsp;&nbsp;
           <DatePicker
             format={"YYYY-MM-DD HH"}
             size="large"
@@ -75,6 +75,7 @@ class FloodSituation extends React.PureComponent {
     return (
       <>
         {element}
+        <br />
         <Situation dataSource={raindata.count}></Situation>
         <br></br>
         <RainrAnnunciate
@@ -88,18 +89,14 @@ class FloodSituation extends React.PureComponent {
           lj={raindata.lj}
         ></RainrAnnunciate>
         <br></br>
-        {/* <Col span={24}> */}
         <RiverAnnunciate
           dataSource={riverdata}
           loding={riverloding}
         ></RiverAnnunciate>
-        {/* </Col> */}
-        {/* <Col span={24}> */}
         <WaterAnnunciate
           dataSource={pointdata}
           loding={pointloding}
         ></WaterAnnunciate>
-        {/* </Col> */}
       </>
     );
   }

@@ -12,12 +12,13 @@
     }
     .rain-pie-chart {
       width: 500px;
-      height: 500px;
+      height: 480px;
     }
   }
 
   .chart-right {
     width: 480px;
+    // height: 100%;
     position: absolute;
     right: 100px;
     top: 0;
@@ -35,6 +36,10 @@
       width: 330px;
       height: 300px;
     }
+    .radius-chart {
+      width: 330px;
+      height: 300px;
+    }
     .rain-set-table{
       display: flex;
       justify-items: center;
@@ -46,7 +51,7 @@
     position: relative;
     border: 2px solid rgb(0, 153, 255);
     width: 450px;
-    height: 100%;
+    height: 95%;
   }
   .rotateBarChart {
     width: 450px;

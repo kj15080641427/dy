@@ -73,7 +73,8 @@ class Map extends React.PureComponent {
     }
     return (
       <>
-        <div id="map"></div>
+        {/* <div id="map"></div> */}
+        <div id="map" className={'display-map'}></div>
         {domArr}
       </>
     );
@@ -142,21 +143,16 @@ class Map extends React.PureComponent {
     this.map.addTile({
       url: `https://t0.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
+      className: "ol-layer-tiandi",
       opacity: 1,
       key: "tiandi",
       projection: true,
     });
-    // this.map.addTile({
-    //   url: require("../../../resource/tile2.png")["default"],
-    //   visible: true,
-    //   opacity: 0.5,
-    //   key: "opacityTile",
-    //   transition: 1,
-    // });
     this.map.addTile({
       url: `https://t0.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
       opacity: 1,
+      className: "ol-layer-tiandi",
       key: "tiandi2",
       projection: true,
     });
@@ -169,15 +165,6 @@ class Map extends React.PureComponent {
       zIndex: 10,
       key: "river",
     });
-    // this.map.addImageTile({
-    //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
-    //   params: {
-    //     'LAYERS': 'dy:河流40',
-    //     'TILED': false
-    //   },
-    //   zIndex: 11,
-    //   key: "river40"
-    // });
     this.map.addGeo({
       url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
       params: {
@@ -185,7 +172,7 @@ class Map extends React.PureComponent {
         TILED: true,
       },
       zIndex: 10,
-      key: "river40",
+      key: "river2",
     });
 
     //加入交通实况图
@@ -1138,11 +1125,6 @@ class Map extends React.PureComponent {
 }
 function mapStateToProps(state) {
   return {
-    // water: state.monitor.water,
-    // rain: state.monitor.rain,
-    // ponding: state.monitor.ponding,
-    // details: state.monitor.details,
-    // warehouse: state.monitor.warehouse,
     rainData: state.rain.rainData,
     stations: state.rain.stations,
   };

@@ -31,3 +31,13 @@ export const SET_FLOOD_INFO_REALTIME = "SET_FLOOD_INFO_REALTIME";
 export const CHANGE_FLOOD_ID = "CHANGE_FLOOD_ID";
 //改变水位ID
 export const CHANGE_WATER_ID = "CHANGE_WATER_ID";
+
+//防汛仓库
+export const GET_WAREHOUSE = "GET_WAREHOUSE";
+export const SET_WAREHOUSE = "WARE_WAREHOUSE";
+//防汛人员
+export const GET_FLOOD_USER = "GET_FLOOD_USER";
+export const SET_FLOOD_USER = "SET_FLOOD_USER";
+//防汛专家
+export const GET_FLOOD_EXPERT = "GET_FLOOD_EXPERT";
+export const SET_FLOOD_EXPERT = "SET_FLOOD_EXPERT";

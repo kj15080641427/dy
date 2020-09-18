@@ -6,16 +6,14 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/monitor";
 import * as mapAction from "@app/redux/actions/map";
-import UbiMap from "./ubimap";
+import UbiMap from "../../monitor/map/ubimap";
 import FloodAnimation from "./FloodAnimation";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
-
-import "./style.scss";
 import { templateRain, templatePonding } from "./template";
 import { getWfsRiver } from "@app/data/request";
 import VideoControl from "@app/components/video/VideoControl";
-
+import "./style.scss";
 import Person from "./overlays/Person";
 import Rain from "./overlays/Rain";
 import Water from "./overlays/Water";
@@ -31,8 +29,7 @@ class Map extends React.PureComponent {
     super(props, context);
     this.state = {
       test: 1,
-      overlays: {
-      },
+      overlays: {},
     };
     this.type = [
       Person,
@@ -47,7 +44,7 @@ class Map extends React.PureComponent {
     ];
     // eslint-disable-next-line react/no-direct-mutation-state
     this.type.forEach((Ovl) => {
-      this.state.overlays[Ovl.type] = {};
+      // this.state.overlays[Ovl.type] = {};
     });
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.onOverlayClose = this.onOverlayClose.bind(this);
@@ -80,7 +77,8 @@ class Map extends React.PureComponent {
     }
     return (
       <>
-        <div id="map"></div>
+        {/* <div id="map"></div> */}
+        <div id="map" className={"display-map"} />
         {domArr}
       </>
     );
@@ -117,8 +115,8 @@ class Map extends React.PureComponent {
   createMap() {
     this.map = new UbiMap({
       target: "map",
-      center: [118.67, 37.43],
-      zoom: 11,
+      center: [118.67, 37.6],
+      zoom: 9.7,
       minZoom: 3,
       maxZoom: 18,
       mouseControl: false,
@@ -131,19 +129,14 @@ class Map extends React.PureComponent {
       opacity: 1,
       key: "tiandi",
       projection: true,
+      className: "ol-layer-tiandi",
     });
-    // this.map.addTile({
-    //   url: require("../../../resource/tile2.png")["default"],
-    //   visible: true,
-    //   opacity: 0.5,
-    //   key: "opacityTile",
-    //   transition: 1,
-    // });
     this.map.addTile({
       url: `https://t0.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
       opacity: 1,
       key: "tiandi2",
+      className: "ol-layer-tiandi",
       projection: true,
     });
     this.map.addGeo({
@@ -244,7 +237,7 @@ class Map extends React.PureComponent {
         font: "16px sans-serif",
       },
     });
- 
+
     this.map.addVector({
       key: "ponding",
       zIndex: 20,

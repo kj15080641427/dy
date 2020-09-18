@@ -8,7 +8,7 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 400px;
+  width: 500px;
   z-index: 10;
   padding-top: $monitor_left_pd_top;
   padding-left: $monitor_left_pd_left;
@@ -22,26 +22,31 @@
     .easyflood-left-bottom {
       .radar-box {
         width: 500px;
-        height: 700px;
+        height: 600px;
       }
     }
     .funnel-chart {
-      width: 400px;
+      width: 500px;
       height: 300px;
+    }
+    .table-title{
+      color: white;
+      font-size: 24px;
+      margin-left: 15px;
     }
   }
 }
 .easyFlood-right {
   .radar-box {
-    width: 430px;
-    height: 350px;
+    width: 435px;
+    height: 310px;
   }
   .easyfloodInfo {
     width: 400px;
     height: 300px;
   }
   .easyfloodLine {
-    width: 400px;
+    width: 450px;
     height: 300px;
   }
 }

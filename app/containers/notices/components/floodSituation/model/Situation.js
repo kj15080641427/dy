@@ -15,7 +15,7 @@ class Situation extends React.PureComponent {
         return (
             <>
                 {dataSource === undefined ? null : <>
-                    <Row className="situation-title"> 汛情快报</Row>
+                    {/* <Row className="situation-title"> 汛情快报</Row> */}
                     <Row className="situation-text">{dataSource.a} ，全市汛情概况如下：</Row>
                     <Row className="situation-text"><a className="text-title">降雨：</a>全市平均降水量{dataSource.b}毫米，最大{dataSource.c}站{dataSource.d}毫米。全市{dataSource.e}个站点暴雨，{dataSource.f}个大雨，{dataSource.g}个中雨，{dataSource.h}个小雨。</Row>
                     <Row className="situation-text"><a className="text-title">河道水位：</a>超警戒水位的站点{dataSource.i}个。</Row>

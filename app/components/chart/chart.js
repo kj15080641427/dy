@@ -273,7 +273,7 @@ export const lineChart = (domId, data) => {
       trigger: "axis",
     },
     grid: {
-      width: 450,
+      width: 400,
     },
     series: [
       {
@@ -308,7 +308,7 @@ export const rotateBarChart = (domId, data) => {
       type: "value",
       boundaryGap: [0, 0.01],
       inverse: true,
-      show: true,
+      show: false,
       splitLine: {
         show: false,
       },

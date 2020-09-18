@@ -75,7 +75,8 @@ class Map extends React.PureComponent {
     }
     return (
       <>
-        <div id="map"></div>
+        {/* <div id="map"></div> */}
+        <div id="map" className={'display-map'}/>
         {domArr}
       </>
     );
@@ -140,6 +141,7 @@ class Map extends React.PureComponent {
       visible: true,
       opacity: 1,
       key: "tiandi",
+      className: "ol-layer-tiandi",
       projection: true
     });
     // this.map.addTile({
@@ -154,6 +156,7 @@ class Map extends React.PureComponent {
       visible: true,
       opacity: 1,
       key: "tiandi2",
+      className: "ol-layer-tiandi",
       projection: true
     });
     this.map.addGeo({

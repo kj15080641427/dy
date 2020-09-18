@@ -158,6 +158,51 @@ function* getFloodInfoRealTime({ data }) {
     console.error(e);
   }
 }
+//获取防汛仓库
+function* getWarehouse() {
+  try {
+    const result = yield call(req.getWarehouse, {});
+    if ((result.code = code)) {
+      yield put({
+        type: types.SET_WAREHOUSE,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+//获取防汛人员
+function* getFloodUser() {
+  try {
+    const result = yield call(req.getfloodUser, {});
+    if ((result.code = code)) {
+      yield put({
+        type: types.SET_FLOOD_USER,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+//获取防汛专家
+function* getFloodExpert() {
+  try {
+    const result = yield call(req.getFloodControlExpertAll, {});
+    if ((result.code = code)) {
+      // result.data.map(item=>{
+
+      // })
+      yield put({
+        type: types.SET_FLOOD_EXPERT,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
 export default function* mapAbout() {
   yield all([
     takeEvery(types.GET_WATER, getWater),
@@ -168,5 +213,8 @@ export default function* mapAbout() {
     takeEvery(types.GET_WATER_WARNING, getWaterWarning),
     takeEvery(types.GET_FLOOD_RAIN, getFloodRain),
     takeEvery(types.GET_FLOOD_INFO_REALTIME, getFloodInfoRealTime),
+    takeEvery(types.GET_WAREHOUSE, getWarehouse),
+    takeEvery(types.GET_FLOOD_USER, getFloodUser),
+    takeEvery(types.GET_FLOOD_EXPERT, getFloodExpert),
   ]);
 }

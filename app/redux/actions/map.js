@@ -69,3 +69,24 @@ export const changeWaterId = (data) => {
     data,
   };
 };
+//获取防汛仓库
+export const getWarehouse = (data) => {
+  return {
+    type: types.GET_WAREHOUSE,
+    data,
+  };
+};
+//防汛人员
+export const getFloodUser = (data) => {
+  return {
+    type: types.GET_FLOOD_USER,
+    data,
+  };
+};
+//防汛专家
+export const getFloodExpert = (data) => {
+  return {
+    type: types.GET_FLOOD_EXPERT,
+    data,
+  };
+};

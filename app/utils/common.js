@@ -37,7 +37,7 @@ export function fetchOutData(method, url, data) {
  *   请求数据
  */
 export function fetchData(method, url, data) {
-  url = "/api/v2" + url;
+  url = "/api" + url;
   return fetch(url, {
     method: method,
     credentials: "include",
@@ -53,7 +53,7 @@ export function fetchData(method, url, data) {
   });
 }
 export function fetchJSONData(method, url, data) {
-  url = "/api/v2" + url;
+  url = "/api" + url;
   return fetch(url, {
     method: method,
     credentials: "include",
@@ -97,7 +97,7 @@ export const testLogin = (url, data) => {
  *   请求数据
  */
 export function fetchGet(url, params) {
-  url = "/api/v2" + url;
+  url = "/api" + url;
   if (params) {
     let paramsArray = [];
     //拼接参数

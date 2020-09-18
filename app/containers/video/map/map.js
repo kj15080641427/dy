@@ -5,7 +5,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/monitor";
-import UbiMap from "./ubimap";
+import UbiMap from "../../monitor/map/ubimap";
 import FloodAnimation from "./FloodAnimation";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
@@ -93,12 +93,13 @@ class Map extends React.PureComponent {
     }
     return (
       <>
-        <div id="map"></div>
+        {/* <div id="map"></div> */}
+        <div id="map" className={'display-map'}/>
         {domArr}
       </>
     );
   }
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     let { layerVisible } = this.props;
     if (layerVisible !== prevProps.layerVisible) {
       this.setVisible();
@@ -122,8 +123,8 @@ class Map extends React.PureComponent {
   createMap() {
     this.map = new UbiMap({
       target: "map",
-      center: [118.67, 37.43],
-      zoom: 11,
+      center: [118.67, 37.6],
+      zoom: 9.7,
       minZoom: 3,
       maxZoom: 18,
       mouseControl: false,
@@ -134,6 +135,7 @@ class Map extends React.PureComponent {
       visible: true,
       opacity: 1,
       key: "tiandi",
+      className: "ol-layer-tiandi",
       projection: true,
     });
     this.map.addTile({
@@ -141,6 +143,7 @@ class Map extends React.PureComponent {
       visible: true,
       opacity: 1,
       key: "tiandi2",
+      className: "ol-layer-tiandi",
       projection: true,
     });
     this.map.addGeo({

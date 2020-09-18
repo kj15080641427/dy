@@ -3,8 +3,8 @@
  */
 import React from "react";
 import { connect } from "react-redux";
-import { bindActionCreators, compose } from "redux";
-import * as actions from "@app/redux/actions/monitor";
+import { bindActionCreators } from "redux";
+import * as actions from "@app/redux/actions/map";
 import Map from "./map/map";
 import "./style.scss";
 import Head from "./head/Head";
@@ -12,7 +12,7 @@ import WeatherTable from "./left/WeatherTable";
 import WeatherPic from "./right/WeatherPic";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
-import { Drawer, Row, Divider, Checkbox } from "antd";
+import { Drawer, Row, Divider, Checkbox, Tabs } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
 
 import RouterList from "../../components/routerLiis";
@@ -24,6 +24,7 @@ import {
   barChart,
 } from "../../components/chart/chart";
 import { TableShow } from "../../components/chart/table";
+const { TabPane } = Tabs;
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -62,10 +63,14 @@ class Monitor extends React.PureComponent {
     });
   };
   componentDidMount() {
+    this.props.actions.getFloodUser();
+    this.props.actions.getFloodExpert();
+    // this.props.actions.getWarehouse();
     pieChart("floodWaringPie");
   }
   render() {
     let { layerVisible, displayRight, displayLeft } = this.state;
+    const { floodUser, floodExpert } = this.props;
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible}></Map>
@@ -73,24 +78,31 @@ class Monitor extends React.PureComponent {
         <div className="floodWarning">
           <div style={{ display: displayLeft }}>
             <div className="flood-warning-left">
-              <RenderBox hasTitle title="统计图">
+              <RenderBox hasTitle title="东营市防汛人员">
                 <div className="floodWaringPie" id="floodWaringPie"></div>
                 <TableShow
                   columns={[
-                    { name: "站点名称", dataIndex: "name" },
-                    { name: "警戒水位", dataIndex: "warning" },
-                    { name: "水位", dataIndex: "z" },
+                    { name: "名称", dataIndex: "name" },
+                    { name: "职位", dataIndex: "remark" },
+                    { name: "联系电话", dataIndex: "phone" },
+                    { name: "单位", dataIndex: "unit" },
                   ]}
-                  dataSource={[]}
+                  dataSource={floodUser}
                 ></TableShow>
               </RenderBox>
               <WeatherPic></WeatherPic>
-              {/* <WeatherTable></WeatherTable> */}
+              <WeatherTable></WeatherTable>
             </div>
           </div>
           <div style={{ display: displayRight }}>
             <div className="flood-warning-right">
-              <RenderBox hasTitle title="视频"></RenderBox>
+              <RenderBox hasTitle title="专家库">
+                <Tabs defaultActiveKey="1" onChange={(e) => console.log(e)}>
+                  <TabPane key="1" tab="市级专家"></TabPane>
+                  <TabPane key="2" tab="县级专家"></TabPane>
+                  <TabPane key="3" tab="乡镇专家"></TabPane>
+                </Tabs>
+              </RenderBox>
               {/* <PannelBtn></PannelBtn> */}
               {/* <WeatherDy></WeatherDy>
             <AlarmTable></AlarmTable>
@@ -188,7 +200,11 @@ class Monitor extends React.PureComponent {
 // -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
-  return {};
+  console.log(state, "STATE");
+  return {
+    floodExpert: state.mapAboutReducers.floodExpert,
+    floodUser: state.mapAboutReducers.floodUser,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
