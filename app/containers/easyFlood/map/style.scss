@@ -71,7 +71,7 @@
       transform: scale(2);
       opacity: 0;
   }
-}           
+}
 .ol-alarm-container {
   position: relative;
   width: 50px;
@@ -81,19 +81,19 @@ $ol-duration : 4s;
 .ol-alarm-water1 {
   -webkit-animation: wateranimate $ol-duration 3s ease-out infinite;
   animation: wateranimate $ol-duration 3s ease-out infinite;
-}           
+}
 .ol-alarm-water2 {
   -webkit-animation: wateranimate $ol-duration 2s ease-out infinite;
   animation: wateranimate $ol-duration 2s ease-out infinite;
-}           
+}
 .ol-alarm-water3 {
   -webkit-animation: wateranimate $ol-duration 1s ease-out infinite;
   animation: wateranimate $ol-duration 1s ease-out infinite;
-}           
+}
 .ol-alarm-water4 {
   -webkit-animation: wateranimate $ol-duration 0s ease-out infinite;
   animation: wateranimate $ol-duration 0s ease-out infinite;
-}           
+}
 .ol-alarm-water1, .ol-alarm-water2, .ol-alarm-water3, .ol-alarm-water4 {
   padding: 40%;
   position: absolute;
@@ -104,4 +104,10 @@ $ol-duration : 4s;
   border-radius: 100%;
   z-index: 1;
   opacity: 0;
+}
+.display-map {
+  background: rgb(1,2,59);
+}
+.ol-layer-tiandi {
+  opacity: 0.2;
 }

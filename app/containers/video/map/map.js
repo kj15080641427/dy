@@ -71,7 +71,7 @@ class Map extends React.PureComponent {
     }
     return (
       <>
-        <div id="map"></div>
+        <div id="map" className={'display-map'}/>
         {domArr}
       </>
     );
@@ -106,13 +106,14 @@ class Map extends React.PureComponent {
       maxZoom: 18,
       mouseControl: false
     });
-    
+
     this.map.addTile({
       // url: "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}",
       url: `https://t0.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
       opacity: 1,
       key: "tiandi",
+      className: 'ol-layer-tiandi',
       projection: true
     });
     // this.map.addTile({
@@ -126,6 +127,7 @@ class Map extends React.PureComponent {
       url: `https://t0.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
       opacity: 1,
+      className: 'ol-layer-tiandi',
       key: "tiandi2",
       projection: true
     });
@@ -324,9 +326,9 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [0, 0],
-        src: function(featureObj) { 
+        src: function(featureObj) {
           return require("../../../resource/pump.svg")["default"];
-          
+
         },
         fontText: function(featureObj) {
             return featureObj.name + "";
@@ -344,7 +346,7 @@ class Map extends React.PureComponent {
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontOffset: [20, 0],
-        src: function(featureObj) { 
+        src: function(featureObj) {
           return require("../../../resource/icon/warehouse.svg")["default"];
         },
         fontText: function(featureObj) {
@@ -399,7 +401,7 @@ class Map extends React.PureComponent {
           message.error("获取雨晴详情失败");
         });
       }
-      
+
     });
     this.map.startSelectFeature("water", (param) => {
       let { details } = this.props;
@@ -505,7 +507,7 @@ class Map extends React.PureComponent {
     let elements = overlays[key];
     if (elements[id]) return;
     // 查询该key是否只能显示一个overlay
-    let isSingle = this.type.some((Overlay) => { 
+    let isSingle = this.type.some((Overlay) => {
       if (Overlay.type === key) {
         return Overlay.single;
       }
@@ -581,7 +583,7 @@ class Map extends React.PureComponent {
             type: "Point",
             id: item.radioID + "",
             lonlat: [item.lon, item.lat],
-            
+
           };
         })) ;
       }
@@ -607,7 +609,7 @@ class Map extends React.PureComponent {
             lonlats: [item.lon, item.lat],
             coords: [
               [[0, 0], [0, 100], [300, 100], [300, 0], [0, 0],[0, 100], [300, 0],[0, 0], [300, 100]]
-              
+
             ]
           };
         })) ;
@@ -658,7 +660,7 @@ class Map extends React.PureComponent {
         }
       });
     }, 3000);
-    
+
     // 模拟洪水
     setInterval(() => {
       let data = [];
@@ -683,7 +685,7 @@ class Map extends React.PureComponent {
             heading: 0
         },
     ]);
-    
+
   }
   drawFeatures(data) {
     let { rain, water, details, ponding } = this.props;
@@ -712,7 +714,7 @@ class Map extends React.PureComponent {
         obj.water.push(item);
       } else if ([9].indexOf(item.indtype) > -1) {
         obj.ponding.push(item);
-      } 
+      }
     });
     return obj;
   }
@@ -728,7 +730,7 @@ class Map extends React.PureComponent {
   onFloodClick(featureProp) {
     console.log(featureProp);
   }
-  
+
 }
 function mapStateToProps(state) {
   return {

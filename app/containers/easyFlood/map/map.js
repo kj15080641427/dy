@@ -5,7 +5,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/monitor";
-import UbiMap from "./ubimap";
+//import UbiMap from "./ubimap";
+import UbiMap from "../../monitor/map/ubimap";
 import FloodAnimation from "./FloodAnimation";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
@@ -94,7 +95,7 @@ class Map extends React.PureComponent {
                   map={this.map}
                   model={overlays[type][key]}
                   onClose={this.onOverlayClose}
-                ></Comp>
+                />
               );
             });
             domArr = domArr.concat(comps);
@@ -105,7 +106,7 @@ class Map extends React.PureComponent {
     }
     return (
       <>
-        <div id="map"></div>
+        <div id="map" className={'display-map'}/>
         {domArr}
       </>
     );
@@ -115,7 +116,7 @@ class Map extends React.PureComponent {
     if (layerVisible !== prevProps.layerVisible) {
       this.setVisible();
     }
-    if (flood != prevProps.flood) {
+    if (flood !== prevProps.flood) {
       this.drawFeatures();
     }
   }
@@ -149,6 +150,7 @@ class Map extends React.PureComponent {
       url: `https://t0.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
       opacity: 1,
+      className: 'ol-layer-tiandi',
       key: "tiandi",
       projection: true,
     });
@@ -165,6 +167,7 @@ class Map extends React.PureComponent {
       opacity: 1,
       key: "tiandi2",
       projection: true,
+      className: 'ol-layer-tiandi',
     });
     this.map.addGeo({
       url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
