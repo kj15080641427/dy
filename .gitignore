@@ -6,7 +6,7 @@
 
 # production
 /build
-
+/
 # misc
 .DS_Store
 .env
@@ -27,3 +27,5 @@ yarn.lock
 /dist
 
 /.vscode
+#压缩包
+/dispatchingplatform*
