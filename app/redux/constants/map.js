@@ -41,3 +41,10 @@ export const SET_FLOOD_USER = "SET_FLOOD_USER";
 //防汛专家
 export const GET_FLOOD_EXPERT = "GET_FLOOD_EXPERT";
 export const SET_FLOOD_EXPERT = "SET_FLOOD_EXPERT";
+
+//根据仓库ID获取仓库物资
+export const GET_MATERIAL_BY_ID = "GET_MATERIAL_BY_ID";
+export const SET_MATERIAL_BY_ID = "SET_MATERIAL_BY_ID";
+//获取防汛队伍人员
+export const GET_FLOOD_RANK_USER = "GET_FLOOD_RANK_USER";
+export const SET_FLOOD_RANK_USER = "SET_FLOODD_RANK_USER";

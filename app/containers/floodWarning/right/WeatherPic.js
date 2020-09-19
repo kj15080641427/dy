@@ -181,7 +181,7 @@ class WeatherPic extends React.PureComponent {
               <div className="m-pic-div-img">
                 <iframe
                   src="http://58.59.29.51:14003/Radar"
-                  width="400px"
+                  width="380px"
                   height="510px"
                   frameBorder="0"
                   scrolling="no"

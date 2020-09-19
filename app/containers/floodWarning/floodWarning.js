@@ -8,7 +8,6 @@ import * as actions from "@app/redux/actions/map";
 import Map from "./map/map";
 import "./style.scss";
 import Head from "./head/Head";
-import WeatherTable from "./left/WeatherTable";
 import WeatherPic from "./right/WeatherPic";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
@@ -17,18 +16,14 @@ import SetTitle from "@app/components/setting/SetTitle";
 
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
-import {
-  rotateBarChart,
-  pieChart,
-  lineChart,
-  barChart,
-} from "../../components/chart/chart";
+import { pieChart } from "../../components/chart/chart";
 import { TableShow } from "../../components/chart/table";
 const { TabPane } = Tabs;
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      tabsKey: 0, //防汛人员key
       showLeft: true,
       showRight: true,
       // showBottom: true,
@@ -62,15 +57,30 @@ class Monitor extends React.PureComponent {
       visible: false,
     });
   };
+  componentDidUpdate(pre) {
+    const { floodRanks } = this.props;
+    if (floodRanks !== pre.floodRanks) {
+      let list = [];
+      floodRanks.forEach((item) => {
+        list.push({
+          name: item.name.split("防汛")[0],
+          value: item.userList?.length,
+          textStyle: { fontSize: "24px" },
+        });
+      });
+      pieChart("floodWaringPie", list);
+    }
+  }
   componentDidMount() {
-    this.props.actions.getFloodUser();
-    this.props.actions.getFloodExpert();
-    // this.props.actions.getWarehouse();
-    pieChart("floodWaringPie");
+    this.props.actions.getFloodRankUser(); //获取防汛队伍下的防汛人员
+    this.props.actions.getMaterialById(32); //根据仓库id获取物资
+    // this.props.actions.getFloodUser();
+    this.props.actions.getFloodExpert(); //获取防汛专家
+    this.props.actions.getWarehouse(); //防汛仓库
   }
   render() {
-    let { layerVisible, displayRight, displayLeft } = this.state;
-    const { floodUser, floodExpert } = this.props;
+    let { layerVisible, displayRight, displayLeft, tabsKey } = this.state;
+    const { expert, wareHouse, material, floodRanks } = this.props;
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible}></Map>
@@ -80,6 +90,17 @@ class Monitor extends React.PureComponent {
             <div className="flood-warning-left">
               <RenderBox hasTitle title="东营市防汛人员">
                 <div className="floodWaringPie" id="floodWaringPie"></div>
+                <Tabs
+                  defaultActiveKey="1"
+                  onChange={(e) => this.setState({ tabsKey: e })}
+                >
+                  {floodRanks?.map((item, index) => (
+                    <TabPane
+                      key={index}
+                      tab={item.name.split("防汛")[0]}
+                    ></TabPane>
+                  ))}
+                </Tabs>
                 <TableShow
                   columns={[
                     { name: "名称", dataIndex: "name" },
@@ -87,21 +108,80 @@ class Monitor extends React.PureComponent {
                     { name: "联系电话", dataIndex: "phone" },
                     { name: "单位", dataIndex: "unit" },
                   ]}
-                  dataSource={floodUser}
+                  dataSource={floodRanks && floodRanks[tabsKey].userList}
                 ></TableShow>
               </RenderBox>
+              <br/>
               <WeatherPic></WeatherPic>
-              <WeatherTable></WeatherTable>
+              {/* <WeatherTable></WeatherTable> */}
             </div>
           </div>
           <div style={{ display: displayRight }}>
             <div className="flood-warning-right">
               <RenderBox hasTitle title="专家库">
                 <Tabs defaultActiveKey="1" onChange={(e) => console.log(e)}>
-                  <TabPane key="1" tab="市级专家"></TabPane>
-                  <TabPane key="2" tab="县级专家"></TabPane>
-                  <TabPane key="3" tab="乡镇专家"></TabPane>
+                  <TabPane key="1" tab="市级专家">
+                    <TableShow
+                      columns={[
+                        { name: "名称", dataIndex: "name", width: "60px" },
+                        { name: "联系电话", dataIndex: "phone" },
+                        { name: "熟悉流域", dataIndex: "field" },
+                        { name: "特长", dataIndex: "major", width: "250px" },
+                      ]}
+                      dataSource={expert?.city}
+                    />
+                  </TabPane>
+                  <TabPane key="2" tab="县级专家">
+                    <TableShow
+                      columns={[
+                        { name: "名称", dataIndex: "name" },
+                        { name: "特长", dataIndex: "major" },
+                        { name: "联系电话", dataIndex: "phone" },
+                        { name: "单位", dataIndex: "unit" },
+                      ]}
+                      dataSource={expert?.county}
+                    />
+                  </TabPane>
+                  <TabPane key="3" tab="乡镇专家">
+                    <TableShow
+                      columns={[
+                        { name: "名称", dataIndex: "name" },
+                        { name: "特长", dataIndex: "major" },
+                        { name: "联系电话", dataIndex: "phone" },
+                        { name: "单位", dataIndex: "unit" },
+                      ]}
+                      dataSource={expert?.town}
+                    />
+                  </TabPane>
                 </Tabs>
+              </RenderBox>
+              <RenderBox hasTitle title="防汛物资仓库">
+                <Tabs
+                  defaultActiveKey="1"
+                  onChange={(e) => this.props.actions.getMaterialById(e)}
+                >
+                  {wareHouse?.map((item) => (
+                    <TabPane
+                      key={item.materialWarehouseId}
+                      tab={item.name.split("防汛")[0]}
+                    ></TabPane>
+                  ))}
+                  {/* <TabPane key="1" tab="市水务局"></TabPane>
+                  <TabPane key="2" tab="东营区"></TabPane>
+                  <TabPane key="3" tab="垦利区"></TabPane>
+                  <TabPane key="4" tab="河口区"></TabPane>
+                  <TabPane key="5" tab="利津县"></TabPane>
+                  <TabPane key="6" tab="广饶县"></TabPane> */}
+                </Tabs>
+                <TableShow
+                  columns={[
+                    { name: "名称", dataIndex: "name" },
+                    { name: "数量", dataIndex: "saveTotal" },
+                    { name: "单位", dataIndex: "company" },
+                    { name: "规格", dataIndex: "spec" },
+                  ]}
+                  dataSource={material}
+                />
               </RenderBox>
               {/* <PannelBtn></PannelBtn> */}
               {/* <WeatherDy></WeatherDy>
@@ -170,16 +250,6 @@ class Monitor extends React.PureComponent {
               <a style={{ fontSize: 15, color: "#000000fd" }}>右侧栏</a>
             </div>
           </Row>
-
-          {/* <br /> */}
-          {/* <Row>
-            <Switch checkedChildren="开" unCheckedChildren="关" checked={this.state.showBottom} onClick={() => {
-              this.setState({
-                showBottom: !this.state.showBottom,
-                displayBottom: this.state.showBottom ? 'none' : 'block'
-              });
-            }} defaultChecked />下栏目
-          </Row> */}
           <CheckBoxs
             layerVisible={layerVisible}
             onChecked={this.onChecked}
@@ -190,7 +260,9 @@ class Monitor extends React.PureComponent {
   }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
-    if (layerVisible[layerKey] === checked) return;
+    if (layerVisible[layerKey] === checked) {
+      return;
+    }
     layerVisible[layerKey] = checked;
     this.setState({
       layerVisible: { ...layerVisible },
@@ -202,8 +274,11 @@ class Monitor extends React.PureComponent {
 function mapStateToProps(state) {
   console.log(state, "STATE");
   return {
-    floodExpert: state.mapAboutReducers.floodExpert,
-    floodUser: state.mapAboutReducers.floodUser,
+    floodRanks: state.mapAboutReducers.floodRanks,
+    material: state.mapAboutReducers.material,
+    wareHouse: state.mapAboutReducers.wareHouse,
+    expert: state.mapAboutReducers.expert,
+    // floodUser: state.mapAboutReducers.floodUser,
   };
 }
 

@@ -17,7 +17,8 @@
 }
 .title-scheme {
   font-size: 20px;
-  vertical-align: middle;display: table-cell;
+  vertical-align: middle;
+  display: table-cell;
 }
 .m-btn-sunny {
   width: 50px;
@@ -162,14 +163,15 @@
   bottom: 16px;
 }
 .m-pic-div-wraning {
-  width: 514px;
+  width: 500px;
   height: 372px;
   border: 1px solid #007ed7;
   position: relative;
   bottom: 22px;
+  background: #003366;
 }
 .m-pic-div-img {
-  width: 400px;
+  width: 380px;
   height: 365px;
   position: relative;
   top: 4px;

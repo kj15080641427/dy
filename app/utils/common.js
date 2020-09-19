@@ -1,9 +1,11 @@
+import { createHashHistory } from "history";
 // const host = "http://2287ym5502.51mypc.cn";
 const host = "http://172.19.112.74:8080/";
 //const host = "http://10.1.4.187:8080/";
 // element判断是否含有className
 //拿到token值
 const token = localStorage.getItem("token");
+const hashHistory = createHashHistory();
 // const hostUrl = "http://218.56.180.250:9109/tuhui-base";
 
 export function hasClassName(obj, name) {
@@ -49,6 +51,9 @@ export function fetchData(method, url, data) {
     // 注意 post 时候参数的形式
     body: data ? appendParam(url, data) : null,
   }).then((res) => {
+    if (res.code == 400) {
+      hashHistory.push("/");
+    }
     return res.ok ? res.json() : Promise.reject("接口出错");
   });
 }
@@ -65,6 +70,9 @@ export function fetchJSONData(method, url, data) {
     // 注意 post 时候参数的形式
     body: data ? JSON.stringify(data) : null,
   }).then((res) => {
+    if (res.code == 400) {
+      hashHistory.push("/");
+    }
     if (url === "/api/users/login") {
       return res.ok ? res : Promise.reject("接口出错");
     } else {
@@ -121,6 +129,9 @@ export function fetchGet(url, params) {
     },
   }).then((res) => {
     // download(res)
+    if (res.code == 400) {
+      hashHistory.push("/");
+    }
     return res.ok ? res.json() : Promise.reject("接口出错");
   });
 }

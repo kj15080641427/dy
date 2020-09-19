@@ -100,6 +100,15 @@ export default function mapAboutReducers(state = initState, action) {
     case types.SET_FLOOD_USER:
       newState = { ...newState, floodUser: action.data };
       break;
+    case types.SET_FLOOD_EXPERT:
+      newState = { ...newState, expert: action.data };
+      break;
+    case types.SET_MATERIAL_BY_ID:
+      newState = { ...newState, material: action.data };
+      break;
+    case types.SET_FLOOD_RANK_USER:
+      newState = { ...newState, floodRanks: action.data };
+      break;
     default:
       return newState;
   }

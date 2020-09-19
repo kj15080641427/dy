@@ -533,9 +533,9 @@ class Map extends React.PureComponent {
       if (this._resizeTimeout) {
         clearTimeout(this._resizeTimeout);
       }
-      this._resizeTimeout = setTimeout(() => {
-        this.map.updateSize();
-      }, 300);
+      // this._resizeTimeout = setTimeout(() => {
+      //   this.map.updateSize();
+      // }, 300);
     });
     this._mapMove = emitter.addListener("map-move", (lonlat, onMoveEnd) => {
       this.map &&

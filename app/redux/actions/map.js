@@ -90,3 +90,17 @@ export const getFloodExpert = (data) => {
     data,
   };
 };
+//根据仓库ID获取物资
+export const getMaterialById = (data) => {
+  return {
+    type: types.GET_MATERIAL_BY_ID,
+    data,
+  };
+};
+//获取防汛队伍人员
+export const getFloodRankUser = (data) => {
+  return {
+    type: types.GET_FLOOD_RANK_USER,
+    data,
+  };
+};

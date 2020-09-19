@@ -172,6 +172,22 @@ function* getWarehouse() {
     console.error(e);
   }
 }
+//根据仓库ID获取物资
+function* getMaterialById({ data }) {
+  try {
+    const result = yield call(req.getWarehouseMt, {
+      materialWarehouseId: data,
+    });
+    if ((result.code = code)) {
+      yield put({
+        type: types.SET_MATERIAL_BY_ID,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
 //获取防汛人员
 function* getFloodUser() {
   try {
@@ -186,17 +202,40 @@ function* getFloodUser() {
     console.error(e);
   }
 }
+//获取防汛队伍下的防汛人员
+function* getFloodRankUser() {
+  try {
+    const result = yield call(req.getFloodRanksAll, {});
+    if ((result.code = code)) {
+      yield put({
+        type: types.SET_FLOOD_RANK_USER,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
 //获取防汛专家
 function* getFloodExpert() {
   try {
     const result = yield call(req.getFloodControlExpertAll, {});
     if ((result.code = code)) {
-      // result.data.map(item=>{
-
-      // })
+      let city = [];
+      let county = [];
+      let town = [];
+      result.data.map((item) => {
+        if (item.type == 1) {
+          city.push(item);
+        } else if (item.type == 2) {
+          county.push(item);
+        } else if (item.type == 3) {
+          town.push(item);
+        }
+      });
       yield put({
         type: types.SET_FLOOD_EXPERT,
-        data: result.data,
+        data: { city: city, county: county, town: town },
       });
     }
   } catch (e) {
@@ -216,5 +255,7 @@ export default function* mapAbout() {
     takeEvery(types.GET_WAREHOUSE, getWarehouse),
     takeEvery(types.GET_FLOOD_USER, getFloodUser),
     takeEvery(types.GET_FLOOD_EXPERT, getFloodExpert),
+    takeEvery(types.GET_MATERIAL_BY_ID, getMaterialById),
+    takeEvery(types.GET_FLOOD_RANK_USER, getFloodRankUser),
   ]);
 }

@@ -20,6 +20,7 @@ export const TableShow = (props) => {
             key={item.dataIndex}
             className="table-background"
             render={item.render}
+            width={item.width}
             // width={'100px'}
           />
         );

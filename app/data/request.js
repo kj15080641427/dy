@@ -1,4 +1,9 @@
-import { fetchJSONData, fetchOutData, fetchGet,testLogin } from "@app/utils/common";
+import {
+  fetchJSONData,
+  fetchOutData,
+  fetchGet,
+  testLogin,
+} from "@app/utils/common";
 //  获取所有基础数据
 export function getAll(data = {}) {
   return fetchJSONData("POST", "/base/SiteBase/getAll", data);
@@ -87,9 +92,9 @@ export function getBasicsAll(data) {
 export function getRadioAll(data) {
   return fetchJSONData("POST", "/base/StiteWaterRadio/getAll", data);
 }
-// 查询防汛队伍及下面的防汛人员
-export function getfloodRanksAll(data) {
-  return fetchJSONData("POST", "/base/floodUser/getAll", data);
+//查询防汛队伍下的防汛人员
+export function getFloodRanksAll(data) {
+  return fetchJSONData("POST", "/base/FloodRanks/getAll", data);
 }
 // 获取所有防汛人员信息
 export function getfloodUser(data) {
@@ -143,6 +148,7 @@ export function deleteMaterial(data) {
 export function updateMaterial(data) {
   return fetchJSONData("POST", "/base/Material/update", data);
 }
+
 // 分页查询防汛人员
 export function queryFloodUser(data) {
   return fetchJSONData("POST", "/base/floodUser/page", data);
