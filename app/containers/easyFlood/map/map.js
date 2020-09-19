@@ -66,7 +66,7 @@ class Map extends React.PureComponent {
                   map={this.map}
                   model={overlays[type][key]}
                   onClose={this.onOverlayClose}
-                ></Comp>
+                />
               );
             });
             domArr = domArr.concat(comps);
@@ -95,6 +95,7 @@ class Map extends React.PureComponent {
       // console.log(floodRain, "floodRain");
 
       this.addFloodRain();
+
     }
   }
   componentDidMount() {
@@ -127,9 +128,9 @@ class Map extends React.PureComponent {
       url: `https://t0.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
       opacity: 1,
+      className: 'ol-layer-tiandi',
       key: "tiandi",
       projection: true,
-      className: "ol-layer-tiandi",
     });
     this.map.addTile({
       url: `https://t0.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
@@ -242,7 +243,7 @@ class Map extends React.PureComponent {
       key: "ponding",
       zIndex: 20,
       style: {
-        src: function (featureObj) {
+        src: function () {
           //
           return require("../../../resource/icon/ponding.svg")["default"];
         },

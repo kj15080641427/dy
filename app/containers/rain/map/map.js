@@ -62,7 +62,7 @@ class Map extends React.PureComponent {
                   map={this.map}
                   model={overlays[type][key]}
                   onClose={this.onOverlayClose}
-                ></Comp>
+                />
               );
             });
             domArr = domArr.concat(comps);
@@ -145,6 +145,7 @@ class Map extends React.PureComponent {
       visible: true,
       className: "ol-layer-tiandi",
       opacity: 1,
+      className: 'ol-layer-tiandi',
       key: "tiandi",
       projection: true,
     });
@@ -153,6 +154,7 @@ class Map extends React.PureComponent {
       visible: true,
       opacity: 1,
       className: "ol-layer-tiandi",
+
       key: "tiandi2",
       projection: true,
     });

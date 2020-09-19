@@ -71,7 +71,7 @@ class Monitor extends React.PureComponent {
               <div className="chart-left">
                 <WeatherChart />
                 <RenderBox hasTitle title="基本统计信息" width="514">
-                  <div className="rain-pie-chart" id="rain-pie-chart"></div>
+                  <div className="rain-pie-chart" id="rain-pie-chart"/>
                   {/* <TableShow
                   columns={[
                     { name: "站点名称", dataIndex: "name" },
@@ -89,7 +89,7 @@ class Monitor extends React.PureComponent {
           <div style={{ display: displayRight }}>
             <div className="chart-right">
               <RenderBox hasTitle title="24小时降雨量">
-                <div className="rotateBarChart" id="rotateBarChart"></div>
+                <div className="rotateBarChart" id="rotateBarChart"/>
                 <div className="rain-set-table">
                   <TableShow
                     columns={[
@@ -174,7 +174,7 @@ class Monitor extends React.PureComponent {
             <CheckBoxs
               layerVisible={layerVisible}
               onChecked={this.onChecked}
-            ></CheckBoxs>
+            />
           </Drawer>
         </div>
       </div>
@@ -192,13 +192,13 @@ class Monitor extends React.PureComponent {
           textStyle: { fontSize: "24px" },
           itemStyle: {
             color:
-              desc == "气象局"
+              desc === "气象局"
                 ? "rgb(145,151,222)"
-                : desc == "农村基层防汛监测预警平台"
+                : desc === "基层防汛"
                 ? "rgb(78,82,232)"
-                : desc == "河口区水利局"
+                : desc === "河口区水利局"
                 ? "red"
-                : desc == "经开区"
+                : desc === "经开区"
                 ? "rgb(29,37,182)"
                 : "rgb(78,32,232)",
           },

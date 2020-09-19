@@ -93,7 +93,6 @@ class Map extends React.PureComponent {
     }
     return (
       <>
-        {/* <div id="map"></div> */}
         <div id="map" className={'display-map'}/>
         {domArr}
       </>
@@ -137,11 +136,13 @@ class Map extends React.PureComponent {
       key: "tiandi",
       className: "ol-layer-tiandi",
       projection: true,
+
     });
     this.map.addTile({
       url: `https://t0.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
       opacity: 1,
+      className: 'ol-layer-tiandi',
       key: "tiandi2",
       className: "ol-layer-tiandi",
       projection: true,
@@ -305,6 +306,7 @@ class Map extends React.PureComponent {
         fontOffset: [0, 0],
         src: function (featureObj) {
           return require("../../../resource/pump.svg")["default"];
+
         },
         fontText: function (featureObj) {
           return featureObj.name + "";
@@ -323,6 +325,7 @@ class Map extends React.PureComponent {
         fontColor: "#82B2FF",
         fontOffset: [20, 0],
         src: function (featureObj) {
+
           return require("../../../resource/icon/warehouse.svg")["default"];
         },
         fontText: function (featureObj) {
@@ -380,6 +383,7 @@ class Map extends React.PureComponent {
             message.error("获取雨晴详情失败");
           });
       }
+
     });
     this.map.startSelectFeature("water", (param) => {
       let { details } = this.props;
@@ -682,6 +686,7 @@ class Map extends React.PureComponent {
     //     }
     //   });
     // }, 3000);
+
 
     // 模拟洪水
     // setInterval(() => {

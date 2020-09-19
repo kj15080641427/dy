@@ -75,7 +75,7 @@
       .ant-table-row-expand-icon-collapsed::after {
         color: black;
       }
-      .ant-table-row-expand-icon::after{
+      .ant-table-row-expand-icon::after {
         color: black;
       }
     }
@@ -92,4 +92,15 @@
       height: 280px;
     }
   }
+}
+
+.tooltip-static:before {
+  border-top-color: #ffcc33;
+}
+
+.display-map {
+  background: rgb(1, 2, 59);
+}
+.ol-layer-tiandi {
+  opacity: 0.2;
 }
