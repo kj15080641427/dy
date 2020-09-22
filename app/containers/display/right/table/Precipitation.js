@@ -14,6 +14,7 @@ class Precipitation extends React.PureComponent {
     this.state = {};
   }
   render() {
+    const { dict } = this.props;
     let data = this.props.dataSource;
     // console.log(data, "DATA");
     let elements = [];
@@ -30,16 +31,20 @@ class Precipitation extends React.PureComponent {
           "<span style='font-size:19px; '>" +
             data[i].name +
             "(" +
-            data[i].dataSourceDesc +
+            (data[i].siteRain && data[i]?.siteRain[0]
+              ? dict[data[i]?.siteRain[0].siteDictionariesID]
+              : "-") +
             ")</span>",
           "<span style='font-size:19px; '>" +
-            (data[i].hourAvg * 1).toFixed(1) +
+            (data[i]?.raindataList && data[i]?.raindataList[0]
+              ? data[i]?.raindataList[0]?.hourDrp * 1
+              : "--") +
+            // (data[i]?.raindataList[0]?.hourAvg * 1).toFixed(1) +
             "</span>",
           "<span style='font-size:19px; '>" +
-            (data[i]?.raindataList
-              ? data[i]?.raindataList[0]?.drp * 1
-              : "--"
-            ) +
+            (data[i]?.raindataList && data[i]?.raindataList[0]
+              ? data[i]?.raindataList[0]?.dayDrp * 1
+              : "--") +
             "</span>",
           "<span style='font-size:19px; '>" +
             (data[i].tm === null

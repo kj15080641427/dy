@@ -74,7 +74,7 @@ class Map extends React.PureComponent {
     return (
       <>
         {/* <div id="map"></div> */}
-        <div id="map" className={'display-map'}></div>
+        <div id="map" className={"display-map"}></div>
         {domArr}
       </>
     );
@@ -145,7 +145,7 @@ class Map extends React.PureComponent {
       visible: true,
       className: "ol-layer-tiandi",
       opacity: 1,
-      className: 'ol-layer-tiandi',
+      className: "ol-layer-tiandi",
       key: "tiandi",
       projection: true,
     });
@@ -277,17 +277,17 @@ class Map extends React.PureComponent {
       zIndex: 20,
       style: {
         src: function (featureObj) {
-          //
           //let drp = parseInt(featureObj.minuteAvg*1);
-          const { data } = featureObj;
+          // const { data } = featureObj;
+          // console.log(featureObj, "featureObj");
+
           let drp = 0.0;
 
           try {
-            drp = parseFloat(data.avgDrp * 1);
+            drp = parseFloat(featureObj.drp * 1);
           } catch (e) {
             drp = 0.0;
           }
-
           if (drp === 0) {
             return require("../../../resource/icon/1.svg")["default"];
           } else if (drp > 0 && drp <= 10) {
@@ -440,11 +440,10 @@ class Map extends React.PureComponent {
     //   // }));
     // });
     this.map.startSelectFeature("rain", (param) => {
+      param = { ...param, dict: this.props.dict };
       if (this.props.onFeatureClick) {
-        console.log(param, "PARAM");
         this.props.onFeatureClick(param);
       } else {
-        console.log(param, "PARAM");
         this.addOverlay(Rain.type, param);
       }
 
@@ -725,7 +724,7 @@ class Map extends React.PureComponent {
     let id = param.id;
     let { overlays } = this.state;
     let elements = overlays[key];
-    if (elements[id]) return;
+    // if (elements[id]) return;
     // 查询该key是否只能显示一个overlay
     let isSingle = this.type.some((Overlay) => {
       if (Overlay.type === key) {
@@ -733,13 +732,13 @@ class Map extends React.PureComponent {
       }
       return false;
     });
-    if (isSingle) {
+    // if (isSingle) {
       overlays[key] = {
         [id]: param,
       };
-    } else {
-      elements[id] = param;
-    }
+    // } else {
+    //   elements[id] = param;
+    // }
     this.setState({
       overlays: { ...overlays },
     });
@@ -1127,6 +1126,7 @@ class Map extends React.PureComponent {
 }
 function mapStateToProps(state) {
   return {
+    dict: state.currency.dict,
     rainData: state.rain.rainData,
     stations: state.rain.stations,
   };

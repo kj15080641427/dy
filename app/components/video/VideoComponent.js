@@ -6,7 +6,7 @@ class VideoComponent extends Component {
     const { videoControl } = props;
 
     this.state = {
-      session: videoControl.getLoginStatus() === true ? videoControl.getSession() : null,
+      session: videoControl?.getLoginStatus() === true ? videoControl.getSession() : null,
       token: props.token,
       type: props.type
     }

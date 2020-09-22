@@ -1,12 +1,15 @@
 /**
  * Display 2020-07-06
  */
-import React from 'react';
+import React from "react";
 import "./style.scss";
 import Map from "./map/Map";
 import Satellite from "./left/Satellite";
 import OverView from "./left/OverView";
 import Tables from "./right/Tables";
+import * as actions from "../../redux/actions/map";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import CheckBoxs from "./right/CheckBoxs";
 import Legend from "./right/Legend";
 import Head from "./head/Head";
@@ -30,13 +33,14 @@ class Display extends React.PureComponent {
         gate: false, // 水闸
         pump: false, // 水泵
         ponding: false, // 积水
-      }
+      },
     };
     this.onChecked = this.onChecked.bind(this);
-    this.onShow =this.onShow.bind(this)
+    this.onShow = this.onShow.bind(this);
   }
   render() {
     let { layerVisible } = this.state;
+    const { dict } = this.props;
     return (
       <div className="display">
         <Map></Map>
@@ -48,27 +52,45 @@ class Display extends React.PureComponent {
           <OverView></OverView>
         </div>
         <div className="dis-right">
-          <div style={{ float: 'left' }}>
+          <div style={{ float: "left" }}>
             {/* <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked} clicks={this.onShow}></CheckBoxs> */}
             {/* <Legend></Legend> */}
           </div>
-          <Tables></Tables>
+          <Tables dict={dict}></Tables>
         </div>
       </div>
     );
   }
-  onShow(layerKey){
-    console.log(layerKey)
+  onShow(layerKey) {
+    console.log(layerKey);
   }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
-    console.log(layerVisible[layerKey])
+    console.log(layerVisible[layerKey]);
     if (layerVisible[layerKey] === checked) return;
     layerVisible[layerKey] = checked;
     this.setState({
-      layerVisible: { ...layerVisible }
+      layerVisible: { ...layerVisible },
     });
   }
-  componentDidMount() { }
+  componentDidMount() {
+    this.props.actions.getDict({
+      current: 1,
+      size: 10,
+      type: 1,
+    });
+  }
 }
-export default Display;
+function mapStateToProps(state) {
+  // console.log(state, "STATE");
+  return {
+    dict: state.currency.dict,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Display);

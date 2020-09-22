@@ -31,59 +31,7 @@ class Tables extends React.PureComponent {
   }
 
   render() {
-    const columns = [
-      {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <a>{text}</a>,
-      },
-      {
-        title: "Age",
-        dataIndex: "age",
-        key: "age",
-      },
-      {
-        title: "Address",
-        dataIndex: "address",
-        key: "address",
-      },
-    ];
-    const data = [
-      {
-        key: "1",
-        name: "John Brown",
-        age: 32,
-        address: "New York No. 1 Lake Park",
-        tags: ["nice", "developer"],
-      },
-      {
-        key: "2",
-        name: "Jim Green",
-        age: 42,
-        address: "London No. 1 Lake Park",
-        tags: ["loser"],
-      },
-      {
-        key: "3",
-        name: "Joe Black",
-        age: 32,
-        address: "Sidney No. 1 Lake Park",
-        tags: ["cool", "teacher"],
-      },
-    ];
-    // onClickRow = (record) => {
-    //   return {
-    //     onClick: () => {
-    //       this.setState({
-    //         rowId: record.id,
-    //       });
-    //     },
-    //   };
-    // }
-    const setRowClassName = (record) => {
-      return "clickRowStyle";
-    };
+    const { dict } = this.props;
     let {
       waterData,
       rainData,
@@ -132,17 +80,17 @@ class Tables extends React.PureComponent {
         </div>
         <div className="dis-table-con">
           <TableWrap title={"雨量站(" + rainCount + ")"} extra={"单位：mm"}>
-            <Precipitation dataSource={rainData} lod={rainlod}></Precipitation>
+            <Precipitation dataSource={rainData} lod={rainlod} dict={dict}></Precipitation>
           </TableWrap>
           <TableWrap title={"视频站点(" + videoCount + ")"}>
             <Video dataSource={videoData} lod={videolod}></Video>
           </TableWrap>
           <TableWrap title={"易涝点(" + easyCount + ")"} extra={"单位：m"}>
-            <EasyFlood dataSource={easyData} lod={easylod}></EasyFlood>
+            <EasyFlood dataSource={easyData} lod={easylod} dict={dict}></EasyFlood>
           </TableWrap>
           {/* <TableWrap title={"水位站(" + waterCount + ")"} extra={"单位：m"}> */}
-          <TableWrap title={"水位站(123)"} extra={"单位：m"}>
-            <Water dataSource={waterData} lod={waterlod}></Water>
+          <TableWrap title={`水位站(${waterCount})`} extra={"单位：m"}>
+            <Water dataSource={waterData} lod={waterlod} dict={dict}></Water>
           </TableWrap>
         </div>
       </div>
@@ -169,7 +117,7 @@ class Tables extends React.PureComponent {
     }).then((result) => {
       this.setState({
         waterData: result.data,
-        waterCount: result.data.length,
+        waterCount: result?.data?.length,
         waterlod: false,
       });
     });

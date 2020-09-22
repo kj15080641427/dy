@@ -104,3 +104,16 @@ export const getFloodRankUser = (data) => {
     data,
   };
 };
+// 获取字典
+export const getDict = (data) => {
+  return {
+    type: types.GET_DICT,
+    data,
+  };
+};
+export const getAlarm = (data) => {
+  return {
+    type: types.GET_ALARM_DATA,
+    data,
+  };
+};

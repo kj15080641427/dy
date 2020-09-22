@@ -62,7 +62,6 @@ class Monitor extends React.PureComponent {
   componentDidMount() {
     lineChart("videoLinechart");
     lineChart("videoLinechart2");
-    barChart("videoBarChart");
   }
   componentDidUpdate() {
     const { video } = this.props;
@@ -96,6 +95,7 @@ class Monitor extends React.PureComponent {
             hkOnline++;
             break;
           default:
+            console.log(item);
             break;
         }
       } else if (item.isOnline == "1") {
@@ -116,6 +116,7 @@ class Monitor extends React.PureComponent {
             hkLine++;
             break;
           default:
+            console.log(item);
             break;
         }
       }
@@ -153,7 +154,7 @@ class Monitor extends React.PureComponent {
               <RenderBox hasTitle title="视频">
                 <div className="videoLinechart" id="videoLinechart"></div>
               </RenderBox>
-              <RenderBox >
+              <RenderBox>
                 {/* <div className="video-table">
                 </div> */}
               </RenderBox>

@@ -2,10 +2,13 @@ import * as types from "../constants/map";
 
 const initState = {
   water: [],
+  initWater: [],
+  waterWarning: 0,
   flood: [],
   count: {},
-  floodId: "46010128",
-  waterId: "41800201",
+  floodId: "46660007",
+  floodName: "东八路南涵洞（东）",
+  waterId: "418q1510", //stcd
   historyFlood: [],
   historyWater: [],
   floodRain: [],
@@ -20,13 +23,18 @@ export default function mapAboutReducers(state = initState, action) {
     case types.SET_WATER:
       action.data.forEach((item) => {
         if (item.riverwaterdataList && item.riverwaterdataList[0]) {
-          waterList.push({
+          const items = {
             ...item,
             ...item.riverwaterdataList[0],
             ...item.siteWaterLevels[0],
-          });
+          };
+          waterList.push(items);
+          if (items.z >= item.warning) {
+            newState.waterWarning++;
+          }
         }
         newState.water = waterList;
+        newState.initWater = action.data;
       });
       break;
     case types.SET_FLOOD:
@@ -67,10 +75,15 @@ export default function mapAboutReducers(state = initState, action) {
       newState = { ...newState, historyWater: historyWater };
       break;
     case types.CHANGE_FLOOD_ID: //改变易涝点id
-      newState = { ...newState, floodId: action.data.id };
+      newState = {
+        ...newState,
+        floodId: action.data.id,
+        floodName: action.data.name,
+      };
       break;
     case types.CHANGE_WATER_ID: //改变水位id
-      newState = { ...newState, waterId: action.data.id };
+      console.log(1111);
+      newState = { ...newState, waterId: action.data };
       break;
     case types.SET_FLOOD_INFO_REALTIME: //易涝点实时数据
       action.data.records.map((item) => {
@@ -108,6 +121,9 @@ export default function mapAboutReducers(state = initState, action) {
       break;
     case types.SET_FLOOD_RANK_USER:
       newState = { ...newState, floodRanks: action.data };
+      break;
+    case types.SET_WATER_WARNING:
+      newState = { ...newState, warningInfo: action.data };
       break;
     default:
       return newState;

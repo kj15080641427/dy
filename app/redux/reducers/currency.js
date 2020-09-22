@@ -1,5 +1,5 @@
 import * as actionTypes from "../constants/home";
-
+import * as types from "../constants/map";
 export default function currency(state = {}, action) {
   let newState = Object.assign({}, state);
   switch (action.type) {
@@ -16,6 +16,9 @@ export default function currency(state = {}, action) {
       break;
     case actionTypes.SET_DICT:
       newState = { ...newState, dict: action.data };
+      break;
+    case types.SET_ALARM_DATA:
+      newState = { ...newState, alarmData: action.data };
       break;
     default:
       return state;

@@ -10,6 +10,9 @@ export const barChart = (domId, legend, online, line) => {
       axisPointer: {
         // 坐标轴指示器，坐标轴触发有效
         type: "line", // 默认为直线，可选为：'line' | 'shadow'
+        shadowStyle: {
+          color: "rgba(0, 51, 102, 0.1)",
+        },
       },
     },
     legend: {
@@ -72,7 +75,7 @@ export const barChart = (domId, legend, online, line) => {
           position: "inside",
         },
         itemStyle: {
-          color: "red",
+          color: "rgba(33,115,111)",
         },
       },
       {
@@ -86,13 +89,13 @@ export const barChart = (domId, legend, online, line) => {
           position: "inside",
         },
         itemStyle: {
-          color: "#8c8c8c",
+          color: "rgba(128,110,98)",
         },
       },
     ],
   });
 };
-export const radarChart = (domId, legend, data) => {
+export const radarChart = (domId, data) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let option = {
     tooltip: {
@@ -105,13 +108,13 @@ export const radarChart = (domId, legend, data) => {
     radar: [
       {
         indicator: [
-          { text: "星期一", max: 100, color: "rgb(0,175,255)" },
-          { text: "星期二", max: 100, color: "#1890ff" },
-          { text: "星期三", max: 100, color: "#1890ff" },
-          { text: "星期四", max: 100, color: "#1890ff" },
-          { text: "星期五", max: 100, color: "#1890ff" },
-          { text: "星期六", max: 100, color: "#1890ff" },
-          { text: "星期天", max: 100, color: "#1890ff" },
+          { text: "今天", max: 80, color: "rgb(0,175,255)" },
+          { text: "一天前", max: 80, color: "#1890ff" },
+          { text: "两天前", max: 80, color: "#1890ff" },
+          { text: "三天前", max: 80, color: "#1890ff" },
+          { text: "四天前", max: 80, color: "#1890ff" },
+          { text: "五天前", max: 80, color: "#1890ff" },
+          { text: "六天前", max: 80, color: "#1890ff" },
         ],
         center: ["50%", "50%"],
         radius: 90,
@@ -146,7 +149,7 @@ export const radarChart = (domId, legend, data) => {
         },
         data: [
           {
-            value: [60, 73, 85, 40, 22, 77, 45],
+            value: data,
             name: "报警统计",
           },
         ],
@@ -163,6 +166,7 @@ export const pieChart = (domId, data, width, legend) => {
     },
     legend: {
       data: legend ? legend : [],
+      bottom: 10,
       textStyle: {
         color: "white",
       },
@@ -233,7 +237,7 @@ export const pieChart = (domId, data, width, legend) => {
   };
   myChartcount.setOption(option);
 };
-export const lineChart = (domId, data) => {
+export const lineChart = (domId, data, width) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let option = {
     xAxis: {
@@ -268,25 +272,29 @@ export const lineChart = (domId, data) => {
       axisLabel: {
         color: "white",
       },
+      axisLine: {
+        color: "green",
+      },
     },
     tooltip: {
       trigger: "axis",
     },
     grid: {
-      width: 400,
+      width: width || 400,
     },
     series: [
       {
         data: data || [6, 3, 1, 8, 2, 4, 6, 2, 3, 1],
         type: "line",
       },
+      // { data: [5,5,5,5,5,5,5], type: 'line' },
     ],
   };
   myChartcount.setOption(option);
 };
 
 //
-export const rotateBarChart = (domId, data) => {
+export const rotateBarChart = (domId, data, width) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let option = {
     tooltip: {
@@ -341,16 +349,8 @@ export const rotateBarChart = (domId, data) => {
           position: "left",
           color: "white",
         },
-        data: data || [
-          { value: 188, itemStyle: { color: "rgb(229,229,229)" } },
-          { value: 181, itemStyle: { color: "rgb(175,233,159)" } },
-          { value: 181, itemStyle: { color: "rgb(91,175,51)" } },
-          { value: 181, itemStyle: { color: "rgb(121,190,255)" } },
-          { value: 181, itemStyle: { color: "rgb(57,53,255)" } },
-          { value: 181, itemStyle: { color: "rgb(228,41,255)" } },
-          { value: 181, itemStyle: { color: "rgb(123,42,51)" } },
-          { value: 181, itemStyle: { color: "rgb(228,41,50)" } },
-        ],
+        height: width || 300,
+        data: data || [],
       },
     ],
   };

@@ -180,7 +180,7 @@ function* readOnlyGetAll({ data }) {
 //获取字典数据
 function* getDict({ data }) {
   try {
-    const result = yield call(req.getSiteDict, data);
+    const result = yield call(req.getSiteDict, { current: 1, size: -1 });
     if ((result.code = successCode)) {
       let obj = {};
       result.data.records.map((item) => {

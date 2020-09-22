@@ -29,7 +29,7 @@
       width: 500px;
       height: 300px;
     }
-    .table-title{
+    .table-title {
       color: white;
       font-size: 24px;
       margin-left: 15px;
@@ -37,6 +37,14 @@
   }
 }
 .easyFlood-right {
+  .water-select {
+    color: white;
+    .water-select-flex {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   .radar-box {
     width: 435px;
     height: 310px;

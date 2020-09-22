@@ -9,11 +9,12 @@
   right: 0;
   height: $headHeight;
   color: white;
-  background: url(("../../../resource/title/title-water.png")) center no-repeat;
+  background: url(("../../../resource/title/water.png")) center no-repeat;
   background-size: auto 100%;
   .m-hd-weather {
     line-height: 47px;
     padding-left: 35px;
+    margin-top: 10px;
     > span {
       margin-right: 10px;
     }
@@ -33,6 +34,7 @@
     padding-right: 35px;
     width: 275px;
     white-space: nowrap;
+    margin-top: 10px;
     > span:first-child {
       margin-right: 10px;
     }

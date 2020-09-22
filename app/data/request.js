@@ -40,6 +40,10 @@ export function getWaterRealTime(data) {
 export function getWaterWarning(data) {
   return fetchJSONData("POST", "/base/Alarm/getWarning", data);
 }
+// 获取最新水位预警数据
+export function getAlarmWarning(data) {
+  return fetchJSONData("POST", "/base/Alarm/getWarning", data);
+}
 // 获取历史预警数据
 export function getwaterlevelAlarmLog(data) {
   return fetchJSONData("POST", "/base/WaterlevelAlarmLog/getWarningInfo", data);

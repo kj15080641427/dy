@@ -95,7 +95,6 @@ class Map extends React.PureComponent {
       // console.log(floodRain, "floodRain");
 
       this.addFloodRain();
-
     }
   }
   componentDidMount() {
@@ -128,7 +127,7 @@ class Map extends React.PureComponent {
       url: `https://t0.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
       opacity: 1,
-      className: 'ol-layer-tiandi',
+      className: "ol-layer-tiandi",
       key: "tiandi",
       projection: true,
     });
@@ -307,7 +306,7 @@ class Map extends React.PureComponent {
     let id = param.id;
     let { overlays } = this.state;
     let elements = overlays[key];
-    if (elements[id]) return;
+    // if (!elements[id]) return;
     // 查询该key是否只能显示一个overlay
     let isSingle = this.type.some((Overlay) => {
       if (Overlay.type === key) {
@@ -315,13 +314,13 @@ class Map extends React.PureComponent {
       }
       return false;
     });
-    if (isSingle) {
+    // if (isSingle) {
       overlays[key] = {
         [id]: param,
       };
-    } else {
-      elements[id] = param;
-    }
+    // } else {
+    //   // elements[id] = param;
+    // }
     this.setState({
       overlays: { ...overlays },
     });

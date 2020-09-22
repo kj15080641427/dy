@@ -11,7 +11,7 @@ import "./style.scss";
 import Head from "./head/Head";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
-import { Drawer, Row, Divider, Checkbox } from "antd";
+import { Drawer, Row, Divider, Checkbox, Select } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
 
 import RouterList from "../../components/routerLiis";
@@ -199,7 +199,7 @@ class Monitor extends React.PureComponent {
   }
   render() {
     let { layerVisible, displayRight, displayLeft } = this.state;
-    const { flood, floodRain } = this.props;
+    const { flood, floodRain, floodName } = this.props;
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible}></Map>
@@ -208,7 +208,7 @@ class Monitor extends React.PureComponent {
           <div className="easy-flood">
             <div className="easyFlood-left">
               <RenderBox>
-                <div className='table-title'>特大暴雨(250mm以上)</div>
+                <div className="table-title">特大暴雨(250mm以上)</div>
                 <TableShow
                   columns={[
                     { name: "站点名称", dataIndex: "name" },
@@ -244,6 +244,26 @@ class Monitor extends React.PureComponent {
                 <div className="easyfloodInfo" id="easyfloodInfo"></div>
               </RenderBox>
               <RenderBox hasTitle title="易涝点24小时信息">
+                <div className="water-select">
+                  <div>
+                    <div className='water-select-flex'>{floodName}</div>
+                    <div className='water-select-flex'>2020</div>
+                  </div>
+
+                  {/* <Select
+                    value={floodId}
+                    defaultActiveFirstOption
+                    onChange={(e) => {
+                      this.props.actions.changeWaterId(e);
+                    }}
+                  >
+                    {flood?.map((item, index) => (
+                      <Select.Option key={index} value={item.stcd}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select> */}
+                </div>
                 <div className="easyfloodLine" id="easyfloodLine"></div>
               </RenderBox>
               <RenderBox style={{ height: "280px" }}></RenderBox>
@@ -339,10 +359,12 @@ class Monitor extends React.PureComponent {
 // -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
+  console.log(state);
   return {
     floodRain: state.mapAboutReducers.floodRain,
     historyFlood: state.mapAboutReducers.historyFlood,
     floodId: state.mapAboutReducers.floodId,
+    floodName: state.mapAboutReducers.floodName,
     flood: state.mapAboutReducers.flood,
   };
 }

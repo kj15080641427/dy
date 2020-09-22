@@ -11,8 +11,6 @@ import { hasClassName } from "@app/utils/common.js";
 import { transform } from "ol/proj";
 import echarts from "echarts/lib/echarts";
 import "echarts/lib/chart/line";
-import { withRouter } from "react-router-dom";
-import { Button, Radio } from "antd";
 
 class Water extends Base {
   static type = "water";
@@ -25,6 +23,7 @@ class Water extends Base {
       token: token,
     };
     this.onClose = this.onClose.bind(this);
+    this.container = ''
   }
   render() {
     let { model } = this.props;
@@ -147,7 +146,7 @@ class Water extends Base {
     console.log(model);
     let iswater = model.indtype === 9 || model.indtype === 11 ? true : false;
     if (!map || !model) return;
-    let nowNode = this.container.cloneNode(true);
+    let nowNode = this.container?.cloneNode(true);
     nowNode.style.display = "block";
     this.installEvent(nowNode);
     let id = this.getType() + "_" + model.id;
@@ -205,7 +204,9 @@ class Water extends Base {
       chars.setOption(option);
     } else {
       for (var i = 1; i < model.riverwaterdataList.length; i++) {
-        xdata.push(moment(model.riverwaterdataList[i].tm).format("MM-DD HH:mm"));
+        xdata.push(
+          moment(model.riverwaterdataList[i].tm).format("MM-DD HH:mm")
+        );
         if (iswater) {
           ydata.push((model.riverwaterdataList[i].z * 100).toFixed(1));
         } else {

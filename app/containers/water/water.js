@@ -12,10 +12,12 @@ import Head from "./head/Head";
 // import PannelBtn from "./right/PannelBtn";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
-import { Drawer, Row, Divider, Checkbox } from "antd";
+import { Drawer, Row, Divider, Checkbox, Select } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
-import moment from "moment";
-import { BoxTitle, BoxHead, RenderBox } from "../../components/chart/decorate";
+import warningIcon from "@app/resource/icon/warning.svg";
+import videoimg from "@app/resource/videoimg.png";
+import video from "@app/resource/icon/video.png";
+import { BoxHead, RenderBox } from "../../components/chart/decorate";
 import {
   radarChart,
   barChart,
@@ -24,6 +26,9 @@ import {
 } from "../../components/chart/chart";
 import { TableShow } from "../../components/chart/table";
 import RouterList from "../../components/routerLiis";
+import WeatherTable from "./left/WeatherTable";
+const { Option } = Select;
+
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -67,9 +72,16 @@ class Monitor extends React.PureComponent {
   sourceChart = () => {
     const { count } = this.props;
     let data = [];
-    count?.watercount?.list?.map((item) => {
+    count?.watercount?.list?.forEach((item) => {
       data.push({
-        name: item.dataSourceDesc || "暂无数据",
+        name:
+          item.dataSourceDesc == "农村基层防汛监测预警平台"
+            ? "基层防汛"
+            : item.dataSourceDesc == "河口区水利局"
+            ? "水利局"
+            : item.dataSourceDesc == "黄河东营境内水位站点"
+            ? "黄河"
+            : item.dataSourceDesc || "暂无数据",
         value: item.number,
       });
     });
@@ -77,7 +89,7 @@ class Monitor extends React.PureComponent {
   };
   //在线图
   onlineChart = () => {
-    const { water } = this.props;
+    const { initWater } = this.props;
     let dyOnline = 0; //东营
     let dyLine = 0;
     let grOnline = 0; //广饶
@@ -90,52 +102,51 @@ class Monitor extends React.PureComponent {
     let hkLine = 0;
     let startdata = new Date().getTime();
     // 1000 * 60 * 60 * 24 * 3
-    water.map((item) => {
-      if (item.z) {
-        if (
-          startdata - new Date(item?.tm).getTime() <
+    initWater.forEach((item) => {
+      if (
+        item.riverwaterdataList &&
+        item.riverwaterdataList[0] &&
+        startdata - new Date(item.riverwaterdataList[0].tm).getTime() <
           259200000
-          // item.region == "370502"
-        ) {
-          switch (item.region) {
-            case "370502":
-              dyOnline++;
-              break;
-            case "370523":
-              grOnline++;
-              break;
-            case "370522":
-              ljOnlie++;
-              break;
-            case "370521":
-              klOnline++;
-              break;
-            case "370503":
-              hkOnline++;
-              break;
-            default:
-              break;
-          }
-        } else {
-          switch (item.region) {
-            case "370502":
-              dyLine++;
-              break;
-            case "370523":
-              grLine++;
-              break;
-            case "370522":
-              ljLine++;
-              break;
-            case "370521":
-              klLine++;
-              break;
-            case "370503":
-              hkLine++;
-              break;
-            default:
-              break;
-          }
+      ) {
+        switch (item.region) {
+          case "370502":
+            dyOnline++;
+            break;
+          case "370523":
+            grOnline++;
+            break;
+          case "370522":
+            ljOnlie++;
+            break;
+          case "370521":
+            klOnline++;
+            break;
+          case "370503":
+            hkOnline++;
+            break;
+          default:
+            break;
+        }
+      } else {
+        switch (item.region) {
+          case "370502":
+            dyLine++;
+            break;
+          case "370523":
+            grLine++;
+            break;
+          case "370522":
+            ljLine++;
+            break;
+          case "370521":
+            klLine++;
+            break;
+          case "370503":
+            hkLine++;
+            break;
+          default:
+            break;
         }
       }
     });
@@ -152,9 +163,10 @@ class Monitor extends React.PureComponent {
     this.props.actions.getCountStation(); //来源统计
     this.props.actions.getWaterHistory(waterId); //水位日志
     this.props.actions.getWaterWarning(waterId); //报警日志
+    this.props.actions.getAlarm();
   }
   componentDidUpdate(pre) {
-    const { water, count, historyWater, waterId } = this.props;
+    const { water, count, historyWater, waterId, warningInfo } = this.props;
     if (waterId != pre.waterId) {
       this.props.actions.getWaterHistory(waterId);
       this.props.actions.getWaterWarning(waterId);
@@ -164,14 +176,24 @@ class Monitor extends React.PureComponent {
     }
     if (water) {
       this.onlineChart();
-      radarChart("radar-chart");
+    }
+    if (warningInfo) {
+      const { today, a, b, c, d, e, f } = warningInfo;
+      radarChart("radar-chart", [today, a, b, c, d, e, f]);
     }
     if (historyWater != pre.historyWater) {
-      lineChart("line-chart", historyWater);
+      // lineChart("line-chart", historyWater, 500);
     }
   }
   render() {
-    const { water, count } = this.props;
+    const {
+      water,
+      count,
+      waterWarning,
+      waterId,
+      warningInfo,
+      alarmData,
+    } = this.props;
 
     let { layerVisible, displayRight, displayLeft } = this.state;
 
@@ -184,24 +206,17 @@ class Monitor extends React.PureComponent {
             <BoxHead />
             <div className="table-backgrpund">
               <div className="table-title-text">
-                超警戒水位<span>{5}</span>次
+                <img src={warningIcon}></img> 超警戒水位
+                <span>{alarmData?.length}</span>次
               </div>
               <TableShow
                 columns={[
-                  { name: "站点名称", dataIndex: "name" },
-                  { name: "警戒水位", dataIndex: "warning" },
-                  { name: "水位", dataIndex: "z" },
-                  {
-                    name: "更新时间",
-                    dataIndex: "tm",
-                    render: (value) => {
-                      let a = value.split(" ");
-                      let b = a[1].split(":");
-                      return `${a[0]} ${b[0]}:${b[1]}`;
-                    },
-                  },
+                  { name: "站点名称", dataIndex: "stnm" },
+                  { name: "警戒水位", dataIndex: "baselevel" },
+                  { name: "水位", dataIndex: "actuallevel" },
+                  { name: "更新时间", dataIndex: "alarmtime" },
                 ]}
-                dataSource={water || []}
+                dataSource={alarmData || []}
               />
             </div>
             <RenderBox title={"报警统计"} hasTitle>
@@ -209,22 +224,44 @@ class Monitor extends React.PureComponent {
                 <div className="radar-chart" id="radar-chart"></div>
                 <div className="flex-layout-right">
                   <div>
-                    今日累计报警<a>1</a>次
+                    今日累计报警<a>{warningInfo?.today}</a>次
                   </div>
                   <div>
-                    过去七天累计报警<a>2</a>次
+                    过去七天累计报警<a>{warningInfo?.wWarning}</a>次
                   </div>
                   <div>
-                    上月累计报警<a>3</a>次
+                    过去30天累计报警<a>{warningInfo?.mWarning}</a>次
                   </div>
                 </div>
               </div>
             </RenderBox>
-            <RenderBox title={"超警戒信息"} hasTitle>
-              <div className="line-chart" id="line-chart"></div>
+            <RenderBox>
+              {/* <div className="water-select">
+                <label>
+                  超警戒信息 <span>单位(mm)</span>
+                </label>
+                <Select
+                  value={waterId}
+                  defaultActiveFirstOption
+                  onChange={(e) => {
+                    this.props.actions.changeWaterId(e);
+                  }}
+                >
+                  {water?.map((item, index) => (
+                    <Option key={index} value={item.stcd}>
+                      {item.name}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+              <div className="line-chart" id="line-chart"></div> */}
+              <div className="video-table">
+                <WeatherTable></WeatherTable>
+              </div>
             </RenderBox>
+            {/* <div style={{ marginTop: "15px" }} >
+            </div> */}
           </div>
-          {/* <WeatherTable></WeatherTable> */}
         </div>
 
         <div style={{ display: displayRight }}>
@@ -235,14 +272,22 @@ class Monitor extends React.PureComponent {
                 <div className="bar-chart" id="bar-chart"></div>
               </RenderBox>
               {/* 来源图 */}
-              <RenderBox title={"水位站点在线统计图"} hasTitle>
+              <RenderBox title={"水位站点来源统计图"} hasTitle>
                 <div className="pie-flex-layout">
                   <div className="pie-chart" id="pie-chart"></div>
                   <div>
-                    {count?.watercount?.list.map((item) => {
+                    {count?.watercount?.list.map((item, index) => {
                       return (
-                        <div key={item.dataSourceDesc} className="flex-layout">
-                          <div>{item.dataSourceDesc || "暂无数据"}</div>
+                        <div key={index} className="flex-layout">
+                          <div>
+                            {item.dataSourceDesc == "农村基层防汛监测预警平台"
+                              ? "基层防汛"
+                              : item.dataSourceDesc == "河口区水利局"
+                              ? "水利局"
+                              : item.dataSourceDesc == "黄河东营境内水位站点"
+                              ? "黄河"
+                              : item.dataSourceDesc || "暂无数据"}
+                          </div>
                           <div className="pie-number">{item.number}</div>
                         </div>
                       );
@@ -251,10 +296,12 @@ class Monitor extends React.PureComponent {
                 </div>
               </RenderBox>
               {/* 视频 */}
-              <div className="radar-box">
-                <BoxTitle title="水位站点视频" />
-                {/* <div className="bar-chart" id="bar-chart"></div> */}
-              </div>
+              {/* <div className="radar-box"> */}
+              <RenderBox>
+                <img src={video} width="530px" height="295px"></img>
+              </RenderBox>
+              {/* <div className="bar-chart" id="bar-chart"></div> */}
+              {/* </div> */}
             </div>
           </div>
           {/* 路由 */}
@@ -263,7 +310,7 @@ class Monitor extends React.PureComponent {
           </div>
         </div>
 
-        <div className="m-bottom"></div>
+        {/* <div className="m-bottom"></div> */}
         <img
           onClick={() => {
             this.setState({
@@ -356,10 +403,14 @@ Monitor.propTypes = {
 function mapStateToProps(state) {
   // console.log(state, "STATE");
   return {
+    warningInfo: state.mapAboutReducers.warningInfo,
+    waterWarning: state.mapAboutReducers.waterWarning,
     waterId: state.mapAboutReducers.waterId, //水位ID
     historyWater: state.mapAboutReducers.historyWater, //历史水位
     water: state.mapAboutReducers.water,
+    initWater: state.mapAboutReducers.initWater,
     count: state.mapAboutReducers.count,
+    alarmData: state.currency.alarmData,
   };
 }
 

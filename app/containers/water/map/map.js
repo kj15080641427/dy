@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/monitor";
 import * as mapActions from "@app/redux/actions/map";
-import UbiMap from "./ubimap";
+import UbiMap from "../../monitor/map/ubimap";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
 import "./style.scss";
@@ -40,7 +40,7 @@ class Map extends React.PureComponent {
       Warehouse,
     ];
     this.type.forEach((Ovl) => {
-      this.state.overlays[Ovl.type] = {};
+      // this.state.overlays[Ovl.type] = {};
     });
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this._windowCloseFlag = true; // window关闭事件是否开启
@@ -74,12 +74,12 @@ class Map extends React.PureComponent {
     }
     return (
       <>
-        <div id="map" className={'display-map'}/>
+        <div id="map" className={"display-map"} />
         {domArr}
       </>
     );
   }
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     let { layerVisible, water } = this.props;
     if (layerVisible !== prevProps.layerVisible) {
       this.setVisible();
@@ -134,7 +134,6 @@ class Map extends React.PureComponent {
       projection: true,
     });
     this.map.addTile({
-      // eslint-disable-next-line max-len
       url: `https://t0.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
       opacity: 1,
@@ -193,13 +192,19 @@ class Map extends React.PureComponent {
     });
 
     this.map.startHighlightFeatureonLayer("water");
-    this.map.startSelectFeature("person", (param) => {
-      this.addOverlay(Person.type, param);
-    });
+    // this.map.startSelectFeature("person", (param) => {
+    //   this.addOverlay(Person.type, param);
+    // });
     this.map.startSelectFeature("water", (param) => {
-      //TODO
-      this.props.mapActions.changeWaterId(param);
-      this.addOverlay(Rain.type, { ...param });
+      // this.props.mapActions.changeWaterId(param.id);
+      // this.addOverlay(Water.type, { ...param });
+
+      if (this.props.onFeatureClick) {
+        this.props.onFeatureClick(param);
+      } else {
+        this.props.mapActions.changeWaterId(param.id);
+        this.addOverlay(Water.type, {...param});
+      }
     });
     // this.map.startSelectFeature("water", (param) => {
     //   //查询实时水位
@@ -253,7 +258,7 @@ class Map extends React.PureComponent {
     //     });
     // });
     this.map.on("moveend", () => {
-      let a = this.map.getView().calculateExtent();
+      // let a = this.map.getView().calculateExtent();
     });
     this.map.onFeatureClicked((feature) => {
       if (feature) {
@@ -288,14 +293,18 @@ class Map extends React.PureComponent {
     let zoom = this.map.getView().getZoom();
     let { layerVisible } = this.props;
     if (zoom >= 11) {
-      if (this._zoom && this._zoom >= 11) return;
+      if (this._zoom && this._zoom >= 11) {
+        return;
+      }
       if (layerVisible.water) {
         this.map.showTagBox("water_tag");
       } else {
         this.map.hideTagBox("water_tag");
       }
     } else {
-      if (this._zoom && this._zoom < 11) return;
+      if (this._zoom && this._zoom < 11) {
+        return;
+      }
       this.map.hideTagBox("water_tag");
     }
     this._zoom = zoom;
@@ -305,7 +314,9 @@ class Map extends React.PureComponent {
     let id = param.id;
     let { overlays } = this.state;
     let elements = overlays[key];
-    if (elements[id]) return;
+    // if (!elements) {
+    //   return;
+    // }
     // 查询该key是否只能显示一个overlay
     let isSingle = this.type.some((Overlay) => {
       if (Overlay.type === key) {
@@ -313,13 +324,13 @@ class Map extends React.PureComponent {
       }
       return false;
     });
-    if (isSingle) {
+    // if (isSingle) {
       overlays[key] = {
         [id]: param,
       };
-    } else {
-      elements[id] = param;
-    }
+    // } else {
+    //   elements[id] = param;
+    // }
     this.setState({
       overlays: { ...overlays },
     });
@@ -378,8 +389,12 @@ class Map extends React.PureComponent {
     }
 
     this._clickToken = addEventListener(window, "click", () => {
-      if (!this._windowCloseFlag) return;
-      if (this._isMapMoved) return;
+      if (!this._windowCloseFlag) {
+        return;
+      }
+      if (this._isMapMoved) {
+        return;
+      }
       let obj = {};
       this.type.forEach((Ovl) => {
         obj[Ovl.type] = {};
@@ -393,49 +408,6 @@ class Map extends React.PureComponent {
       this._windowCloseFlag = true;
     }, 0);
   }
-  // loadData() {
-  //   // 加载雨量站和水位站,水位站报警信息
-  //   let warningPro = getWaterWarning({});
-  //   let allPro = getAll({ type: 2 });
-  //   let _this = this;
-  //   Promise.all([allPro, warningPro])
-  //     .then((res) => {
-  //       if (res[0].code === 200) {
-  //         let data = this.transformData(res[0].data);
-
-  //         this.props.actions.initBaseData(data);
-  //         //如果显示报警
-  //         if (_this.props.layerVisible.waterWarning === true) {
-  //           this.props.actions.setMutiDetailData({
-  //             key: "water",
-  //             value: (res[1] && res[1].data) || [],
-  //           });
-  //         }
-
-  //       }
-  //     })
-  //     .catch((e) => {
-  //       message.error("获取基础资料失败");
-  //     });
-  //   // 轮询预警更新
-  //   if (this.props.layerVisible.waterWarning === true)
-  //     this.alarmTimer = window.setInterval(() => {
-  //       getWaterWarning({}).then((res) => {
-  //         if (res.code === 200) {
-  //           this.props.actions.setMutiDetailData({
-  //             key: "water",
-  //             value: (res && res.data) || [],
-  //           });
-  //           let { water, details } = this.props;
-  //           this.map.updateFeatures(
-  //             "water",
-  //             templateWater(water, details.water)
-  //           );
-  //           this.addWaterWaring(res.data);
-  //         }
-  //       });
-  //     }, 30000);
-  // }
   drawFeatures() {
     const { water } = this.props;
     if (water && water[0]) {
@@ -466,7 +438,9 @@ class Map extends React.PureComponent {
 
   addWaterWaring(warningWater) {
     this.map.removeAlarmByString("alarm_water_");
-    if (!warningWater || !warningWater.length) return;
+    if (!warningWater || !warningWater.length) {
+      return;
+    }
     if (this.props.layerVisible.waterWarning === true) {
       warningWater.forEach((w) => {
         this.map.addAlarm("alarm_water_" + w.stcd, [w.lon, w.lat]);
@@ -476,7 +450,9 @@ class Map extends React.PureComponent {
   onOverlayClose(id, type) {
     let { overlays } = this.state;
     let obj = overlays[type];
-    if (!obj || !obj[id]) return;
+    if (!obj || !obj[id]) {
+      return;
+    }
     delete obj[id];
     this.setState({
       overlays: { ...overlays },

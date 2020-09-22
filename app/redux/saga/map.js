@@ -62,7 +62,10 @@ function* getVideo() {
 // 获取站点来源
 function* getCountStation() {
   try {
-    const result = yield call(req.getCountStation, initSelect);
+    const result = yield call(req.getCountStation, {
+      ...initSelect,
+      isshow: 0,
+    });
     if (result.code == code) {
       yield put({
         type: types.SET_COUNT_STATION,
@@ -76,7 +79,7 @@ function* getCountStation() {
 //根据ID获取水位实时数据
 function* getWaterHistory({ data }) {
   const nowDate = moment(new Date()).format("YYYY-MM-DD");
-  console.log(nowDate, "nowDate");
+  // console.log(nowDate, "nowDate");
   try {
     const result = yield call(req.getWaterHistory, {
       current: 1,
@@ -97,20 +100,64 @@ function* getWaterHistory({ data }) {
   }
 }
 //获取水位报警日志
-function* getWaterWarning({ data }) {
+function* getWaterWarning() {
   try {
+    const getDate = (day) => {
+      return moment().subtract(day, "days").format("YYYY-MM-DD");
+    };
+    const last3 = getDate(30);
     const nowDate = moment(new Date()).format("YYYY-MM-DD");
-    console.log(moment().subtract(1, "days").calendar(), "DDDDDDD");
     const result = yield call(req.getwaterlevelAlarmLog, {
       alarmtype: 1,
-      startTime: `2020-09-15 00:00:00`,
-      endTime: `2020-09-15 24:00:00`,
+      startTime: `${last3} 00:00:00`,
+      endTime: `${nowDate} 24:00:00`,
       // stcd: data,
     });
     if ((result.code = code)) {
+      let warningInfo = {
+        mWarning: 0,
+        wWarning: 0,
+        //最近七天报警次数
+        today: 0,
+        a: 0,
+        b: 0,
+        c: 0,
+        d: 0,
+        e: 0,
+        f: 0,
+      };
+      warningInfo.mWarning = result.data.length;
+      result.data.map((item) => {
+        const time = item.alarmtime.split(" ")[0];
+        if (moment(time).isBetween(getDate(7), getDate(0))) {
+          warningInfo.wWarning++;
+        }
+        if (moment(time).isSame(getDate(0))) {
+          warningInfo.today++;
+        }
+        if (moment(time).isSame(getDate(1))) {
+          warningInfo.a++;
+        }
+        if (moment(time).isSame(getDate(2))) {
+          warningInfo.b++;
+        }
+        if (moment(time).isSame(getDate(3))) {
+          warningInfo.c++;
+        }
+        if (moment(time).isSame(getDate(4))) {
+          warningInfo.d++;
+        }
+        if (moment(time).isSame(getDate(5))) {
+          warningInfo.e++;
+        }
+        if (moment(time).isSame(getDate(6))) {
+          warningInfo.f++;
+        }
+      });
+      console.log(warningInfo);
       yield put({
         type: types.SET_WATER_WARNING,
-        data: result.data,
+        data: warningInfo,
       });
     }
   } catch (error) {
@@ -242,6 +289,19 @@ function* getFloodExpert() {
     console.error(e);
   }
 }
+function* getAlarmData() {
+  try {
+    const result = yield call(req.getAlarmWarning, {});
+    if ((result.code = code)) {
+      yield put({
+        type: types.SET_ALARM_DATA,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 export default function* mapAbout() {
   yield all([
     takeEvery(types.GET_WATER, getWater),
@@ -257,5 +317,6 @@ export default function* mapAbout() {
     takeEvery(types.GET_FLOOD_EXPERT, getFloodExpert),
     takeEvery(types.GET_MATERIAL_BY_ID, getMaterialById),
     takeEvery(types.GET_FLOOD_RANK_USER, getFloodRankUser),
+    takeEvery(types.GET_ALARM_DATA, getAlarmData),
   ]);
 }

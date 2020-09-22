@@ -48,3 +48,9 @@ export const SET_MATERIAL_BY_ID = "SET_MATERIAL_BY_ID";
 //获取防汛队伍人员
 export const GET_FLOOD_RANK_USER = "GET_FLOOD_RANK_USER";
 export const SET_FLOOD_RANK_USER = "SET_FLOODD_RANK_USER";
+export const GET_DICT = "GET_DICT"; //获取字典
+export const SET_DICT = "SET_DICT"; //设置字典
+
+//获取实时水位警戒数据
+export const GET_ALARM_DATA = "GET_ALARM_DATA";
+export const SET_ALARM_DATA = "SET_ALARM_DATA";

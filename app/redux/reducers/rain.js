@@ -21,7 +21,7 @@ export default function rainReducers(state = {}, action) {
       let tableList = [];
       for (let i in data) {
         if (data[i].raindataList && data[i].raindataList[0]) {
-          if (data[i].raindataList[0].dayDrp > 0) {
+          if (data[i].raindataList[0].dayDrp) {
             tableList.push({ ...data[i], ...data[i].raindataList[0] });
           }
           list.push({
@@ -36,7 +36,7 @@ export default function rainReducers(state = {}, action) {
         ...state,
         stations: list,
         rain: action.payload.data,
-        tableList: tableList,
+        tableList: list,
       };
       break;
     default:

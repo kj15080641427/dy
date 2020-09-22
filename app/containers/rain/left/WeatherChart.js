@@ -95,7 +95,7 @@ class WeatherChart extends React.PureComponent {
                   bordered={false}
                   suffixIcon={null}
                   onChange={onChange}
-                  format="YYYY-MM-DD HH"
+                  // format="YYYY-MM-DD HH"
                 />
               </Row>
               <div id="main" className="m-chart-table-rain"></div>
