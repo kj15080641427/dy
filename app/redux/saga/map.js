@@ -115,6 +115,7 @@ function* getWaterWarning() {
     });
     if ((result.code = code)) {
       let warningInfo = {
+        todayWaringInfo: [],
         mWarning: 0,
         wWarning: 0,
         //最近七天报警次数
@@ -134,6 +135,7 @@ function* getWaterWarning() {
         }
         if (moment(time).isSame(getDate(0))) {
           warningInfo.today++;
+          warningInfo.todayWaringInfo.push(item);
         }
         if (moment(time).isSame(getDate(1))) {
           warningInfo.a++;

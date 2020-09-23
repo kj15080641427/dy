@@ -6,14 +6,17 @@ import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 import * as actions from "@app/redux/actions/map";
 //import Map from "./map/map";
+import moment from "moment";
 import Map from "./map/map";
 import "./style.scss";
 import Head from "./head/Head";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
-import { Drawer, Row, Divider, Checkbox, Select } from "antd";
+import { Drawer, Row, Divider, Checkbox, Col } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
-
+import video from "@app/resource/icon/video.png";
+import pondingimg from "@app/resource/icon/ponding.svg";
+import rainimg from "@app/resource/icon/5.svg";
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
 import {
@@ -21,11 +24,15 @@ import {
   rotateBarChart,
   lineChart,
 } from "../../components/chart/chart";
+import warningIcon from "@app/resource/icon/warning.svg";
 import { TableShow } from "../../components/chart/table";
+import emitter from "@app/utils/emitter.js";
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      onLine: 0,
+      line: 0,
       showLeft: true,
       showRight: true,
       // showBottom: true,
@@ -44,7 +51,7 @@ class Monitor extends React.PureComponent {
         traffic: false, // 交通图层
         person: true, // 防汛人员
         video: false, // 视频站点
-        rain: false, // 雨量站
+        fRain: true, // 雨量站
         water: false, // 水位站
         gate: false, // 水闸
         pump: false, // 水泵
@@ -53,6 +60,15 @@ class Monitor extends React.PureComponent {
       },
     };
     this.onChecked = this.onChecked.bind(this);
+  }
+  //点击定位
+  locationClick(e) {
+    let lon = e.lon * 1;
+    let lat = e.lat * 1;
+    if (!lon || !lat) {
+      return;
+    }
+    emitter.emit("map-move-focus", [e.lon, e.lat]);
   }
   //设置抽屉页
   onClose = () => {
@@ -65,16 +81,23 @@ class Monitor extends React.PureComponent {
     this.props.actions.getFloodType(); //易涝点基本信息
     this.props.actions.getFloodRain(); //获取防汛雨量站 {type: "1",isshow: "1",datasource: "3",}
     this.props.actions.getFloodInfoRealTime(floodId); //根据易涝点id获取实时数据
-
-    lineChart("easyfloodLine", [1, 2, 3, 4, 5]);
+    this.props.actions.getCountStation();
+    this.props.actions.getAlarm();
   }
   componentDidUpdate(pre) {
-    const { flood, floodId, historyFlood, floodRain } = this.props;
+    const {
+      initFlood,
+      floodId,
+      historyFlood,
+      floodRain,
+      floodWarning,
+    } = this.props;
     if (floodId != pre.floodId) {
       this.props.actions.getFloodInfoRealTime(floodId);
     }
     if (historyFlood != pre.historyFlood) {
-      lineChart("easyfloodLine", historyFlood);
+      // lineChart("easyfloodLine", historyFlood, 400, 1);
+      lineChart("easyfloodLine", historyFlood, 380, floodWarning || 0);
     }
     if (floodRain != pre.floodRain) {
       let noRain = 0;
@@ -86,7 +109,6 @@ class Monitor extends React.PureComponent {
       let g = 0;
       let h = 0;
       floodRain.map((item) => {
-        // console.log(item.dayDrp);
         if (item.dayDrp == 0) {
           noRain++;
           return;
@@ -116,50 +138,64 @@ class Monitor extends React.PureComponent {
           return;
         }
       });
-      console.log(noRain, small, "???");
       let list = [
-        { value: noRain, itemStyle: { color: "rgb(229,229,229)" } },
-        { value: small, itemStyle: { color: "rgb(175,233,159)" } },
-        { value: c, itemStyle: { color: "rgb(91,175,51)" } },
-        { value: d, itemStyle: { color: "rgb(121,190,255)" } },
-        { value: e, itemStyle: { color: "rgb(57,53,255)" } },
-        { value: f, itemStyle: { color: "rgb(228,41,255)" } },
-        { value: g, itemStyle: { color: "rgb(123,42,51)" } },
-        { value: h, itemStyle: { color: "rgb(228,41,50)" } },
+        { value: noRain, itemStyle: { color: "rgba(229,229,229)" } },
+        { value: small, itemStyle: { color: "rgba(175,233,159)" } },
+        { value: c, itemStyle: { color: "rgba(91,175,51)" } },
+        { value: d, itemStyle: { color: "rgba(121,190,255)" } },
+        { value: e, itemStyle: { color: "rgba(57,53,255)" } },
+        { value: f, itemStyle: { color: "rgba(228,41,255)" } },
+        { value: g, itemStyle: { color: "rgba(123,42,51)" } },
+        { value: h, itemStyle: { color: "rgba(228,41,50)" } },
       ];
-      rotateBarChart("easyfloodInfo", list);
+      rotateBarChart("easyfloodInfo", list, 350, 200);
     }
-    if (flood) {
+    if (initFlood) {
       let a = 0;
       let b = 0;
       let c = 0;
       let d = 0;
       let e = 0;
       let f = 0;
-      flood.map((item) => {
-        if (item.z == 0) {
+
+      let onLine = 0;
+      let line = 0;
+      const time = moment().subtract(2, "hour").format("YYYY-MM-DD HH:mm:ss");
+      initFlood.map((item) => {
+        if (item.riverwaterdataList && item.riverwaterdataList[0]) {
+          const itemList = item.riverwaterdataList[0];
+          if (moment(itemList.tm).isAfter(moment(time))) {
+            onLine++;
+          } else {
+            line++;
+          }
+          if (itemList.z == 0) {
+            a++;
+            return;
+          }
+          if (itemList.z < 10) {
+            b++;
+            return;
+          }
+          if (itemList.z < 20) {
+            c++;
+            return;
+          }
+          if (itemList.z < 30) {
+            d++;
+            return;
+          }
+          if (itemList.z < 40) {
+            e++;
+            return;
+          }
+          if (itemList.z > 40) {
+            f++;
+            return;
+          }
+        } else {
+          line++;
           a++;
-          return;
-        }
-        if (item.z < 10) {
-          b++;
-          return;
-        }
-        if (item.z < 20) {
-          c++;
-          return;
-        }
-        if (item.z < 30) {
-          d++;
-          return;
-        }
-        if (item.z < 40) {
-          e++;
-          return;
-        }
-        if (item.z > 40) {
-          f++;
-          return;
         }
       });
       const data = [
@@ -181,25 +217,29 @@ class Monitor extends React.PureComponent {
         {
           value: d,
           name: "20-30cm",
-          itemStyle: { color: "rgb(255,255,1)" },
+          itemStyle: { color: "rgba(255,255,1)" },
         },
         {
           value: e,
           name: "30-40cm",
-          itemStyle: { color: "rgb(143,101,35)" },
+          itemStyle: { color: "rgba(143,101,35)" },
         },
         {
           value: f,
           name: "40cm以上",
-          itemStyle: { color: "rgb(237,28,34)" },
+          itemStyle: { color: "rgba(237,28,34)" },
         },
       ];
+      this.setState({
+        onLine: onLine,
+        line: line,
+      });
       funnelChart("funnel-chart", data);
     }
   }
   render() {
-    let { layerVisible, displayRight, displayLeft } = this.state;
-    const { flood, floodRain, floodName } = this.props;
+    let { layerVisible, displayRight, displayLeft, onLine, line } = this.state;
+    const { initFlood, floodName, alarmData, count } = this.props;
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible}></Map>
@@ -208,28 +248,56 @@ class Monitor extends React.PureComponent {
           <div className="easy-flood">
             <div className="easyFlood-left">
               <RenderBox>
-                <div className="table-title">特大暴雨(250mm以上)</div>
+                <div className="table-title-text">
+                  <img src={warningIcon}></img> 超警戒水位
+                  <span>{alarmData?.length}</span>次
+                </div>
                 <TableShow
                   columns={[
-                    { name: "站点名称", dataIndex: "name" },
-                    { name: "所属区县", dataIndex: "stlc" },
-                    { name: "降雨量", dataIndex: "dayDrp" },
+                    { name: "站点名称", dataIndex: "stnm" },
+                    { name: "警戒水位", dataIndex: "baselevel" },
+                    { name: "水位", dataIndex: "actuallevel" },
+                    { name: "更新时间", dataIndex: "alarmtime" },
                   ]}
-                  dataSource={
-                    floodRain.filter((item) => item.dayDrp > 250) || []
-                  }
+                  dataSource={alarmData || []}
                 />
               </RenderBox>
               <div className="easyflood-left-bottom">
                 <RenderBox hasTitle title="易涝点积水情况">
                   <div className="funnel-chart" id="funnel-chart"></div>
                   <TableShow
+                    onRow={(record) => {
+                      return {
+                        onClick: () => {
+                          record = {
+                            ...record,
+                            id: record.riverwaterdataList
+                              ? record.riverwaterdataList[0].stcd
+                              : "",
+                          };
+                          this.props.actions.changeFloodId(record);
+                          this.locationClick(record);
+                        },
+                      };
+                    }}
                     columns={[
                       { name: "易涝点名称", dataIndex: "name" },
-                      { name: "积水水深(cm)", dataIndex: "z" },
-                      { name: "更新时间", dataIndex: "tm" },
+                      {
+                        name: "积水水深(cm)",
+                        dataIndex: "riverwaterdataList",
+                        render: (value) =>
+                          value && value[0]
+                            ? (value[0].z * 10).toFixed(2)
+                            : "-",
+                      },
+                      {
+                        name: "更新时间",
+                        dataIndex: "riverwaterdataList",
+                        render: (value) =>
+                          value && value[0] ? value[0].tm : "-",
+                      },
                     ]}
-                    dataSource={flood || []}
+                    dataSource={initFlood || []}
                   />
                 </RenderBox>
               </div>
@@ -241,36 +309,87 @@ class Monitor extends React.PureComponent {
           <div className="m-right">
             <div className="easyFlood-right">
               <RenderBox hasTitle title="易涝点基本信息">
+                <div className="pie-title-flex">
+                  {count?.floodcount?.list?.map((item) => (
+                    <div key={item.dataSourceDesc}>
+                      <label className="number-color">{item.number}</label>
+                      <label>{item.dataSourceDesc}</label>
+                    </div>
+                  ))}
+                  <div>
+                    <label className="number-color">{onLine}</label>
+                    <label>最新数据</label>
+                  </div>
+                  <div>
+                    <label className="number-color">{onLine}</label>
+                    <label>在线</label>
+                  </div>
+                  <div>
+                    <label className="number-color">{line}</label>
+                    <label>离线</label>
+                  </div>
+                </div>
                 <div className="easyfloodInfo" id="easyfloodInfo"></div>
               </RenderBox>
               <RenderBox hasTitle title="易涝点24小时信息">
                 <div className="water-select">
-                  <div>
-                    <div className='water-select-flex'>{floodName}</div>
-                    <div className='water-select-flex'>2020</div>
+                  <div className="water-select-flex">
+                    <div className="water-select-flex">{floodName}</div>
+                    <div className="water-select-flex">{`${moment(
+                      new Date()
+                    ).format("YYYY-MM-DD")} 00:00 至 ${moment(
+                      new Date()
+                    ).format("YYYY-MM-DD")} 24:00`}</div>
                   </div>
-
-                  {/* <Select
-                    value={floodId}
-                    defaultActiveFirstOption
-                    onChange={(e) => {
-                      this.props.actions.changeWaterId(e);
-                    }}
-                  >
-                    {flood?.map((item, index) => (
-                      <Select.Option key={index} value={item.stcd}>
-                        {item.name}
-                      </Select.Option>
-                    ))}
-                  </Select> */}
                 </div>
                 <div className="easyfloodLine" id="easyfloodLine"></div>
+                <img src={video} width="430px" height="260px"></img>
               </RenderBox>
-              <RenderBox style={{ height: "280px" }}></RenderBox>
+              {/* <RenderBox style={{ height: "280px" }}></RenderBox> */}
+              <div className="ranSwitch">
+                <div className="switch-border">
+                  <Col span={24}>
+                    <Checkbox
+                      style={{ color: "white" }}
+                      value="ponding"
+                      checked={this.state.layerVisible.ponding}
+                      onChange={(e) => {
+                        this.setState({
+                          layerVisible: {
+                            ...layerVisible,
+                            ponding: e.target.checked,
+                          },
+                        });
+                      }}
+                    >
+                      <img src={pondingimg} width="20px" height="20px"></img>
+                      积水
+                    </Checkbox>
+                  </Col>
+                  <Col span={24}>
+                    <Checkbox
+                      style={{ color: "white" }}
+                      value="fRain"
+                      checked={this.state.layerVisible.fRain}
+                      onChange={(e) => {
+                        this.setState({
+                          layerVisible: {
+                            ...layerVisible,
+                            fRain: e.target.checked,
+                          },
+                        });
+                      }}
+                    >
+                      <img src={rainimg} width="20px" height="20px"></img> 雨量
+                    </Checkbox>
+                  </Col>
+                </div>
+              </div>
             </div>
             <RouterList />
           </div>
         </div>
+
         <div className="m-bottom"></div>
         <img
           onClick={() => {
@@ -359,13 +478,15 @@ class Monitor extends React.PureComponent {
 // -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
-  console.log(state);
+  // console.log(state);
   return {
+    count: state.mapAboutReducers.count,
     floodRain: state.mapAboutReducers.floodRain,
     historyFlood: state.mapAboutReducers.historyFlood,
     floodId: state.mapAboutReducers.floodId,
     floodName: state.mapAboutReducers.floodName,
-    flood: state.mapAboutReducers.flood,
+    initFlood: state.mapAboutReducers.initFlood,
+    alarmData: state.currency.alarmData,
   };
 }
 

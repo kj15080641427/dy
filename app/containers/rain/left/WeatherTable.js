@@ -81,12 +81,12 @@ class WeatherTable extends React.PureComponent {
    */
   getRainCatalog(stations, rainData) {
     //rain1 - rain6 分别保存特大暴雨-小雨的站点信息
-    let rain1 = [],
-      rain2 = [],
-      rain3 = [],
-      rain4 = [],
-      rain5 = [],
-      rain6 = [];
+    let rain1 = [];
+    let rain2 = [];
+    let rain3 = [];
+    let rain4 = [];
+    let rain5 = [];
+    let rain6 = [];
 
     rainData.forEach((item) => {
       let drp = item.avgDrp * 1;

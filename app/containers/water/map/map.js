@@ -203,7 +203,7 @@ class Map extends React.PureComponent {
         this.props.onFeatureClick(param);
       } else {
         this.props.mapActions.changeWaterId(param.id);
-        this.addOverlay(Water.type, {...param});
+        this.addOverlay(Water.type, { ...param });
       }
     });
     // this.map.startSelectFeature("water", (param) => {
@@ -325,9 +325,9 @@ class Map extends React.PureComponent {
       return false;
     });
     // if (isSingle) {
-      overlays[key] = {
-        [id]: param,
-      };
+    overlays[key] = {
+      [id]: param,
+    };
     // } else {
     //   elements[id] = param;
     // }
@@ -409,10 +409,11 @@ class Map extends React.PureComponent {
     }, 0);
   }
   drawFeatures() {
-    const { water } = this.props;
+    const { water, alarmData } = this.props;
     if (water && water[0]) {
+      console.log(water.filter((item) => item.z > item.warning, "warning"));
       this.map.addFeatures("water", templateWater(water, {}));
-      this.addWaterWaring(Object.values({}));
+      this.addWaterWaring(alarmData);
       this.addWaterTagBox(water);
     }
 
@@ -442,6 +443,7 @@ class Map extends React.PureComponent {
       return;
     }
     if (this.props.layerVisible.waterWarning === true) {
+      console.log(warningWater, "====");
       warningWater.forEach((w) => {
         this.map.addAlarm("alarm_water_" + w.stcd, [w.lon, w.lat]);
       });
@@ -491,6 +493,7 @@ class Map extends React.PureComponent {
 }
 function mapStateToProps(state) {
   return {
+    alarmData: state.currency.alarmData,
     water: state.mapAboutReducers.water,
   };
 }

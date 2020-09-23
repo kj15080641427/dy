@@ -57,7 +57,7 @@ class Monitor extends React.PureComponent {
         gate: false, // 水闸
         pump: false, // 水泵
         ponding: true, // 积水
-        waterWarning: false, //水位报警
+        waterWarning: true, //水位报警
       },
     };
     this.onChecked = this.onChecked.bind(this);
@@ -401,7 +401,6 @@ Monitor.propTypes = {
   count: PropTypes.object,
 };
 function mapStateToProps(state) {
-  // console.log(state, "STATE");
   return {
     warningInfo: state.mapAboutReducers.warningInfo,
     waterWarning: state.mapAboutReducers.waterWarning,

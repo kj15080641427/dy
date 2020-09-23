@@ -286,13 +286,15 @@ class Precipitation extends React.PureComponent {
   };
   //模态框
   showModal = (value) => {
+    console.log(value, "VALUE");
+    const stcd = value?.raindataList[0].stcd || "";
     this.callback(value);
     let starttm = moment(new Date().getTime() - 60 * 60 * 1000).format(
       "YYYY-MM-DD HH:mm:ss"
     );
     let endtm = moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss");
     getByTimeMinute({
-      stcd: value.stcd,
+      stcd: stcd,
       starttm: moment(new Date().getTime() - 60 * 60 * 1000).format(
         "YYYY-MM-DD HH:mm:ss"
       ),
@@ -313,7 +315,7 @@ class Precipitation extends React.PureComponent {
       );
     });
     getByTimeHour({
-      stcd: value.stcd,
+      stcd: stcd,
       starttm: moment(new Date().getTime() - 24 * 60 * 60 * 1000).format(
         "YYYY-MM-DD HH:mm:ss"
       ),
@@ -334,7 +336,7 @@ class Precipitation extends React.PureComponent {
       );
     });
     getByTimeDay({
-      stcd: value.stcd,
+      stcd: stcd,
       starttm: moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7).format(
         "YYYY-MM-DD HH:mm:ss"
       ),
@@ -575,8 +577,6 @@ class Precipitation extends React.PureComponent {
       },
     ];
     const expandedRowRendertype = (record, index, indent, expanded) => {
-      console.log(record, "==========");
-
       const qycolumns = [
         {
           title: "站名",
@@ -599,14 +599,9 @@ class Precipitation extends React.PureComponent {
           width: 88,
           className: "column-money",
           render: (value) => {
-            console.log(value);
-            return value && value[0]
-              ? value[0].hourDrp?.toFixed(2)
-              : "-";
+            return value && value[0] ? value[0].hourDrp?.toFixed(2) : "-";
           },
-          sorter: (a, b) =>
-            a &&
-            a[0]?.hourDrp - b[0]?.hourDrp,
+          sorter: (a, b) => a && a[0]?.hourDrp - b[0]?.hourDrp,
         },
         {
           title: "24小时(mm)",
@@ -614,25 +609,17 @@ class Precipitation extends React.PureComponent {
           width: 95,
           className: "column-money",
           render: (value) =>
-            value && value[0]
-              ? value[0].dayDrp?.toFixed(2)
-              : "-",
-          sorter: (a, b) =>
-            a &&
-            a[0]?.dayDrp - b[0]?.dayDrp,
+            value && value[0] ? value[0].dayDrp?.toFixed(2) : "-",
+          sorter: (a, b) => a && a[0]?.dayDrp - b[0]?.dayDrp,
         },
         {
           title: "更新时间",
           dataIndex: "raindataList",
           width: 140,
           className: "column-money",
-          render: (value) =>
-            value && value[0]
-              ? value[0].tm
-              : "-",
+          render: (value) => (value && value[0] ? value[0].tm : "-"),
           sorter: (a, b) =>
-            new Date(a && a[0].tm).getTime() -
-            new Date(b && a[0].tm).getTime(),
+            new Date(a && a[0].tm).getTime() - new Date(b && a[0].tm).getTime(),
         },
       ];
       return (
@@ -791,7 +778,6 @@ class Precipitation extends React.PureComponent {
       let ljarr = [];
       let grarr = [];
       let hkarr = [];
-      // let teharr = [];
       for (let i = 0; i < dataArr.length; i++) {
         if (dataArr[i].region === "370502" && dataArr[i].indtype !== 11) {
           dyarr.push(dataArr[i]);
@@ -808,14 +794,10 @@ class Precipitation extends React.PureComponent {
         if (dataArr[i].region === "370521") {
           klarr.push(dataArr[i]);
         }
-        // else if (dataArr[i].indtype === 11) {
-        //     teharr.push(dataArr[i])
-        // }
       }
       let data = [
         { regionName: "全部", list: dataArr },
         { regionName: "东营区(开发区)", list: dyarr },
-        // { regionName: "天鹅湖蓄滞洪区", list: teharr },
         { regionName: "广饶县(省农高区)", list: grarr },
         { regionName: "利津县", list: ljarr },
         { regionName: "河口区(东营港)", list: hkarr },

@@ -29,20 +29,29 @@
     bottom: 11px;
     left: 10px;
   }
-  .m-hd-time {
-    line-height: 47px;
-    padding-right: 35px;
-    width: 275px;
-    white-space: nowrap;
-    margin-top: 10px;
-    > span:first-child {
-      margin-right: 10px;
-    }
+
+}
+.m-hd-time {
+  line-height: 47px;
+  padding-right: 35px;
+  width: 275px;
+  white-space: nowrap;
+  margin-top: 10px;
+  > span:first-child {
+    margin-right: 10px;
   }
-  .m-hd-title {
-    font-size: 40px;
-    line-height: $headHeight;
-    letter-spacing: 10px;
-    font-family: "SimSun";
+}
+.m-hd-title {
+  font-size: 40px;
+  line-height: $headHeight;
+  letter-spacing: 10px;
+  font-family: "SimSun";
+}
+.m-hd-weather {
+  line-height: 47px;
+  padding-left: 35px;
+  margin-top: 10px;
+  > span {
+    margin-right: 10px;
   }
 }

@@ -237,41 +237,51 @@ export const pieChart = (domId, data, width, legend) => {
   };
   myChartcount.setOption(option);
 };
-export const lineChart = (domId, data, width) => {
+export const lineChart = (domId, data, width, warningline) => {
   let myChartcount = echarts.init(document.getElementById(domId));
+  const time = [
+    "00:00",
+    "02:00",
+    "04:00",
+    "06:00",
+    "08:00",
+    "10:00",
+    "12:00",
+    "14:00",
+    "16:00",
+    "18:00",
+    "20:00",
+    "22:00",
+    "24:00",
+  ];
+  const warning = time?.map(() => warningline);
   let option = {
     xAxis: {
       type: "category",
       show: true,
-      data: [
-        "00:00",
-        "02:00",
-        "04:00",
-        "06:00",
-        "08:00",
-        "10:00",
-        "12:00",
-        "14:00",
-        "16:00",
-        "18:00",
-        "20:00",
-        "22:00",
-        "24:00",
-      ],
+      data: time,
       axisTick: {
         show: false,
       },
       axisLabel: {
         color: "white",
         interval: 0,
-        rotate: 50,
+        rotate: 40,
+        fontSize: "15",
       },
     },
     yAxis: {
-      type: "value",
+      name: "积水(cm)",
+      nameTextStyle: {
+        color: "white",
+        fontSize: "18",
+      },
       axisLabel: {
         color: "white",
+        fontSize: "15",
       },
+      max: "dataMax",
+      type: "value",
       axisLine: {
         color: "green",
       },
@@ -284,18 +294,32 @@ export const lineChart = (domId, data, width) => {
     },
     series: [
       {
-        data: data || [6, 3, 1, 8, 2, 4, 6, 2, 3, 1],
+        data: data || [],
         type: "line",
+        color: "rgb(30,182,107)",
+        markPoint: {
+          data: [
+            { type: "max", name: "最大值" },
+            // {
+            //   type: "min",
+            //   name: "最小值",
+            //   itemStyle: {
+            //     color: "#03d6d6",
+            //   },
+            // },
+          ],
+        },
       },
-      // { data: [5,5,5,5,5,5,5], type: 'line' },
+      { data: warningline == 0 ? warning : null, type: "line" },
     ],
   };
   myChartcount.setOption(option);
 };
 
 //
-export const rotateBarChart = (domId, data, width) => {
+export const rotateBarChart = (domId, data, width, height) => {
   let myChartcount = echarts.init(document.getElementById(domId));
+  let fontSize = 15;
   let option = {
     tooltip: {
       trigger: "axis",
@@ -310,7 +334,10 @@ export const rotateBarChart = (domId, data, width) => {
       left: "3%",
       right: "4%",
       bottom: "3%",
+      top: "3",
       containLabel: true,
+      width: width || 300,
+      height: height,
     },
     xAxis: {
       type: "value",
@@ -330,14 +357,35 @@ export const rotateBarChart = (domId, data, width) => {
       show: true,
       type: "category",
       data: [
-        { value: "无雨(0)", textStyle: { color: "white" } },
-        { value: "小雨(0-10)", textStyle: { color: "white" } },
-        { value: "中雨(10-25)", textStyle: { color: "white" } },
-        { value: "大雨(25-50)", textStyle: { color: "white" } },
-        { value: "暴雨(50-100)", textStyle: { color: "white" } },
-        { value: "大暴雨(100-250)", textStyle: { color: "white" } },
-        { value: "特大暴雨(>250)", textStyle: { color: "white" } },
-        { value: "短历时强降雨", textStyle: { color: "white" } },
+        { value: "无雨(0)", textStyle: { color: "white", fontSize: fontSize } },
+        {
+          value: "小雨(0-10)",
+          textStyle: { color: "white", fontSize: fontSize },
+        },
+        {
+          value: "中雨(10-25)",
+          textStyle: { color: "white", fontSize: fontSize },
+        },
+        {
+          value: "大雨(25-50)",
+          textStyle: { color: "white", fontSize: fontSize },
+        },
+        {
+          value: "暴雨(50-100)",
+          textStyle: { color: "white", fontSize: fontSize },
+        },
+        {
+          value: "大暴雨(100-250)",
+          textStyle: { color: "white", fontSize: fontSize },
+        },
+        {
+          value: "特大暴雨(>250)",
+          textStyle: { color: "white", fontSize: fontSize },
+        },
+        {
+          value: "短历时强降雨",
+          textStyle: { color: "white", fontSize: fontSize },
+        },
       ],
     },
     series: [
@@ -349,7 +397,8 @@ export const rotateBarChart = (domId, data, width) => {
           position: "left",
           color: "white",
         },
-        height: width || 300,
+        width: width || 300,
+        height: height,
         data: data || [],
       },
     ],
@@ -375,18 +424,22 @@ export const funnelChart = (domId, data) => {
 
     series: [
       {
+        labelLine: { show: true },
         name: "漏斗图",
         type: "funnel",
         left: "center",
         width: "100%",
         min: 0,
-        max: 94,
+        max: 150,
         minSize: "0%",
         maxSize: "100%",
         sort: "descending",
         label: {
           show: true,
           position: "left",
+          formatter: "{c}个  {b}",
+          fontSize: "15",
+          color: "white",
         },
         markLine: {
           silent: true,
@@ -397,38 +450,6 @@ export const funnelChart = (domId, data) => {
           },
         },
         data: data,
-        // [
-        //   {
-        //     value: 31,
-        //     name: "0cm 无积水",
-        //     itemStyle: { color: "rgb(255,255,255)" },
-        //   },
-        //   {
-        //     value: 14,
-        //     name: "0-10cm",
-        //     itemStyle: { color: "rgb(0,191,243)" },
-        //   },
-        //   {
-        //     value: 12,
-        //     name: "10-20cm",
-        //     itemStyle: { color: "rgb(0,255,1)" },
-        //   },
-        //   {
-        //     value: 6,
-        //     name: "20-30cm",
-        //     itemStyle: { color: "rgb(255,255,1)" },
-        //   },
-        //   {
-        //     value: 9,
-        //     name: "30-40cm",
-        //     itemStyle: { color: "rgb(143,101,35)" },
-        //   },
-        //   {
-        //     value: 3,
-        //     name: "40cm以上",
-        //     itemStyle: { color: "rgb(237,28,34)" },
-        //   },
-        // ],
       },
     ],
   };

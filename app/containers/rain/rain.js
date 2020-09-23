@@ -21,17 +21,9 @@ import {
   pieChart,
   barChart,
 } from "../../components/chart/chart";
-import { TableShow } from "../../components/chart/table";
 import WeatherTable from "./left/WeatherTable";
 import RainSwitcher from "./right/Module/RainSwitcher";
-const region = {
-  370502: "东营区",
-  370503: "河口区",
-  370521: "垦利区",
-  370522: "利津县",
-  370523: "广饶县",
-  370500: "东营市",
-};
+
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -85,7 +77,7 @@ class Monitor extends React.PureComponent {
       kl,
       hk,
     } = this.state;
-    const { tableList, rain } = this.props;
+    const { rain } = this.props;
     return (
       <div className="monitor">
         <Map layerVisible={layerVisible} />

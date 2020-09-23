@@ -3,7 +3,7 @@ import { Table } from "antd";
 import "../style.scss";
 const { Column } = Table;
 export const TableShow = (props) => {
-  const { columns, dataSource } = props;
+  const { columns, dataSource, onRow } = props;
   return (
     <Table
       size="small"
@@ -11,6 +11,7 @@ export const TableShow = (props) => {
       className="set-table-style"
       rowKey={"siteBase"}
       pagination={{ pageSize: 4, simple: true }}
+      onRow={onRow}
     >
       {columns.map((item) => {
         return (
@@ -21,7 +22,6 @@ export const TableShow = (props) => {
             className="table-background"
             render={item.render}
             width={item.width}
-            // width={'100px'}
           />
         );
       })}

@@ -53,6 +53,7 @@ export default function mapAboutReducers(state = initState, action) {
         }
       });
       newState.flood = floodList;
+      newState.initFlood = action.data;
       break;
     case types.SET_COUNT_STATION:
       newState = {
@@ -75,21 +76,24 @@ export default function mapAboutReducers(state = initState, action) {
       newState = { ...newState, historyWater: historyWater };
       break;
     case types.CHANGE_FLOOD_ID: //改变易涝点id
+      console.log(action.data);
       newState = {
         ...newState,
         floodId: action.data.id,
         floodName: action.data.name,
+        floodWarning: action.data.siteWaterPoints
+          ? action.data.siteWaterPoints[0].warning
+          : null,
       };
       break;
     case types.CHANGE_WATER_ID: //改变水位id
-      console.log(1111);
       newState = { ...newState, waterId: action.data };
       break;
     case types.SET_FLOOD_INFO_REALTIME: //易涝点实时数据
       action.data.records.map((item) => {
         let tm = item.tm.split(" ")[1].split(":");
         if (tm[0] % 2 == 0 && tm[1] == "00") {
-          historyFlood.unshift(item.z);
+          historyFlood.unshift(item.z * 10);
         }
       });
       newState = { ...newState, historyFlood: historyFlood };
