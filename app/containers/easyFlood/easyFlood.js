@@ -386,8 +386,8 @@ class Monitor extends React.PureComponent {
                 </div>
               </div>
             </div>
-            <RouterList />
           </div>
+            <RouterList />
         </div>
 
         <div className="m-bottom"></div>

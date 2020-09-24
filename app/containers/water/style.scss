@@ -1,16 +1,10 @@
 @import "@app/variable.scss";
 .router-list {
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
   position: absolute;
-  right: 10px;
+  right: 0;
   top: 0;
-  bottom: 0;
   z-index: 10;
-  padding-top: 50px;
+  height: 100%;
 }
 .flex-layout-right {
   color: white;
@@ -72,7 +66,7 @@
   position: relative;
   border: 2px solid rgb(0, 153, 255);
   width: 535px;
-  height: 300px;
+  height: 29.53%;
 }
 .box-head {
   border-top: 25px solid rgb(0, 153, 255);
@@ -84,7 +78,7 @@
 }
 .radar-chart {
   width: 330px;
-  height: 300px;
+  height: 100%;
 }
 .box-head-title {
   color: white;
@@ -95,12 +89,12 @@
 }
 .radar-box {
   background: rgba(0, 51, 102, 0.7);
-  margin-top: 10px;
+  margin-top: 15px;
   // opacity: 0.7;
   position: relative;
   border: 2px solid rgb(0, 153, 255);
   width: 535px;
-  height: 300px;
+  height: 305px;
   z-index: 9;
 }
 .chart-left {
@@ -108,10 +102,9 @@
   width: 540px;
   position: absolute;
   left: 15px;
-  top: 0;
-  bottom: 0;
+  top: 80px;
   z-index: 10;
-  margin-top: 80px;
+  height: calc(100% - 80px - 10px - 15px);
   .line-chart {
     width: 500px;
     height: 280px;
@@ -136,22 +129,19 @@
 }
 .chart-right {
   // background:rgba(255, 255, 255, 0.6)!important;
-  width: 550px;
+  width: 430px;
   position: absolute;
-  right: 115px;
-  top: 0;
-  bottom: 0;
+  right: 110px;
+  top: 80px;
   z-index: 10;
-  margin-top: 80px;
-  display: flex;
-  justify-content: center;
+  height: calc(100% - 80px - 10px - 15px);
   .bar-chart {
-    width: 535px;
-    height: 280px;
+    width: 430px;
+    height: 100%;
   }
   .pie-chart {
-    width: 400px;
-    height: 300px;
+    width: 320px;
+    height: 100%;
   }
 }
 .pie-flex-layout {
@@ -164,7 +154,6 @@
   display: flex;
   align-items: center;
   color: white;
-  width: 100px;
 }
 .pie-number {
   color: #ea5c5a;

@@ -219,8 +219,8 @@ class Monitor extends React.PureComponent {
                 dataSource={alarmData || []}
               />
             </div>
-            <RenderBox title={"报警统计"} hasTitle>
-              <div className="pie-flex-layout">
+            <RenderBox title={"报警统计"} hasTitle containerStyle={{ height: '31.6%' }} style={{ height: '100%' }}>
+              <div className="pie-flex-layout" style={{ height: 'calc(100% - 25px)' }}>
                 <div className="radar-chart" id="radar-chart"></div>
                 <div className="flex-layout-right">
                   <div>
@@ -235,7 +235,7 @@ class Monitor extends React.PureComponent {
                 </div>
               </div>
             </RenderBox>
-            <RenderBox>
+            <RenderBox containerStyle={{ height: '37.3%' }} style={{ marginTop: 0, height: '100%' }}>
               {/* <div className="water-select">
                 <label>
                   超警戒信息 <span>单位(mm)</span>
@@ -266,16 +266,16 @@ class Monitor extends React.PureComponent {
 
         <div style={{ display: displayRight }}>
           <div className="chart-right">
-            <div>
+            <div style={{ height: '100%' }}>
               {/* 水位站点在线统计图 */}
-              <RenderBox title={"水位站点在线统计图"} hasTitle>
+              <RenderBox title={"水位站点在线统计图"} containerStyle={{ height: '30.05%' }} style={{ width: '430px', height: '100%', marginTop: '10px' }} hasTitle>
                 <div className="bar-chart" id="bar-chart"></div>
               </RenderBox>
               {/* 来源图 */}
-              <RenderBox title={"水位站点来源统计图"} hasTitle>
-                <div className="pie-flex-layout">
+              <RenderBox title={"水位站点来源统计图"} containerStyle={{ height: '31.08%' }} style={{ width: '430px', height: '100%', marginTop: '10px' }} hasTitle>
+                <div className="pie-flex-layout" style={{ height: 'calc(100% - 25px)' }}>
                   <div className="pie-chart" id="pie-chart"></div>
-                  <div>
+                  <div style={{ padding: '0 10px' }}>
                     {count?.watercount?.list.map((item, index) => {
                       return (
                         <div key={index} className="flex-layout">
@@ -297,8 +297,8 @@ class Monitor extends React.PureComponent {
               </RenderBox>
               {/* 视频 */}
               {/* <div className="radar-box"> */}
-              <RenderBox>
-                <img src={video} width="530px" height="295px"></img>
+              <RenderBox  containerStyle={{ height: '35.75%' }} style={{ width: '430px', height: '100%' }}>
+                <img src={video} style={{ width: '100%', height: '100%' }}></img>
               </RenderBox>
               {/* <div className="bar-chart" id="bar-chart"></div> */}
               {/* </div> */}
