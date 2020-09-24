@@ -384,7 +384,6 @@ class Monitor extends React.PureComponent {
             // });
             break;
           default:
-            console.log(item, "ITEM");
             break;
         }
         if (item.raindataList && item.raindataList[0]) {
@@ -440,7 +439,7 @@ class Monitor extends React.PureComponent {
         { value: g, itemStyle: { color: "rgb(123,42,51)" } },
         { value: h, itemStyle: { color: "rgb(228,41,50)" } },
       ];
-      rotateBarChart("rotateBarChart", list);
+      rotateBarChart("rotateBarChart", list, 400);
     }
   }
   componentDidMount() {

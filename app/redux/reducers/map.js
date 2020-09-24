@@ -124,7 +124,11 @@ export default function mapAboutReducers(state = initState, action) {
       newState = { ...newState, material: action.data };
       break;
     case types.SET_FLOOD_RANK_USER:
-      newState = { ...newState, floodRanks: action.data };
+      let count = 0;
+      action.data.map((item) => {
+        count = count + item.userList.length;
+      });
+      newState = { ...newState, floodRanks: action.data, expertCount: count };
       break;
     case types.SET_WATER_WARNING:
       newState = { ...newState, warningInfo: action.data };

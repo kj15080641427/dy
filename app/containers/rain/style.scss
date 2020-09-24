@@ -42,23 +42,19 @@
   }
   .chart-right {
     width: 480px;
-    // height: 100%;
     position: absolute;
     right: 100px;
-    top: 0;
+    top: 10px;
     bottom: 0;
     z-index: 10;
     margin-top: 80px;
-    // padding: 4px;
-    // display: flex;
-    // justify-content: center;
     .rain-online {
-      width: 400px;
+      width: 450px;
       height: 300px;
     }
     .rotateBarChart {
-      width: 450px;
-      height: 300px;
+      width: 500px;
+      height: 250px;
     }
     .bar-chart {
       width: 535px;

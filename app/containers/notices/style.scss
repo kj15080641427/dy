@@ -20,29 +20,19 @@
     position: absolute;
     left: 0;
     top: 0;
+    right: 120px;
     bottom: 0;
-    width: 100%;
+    width: 90%;
     z-index: 10;
     padding-top: 120px;
     padding-left: $monitor_left_pd_left;
     padding-bottom: $monitor_left_pd_bottom;
   }
-  .m-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: $monitor_right_w;
-    z-index: 10;
-    height: 150px;
-    padding-top: $monitor_right_pd_top;
-    padding-right: $monitor_right_pd_right;
-    padding-bottom: $monitor_right_pd_bottom;
-  }
+  // .m-right {
+  //   background:#003366;
+  //   height:2500px;
+  //   width: 110px;
+  // }
   .m-bottom {
     display: flex;
     justify-content: center;

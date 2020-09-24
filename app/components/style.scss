@@ -65,17 +65,43 @@
     color: white;
     background: rgb(20, 100, 216);
   }
+  .ant-pagination-item-active {
+    font-weight: 500;
+    background: rgba(0, 51, 102, 0.7);
+    border: 1px solid #1890ff;
+  }
+  .ant-pagination-item {
+    display: inline-block;
+    min-width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    font-family: Arial;
+    line-height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    list-style: none;
+    background-color: rgba(0, 51, 102, 0.7);
+    border: 1px solid #1890ff;
+    border-radius: 2px;
+    outline: 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 }
 .router-item {
   position: absolute;
   right: 15px;
-  top: 80px;
+  top: 105px;
   background: rgba(255, 255, 255, 0);
-  padding-top: 10px;
+  // padding-top: 20px;
   margin-left: 15px;
+  width: 90px;
   img {
     border-radius: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     margin-left: 15px;
     height: 80px;
     width: 80px;

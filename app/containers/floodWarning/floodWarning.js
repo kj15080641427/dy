@@ -11,9 +11,20 @@ import Head from "./head/Head";
 import WeatherPic from "./right/WeatherPic";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
-import { Drawer, Row, Divider, Checkbox, Tabs } from "antd";
+import {
+  Drawer,
+  Row,
+  Divider,
+  Checkbox,
+  Tabs,
+  Input,
+  Space,
+  Button,
+  Popover,
+} from "antd";
+import Highlighter from "react-highlight-words";
 import SetTitle from "@app/components/setting/SetTitle";
-
+import { SearchOutlined } from "@ant-design/icons";
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
 import { pieChart } from "../../components/chart/chart";
@@ -57,6 +68,7 @@ class Monitor extends React.PureComponent {
       visible: false,
     });
   };
+
   componentDidUpdate(pre) {
     const { floodRanks } = this.props;
     if (floodRanks !== pre.floodRanks) {
@@ -80,53 +92,118 @@ class Monitor extends React.PureComponent {
   }
   render() {
     let { layerVisible, displayRight, displayLeft, tabsKey } = this.state;
-    const { expert, wareHouse, material, floodRanks } = this.props;
+    const { expert, wareHouse, material, floodRanks, expertCount } = this.props;
     return (
-      <div className="monitor">
+      <div className="flood-warning-display">
         <Map layerVisible={layerVisible}></Map>
         <Head></Head>
-        <div className="floodWarning">
-          <div style={{ display: displayLeft }}>
-            <div className="flood-warning-left">
-              <RenderBox hasTitle title="东营市防汛人员">
-                <div className="floodWaringPie" id="floodWaringPie"></div>
+        <div style={{ display: displayLeft }}>
+          <div className="flood-warning-left">
+            <RenderBox hasTitle title="东营市防汛人员">
+              <div className="floodWaringPie" id="floodWaringPie"></div>
+              <div className="flood-text">{`共${expertCount}人`}</div>
+              <div className="card-container">
                 <Tabs
+                  type="card"
                   defaultActiveKey="1"
                   onChange={(e) => this.setState({ tabsKey: e })}
                 >
                   {floodRanks?.map((item, index) => (
-                    <TabPane
-                      key={index}
-                      tab={item.name.split("防汛")[0]}
-                    ></TabPane>
+                    <TabPane key={index} tab={item.name.split("防汛")[0]}>
+                      <TableShow
+                        columns={[
+                          {
+                            name: "名称",
+                            dataIndex: "name",
+                            filter: "name",
+                            width: "25%",
+                            // filter: "name",
+                            // ...this.getColumnSearchProps("name"),
+                          },
+                          {
+                            name: "单位",
+                            dataIndex: "unit",
+                            width: "25%",
+                            render: (name) => (
+                              <Popover content={name}>
+                                {name?.length > 6
+                                  ? name.toString().substring(0, 6) + "..."
+                                  : name}
+                              </Popover>
+                            ),
+                          },
+                          {
+                            name: "联系电话",
+                            dataIndex: "phone",
+                            width: "25%",
+                          },
+                          {
+                            name: "备注",
+                            dataIndex: "remark",
+                            width: "25%",
+                            render: (name) => (
+                              <Popover content={name}>
+                                {name?.length > 6
+                                  ? name.toString().substring(0, 6) + "..."
+                                  : name}
+                              </Popover>
+                            ),
+                          },
+                        ]}
+                        dataSource={floodRanks && floodRanks[tabsKey].userList}
+                      ></TableShow>
+                    </TabPane>
                   ))}
                 </Tabs>
-                <TableShow
-                  columns={[
-                    { name: "名称", dataIndex: "name" },
-                    { name: "职位", dataIndex: "remark" },
-                    { name: "联系电话", dataIndex: "phone" },
-                    { name: "单位", dataIndex: "unit" },
-                  ]}
-                  dataSource={floodRanks && floodRanks[tabsKey].userList}
-                ></TableShow>
-              </RenderBox>
-              <br/>
+              </div>
+            </RenderBox>
+            <br />
+            <div className="flood-warning-chart">
               <WeatherPic></WeatherPic>
-              {/* <WeatherTable></WeatherTable> */}
             </div>
+            {/* <WeatherTable></WeatherTable> */}
           </div>
-          <div style={{ display: displayRight }}>
-            <div className="flood-warning-right">
-              <RenderBox hasTitle title="专家库">
-                <Tabs defaultActiveKey="1" onChange={(e) => console.log(e)}>
+        </div>
+        <div style={{ display: displayRight }}>
+          <div className="flood-warning-right">
+            <RenderBox hasTitle title="专家库">
+              <div className="pie-title-flex">
+                <div>
+                  <label className="number-color">{expert?.city?.length}</label>
+                  <label>市级专家</label>
+                </div>
+                <div>
+                  <label className="number-color">
+                    {expert?.county?.length}
+                  </label>
+                  <label>县级专家</label>
+                </div>
+                <div>
+                  <label className="number-color">{expert?.town?.length}</label>
+                  <label>乡镇专家</label>
+                </div>
+              </div>
+              <div className="card-container">
+                <Tabs
+                  defaultActiveKey="1"
+                  onChange={(e) => console.log(e)}
+                  type="card"
+                >
                   <TabPane key="1" tab="市级专家">
                     <TableShow
                       columns={[
-                        { name: "名称", dataIndex: "name", width: "60px" },
-                        { name: "联系电话", dataIndex: "phone" },
-                        { name: "熟悉流域", dataIndex: "field" },
-                        { name: "特长", dataIndex: "major", width: "250px" },
+                        {
+                          name: "名称",
+                          dataIndex: "name",
+                          width: "33%",
+                          filter: "name",
+                        },
+                        { name: "工作单位", dataIndex: "unit", width: "34%" },
+                        {
+                          name: "专家电话",
+                          dataIndex: "phone",
+                          width: "33%",
+                        },
                       ]}
                       dataSource={expert?.city}
                     />
@@ -134,10 +211,18 @@ class Monitor extends React.PureComponent {
                   <TabPane key="2" tab="县级专家">
                     <TableShow
                       columns={[
-                        { name: "名称", dataIndex: "name" },
-                        { name: "特长", dataIndex: "major" },
-                        { name: "联系电话", dataIndex: "phone" },
-                        { name: "单位", dataIndex: "unit" },
+                        {
+                          name: "名称",
+                          dataIndex: "name",
+                          width: "70",
+                          filter: "name",
+                        },
+                        { name: "工作单位", dataIndex: "unit", width: "300px" },
+                        {
+                          name: "专家电话",
+                          dataIndex: "phone",
+                          width: "100px",
+                        },
                       ]}
                       dataSource={expert?.county}
                     />
@@ -145,18 +230,29 @@ class Monitor extends React.PureComponent {
                   <TabPane key="3" tab="乡镇专家">
                     <TableShow
                       columns={[
-                        { name: "名称", dataIndex: "name" },
-                        { name: "特长", dataIndex: "major" },
-                        { name: "联系电话", dataIndex: "phone" },
-                        { name: "单位", dataIndex: "unit" },
+                        {
+                          name: "名称",
+                          dataIndex: "name",
+                          width: "70",
+                          filter: "name",
+                        },
+                        { name: "工作单位", dataIndex: "unit", width: "300px" },
+                        {
+                          name: "专家电话",
+                          dataIndex: "phone",
+                          width: "100px",
+                        },
                       ]}
                       dataSource={expert?.town}
                     />
                   </TabPane>
                 </Tabs>
-              </RenderBox>
-              <RenderBox hasTitle title="防汛物资仓库">
+              </div>
+            </RenderBox>
+            <RenderBox hasTitle title="防汛物资仓库">
+              <div className="card-container">
                 <Tabs
+                  type="card"
                   defaultActiveKey="1"
                   onChange={(e) => this.props.actions.getMaterialById(e)}
                 >
@@ -164,7 +260,26 @@ class Monitor extends React.PureComponent {
                     <TabPane
                       key={item.materialWarehouseId}
                       tab={item.name.split("防汛")[0]}
-                    ></TabPane>
+                    >
+                      <TableShow
+                        columns={[
+                          {
+                            name: "名称",
+                            dataIndex: "name",
+                            filter: "name",
+                            width: "25%",
+                          },
+                          {
+                            name: "数量",
+                            dataIndex: "saveTotal",
+                            width: "25%",
+                          },
+                          { name: "单位", dataIndex: "company", width: "25%" },
+                          { name: "规格", dataIndex: "spec", width: "25%" },
+                        ]}
+                        dataSource={material}
+                      />
+                    </TabPane>
                   ))}
                   {/* <TabPane key="1" tab="市水务局"></TabPane>
                   <TabPane key="2" tab="东营区"></TabPane>
@@ -173,24 +288,15 @@ class Monitor extends React.PureComponent {
                   <TabPane key="5" tab="利津县"></TabPane>
                   <TabPane key="6" tab="广饶县"></TabPane> */}
                 </Tabs>
-                <TableShow
-                  columns={[
-                    { name: "名称", dataIndex: "name" },
-                    { name: "数量", dataIndex: "saveTotal" },
-                    { name: "单位", dataIndex: "company" },
-                    { name: "规格", dataIndex: "spec" },
-                  ]}
-                  dataSource={material}
-                />
-              </RenderBox>
-              {/* <PannelBtn></PannelBtn> */}
-              {/* <WeatherDy></WeatherDy>
+              </div>
+            </RenderBox>
+            {/* <PannelBtn></PannelBtn> */}
+            {/* <WeatherDy></WeatherDy>
             <AlarmTable></AlarmTable>
             <WeatherPic></WeatherPic> */}
-            </div>
           </div>
-          <RouterList></RouterList>
         </div>
+        <RouterList></RouterList>
         {/* <div style={{ display: this.state.displayBottom }}>
           <div className="m-bottom" >
             <CheckBox layerVisible={layerVisible} onChecked={this.onChecked}></CheckBox>
@@ -274,6 +380,7 @@ class Monitor extends React.PureComponent {
 function mapStateToProps(state) {
   console.log(state, "STATE");
   return {
+    expertCount: state.mapAboutReducers.expertCount,
     floodRanks: state.mapAboutReducers.floodRanks,
     material: state.mapAboutReducers.material,
     wareHouse: state.mapAboutReducers.wareHouse,

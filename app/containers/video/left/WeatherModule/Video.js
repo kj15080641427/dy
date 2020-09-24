@@ -169,7 +169,7 @@ class Precipitation extends React.PureComponent {
           dataSource={record.list}
           rowKey={(row) => row.name}
           // onRow={this.onClickRow}
-          scroll={{ y: 830 }}
+          scroll={{ y: 600 }}
           expandable={{
             expandedRowRender,
             defaultExpandedRowKeys: ["1"],
@@ -226,7 +226,7 @@ class Precipitation extends React.PureComponent {
           dataSource={record.list}
           rowKey={(row) => row.radioID}
           onRow={this.onClickRow}
-          scroll={{ y: 830 }}
+          scroll={{ y: 600 }}
           pagination={{
             showTotal: () => `共${record.list.length}条`,
           }}
@@ -245,7 +245,7 @@ class Precipitation extends React.PureComponent {
           columns={qxcolumns}
           dataSource={this.state.qxdataSource}
           rowKey={(row) => row.regionName}
-          scroll={{ y: 900 }}
+          scroll={{ y: 600 }}
           //   pagination={{
           //     defaultPageSize: 50,
           //   }}

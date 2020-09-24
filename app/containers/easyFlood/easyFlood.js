@@ -241,11 +241,10 @@ class Monitor extends React.PureComponent {
     let { layerVisible, displayRight, displayLeft, onLine, line } = this.state;
     const { initFlood, floodName, alarmData, count } = this.props;
     return (
-      <div className="monitor">
+      <div className="easy-flood-display">
         <Map layerVisible={layerVisible}></Map>
         <Head></Head>
         <div style={{ display: displayLeft }}>
-          <div className="easy-flood">
             <div className="easyFlood-left">
               <RenderBox>
                 <div className="table-title-text">
@@ -303,10 +302,8 @@ class Monitor extends React.PureComponent {
               </div>
             </div>
             {/* <WeatherTable></WeatherTable> */}
-          </div>
         </div>
         <div style={{ display: displayRight }}>
-          <div className="m-right">
             <div className="easyFlood-right">
               <RenderBox hasTitle title="易涝点基本信息">
                 <div className="pie-title-flex">
@@ -387,7 +384,6 @@ class Monitor extends React.PureComponent {
               </div>
             </div>
             <RouterList />
-          </div>
         </div>
 
         <div className="m-bottom"></div>

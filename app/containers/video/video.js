@@ -10,7 +10,7 @@ import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
 import { Drawer, Row, Divider, Checkbox } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
-
+import videoImg from "@app/resource/icon/video.png";
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
 import {
@@ -60,11 +60,11 @@ class Monitor extends React.PureComponent {
     });
   };
   componentDidMount() {
-    lineChart("videoLinechart");
-    lineChart("videoLinechart2");
+    this.props.actions.getCountStation();
+    lineChart("line-chart", [2, 3, 4, 2], 500);
   }
   componentDidUpdate() {
-    const { video } = this.props;
+    const { video, count } = this.props;
     let dyOnline = 0; //东营
     let dyLine = 0;
     let grOnline = 0; //广饶
@@ -75,6 +75,7 @@ class Monitor extends React.PureComponent {
     let klLine = 0;
     let hkOnline = 0; //河口
     let hkLine = 0;
+    // console.log(video, "IIIIII");
     video.map((item) => {
       // if (item.) {
       if (item.isOnline == "0") {
@@ -95,7 +96,7 @@ class Monitor extends React.PureComponent {
             hkOnline++;
             break;
           default:
-            console.log(item);
+            console.log(item, "oooo");
             break;
         }
       } else if (item.isOnline == "1") {
@@ -116,7 +117,7 @@ class Monitor extends React.PureComponent {
             hkLine++;
             break;
           default:
-            console.log(item);
+            console.log(item, "lllll");
             break;
         }
       }
@@ -128,6 +129,23 @@ class Monitor extends React.PureComponent {
       [dyOnline, grOnline, ljOnlie, hkOnline, klOnline],
       [dyLine, grLine, ljLine, hkLine, klLine]
     );
+    if (count) {
+      let data = [];
+      count?.vodeocount?.list?.forEach((item) => {
+        data.push({
+          name:
+            item.dataSourceDesc == "积水点水位站(易捞点)"
+              ? "易捞点"
+              : item.dataSourceDesc == "河口区水利局"
+              ? "水利局"
+              : item.dataSourceDesc == "天鹅湖蓄滞洪区"
+              ? "天鹅湖"
+              : item.dataSourceDesc || "暂无数据",
+          value: item.number,
+        });
+      });
+      pieChart("videoFunnelChart", data, 500);
+    }
   }
   render() {
     let { layerVisible, displayRight, displayLeft } = this.state;
@@ -141,27 +159,23 @@ class Monitor extends React.PureComponent {
               <RenderBox>
                 <div className="videoFunnelChart" id="videoFunnelChart"></div>
               </RenderBox>
-              <RenderBox hasTitle title="视频站点在线图">
-                <div className="videoBarChart" id="videoBarChart"></div>
-              </RenderBox>
               <RenderBox>
-                <div className="videoLinechart2" id="videoLinechart2"></div>
+                <div className="video-table">
+                  <WeatherTable></WeatherTable>
+                </div>
               </RenderBox>
             </div>
           </div>
           <div style={{ display: displayRight }}>
             <div className="chart-right-video">
-              <RenderBox hasTitle title="视频">
-                <div className="videoLinechart" id="videoLinechart"></div>
+              <RenderBox hasTitle title="视频站点在线图">
+                <div className="videoBarChart" id="videoBarChart"></div>
               </RenderBox>
               <RenderBox>
-                {/* <div className="video-table">
-                </div> */}
+                <div className="line-chart" id="line-chart"></div>
               </RenderBox>
-              <RenderBox hasTitle title="视频站点列表">
-                <div className="video-table">
-                  <WeatherTable></WeatherTable>
-                </div>
+              <RenderBox>
+                <img src={videoImg} width="530px" height="295px"></img>
               </RenderBox>
             </div>
             <RouterList />
@@ -232,7 +246,9 @@ class Monitor extends React.PureComponent {
 
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
-    if (layerVisible[layerKey] === checked) return;
+    if (layerVisible[layerKey] === checked) {
+      return;
+    }
     layerVisible[layerKey] = checked;
     this.setState({
       layerVisible: { ...layerVisible },
@@ -243,6 +259,7 @@ class Monitor extends React.PureComponent {
 function mapStateToProps(state) {
   console.log(state, "STATE");
   return {
+    count: state.mapAboutReducers.count,
     video: state.monitor.video,
   };
 }

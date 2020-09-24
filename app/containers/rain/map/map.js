@@ -131,6 +131,7 @@ class Map extends React.PureComponent {
     }
   }
   createMap() {
+    const { rainData } = this.props;
     this.map = new UbiMap({
       target: "map",
       center: [118.67, 37.6],
@@ -145,7 +146,6 @@ class Map extends React.PureComponent {
       visible: true,
       className: "ol-layer-tiandi",
       opacity: 1,
-      className: "ol-layer-tiandi",
       key: "tiandi",
       projection: true,
     });
@@ -277,10 +277,17 @@ class Map extends React.PureComponent {
       zIndex: 20,
       style: {
         src: function (featureObj) {
+          const type = rainData?.type;
+          const obj = {
+            now: "drp",
+          };
+          console.log(obj[type], "???", rainData, this.props,featureObj);
           //let drp = parseInt(featureObj.minuteAvg*1);
           // const { data } = featureObj;
           // console.log(featureObj, "featureObj");
+          // const {
 
+          // }
           let drp = 0.0;
 
           try {
@@ -432,7 +439,6 @@ class Map extends React.PureComponent {
     //   this.addOverlay(Person.type, param);
     //   // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
     //   //   onVideoClick: () => {
-    //   //     console.log(param.id);
     //   //   },
     //   //   onClose: () => {
     //   //     this.map.removeOverlay(param.id);
@@ -595,7 +601,6 @@ class Map extends React.PureComponent {
     // this.map.startSelectFeature("warehouse", (param) => {
     //   // return emitter.emit("map-move-focus", [118.333, 37.333], 3000);
     //   let { details } = this.props;
-    //   //console.log(1);
     //   if (details.warehouse[param.id]) {
     //     this.addOverlay(Warehouse.type, { ...param, ...details.warehouse[param.id] });
     //   } else {
@@ -621,12 +626,9 @@ class Map extends React.PureComponent {
     // this.map.activeMeasure();
     this.map.on("moveend", () => {
       let a = this.map.getView().calculateExtent();
-      // console.log(a);
     });
     this.map.onFeatureClicked((feature) => {
-      // console.log("featureclick", feature);
       if (feature) {
-        //console.log('onFeatureClicked', this._isClickInfoBox);
         this._isClickInfoBox = true;
 
         this.addWindowCloseEvent();
@@ -658,7 +660,6 @@ class Map extends React.PureComponent {
     let zoom = this.map.getView().getZoom();
     let { onZoomChanged } = this.props;
     onZoomChanged && onZoomChanged(zoom);
-    //console.log(zoom);
     this.toggleTagByMapZoom();
   }
   toggleTagByMapZoom() {
@@ -666,7 +667,6 @@ class Map extends React.PureComponent {
     let { layerVisible } = this.props;
     if (zoom >= 11) {
       if (this._zoom && this._zoom >= 11) return;
-      //console.log("show")
       // if (layerVisible.water) {
       //   this.map.showTagBox("water_tag");
       // } else {
@@ -688,7 +688,6 @@ class Map extends React.PureComponent {
       // this.map.showTagOnLayer("rain");
     } else {
       if (this._zoom && this._zoom < 11) return;
-      //console.log("hide");
       // this.map.hideTagBox("water_tag");
       this.map.hideTagBox("rain_tag");
       // this.map.hideTagBox("ponding_tag");
@@ -733,9 +732,9 @@ class Map extends React.PureComponent {
       return false;
     });
     // if (isSingle) {
-      overlays[key] = {
-        [id]: param,
-      };
+    overlays[key] = {
+      [id]: param,
+    };
     // } else {
     //   elements[id] = param;
     // }
@@ -854,7 +853,6 @@ class Map extends React.PureComponent {
     //   }
     // })
     //   .catch((e) => {
-    //     console.log(e);
     //   });
     // 加载水闸数据
     // getGate({}).then((res) => {
@@ -880,7 +878,6 @@ class Map extends React.PureComponent {
     //     }));
     //   }
     // }).catch((e) => {
-    //   console.log(e);
     // });
     // 加载水泵数据
     // getPump({}).then((res) => {
@@ -898,7 +895,6 @@ class Map extends React.PureComponent {
     //   }
     // })
     //   .catch((e) => {
-    //     console.log(e);
     //   });
     // // 防汛物资仓库
     // getWarehouse({}).then((res) => {
@@ -908,7 +904,6 @@ class Map extends React.PureComponent {
     //   }
     // })
     //   .catch(() => {
-    //     console.log(e);
     //   });
     // 轮询预警更新
     // if (this.props.layerVisible.waterWarning === true)
@@ -960,13 +955,13 @@ class Map extends React.PureComponent {
       for (let key in stations) {
         stations[key].data = null;
       }
+      // console.log(stations, "SSS");
     }
 
     if (data && stations) {
       data.forEach((item) => {
         const { stcd } = item;
         let station = stations[stcd];
-
         if (station) {
           station.data = item;
         }
@@ -985,8 +980,6 @@ class Map extends React.PureComponent {
         ...station,
       });
     }
-
-    // console.log(stations, "stations", features);
 
     this.map.removeFeatures("rain", features);
     this.map.addFeatures("rain", features);

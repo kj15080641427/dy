@@ -396,11 +396,11 @@ class Precipitation extends React.PureComponent {
           title: "站名",
           dataIndex: "name",
           className: "column-money",
-          ...this.getColumnSearchProps("SpliceSiteName"),
-          render: (SpliceSiteName, key) => {
+          ...this.getColumnSearchProps("name"),
+          render: (name, key) => {
             return (
-              <Popover content={SpliceSiteName} title="站名全称">
-                {SpliceSiteName.toString().substring(0, 6) + "..."}
+              <Popover content={name} title="站名全称">
+                {name.toString().substring(0, 6) + "..."}
               </Popover>
             );
           },
@@ -413,8 +413,7 @@ class Precipitation extends React.PureComponent {
             return value && value[0] ? value[0].z?.toFixed(2) : "-";
             // return value != "-" ? (value * 1).toFixed(2) : "-";
           },
-          sorter: (a, b) =>
-            a.riverwaterdataList[0].z - b.riverwaterdataList[0].z,
+          sorter: (a, b) => (a && a[0] ? a[0].z - b[0].z : 1),
         },
         {
           title: "警戒水位(m)",
@@ -428,7 +427,7 @@ class Precipitation extends React.PureComponent {
               : "-",
           sorter: (a, b) => {
             console.log(a, b, "AB");
-            return a.siteWaterLevels[0].warning - b.siteWaterLevels[0].warning;
+            return a && a[0] ? a[0].warning - b[0].warning : 1;
           },
         },
         {
@@ -440,10 +439,9 @@ class Precipitation extends React.PureComponent {
           // value == null ? "-" : moment(value).format("YYYY-MM-DD HH:mm"),
           sorter: (a, b) => {
             console.log(a, b, "AAAAAAA");
-            return (
-              new Date(a.riverwaterdataList[0].tm).getTime() -
-              new Date(b.riverwaterdataList[0].tm).getTime()
-            );
+            return a && a[0]
+              ? new Date(a[0].tm).getTime() - new Date(b[0].tm).getTime()
+              : -1;
           },
         },
       ];

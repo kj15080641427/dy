@@ -53,7 +53,7 @@ export const barChart = (domId, legend, online, line) => {
         },
         axisLabel: {
           color: "white",
-          fontSize: 18,
+          fontSize: 16,
         },
       },
     ],
@@ -177,11 +177,12 @@ export const pieChart = (domId, data, width, legend) => {
         startAngle: 140,
         name: "访问来源",
         type: "pie",
-        radius: ["50%", "55%"],
+        radius: ["50%", "75%"],
         data: data,
         left: "center",
         width: width || 400,
         labelLine: {
+          // show: false,
           lineStyle: {
             color: "white",
           },

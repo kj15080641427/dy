@@ -8,6 +8,25 @@
     z-index: 10;
     margin-top: 80px;
     // padding: 4px;
+   .videoFunnelChart{
+     width: 500px;
+     height: 300px;
+   }
+   .radar-box{
+     height: 100%;
+   }
+   .video-table {
+    height: 600px;
+  }
+  }
+  .chart-right-video {
+    width: 550px;
+    position: absolute;
+    right: 100px;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+    margin-top: 80px;
     .line-chart {
       width: 500px;
       height: 280px;
@@ -20,15 +39,6 @@
       width: 500px;
       height: 300px;
     }
-  }
-  .chart-right-video {
-    width: 550px;
-    position: absolute;
-    right: 100px;
-    top: 0;
-    bottom: 0;
-    z-index: 10;
-    margin-top: 80px;
     .video-table {
       .ant-table table {
         table-layout: fixed;

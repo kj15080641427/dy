@@ -1,25 +1,18 @@
 @import "@app/variable.scss";
-.easy-flood {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 500px;
-  z-index: 10;
-  padding-top: $monitor_left_pd_top;
-  padding-left: $monitor_left_pd_left;
-  padding-bottom: $monitor_left_pd_bottom;
+.easy-flood-display {
+  position: relative;
+  height: $mapDisplayHeight;
   .easyFlood-left {
-    width: 400px;
+    position: absolute;
+    top: 90px;
+    bottom: 0px;
+    left: 15px;
     .radar-box {
       width: 500px;
       height: 300px;
     }
     .easyflood-left-bottom {
+      margin-top: 15px;
       .radar-box {
         width: 500px;
         height: 600px;
@@ -35,70 +28,69 @@
       margin-left: 15px;
     }
   }
-
-}
-
-.easyFlood-right {
-  .ranSwitch {
+  .easyFlood-right {
     position: absolute;
-    right: 550px;
-    top: 800px;
-    background:rgba(15,50,70,.5);
-    height: 100px;
-    width: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .switch-border{
-      border: 1px solid rgb(22,83,102);
-      // width: 130px;
-      // height: 180px;
-      color: white;
-      font-size: 20px;
-      .swtich-border-check{
-        margin-left: 5px;
-        margin-top: 5px;
+    top: 90px;
+    right: 105px;
+    .ranSwitch {
+      position: absolute;
+      right: 550px;
+      top: 800px;
+      background: rgba(15, 50, 70, 0.5);
+      height: 100px;
+      width: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .switch-border {
+        border: 1px solid rgb(22, 83, 102);
+        color: white;
+        font-size: 20px;
+        .swtich-border-check {
+          margin-left: 5px;
+          margin-top: 5px;
+        }
       }
     }
-  }
-  .pie-title-flex {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    color: white;
-    margin-top: 10px;
-    font-size: 15px;
-    div {
-      width: 60px;
-    }
-    label {
-      width: 60px;
-      display: flex;
-      justify-content: center;
-    }
-    .number-color {
-      color: rgb(0, 153, 255);
-      font-size: 24px;
-    }
-  }
-  .water-select {
-    color: white;
-    .water-select-flex {
+    .pie-title-flex {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
+      color: white;
+      margin-top: 10px;
+      font-size: 15px;
+      div {
+        width: 60px;
+      }
+      label {
+        width: 60px;
+        display: flex;
+        justify-content: center;
+      }
+      .number-color {
+        color: rgb(0, 153, 255);
+        font-size: 24px;
+      }
     }
-  }
-  .radar-box {
-    width: 435px;
-    height: 100%;
-  }
-  .easyfloodInfo {
-    width: 400px;
-    height: 200px;
-  }
-  .easyfloodLine {
-    width: 450px;
-    height: 300px;
+    .water-select {
+      color: white;
+      .water-select-flex {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    .radar-box {
+      width: 435px;
+      height: 100%;
+    }
+    .easyfloodInfo {
+      width: 400px;
+      height: 200px;
+    }
+    .easyfloodLine {
+      width: 450px;
+      height: 300px;
+    }
   }
 }

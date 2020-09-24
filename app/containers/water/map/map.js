@@ -206,57 +206,6 @@ class Map extends React.PureComponent {
         this.addOverlay(Water.type, { ...param });
       }
     });
-    // this.map.startSelectFeature("water", (param) => {
-    //   //查询实时水位
-    //   let queryWater = getWaterRealTime({
-    //     stcd: param.stcd,
-    //     current: 1,
-    //     size: 1,
-    //   });
-    //   //查询站点视频信息
-    //   console.log(param, "PARAM");
-    //   let queryVideo = getVideosByCode({ queryId: param.siteBaseID });
-    //   let endTime = new moment().format("YYYY-MM-DD HH:mm:ss");
-    //   let beginTime = moment()
-    //     .subtract(24, "hours")
-    //     .format("YYYY-MM-DD HH:mm:ss");
-    //   //查询24小时水位
-    //   let queryWaterHistory = getWaterHistory({
-    //     stcd: param.stcd,
-    //     current: 1,
-    //     size: 10000,
-    //     starttm: beginTime,
-    //     endtm: endTime,
-    //   });
-    //   Promise.all([queryWater, queryVideo, queryWaterHistory])
-    //     .then((result) => {
-    //       let res = result[0];
-    //       if (res.code === 200) {
-    //         let records = (res.data.records && res.data.records[0]) || null;
-    //         this.props.actions.setDetailData({
-    //           key: "water",
-    //           value: records,
-    //         });
-    //         let videoObject = result[1].data;
-    //         let waterLevels = result[2].data.records;
-    //         let newParam = records ? { ...param, ...records } : param;
-    //         newParam = videoObject
-    //           ? { ...newParam, videos: [...videoObject] }
-    //           : newParam;
-    //         newParam = waterLevels
-    //           ? { ...newParam, waters: [...waterLevels] }
-    //           : newParam;
-    //         newParam.videoControl = this.videoControl;
-    //         this.addOverlay(Water.type, newParam);
-    //       } else {
-    //         return Promise.reject(res.msg || "未知错误");
-    //       }
-    //     })
-    //     .catch((e) => {
-    //       console.log(e, "=========");
-    //       message.error("获取水位详情失败");
-    //     });
-    // });
     this.map.on("moveend", () => {
       // let a = this.map.getView().calculateExtent();
     });

@@ -14,6 +14,7 @@ export default function rainReducers(state = {}, action) {
       newState = {
         ...state,
         rainData: { ...action.payload },
+        // type:action.
       };
       break;
     case ActionType.UPDATE_RAIN_STATION:

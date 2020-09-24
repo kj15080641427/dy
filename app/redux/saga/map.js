@@ -273,7 +273,49 @@ function* getFloodExpert() {
       let city = [];
       let county = [];
       let town = [];
+
+      let gr = [];
+      let lj = [];
+      let dy = [];
+      let kl = [];
+      let hk = [];
       result.data.map((item) => {
+        switch (item.region) {
+          case "370502":
+            dy++;
+            // this.setState({
+            //   dy: this.state.dy + 1,
+            // });
+            break;
+          case "370523":
+            gr++;
+            // this.setState({
+            //   gr: this.state.gr + 1,
+            // });
+            break;
+          case "370522":
+            lj++;
+            // this.setState({
+            //   lj: this.state.lj + 1,
+            // });
+            break;
+          case "370521":
+            kl++;
+            // this.setState({
+            //   kl: this.state.kl + 1,
+            // });
+            break;
+          case "370503":
+            hk++;
+            // this.setState({
+            //   hk: this.state.hk + 1,
+            // });
+            break;
+          default:
+            // console.log(item, "ITEM");
+            break;
+        }
+
         if (item.type == 1) {
           city.push(item);
         } else if (item.type == 2) {
@@ -284,7 +326,12 @@ function* getFloodExpert() {
       });
       yield put({
         type: types.SET_FLOOD_EXPERT,
-        data: { city: city, county: county, town: town },
+        data: {
+          city: city,
+          county: county,
+          town: town,
+          count: { dy: dy, gr: gr, kl: kl, hkk: hk, lj: lj },
+        },
       });
     }
   } catch (e) {

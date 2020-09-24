@@ -12,22 +12,19 @@ import Head from "./head/Head";
 // import PannelBtn from "./right/PannelBtn";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
-import { Drawer, Row, Divider, Checkbox, Select } from "antd";
+import { Drawer, Row, Divider, Checkbox } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
 import warningIcon from "@app/resource/icon/warning.svg";
-import videoimg from "@app/resource/videoimg.png";
 import video from "@app/resource/icon/video.png";
 import { BoxHead, RenderBox } from "../../components/chart/decorate";
 import {
   radarChart,
   barChart,
   pieChart,
-  lineChart,
 } from "../../components/chart/chart";
 import { TableShow } from "../../components/chart/table";
 import RouterList from "../../components/routerLiis";
 import WeatherTable from "./left/WeatherTable";
-const { Option } = Select;
 
 class Monitor extends React.PureComponent {
   constructor(props, context) {

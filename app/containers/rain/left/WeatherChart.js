@@ -109,18 +109,17 @@ class WeatherChart extends React.PureComponent {
   }
 
   selectInit() {
-    getFiveCitydata({ type: 1 }).then((result) => {
+    getFiveCitydata({ type: 1 }).then((result) => {//TODO
       let hourData = [];
       let towData = [];
       let dayData = [];
       let thDayData = [];
-      let seDayData = [];
       let addData = [];
       let yearData = [];
 
       var myChart = echarts.init(document.getElementById("main"));
       for (var i = result.data.length - 1; i >= 0; i--) {
-        hourData.push((result.data[i].prd * 1).toFixed(1));
+        hourData.push((result.data[i].prd * 1));
         let areaName = areaMap[result.data[i].areaId];
         addData.push({ value: areaName, textStyle: { color: "white" } });
       }

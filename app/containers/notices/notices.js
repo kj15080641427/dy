@@ -9,7 +9,7 @@ import FloodSituation from "./components/floodSituation/FloodSituation";
 import PannelBtn from "./right/PannelBtn";
 import moment from "moment";
 import { message } from "antd";
-
+import RouterList from "../../components/routerLiis";
 class notices extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -53,7 +53,8 @@ class notices extends React.PureComponent {
           ></FloodSituation>
         </div>
         <div className="m-right">
-          <PannelBtn></PannelBtn>
+          <RouterList/>
+          {/* <PannelBtn></PannelBtn> */}
         </div>
       </div>
     );
