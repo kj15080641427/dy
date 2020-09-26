@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/monitor";
 import * as mapActions from "@app/redux/actions/map";
+import * as stateActions from "@app/redux/actions/handState";
 import UbiMap from "../../monitor/map/ubimap";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
@@ -202,8 +203,9 @@ class Map extends React.PureComponent {
       if (this.props.onFeatureClick) {
         this.props.onFeatureClick(param);
       } else {
-        this.props.mapActions.changeWaterId(param.id);
-        this.addOverlay(Water.type, { ...param });
+        this.props.mapActions.changeWaterId(param);
+        this.props.stateActions.getDsplayWater(param.stcd);
+        // this.addOverlay('water', { ...param });
       }
     });
     this.map.on("moveend", () => {
@@ -360,7 +362,6 @@ class Map extends React.PureComponent {
   drawFeatures() {
     const { water, alarmData } = this.props;
     if (water && water[0]) {
-      console.log(water.filter((item) => item.z > item.warning, "warning"));
       this.map.addFeatures("water", templateWater(water, {}));
       this.addWaterWaring(alarmData);
       this.addWaterTagBox(water);
@@ -392,7 +393,6 @@ class Map extends React.PureComponent {
       return;
     }
     if (this.props.layerVisible.waterWarning === true) {
-      console.log(warningWater, "====");
       warningWater.forEach((w) => {
         this.map.addAlarm("alarm_water_" + w.stcd, [w.lon, w.lat]);
       });
@@ -450,6 +450,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     mapActions: bindActionCreators(mapActions, dispatch),
+    stateActions: bindActionCreators(stateActions, dispatch),
     actions: bindActionCreators(actions, dispatch),
   };
 }

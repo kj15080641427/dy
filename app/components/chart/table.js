@@ -96,26 +96,23 @@ export class TableShow extends React.PureComponent {
         setTimeout(() => this.searchInput.select());
       }
     },
-    render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
-        <Popover content={text.toString()} title="站名全称">
-          <Highlighter
-            highlightStyle={{ backgroundColor: "red", padding: 0 }}
-            searchWords={[this.state.searchText]}
-            autoEscape
-            textToHighlight={
-              text.toString().length > 8
-                ? text.toString().substring(0, 8) + "..."
-                : text.toString()
-            }
-          />
-        </Popover>
-      ) : (
-        text
-      ),
+    render: (text) => (
+      <Popover content={text.toString()} title="站名全称">
+        <Highlighter
+          highlightStyle={{ backgroundColor: "red", padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={
+            text.toString().length > 6
+              ? text.toString().substring(0, 6) + "..."
+              : text.toString()
+          }
+        />
+      </Popover>
+    ),
   });
   render() {
-    const { columns, dataSource, onRow, filter } = this.props;
+    const { columns, dataSource, onRow, pageSize } = this.props;
 
     return (
       <Table
@@ -123,8 +120,9 @@ export class TableShow extends React.PureComponent {
         dataSource={dataSource}
         className="set-table-style"
         rowKey={"siteBase"}
-        pagination={{ pageSize: 4, showSizeChanger: false }}
+        pagination={{ pageSize: pageSize || 4, showSizeChanger: false }}
         onRow={onRow}
+        // height={'100px'}
       >
         {columns.map((item) => {
           return item.filter ? (
@@ -135,6 +133,7 @@ export class TableShow extends React.PureComponent {
               className="table-background"
               render={item.render}
               width={item.width}
+              sorter={item.sorter}
               {...this.getColumnSearchProps(item.filter)}
             />
           ) : (
@@ -145,6 +144,7 @@ export class TableShow extends React.PureComponent {
               className="table-background"
               render={item.render}
               width={item.width}
+              sorter={item.sorter}
             />
           );
         })}

@@ -39,8 +39,8 @@ class Water extends Base {
     let udpTm = tm ? moment(tm).format("MM-DD HH:mm") : "--";
     let warningLevel =
       model.warning && model.warning !== 99 ? model.warning + "m" : "--";
-    let rivername = model.rivername !== null ? model.rivername : "--";
-    let regionName = model.regionName;
+    let rivername = model.rvnm !== null ? model.rvnm : "--";
+    let regionName = model.stlc;
     let videoControl = model.videoControl;
     let videos = model.videos;
     //let token = videos && videos.length != 0 ? videos[0].strtoken : '';
@@ -95,7 +95,7 @@ class Water extends Base {
               名称：{model.stnm || model.name}
             </div>
             <div className="m-ovl-line">{typewater}</div>
-            <div className="m-ovl-line">流量：{flow}</div>
+            {/* <div className="m-ovl-line">流量：{flow}</div> */}
             <div className="m-ovl-line">警戒：{warningLevel}</div>
             {/* <div className="m-ovl-line">来源：{model.dataSourceDesc}</div> */}
             <div className="m-ovl-line">河流：{rivername}</div>
@@ -335,3 +335,22 @@ class Water extends Base {
   }
 }
 export default Water;
+// import React, { useEffect } from "react";
+// import { Modal } from "antd";
+// import "./style.scss";
+// const Water = (props) => {
+//   useEffect(() => {
+//     console.log(props);
+//   }, []);
+//   return (
+//     <>
+//       <div
+//         className="m-ovl-box m-ovl-water"
+//         style={{ display: "none", width: 900, height: 680 }}
+//       >
+//         <Modal visible></Modal>
+//       </div>
+//     </>
+//   );
+// };
+// export default Water;

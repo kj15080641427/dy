@@ -11,11 +11,13 @@ import "./style.scss";
 import Head from "./head/Head";
 import WeatherChart from "./left/WeatherChart";
 import CheckBoxs from "../monitor/bottom/CheckBox";
-import { Drawer, Row, Divider, Checkbox } from "antd";
+import { Drawer, Row, Divider, Checkbox, Tabs } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
 import setImg from "@app/resource/setsys.png";
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
+import { TableShow } from "../../components/chart/table";
+import emitter from "@app/utils/emitter.js";
 import {
   rotateBarChart,
   pieChart,
@@ -23,17 +25,21 @@ import {
 } from "../../components/chart/chart";
 import WeatherTable from "./left/WeatherTable";
 import RainSwitcher from "./right/Module/RainSwitcher";
-
+import RainInfo from "./tabs";
+const { TabPane } = Tabs;
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      dy: 0,
-      gr: 0,
-      kl: 0,
-      lj: 0,
-      hk: 0,
-
+      numberList: {},
+      tabsList: {
+        all: [],
+        gr: [],
+        kl: [],
+        dy: [],
+        lj: [],
+        hk: [],
+      },
       showLeft: true,
       showRight: true,
       visible: false,
@@ -71,152 +77,167 @@ class Monitor extends React.PureComponent {
       layerVisible,
       displayRight,
       displayLeft,
-      dy,
-      gr,
-      lj,
-      kl,
-      hk,
+      numberList,
+      tabsList,
     } = this.state;
     const { rain } = this.props;
+
     return (
-      <div className="monitor">
+      <div className="rain-display">
         <Map layerVisible={layerVisible} />
         <Head />
-        <div className="rain">
-          <div style={{ display: displayLeft }}>
-            <div className="m-left">
-              <div className="chart-left">
-                <WeatherChart />
-                <RenderBox hasTitle title="基本统计信息" width="514">
-                  <div className="pie-title-flex">
-                    <div>
-                      <label className="number-color">
-                        {rain?.length || 0}
-                      </label>
-                      <label>东营市</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{gr}</label>
-                      <label>广饶县</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{lj}</label>
-                      <label>利津县</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{kl}</label>
-                      <label>垦利县</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{hk}</label>
-                      <label>河口区</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{dy}</label>
-                      <label>东营区</label>
-                    </div>
+        <div style={{ display: displayLeft }}>
+          <div className="m-left">
+            <div className="chart-left">
+              <WeatherChart />
+              <RenderBox hasTitle title="基本统计信息" width="514">
+                <div className="pie-title-flex">
+                  <div>
+                    <label className="number-color">{rain?.length || 0}</label>
+                    <label>东营市</label>
                   </div>
-                  <div className="rain-pie-chart" id="rain-pie-chart" />
-                </RenderBox>
-              </div>
-
-              {/* </RenderBox> */}
-            </div>
-          </div>
-          <div style={{ display: displayRight }}>
-            <div className="chart-right">
-              <RenderBox hasTitle title="24小时降雨量">
-                <div className="rain-online" id="rainOnline"></div>
-                <div className="rotateBarChart" id="rotateBarChart" />
-                <div className="rain-set-table">
-                  {/* <TableShow
-                    columns={[
-                      { name: "站点名称", dataIndex: "name" },
-                      { name: "所属区县", dataIndex: "stlc" },
-                      { name: "降雨量", dataIndex: "dayDrp" },
-                    ]}
-                    dataSource={tableList || []}
-                  /> */}
-                  <div className="video-table">
-                    <WeatherTable></WeatherTable>
+                  <div>
+                    <label className="number-color">{numberList?.gr}</label>
+                    <label>广饶县</label>
                   </div>
-                  {/* <WeatherTable /> */}
+                  <div>
+                    <label className="number-color">{numberList?.lj}</label>
+                    <label>利津县</label>
+                  </div>
+                  <div>
+                    <label className="number-color">{numberList?.kl}</label>
+                    <label>垦利县</label>
+                  </div>
+                  <div>
+                    <label className="number-color">{numberList?.hk}</label>
+                    <label>河口区</label>
+                  </div>
+                  <div>
+                    <label className="number-color">{numberList?.dy}</label>
+                    <label>东营区</label>
+                  </div>
                 </div>
-                {/* <div className="radius-chart"></div> */}
+                <div className="rain-pie-chart" id="rain-pie-chart" />
               </RenderBox>
             </div>
-            <div className="router-list">
-              <RouterList />
+
+            {/* </RenderBox> */}
+          </div>
+        </div>
+        <div style={{ display: displayRight }}>
+          <div className="rain-chart-right">
+            <div className="right-first-box">
+              <RenderBox hasTitle title="雨量站点在线统计">
+                <div className="rain-online" id="rainOnline"></div>
+              </RenderBox>
+            </div>
+            <div className="right-second-box">
+              <RenderBox hasTitle title="24小时降雨情况">
+                <div className="rotateBarChart" id="rotateBarChart" />
+              </RenderBox>
+            </div>
+            <div className="rain-set-table">
+              <div className="rain-video-table">
+                <RenderBox>
+                  <div className="card-container">
+                    <Tabs type="card">
+                      <TabPane tab="全部" key="1">
+                        <RainInfo dataSource={tabsList.all} />
+                      </TabPane>
+                      <TabPane tab="东营区" key="2">
+                        <RainInfo dataSource={tabsList.dy} />
+                      </TabPane>
+                      <TabPane tab="广饶县" key="3">
+                        <RainInfo dataSource={tabsList.gr} />
+                      </TabPane>
+                      <TabPane tab="利津县" key="4">
+                        <RainInfo dataSource={tabsList.lj} />
+                      </TabPane>
+                      <TabPane tab="河口区" key="5">
+                        <RainInfo dataSource={tabsList.hk} />
+                      </TabPane>
+                      <TabPane tab="垦利区" key="6">
+                        <RainInfo dataSource={tabsList.kl} />
+                      </TabPane>
+                    </Tabs>
+                  </div>
+                  {/* <WeatherTable></WeatherTable> */}
+                </RenderBox>
+                {/* <WeatherTable></WeatherTable> */}
+              </div>
+              {/* <WeatherTable /> */}
             </div>
           </div>
-          {/* <div className="m-rain-button"> */}
-          <div className="ranSwitch">
-            <RainSwitcher //切换雨晴数据
-              style={{ width: 150 }}
-              onClick={this.onRainSwitch.bind(this)}
-            />
+          <div className="router-list">
+            <RouterList />
           </div>
-          {/* </div> */}
-          <div className="m-bottom">{/* <RainLegend /> 图例*/}</div>
-          <img
-            onClick={() => {
-              this.setState({
-                visible: true,
-              });
-            }}
-            className="m-set-img"
-            src={setImg}
-          ></img>
-          <Drawer
-            title={<SetTitle></SetTitle>}
-            placement="right"
-            closable={false}
-            onClose={this.onClose}
-            visible={this.state.visible}
-            width={320}
-          >
-            <a
-              style={{ fontSize: 18, color: "#000000fd", fontWeight: "bold " }}
-            >
-              主界面
-            </a>
-            <Divider />
-            <Row>
-              <div>
-                <Checkbox
-                  checked={this.state.showLeft}
-                  onClick={() => {
-                    this.setState({
-                      showLeft: !this.state.showLeft,
-                      displayLeft: this.state.showLeft ? "none" : "block",
-                    });
-                  }}
-                  defaultChecked
-                />
-                &nbsp;&nbsp;
-                <a style={{ fontSize: 15, color: "#000000fd" }}>左侧栏</a>
-              </div>
-            </Row>
-            <br />
-            <Row>
-              <div>
-                <Checkbox
-                  checked={this.state.showRight}
-                  onClick={() => {
-                    this.setState({
-                      showRight: !this.state.showRight,
-                      displayRight: this.state.showRight ? "none" : "block",
-                    });
-                  }}
-                  defaultChecked
-                />
-                &nbsp;&nbsp;
-                <a style={{ fontSize: 15, color: "#000000fd" }}>右侧栏</a>
-              </div>
-            </Row>
+        </div>
+        {/* <div className="m-rain-button"> */}
+        <div className="ranSwitch">
+          <RainSwitcher //切换雨晴数据
+            style={{ width: 150 }}
+            onClick={this.onRainSwitch.bind(this)}
+          />
+        </div>
+        {/* </div> */}
+        <div className="m-bottom">{/* <RainLegend /> 图例*/}</div>
+        <img
+          onClick={() => {
+            this.setState({
+              visible: true,
+            });
+          }}
+          className="m-set-img"
+          src={setImg}
+        ></img>
+        <Drawer
+          title={<SetTitle></SetTitle>}
+          placement="right"
+          closable={false}
+          onClose={this.onClose}
+          visible={this.state.visible}
+          width={320}
+        >
+          <a style={{ fontSize: 18, color: "#000000fd", fontWeight: "bold " }}>
+            主界面
+          </a>
+          <Divider />
+          <Row>
+            <div>
+              <Checkbox
+                checked={this.state.showLeft}
+                onClick={() => {
+                  this.setState({
+                    showLeft: !this.state.showLeft,
+                    displayLeft: this.state.showLeft ? "none" : "block",
+                  });
+                }}
+                defaultChecked
+              />
+              &nbsp;&nbsp;
+              <a style={{ fontSize: 15, color: "#000000fd" }}>左侧栏</a>
+            </div>
+          </Row>
+          <br />
+          <Row>
+            <div>
+              <Checkbox
+                checked={this.state.showRight}
+                onClick={() => {
+                  this.setState({
+                    showRight: !this.state.showRight,
+                    displayRight: this.state.showRight ? "none" : "block",
+                  });
+                }}
+                defaultChecked
+              />
+              &nbsp;&nbsp;
+              <a style={{ fontSize: 15, color: "#000000fd" }}>右侧栏</a>
+            </div>
+          </Row>
 
-            {/* <br /> */}
-            {/* <Row>
+          {/* <br /> */}
+          {/* <Row>
             <Switch checkedChildren="开" unCheckedChildren="关" checked={this.state.showBottom} onClick={() => {
               this.setState({
                 showBottom: !this.state.showBottom,
@@ -224,9 +245,8 @@ class Monitor extends React.PureComponent {
               });
             }} defaultChecked />下栏目
           </Row> */}
-            <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked} />
-          </Drawer>
-        </div>
+          <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked} />
+        </Drawer>
       </div>
     );
   }
@@ -299,9 +319,9 @@ class Monitor extends React.PureComponent {
       [dyLine, grLine, ljLine, hkLine, klLine]
     );
   };
-  componentDidUpdate() {
+  componentDidUpdate(pre) {
     const { count, rain } = this.props;
-    if (count) {
+    if (count != pre.count) {
       let data = [];
       count?.raincount?.list?.map((item) => {
         const desc = item.dataSourceDesc;
@@ -317,14 +337,14 @@ class Monitor extends React.PureComponent {
           itemStyle: {
             color:
               desc === "气象局"
-                ? "rgba(145,151,222)"
+                ? "rgba(145,151,222,1)"
                 : desc === "基层防汛"
-                ? "rgba(78,82,232)"
+                ? "rgba(78,82,232,1)"
                 : desc === "河口区水利局"
-                ? "rgba(145,36,189)"
+                ? "rgba(145,36,189,1)"
                 : desc === "经开区"
-                ? "rgba(29,37,182)"
-                : "rgba(78,32,232)",
+                ? "rgba(29,37,182,1)"
+                : "rgba(78,32,232,1)",
           },
         });
       });
@@ -335,7 +355,7 @@ class Monitor extends React.PureComponent {
         "气象局",
       ]);
     }
-    if (rain) {
+    if (rain != pre.rain) {
       this.onlineChart();
       let noRain = 0;
       let small = 0;
@@ -351,37 +371,33 @@ class Monitor extends React.PureComponent {
       let lj = 0;
       let hk = 0;
       let kl = 0;
+
+      let dylist = [];
+      let grlist = [];
+      let ljlist = [];
+      let hklist = [];
+      let kllist = [];
       rain.map((item) => {
         switch (item.region) {
           case "370502":
             dy++;
-            // this.setState({
-            //   dy: this.state.dy + 1,
-            // });
+            dylist.push(item);
             break;
           case "370523":
             gr++;
-            // this.setState({
-            //   gr: this.state.gr + 1,
-            // });
+            grlist.push(item);
             break;
           case "370522":
             lj++;
-            // this.setState({
-            //   lj: this.state.lj + 1,
-            // });
+            ljlist.push(item);
             break;
           case "370521":
             kl++;
-            // this.setState({
-            //   kl: this.state.kl + 1,
-            // });
+            kllist.push(item);
             break;
           case "370503":
             hk++;
-            // this.setState({
-            //   hk: this.state.hk + 1,
-            // });
+            hklist.push(item);
             break;
           default:
             break;
@@ -422,12 +438,18 @@ class Monitor extends React.PureComponent {
           return;
         }
       });
+      const numberList = { gr: gr, kl: kl, lj: lj, hk: hk, dy: dy };
+      const tabsList = {
+        all: rain,
+        gr: grlist,
+        kl: kllist,
+        lj: ljlist,
+        hk: hklist,
+        dy: dylist,
+      };
       this.setState({
-        gr: gr,
-        kl: kl,
-        lj: lj,
-        hk: hk,
-        dy: dy,
+        numberList: numberList,
+        tabsList: tabsList,
       });
       let list = [
         { value: noRain, itemStyle: { color: "rgb(229,229,229)" } },
@@ -493,7 +515,7 @@ class Monitor extends React.PureComponent {
 // -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
-  console.log(state, "STATE");
+  // console.log(state, "STATE");
   return {
     tableList: state.rain.tableList,
     stations: state.rain.stations,

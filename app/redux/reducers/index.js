@@ -7,6 +7,7 @@ import currency from "./currency";
 import management from "../../containers/home/redux/reducers";
 import rainReducers from "./rain";
 import mapAboutReducers from "./map";
+import handState from "./handState";
 export default combineReducers({
   monitor,
   home,
@@ -15,4 +16,5 @@ export default combineReducers({
   management,
   rainReducers,
   mapAboutReducers,
+  handState,
 });

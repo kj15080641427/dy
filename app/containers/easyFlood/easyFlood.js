@@ -96,8 +96,7 @@ class Monitor extends React.PureComponent {
       this.props.actions.getFloodInfoRealTime(floodId);
     }
     if (historyFlood != pre.historyFlood) {
-      // lineChart("easyfloodLine", historyFlood, 400, 1);
-      lineChart("easyfloodLine", historyFlood, 380, floodWarning || 0);
+      lineChart("easyfloodLine", historyFlood, 380, floodWarning || -0.1);
     }
     if (floodRain != pre.floodRain) {
       let noRain = 0;
@@ -150,7 +149,7 @@ class Monitor extends React.PureComponent {
       ];
       rotateBarChart("easyfloodInfo", list, 350, 200);
     }
-    if (initFlood) {
+    if (initFlood != pre.initFlood) {
       let a = 0;
       let b = 0;
       let c = 0;
@@ -202,32 +201,32 @@ class Monitor extends React.PureComponent {
         {
           value: a,
           name: "0cm 无积水",
-          itemStyle: { color: "rgb(255,255,255)" },
+          itemStyle: { color: "rgba(255,255,255,1)" },
         },
         {
           value: b,
           name: "0-10cm",
-          itemStyle: { color: "rgb(0,191,243)" },
+          itemStyle: { color: "rgba(0,191,243,1)" },
         },
         {
           value: c,
           name: "10-20cm",
-          itemStyle: { color: "rgb(0,255,1)" },
+          itemStyle: { color: "rgba(0,255,1,1)" },
         },
         {
           value: d,
           name: "20-30cm",
-          itemStyle: { color: "rgba(255,255,1)" },
+          itemStyle: { color: "rgba(255,255,1,1)" },
         },
         {
           value: e,
           name: "30-40cm",
-          itemStyle: { color: "rgba(143,101,35)" },
+          itemStyle: { color: "rgba(143,101,35,1)" },
         },
         {
           value: f,
           name: "40cm以上",
-          itemStyle: { color: "rgba(237,28,34)" },
+          itemStyle: { color: "rgba(237,28,34,1)" },
         },
       ];
       this.setState({
@@ -245,66 +244,65 @@ class Monitor extends React.PureComponent {
         <Map layerVisible={layerVisible}></Map>
         <Head></Head>
         <div style={{ display: displayLeft }}>
-            <div className="easyFlood-left">
-              <RenderBox>
-                <div className="table-title-text">
-                  <img src={warningIcon}></img> 超警戒水位
-                  <span>{alarmData?.length}</span>次
-                </div>
+          <div className="easyFlood-left">
+            <RenderBox>
+              <div className="table-title-text">
+                <img src={warningIcon}></img> 超警戒水位
+                <span>{alarmData?.length}</span>次
+              </div>
+              <TableShow
+                columns={[
+                  { name: "站点名称", dataIndex: "stnm" },
+                  { name: "警戒水位", dataIndex: "baselevel" },
+                  { name: "水位", dataIndex: "actuallevel" },
+                  { name: "更新时间", dataIndex: "alarmtime" },
+                ]}
+                dataSource={alarmData || []}
+              />
+            </RenderBox>
+            <div className="easyflood-left-bottom">
+              <RenderBox hasTitle title="易涝点积水情况">
+                <div className="funnel-chart" id="funnel-chart"></div>
                 <TableShow
+                  onRow={(record) => {
+                    return {
+                      onClick: () => {
+                        record = {
+                          ...record,
+                          id: record.riverwaterdataList
+                            ? record.riverwaterdataList[0].stcd
+                            : "",
+                        };
+                        this.props.actions.changeFloodId(record);
+                        this.locationClick(record);
+                      },
+                    };
+                  }}
                   columns={[
-                    { name: "站点名称", dataIndex: "stnm" },
-                    { name: "警戒水位", dataIndex: "baselevel" },
-                    { name: "水位", dataIndex: "actuallevel" },
-                    { name: "更新时间", dataIndex: "alarmtime" },
+                    { name: "易涝点名称", dataIndex: "name" },
+                    {
+                      name: "积水水深(cm)",
+                      dataIndex: "riverwaterdataList",
+                      render: (value) =>
+                        value && value[0] ? (value[0].z * 100).toFixed(2) : "-",
+                    },
+                    {
+                      name: "更新时间",
+                      dataIndex: "riverwaterdataList",
+                      render: (value) =>
+                        value && value[0] ? value[0].tm : "-",
+                    },
                   ]}
-                  dataSource={alarmData || []}
+                  dataSource={initFlood || []}
                 />
               </RenderBox>
-              <div className="easyflood-left-bottom">
-                <RenderBox hasTitle title="易涝点积水情况">
-                  <div className="funnel-chart" id="funnel-chart"></div>
-                  <TableShow
-                    onRow={(record) => {
-                      return {
-                        onClick: () => {
-                          record = {
-                            ...record,
-                            id: record.riverwaterdataList
-                              ? record.riverwaterdataList[0].stcd
-                              : "",
-                          };
-                          this.props.actions.changeFloodId(record);
-                          this.locationClick(record);
-                        },
-                      };
-                    }}
-                    columns={[
-                      { name: "易涝点名称", dataIndex: "name" },
-                      {
-                        name: "积水水深(cm)",
-                        dataIndex: "riverwaterdataList",
-                        render: (value) =>
-                          value && value[0]
-                            ? (value[0].z * 10).toFixed(2)
-                            : "-",
-                      },
-                      {
-                        name: "更新时间",
-                        dataIndex: "riverwaterdataList",
-                        render: (value) =>
-                          value && value[0] ? value[0].tm : "-",
-                      },
-                    ]}
-                    dataSource={initFlood || []}
-                  />
-                </RenderBox>
-              </div>
             </div>
-            {/* <WeatherTable></WeatherTable> */}
+          </div>
+          {/* <WeatherTable></WeatherTable> */}
         </div>
         <div style={{ display: displayRight }}>
-            <div className="easyFlood-right">
+          <div className="easyFlood-right">
+            <div className="flood-first-box">
               <RenderBox hasTitle title="易涝点基本信息">
                 <div className="pie-title-flex">
                   {count?.floodcount?.list?.map((item) => (
@@ -328,9 +326,11 @@ class Monitor extends React.PureComponent {
                 </div>
                 <div className="easyfloodInfo" id="easyfloodInfo"></div>
               </RenderBox>
+            </div>
+            <div className="second-box">
               <RenderBox hasTitle title="易涝点24小时信息">
                 <div className="water-select">
-                  <div className="water-select-flex">
+                  <div className="">
                     <div className="water-select-flex">{floodName}</div>
                     <div className="water-select-flex">{`${moment(
                       new Date()
@@ -340,50 +340,59 @@ class Monitor extends React.PureComponent {
                   </div>
                 </div>
                 <div className="easyfloodLine" id="easyfloodLine"></div>
-                <img src={video} width="430px" height="260px"></img>
+                <img src={video} width="430px" height="200px"></img>
               </RenderBox>
-              {/* <RenderBox style={{ height: "280px" }}></RenderBox> */}
-              <div className="ranSwitch">
-                <div className="switch-border">
-                  <Col span={24}>
-                    <Checkbox
-                      style={{ color: "white" }}
-                      value="ponding"
-                      checked={this.state.layerVisible.ponding}
-                      onChange={(e) => {
-                        this.setState({
-                          layerVisible: {
-                            ...layerVisible,
-                            ponding: e.target.checked,
-                          },
-                        });
-                      }}
-                    >
-                      <img src={pondingimg} width="20px" height="20px"></img>
-                      积水
-                    </Checkbox>
-                  </Col>
-                  <Col span={24}>
-                    <Checkbox
-                      style={{ color: "white" }}
-                      value="fRain"
-                      checked={this.state.layerVisible.fRain}
-                      onChange={(e) => {
-                        this.setState({
-                          layerVisible: {
-                            ...layerVisible,
-                            fRain: e.target.checked,
-                          },
-                        });
-                      }}
-                    >
-                      <img src={rainimg} width="20px" height="20px"></img> 雨量
-                    </Checkbox>
-                  </Col>
-                </div>
+            </div>
+            {/* <RenderBox style={{ height: "280px" }}></RenderBox> */}
+            <div className="ranSwitch">
+              <div className="switch-border">
+                <Col span={24}>
+                  <Checkbox
+                    className="switch-checkout"
+                    value="fRain"
+                    checked={this.state.layerVisible.fRain}
+                    onChange={(e) => {
+                      this.setState({
+                        layerVisible: {
+                          ...layerVisible,
+                          fRain: e.target.checked,
+                        },
+                      });
+                    }}
+                  >
+                    {/* <img src={rainimg} width="20px" height="20px"></img>  */}
+                    <div className="switch-ponding-flex">
+                      <div className="switch-rain"></div>
+                      <div>雨量</div>
+                    </div>
+                  </Checkbox>
+                </Col>
+                <Col span={24}>
+                  <Checkbox
+                    className="switch-checkout"
+                    value="ponding"
+                    checked={this.state.layerVisible.ponding}
+                    onChange={(e) => {
+                      this.setState({
+                        layerVisible: {
+                          ...layerVisible,
+                          ponding: e.target.checked,
+                        },
+                      });
+                    }}
+                  >
+                    {/* <img src={pondingimg} width="20px" height="20px"></img>
+                    积水 */}
+                    <div className="switch-ponding-flex">
+                      <div className="switch-ponding"></div>
+                      <div>积水</div>
+                    </div>
+                  </Checkbox>
+                </Col>
               </div>
             </div>
-            <RouterList />
+          </div>
+          <RouterList />
         </div>
 
         <div className="m-bottom"></div>

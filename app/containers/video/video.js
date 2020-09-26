@@ -8,19 +8,14 @@ import Head from "./head/Head";
 import WeatherTable from "./left/WeatherTable";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
-import { Drawer, Row, Divider, Checkbox } from "antd";
+import { Drawer, Row, Divider, Checkbox, Tabs } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
 import videoImg from "@app/resource/icon/video.png";
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
-import {
-  rotateBarChart,
-  pieChart,
-  lineChart,
-  barChart,
-} from "../../components/chart/chart";
-import { TableShow } from "../../components/chart/table";
-
+import { pieChart, lineChart, barChart } from "../../components/chart/chart";
+import VideoInfo from "./tabs";
+const { TabPane } = Tabs;
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -61,75 +56,97 @@ class Monitor extends React.PureComponent {
   };
   componentDidMount() {
     this.props.actions.getCountStation();
-    lineChart("line-chart", [2, 3, 4, 2], 500);
+    // lineChart("line-chart", [2, 3, 4, 2], 450);
   }
-  componentDidUpdate() {
+  componentDidUpdate(pre) {
     const { video, count } = this.props;
-    let dyOnline = 0; //东营
-    let dyLine = 0;
-    let grOnline = 0; //广饶
-    let grLine = 0;
-    let ljOnlie = 0; //利津
-    let ljLine = 0;
-    let klOnline = 0; //垦利
-    let klLine = 0;
-    let hkOnline = 0; //河口
-    let hkLine = 0;
-    // console.log(video, "IIIIII");
-    video.map((item) => {
-      // if (item.) {
-      if (item.isOnline == "0") {
-        switch (item.region) {
-          case "370502":
-            dyOnline++;
-            break;
-          case "370523":
-            grOnline++;
-            break;
-          case "370522":
-            ljOnlie++;
-            break;
-          case "370521":
-            klOnline++;
-            break;
-          case "370503":
-            hkOnline++;
-            break;
-          default:
-            console.log(item, "oooo");
-            break;
+    if (video != pre.video) {
+      let dyOnline = 0; //东营
+      let dyLine = 0;
+      let grOnline = 0; //广饶
+      let grLine = 0;
+      let ljOnlie = 0; //利津
+      let ljLine = 0;
+      let klOnline = 0; //垦利
+      let klLine = 0;
+      let hkOnline = 0; //河口
+      let hkLine = 0;
+
+      let dy = [];
+      let gr = [];
+      let lj = [];
+      let hk = [];
+      let kl = [];
+      video.map((item) => {
+        if (item.isOnline == "0") {
+          switch (item.region) {
+            case "370502":
+              dyOnline++;
+              dy.push(item);
+              break;
+            case "370523":
+              grOnline++;
+              gr.push(item);
+              break;
+            case "370522":
+              ljOnlie++;
+              lj.push(item);
+              break;
+            case "370521":
+              klOnline++;
+              kl.push(item);
+              break;
+            case "370503":
+              hkOnline++;
+              hk.push(item);
+              break;
+            default:
+              break;
+          }
+        } else if (item.isOnline == "1") {
+          switch (item.region) {
+            case "370502":
+              dyLine++;
+              dy.push(item);
+              break;
+            case "370523":
+              grLine++;
+              gr.push(item);
+              break;
+            case "370522":
+              ljLine++;
+              lj.push(item);
+              break;
+            case "370521":
+              klLine++;
+              kl.push(item);
+              break;
+            case "370503":
+              hkLine++;
+              hk.push(item);
+              break;
+            default:
+              break;
+          }
         }
-      } else if (item.isOnline == "1") {
-        switch (item.region) {
-          case "370502":
-            dyLine++;
-            break;
-          case "370523":
-            grLine++;
-            break;
-          case "370522":
-            ljLine++;
-            break;
-          case "370521":
-            klLine++;
-            break;
-          case "370503":
-            hkLine++;
-            break;
-          default:
-            console.log(item, "lllll");
-            break;
-        }
-      }
-      // }
-    });
-    barChart(
-      "videoBarChart",
-      ["在线", "不在线"],
-      [dyOnline, grOnline, ljOnlie, hkOnline, klOnline],
-      [dyLine, grLine, ljLine, hkLine, klLine]
-    );
-    if (count) {
+        // }
+      });
+      this.setState({
+        gr: gr,
+        dy: dy,
+        hk: hk,
+        lj: lj,
+        kl: kl,
+      });
+      barChart(
+        "videoBarChart",
+        ["在线", "不在线"],
+        [dyOnline, grOnline, ljOnlie, hkOnline, klOnline],
+        [dyLine, grLine, ljLine, hkLine, klLine]
+      );
+    }
+
+    if (count != pre.count) {
       let data = [];
       count?.vodeocount?.list?.forEach((item) => {
         data.push({
@@ -148,21 +165,53 @@ class Monitor extends React.PureComponent {
     }
   }
   render() {
-    let { layerVisible, displayRight, displayLeft } = this.state;
+    let {
+      layerVisible,
+      displayRight,
+      displayLeft,
+      dy,
+      lj,
+      kl,
+      hk,
+      gr,
+    } = this.state;
+    const { video } = this.props;
     return (
-      <div className="monitor">
+      <div className="video">
         <Map layerVisible={layerVisible}></Map>
         <Head></Head>
-        <div className="video">
+        <div className="">
           <div style={{ display: displayLeft }}>
             <div className="chart-left-video">
-              <RenderBox>
+              <RenderBox hasTitle title="视频站点来源图">
                 <div className="videoFunnelChart" id="videoFunnelChart"></div>
               </RenderBox>
               <RenderBox>
-                <div className="video-table">
-                  <WeatherTable></WeatherTable>
+                {/* <div className="video-table"> */}
+                <div className="card-container">
+                  <Tabs type="card" style={{ color: "white" }}>
+                    <TabPane tab="全部" key="1">
+                      <VideoInfo dataSource={video} />
+                    </TabPane>
+                    <TabPane tab="东营区" key="2">
+                      <VideoInfo dataSource={dy} />
+                    </TabPane>
+                    <TabPane tab="广饶县" key="3">
+                      <VideoInfo dataSource={gr} />
+                    </TabPane>
+                    <TabPane tab="利津县" key="4">
+                      <VideoInfo dataSource={lj} />
+                    </TabPane>
+                    <TabPane tab="河口区" key="5">
+                      <VideoInfo dataSource={hk} />
+                    </TabPane>
+                    <TabPane tab="垦利区" key="6">
+                      <VideoInfo dataSource={kl} />
+                    </TabPane>
+                  </Tabs>
                 </div>
+                {/* <WeatherTable></WeatherTable> */}
+                {/* </div> */}
               </RenderBox>
             </div>
           </div>
@@ -171,12 +220,16 @@ class Monitor extends React.PureComponent {
               <RenderBox hasTitle title="视频站点在线图">
                 <div className="videoBarChart" id="videoBarChart"></div>
               </RenderBox>
-              <RenderBox>
-                <div className="line-chart" id="line-chart"></div>
-              </RenderBox>
-              <RenderBox>
-                <img src={videoImg} width="530px" height="295px"></img>
-              </RenderBox>
+              <div className="video-img-box">
+                <RenderBox>
+                  <img src={videoImg} width="530px" height="340px"></img>
+                </RenderBox>
+              </div>
+              {/* <div className="video-line-box">
+                <RenderBox>
+                  <div className="line-chart" id="line-chart"></div>
+                </RenderBox>
+              </div> */}
             </div>
             <RouterList />
           </div>

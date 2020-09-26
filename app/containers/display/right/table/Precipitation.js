@@ -32,7 +32,7 @@ class Precipitation extends React.PureComponent {
             data[i].name +
             "(" +
             (data[i].siteRain && data[i]?.siteRain[0]
-              ? dict[data[i]?.siteRain[0].siteDictionariesID]
+              ? dict[data[i]?.siteRain[0]?.siteDictionariesID]
               : "-") +
             ")</span>",
           "<span style='font-size:19px; '>" +

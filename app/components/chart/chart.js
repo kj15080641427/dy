@@ -9,9 +9,9 @@ export const barChart = (domId, legend, online, line) => {
       trigger: "axis",
       axisPointer: {
         // 坐标轴指示器，坐标轴触发有效
-        type: "line", // 默认为直线，可选为：'line' | 'shadow'
+        type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
         shadowStyle: {
-          color: "rgba(0, 51, 102, 0.1)",
+          color: "rgba(0, 51, 102, 0.5)",
         },
       },
     },
@@ -75,7 +75,7 @@ export const barChart = (domId, legend, online, line) => {
           position: "inside",
         },
         itemStyle: {
-          color: "rgba(33,115,111)",
+          color: "rgba(33,115,111,1)",
         },
       },
       {
@@ -89,7 +89,7 @@ export const barChart = (domId, legend, online, line) => {
           position: "inside",
         },
         itemStyle: {
-          color: "rgba(128,110,98)",
+          color: "rgba(128,110,98,1)",
         },
       },
     ],
@@ -108,17 +108,17 @@ export const radarChart = (domId, data) => {
     radar: [
       {
         indicator: [
-          { text: "今天", max: 80, color: "rgb(0,175,255)" },
-          { text: "一天前", max: 80, color: "#1890ff" },
-          { text: "两天前", max: 80, color: "#1890ff" },
-          { text: "三天前", max: 80, color: "#1890ff" },
-          { text: "四天前", max: 80, color: "#1890ff" },
-          { text: "五天前", max: 80, color: "#1890ff" },
-          { text: "六天前", max: 80, color: "#1890ff" },
+          { text: "今天", max: 80, color: "rgba(0,153,255,1)" },
+          { text: "一天前", max: 80, color: "rgba(0,153,255,1)" },
+          { text: "两天前", max: 80, color: "rgba(0,153,255,1)" },
+          { text: "三天前", max: 80, color: "rgba(0,153,255,1)" },
+          { text: "四天前", max: 80, color: "rgba(0,153,255,1)" },
+          { text: "五天前", max: 80, color: "rgba(0,153,255,1)" },
+          { text: "六天前", max: 80, color: "rgba(0,153,255,1)" },
         ],
         center: ["50%", "50%"],
-        radius: 90,
-        startAngle: 100,
+        radius: 60,
+        startAngle: 90,
         axisLabel: {
           //连线图背景
           color: "red",
@@ -311,7 +311,7 @@ export const lineChart = (domId, data, width, warningline) => {
           ],
         },
       },
-      { data: warningline == 0 ? warning : null, type: "line" },
+      { data: warningline == -0.1 ? warning : null, type: "line" },
     ],
   };
   myChartcount.setOption(option);
@@ -407,56 +407,204 @@ export const rotateBarChart = (domId, data, width, height) => {
   myChartcount.setOption(option);
 };
 
-//漏斗图
+//
 export const funnelChart = (domId, data) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let option = {
     tooltip: {
-      trigger: "item",
-      formatter: "{a} <br/>{b} : {c}",
-    },
-    toolbox: {
-      feature: {
-        dataView: { readOnly: false },
-        restore: {},
-        saveAsImage: {},
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow",
       },
     },
-
+    legend: {
+      data: [
+        "0cm 无积水",
+        "0-10cm",
+        "10-20cm",
+        "20-30cm",
+        "30-40cm",
+        "40cm以上",
+      ],
+    },
+    grid: {
+      left: "3%",
+      right: "4%",
+      bottom: "10%",
+      top: "15%",
+      containLabel: true,
+    },
+    xAxis: {
+      type: "value",
+      boundaryGap: [0, 0.01],
+      show: false,
+    },
+    yAxis: {
+      show: false,
+      type: "category",
+      data: [
+        "0cm 无积水",
+        "0-10cm",
+        "10-20cm",
+        "20-30cm",
+        "30-40cm",
+        "40cm以上",
+      ],
+    },
     series: [
       {
-        labelLine: { show: true },
-        name: "漏斗图",
-        type: "funnel",
-        left: "center",
-        width: "100%",
-        min: 0,
-        max: 150,
-        minSize: "0%",
-        maxSize: "100%",
-        sort: "descending",
+        tooltip: { show: false },
+        name: "",
+        type: "bar",
+        stack: "总量",
         label: {
           show: true,
-          position: "left",
-          formatter: "{c}个  {b}",
-          fontSize: "15",
-          color: "white",
+          position: "insideRight",
         },
-        markLine: {
-          silent: true,
-        },
-        emphasis: {
-          label: {
-            fontSize: 15,
+        data: [
+          {
+            value: 25,
+            label: {
+              formatter: "0cm 无积水",
+              color: "black",
+            },
+            itemStyle: { color: "rgba(255,255,255,1)" },
           },
-        },
+          {
+            value: 25,
+            label: {
+              formatter: "0-10cm",
+              color: "black",
+            },
+            itemStyle: { color: "rgba(0,191,243,1)" },
+          },
+          {
+            value: 25,
+            label: {
+              formatter: "10-20cm",
+              color: "black",
+            },
+            itemStyle: { color: "rgba(0,255,1,1)" },
+          },
+          {
+            value: 25,
+            label: {
+              formatter: "20-30cm",
+              color: "black",
+            },
+            itemStyle: { color: "rgba(255,255,1,1)" },
+          },
+          {
+            value: 25,
+            label: {
+              formatter: "30-40cm",
+              color: "black",
+            },
+            itemStyle: { color: "rgba(143,101,35,1)" },
+          },
+          {
+            value: 25,
+            label: {
+              formatter: "40cm以上",
+              color: "black",
+            },
+            itemStyle: { color: "rgba(237,28,34,1)" },
+          },
+        ],
+      },
+      {
+        name: "数量",
+        type: "bar",
+        stack: "总量",
         data: data,
+        label: {
+          show: true,
+          position: "right",
+        },
       },
     ],
   };
   myChartcount.setOption(option);
 };
-
+//24小时折线图
+export const showChart = (data, id) => {
+  let xdata = [];
+  let ydata = [];
+  var myChart = echarts.init(document.getElementById(id));
+  data.forEach((item) => {
+    xdata.push(item.tm);
+    ydata.push(item.z);
+  });
+  myChart.setOption({
+    dataZoom: [
+      {
+        type: "slider",
+        show: true,
+        xAxisIndex: [0],
+      },
+    ],
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        // 坐标轴指示器，坐标轴触发有效
+        type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+      },
+    },
+    toolbox: {
+      show: true,
+      feature: {
+        dataView: { show: true, readOnly: true },
+        magicType: { show: true, type: ["line", "bar"] },
+        restore: { show: true },
+        saveAsImage: { show: true },
+      },
+    },
+    xAxis: {
+      type: "category",
+      data: xdata.length ? xdata : [],
+      name: "时间",
+      axisLabel: {
+        color: "white",
+      },
+      axisLine: {
+        lineStyle: {
+          color: "white",
+        },
+      },
+    },
+    yAxis: {
+      type: "value",
+      name: "水位（mm）",
+      axisLabel: {
+        color: "white",
+      },
+      axisLine: {
+        lineStyle: {
+          color: "white",
+        },
+      },
+    },
+    legend: {
+      right: "center",
+      x: "190px",
+      y: "50px",
+      // data: ['1小时降水', '24小时降水'],
+    },
+    series: [
+      {
+        // name: '1小时降水',
+        data: ydata.length ? ydata : [],
+        type: "line",
+        markPoint: {
+          data: [
+            { type: "max", name: "最大值" },
+            { type: "min", name: "最小值" },
+          ],
+        },
+      },
+    ],
+  });
+};
 const Chart = () => {
   useEffect(() => {
     barChart("chartlint");

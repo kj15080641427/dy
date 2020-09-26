@@ -28,8 +28,9 @@ class FloodSituation extends React.PureComponent {
       downl,
     } = this.props;
     const element = (
-      <Row>
-        <Col span={5}>
+      <div className="noties-head">
+        {/* <Row> */}
+        <div>
           开始时间&nbsp;&nbsp;&nbsp;
           <DatePicker
             format={"YYYY-MM-DD HH"}
@@ -38,8 +39,8 @@ class FloodSituation extends React.PureComponent {
             onOk={onOkstart}
             onChange={onOkstart}
           />
-        </Col>
-        <Col span={5}>
+        </div>
+        <div>
           结束时间&nbsp;&nbsp;&nbsp;
           <DatePicker
             format={"YYYY-MM-DD HH"}
@@ -48,8 +49,8 @@ class FloodSituation extends React.PureComponent {
             onOk={onOkend}
             onChange={onOkend}
           />
-        </Col>
-        <Col span={2}>
+        </div>
+        <div>
           <Button
             type="primary"
             size="large"
@@ -58,22 +59,24 @@ class FloodSituation extends React.PureComponent {
           >
             查询
           </Button>
-        </Col>
-        <Col span={2}>
+        </div>
+        <div>
           <Button
-            type="primary"
+            // type="primary"
+            // style={{ background: "#0ca9c7" }}
             size="large"
             icon={<CloudDownloadOutlined />}
             onClick={downl}
           >
             导出
           </Button>
-        </Col>
-        <Col span={7}></Col>
-      </Row>
+        </div>
+        {/* <Col span={7}></Col> */}
+        {/* </Row> */}
+      </div>
     );
     return (
-      <>
+      <div>
         {element}
         <br />
         <Situation dataSource={raindata.count}></Situation>
@@ -97,7 +100,7 @@ class FloodSituation extends React.PureComponent {
           dataSource={pointdata}
           loding={pointloding}
         ></WaterAnnunciate>
-      </>
+      </div>
     );
   }
 }

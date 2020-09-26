@@ -20,7 +20,10 @@ class RainrAnnunciate extends React.PureComponent {
         <br />
         <Row style={{ fontSize: 30, fontWeight: 1000, alignContent: "center" }}>
           {/* <Col span={10}></Col> */}
-          <Col span={24}> 东营市降水量统计表</Col>
+          <Col span={24} style={{ color: "rgb(0, 153, 255)" }}>
+            {" "}
+            东营市降水量统计表(mm)
+          </Col>
           {/* <Col span={10}></Col> */}
         </Row>
         {/* <Row style={{ fontSize: 25 }}>降水时段({tm})单位：毫米</Row> */}

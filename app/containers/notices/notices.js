@@ -37,8 +37,9 @@ class notices extends React.PureComponent {
       riverloding,
     } = this.state;
     return (
-      <div className="monitor">
-        {/* <Head></Head> */}
+      <div className="flood-notices">
+        <div className="flood-noyices-top"></div>
+        <Head></Head>
         <div className="m-left-notices">
           <FloodSituation
             pointdata={pointdata}
@@ -52,10 +53,8 @@ class notices extends React.PureComponent {
             riverloding={riverloding}
           ></FloodSituation>
         </div>
-        <div className="m-right">
-          <RouterList/>
-          {/* <PannelBtn></PannelBtn> */}
-        </div>
+        <RouterList />
+        {/* <div className="flood-noyices-top"></div> */}
       </div>
     );
   }
@@ -63,7 +62,7 @@ class notices extends React.PureComponent {
     var url = "/api/base/SiteBase/word?";
     if (this.state.time !== "") {
       url +=
-        "?startTime=" + this.state.starttime + "&endTime=" + this.state.endtime;
+        "startTime=" + this.state.starttime + "&endTime=" + this.state.endtime;
     }
     window.location.href = url;
   };

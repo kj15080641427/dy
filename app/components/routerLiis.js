@@ -18,6 +18,7 @@ import yqjk from "../resource/yqjk.png";
 import sqjk from "../resource/sqjk.png";
 import yld from "../resource/yld.png";
 import xqkb from "@app/resource/xqkb.png";
+import sjgl from "@app/resource/sjgl.png";
 class RouterList extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -69,25 +70,25 @@ class RouterList extends React.PureComponent {
               <img src={xqkb}></img>
             </Link>
           </Col>
-          {/* <Col>
-            <Link>
-              <img src={ddfa}></img>
-            </Link>
-          </Col> */}
+          {/* 海洋预报 */}
           <Col>
-            <Link>
+            <Link to={'/ocean'}>
               <img
-                onClick={() => this.setState({ showSea: true })}
+                // onClick={() => this.setState({ showSea: true })}
                 src={hyyb}
               ></img>
             </Link>
           </Col>
           {/* 黄河水情 */}
-          <Link>
+          <Link to={'/yellowRiver'}>
             <img
-              onClick={() => this.setState({ showRain: true })}
+              // onClick={() => this.setState({ showRain: true })}
               src={hhsq}
             ></img>
+          </Link>
+          {/*  数据管理*/}
+          <Link to={"/home/rwvdata"} target="_blank">
+            <img src={sjgl}></img>
           </Link>
           {/* <TowBtn></TowBtn> */}
         </div>

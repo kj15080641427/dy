@@ -74,7 +74,7 @@ class Satellite extends React.PureComponent {
     } else {
       for (var i = totalData.length - 1; i >= 0; i--) {
         elements.push(
-          <img key={i} className="m-pic-Carousel-img" src={this.state.totalData[i].img_url}></img>
+          <img key={i} className="m-pic-Carousel-img" src={this.state.totalData[i].imgUrl}></img>
         )
       }
     }
@@ -231,7 +231,7 @@ class Satellite extends React.PureComponent {
         // console.log("weixin", result)
         this.setState({
           totalData: result.data,
-          imglourl: result.data[0].img_url
+          imglourl: result.data[0].imgUrl
         })
 
       })

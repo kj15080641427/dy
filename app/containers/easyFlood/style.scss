@@ -1,6 +1,7 @@
 @import "@app/variable.scss";
 .easy-flood-display {
   position: relative;
+  min-height: $minheight;
   height: $mapDisplayHeight;
   .easyFlood-left {
     position: absolute;
@@ -9,18 +10,22 @@
     left: 15px;
     .radar-box {
       width: 500px;
-      height: 300px;
+      height: 30vh;
+      .box-head {
+        width: 170px;
+      }
     }
     .easyflood-left-bottom {
       margin-top: 15px;
       .radar-box {
         width: 500px;
-        height: 600px;
+        height: 53vh;
+        min-height: 550px;
       }
     }
     .funnel-chart {
       width: 500px;
-      height: 300px;
+      height: 240px;
     }
     .table-title {
       color: white;
@@ -34,18 +39,62 @@
     right: 105px;
     .ranSwitch {
       position: absolute;
-      right: 550px;
-      top: 800px;
+      right: 437px;
+      top: 700px;
       background: rgba(15, 50, 70, 0.5);
       height: 100px;
       width: 100px;
       display: flex;
       justify-content: center;
       align-items: center;
+      .switch-checkout {
+        display: flex;
+        align-items: center;
+        color: white;
+        height: 30px;
+      }
+      .switch-ponding-flex {
+        display: flex;
+        align-items: center;
+      }
+      .switch-rain {
+        margin-right:10px;
+        width: 12px;
+        height: 12px;
+        background: rgb(2, 158, 2);
+        border-radius: 50%;
+      }
+      .switch-ponding {
+        margin-right:10px;
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 12px solid rgb(2, 158, 2);
+      }
+      .ant-checkbox-checked .ant-checkbox-inner {
+        background: #1464d8;
+      }
+      .ant-checkbox-checked .ant-checkbox-inner::after {
+        position: absolute;
+        display: table;
+        border: 2px solid #061178;
+        border-top: 0;
+        border-left: 0;
+        -webkit-transform: rotate(45deg) scale(1) translate(-50%, -50%);
+        -ms-transform: rotate(45deg) scale(1) translate(-50%, -50%);
+        transform: rotate(45deg) scale(1) translate(-50%, -50%);
+        opacity: 1;
+        -webkit-transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+        transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+        content: " ";
+      }
       .switch-border {
         border: 1px solid rgb(22, 83, 102);
+
         color: white;
         font-size: 20px;
+        border-radius: 4px;
         .swtich-border-check {
           margin-left: 5px;
           margin-top: 5px;
@@ -69,7 +118,8 @@
       }
       .number-color {
         color: rgb(0, 153, 255);
-        font-size: 24px;
+        font-size: 34px;
+        font-weight: bold;
       }
     }
     .water-select {
@@ -80,17 +130,34 @@
         justify-content: center;
       }
     }
-    .radar-box {
-      width: 435px;
-      height: 100%;
+    .flood-first-box {
+      .radar-box {
+        width: 435px;
+        height: 33vh;
+        min-height: 300px;
+        .box-head {
+          width: 180px;
+        }
+      }
     }
+    .second-box {
+      .radar-box {
+        width: 435px;
+        height: 54vh;
+        min-height: 500px;
+        .box-head {
+          width: 180px;
+        }
+      }
+    }
+
     .easyfloodInfo {
       width: 400px;
       height: 200px;
     }
     .easyfloodLine {
       width: 450px;
-      height: 300px;
+      height: 250px;
     }
   }
 }

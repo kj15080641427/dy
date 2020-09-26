@@ -29,9 +29,9 @@ class Water extends React.PureComponent {
       //     ...data[i],
       //     ...(data[i].riverwaterdataList && data[i].riverwaterdataList[0]),
       //   };
-      let name = `${data[i].name}  ( ${
-        data[i].siteWaterLevels && data[i].siteWaterLevels[0]
-          ? dict[data[i].siteWaterLevels[0].siteDictionariesID]
+      let name = `${data[i]?.name}  ( ${
+        data[i].siteWaterLevels && data[i]?.siteWaterLevels[0]
+          ? dict[data[i]?.siteWaterLevels[0]?.siteDictionariesID]
           : ""
       } )`;
       let z = data[i]?.riverwaterdataList[0]?.z || "--";

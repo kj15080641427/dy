@@ -3,6 +3,7 @@
 .flood-warning-display {
   position: relative;
   height: $mapDisplayHeight;
+  min-height: $minheight;
   .ant-tabs-tab {
     color: white;
     margin-left: 10px;
@@ -19,9 +20,23 @@
     z-index: 10;
     margin-top: 80px;
     // height: 100vh;
-    .radar-box {
-      width: 500px;
-      height: 530px;
+    .first-box {
+      .radar-box {
+        width: 500px;
+        height: 530px;
+        .box-head {
+          width: 160px;
+        }
+      }
+    }
+    .second-box {
+      .radar-box {
+        width: 500px;
+        height: 320px;
+        .box-head {
+          width: 150px;
+        }
+      }
     }
     .floodWaringPie {
       width: 450px;
@@ -31,12 +46,7 @@
       position: absolute;
       color: white;
       left: 200px;
-      top: 115px;
-    }
-    .flood-warning-chart{
-      .ant-tabs {
-        height: 100%;
-      }
+      top: 135px;
     }
   }
   .flood-warning-right {
@@ -47,7 +57,11 @@
     z-index: 10;
     margin-top: 80px;
     .radar-box {
-      height: 100%;
+      width: 500px;
+      height: 430px;
+      .box-head {
+        width: 120px;
+      }
     }
     .pie-title-flex {
       display: flex;
@@ -55,6 +69,7 @@
       justify-content: space-around;
       color: white;
       margin-top: 10px;
+      margin-bottom: 20px;
       font-size: 15px;
       div {
         width: 60px;
@@ -66,19 +81,24 @@
       }
       .number-color {
         color: rgb(0, 153, 255);
-        font-size: 24px;
+        font-size: 34px;
         font-weight: bold;
       }
     }
   }
   //
-  .card-container{
+  .card-container {
     margin-top: 5px;
-    .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list{
-      margin-left: 26px;
+    .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
+      margin-left: 10px;
     }
   }
-
+  .flood-warning-display .ant-tabs-top > .ant-tabs-nav {
+    margin: 0 0 0 0;
+  }
+  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type) {
+    height: 30px;
+  }
   .card-container p {
     margin: 0;
   }
@@ -89,7 +109,7 @@
   .card-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
     // background: #fff;
     background: rgba(0, 51, 102, 0.7);
-    padding: 16px;
+    padding: 16px 10px 0px 10px;
   }
   .card-container > .ant-tabs-card > .ant-tabs-nav::before {
     display: none;
@@ -104,7 +124,7 @@
   [data-theme="compact"] .card-container > .ant-tabs-card .ant-tabs-tab-active {
     border-color: #1890ff;
     background: #1890ff;
-    color:white
+    color: white;
   }
   #components-tabs-demo-card-top .code-box-demo {
     background: #f5f5f5;
@@ -134,9 +154,7 @@
     background: #141414;
   }
 
-
-  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
     color: white;
   }
-
 }

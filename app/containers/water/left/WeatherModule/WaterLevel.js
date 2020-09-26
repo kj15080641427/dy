@@ -55,7 +55,7 @@ class Precipitation extends React.PureComponent {
     );
     let endtm = moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss");
     getWaterHistory({
-      stcd: obj.stcd,
+      stcd: obj.riverwaterdataList[0].stcd,
       starttm: starttm,
       endtm: endtm,
       current: 1,
@@ -73,6 +73,7 @@ class Precipitation extends React.PureComponent {
           xdata.push(result.data.records[i].tm);
           ydata.push((result.data.records[i].z * 1).toFixed(2));
         }
+        console.log(xdata,ydata)
         myChart.setOption({
           title: {
             text: obj.name + "-24小时水位曲线",

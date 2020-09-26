@@ -6,9 +6,15 @@
   border-bottom: 0;
 }
 .set-table-style {
-  // height: 400px;
   width: 100%;
-  padding: 0 10px;
+  padding: 0 0px;
+  .ant-table.ant-table-small .ant-table-tbody > tr > td{
+    background: #003366;
+  }
+  .flood-warning-display .card-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
+    background: red;
+    padding: 16px 10px 16px 10px;
+  }
   .ant-table-tbody > tr.ant-table-placeholder > td {
     background: #003366;
   }
@@ -41,7 +47,7 @@
     background: #003366;
   }
   .ant-table-tbody > tr > td {
-    border-bottom: 1px solid rgb(0, 99, 164);
+    border-bottom: 1px solid  rgb(0, 153, 255);
     -webkit-transition: background 0.3s;
     transition: background 0.3s;
   }
@@ -101,9 +107,9 @@
   width: 90px;
   img {
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 17px;
     margin-left: 15px;
-    height: 80px;
-    width: 80px;
+    height: 70px;
+    width: 70px;
   }
 }

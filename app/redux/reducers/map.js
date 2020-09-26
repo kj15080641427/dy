@@ -8,7 +8,8 @@ const initState = {
   count: {},
   floodId: "46660007",
   floodName: "东八路南涵洞（东）",
-  waterId: "418q1510", //stcd
+  waterId: "41801500", //stcd
+  waterName: "石村站",
   historyFlood: [],
   historyWater: [],
   floodRain: [],
@@ -48,7 +49,7 @@ export default function mapAboutReducers(state = initState, action) {
             ...item,
             ...item.riverwaterdataList[0],
             ...item.siteWaterPoints[0],
-            z: (item.riverwaterdataList[0].z * 10).toFixed(2),
+            z: (item.riverwaterdataList[0].z * 100).toFixed(2),
           });
         }
       });
@@ -87,12 +88,17 @@ export default function mapAboutReducers(state = initState, action) {
       };
       break;
     case types.CHANGE_WATER_ID: //改变水位id
-      newState = { ...newState, waterId: action.data };
+      newState = {
+        ...newState,
+        waterId: action.data.id,
+        waterName: action.data.name,
+      };
       break;
     case types.SET_FLOOD_INFO_REALTIME: //易涝点实时数据
       action.data.records.map((item) => {
         let tm = item.tm.split(" ")[1].split(":");
         if (tm[0] % 2 == 0 && tm[1] == "00") {
+          // console.log(tm, "TTTMM",item.z);
           historyFlood.unshift(item.z * 10);
         }
       });

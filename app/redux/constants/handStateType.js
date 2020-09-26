@@ -1,0 +1,16 @@
+export const CHANGE_MODAL_VISIBLE = "CHANGE_MODAL_VISIBLE";
+
+export const GET_HOUR_RAIN = "GET_HOUR_RAIN";
+export const SET_HOUR_RAIN = "SET_HOUR_RAIN";
+
+export const GET_DAY_RAIN = "GET_DAY_RAIN";
+export const SET_DAY_RAIN = "SET_DAY_RAIN";
+
+export const GET_SEVEN_DAY_RAIN = "GET_SEVEN_DAY_RAIN";
+export const SET_SEVEN_DAY_RAIN = "SET_SEVEN_DAY_RAIN";
+
+export const GET_DAY_WATER = "GET_DAY_WATER";
+export const SET_DAY_WATER = "SET_DAY_WATER";
+
+export const GET_DISPLAY_WATER = "GET_DISPLAY_WATER";
+export const SET_DISPLAY_WATER = "SET_DISPLAY_WATER";

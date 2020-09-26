@@ -242,7 +242,7 @@ class WeatherPic extends React.PureComponent {
         console.log("weixin", result)
         this.setState({
           totalData: result.data,
-          imglourl: result.data[0].img_url
+          imglourl: result.data[0].imgUrl
         })
 
       })

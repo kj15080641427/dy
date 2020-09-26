@@ -281,7 +281,7 @@ class Map extends React.PureComponent {
           const obj = {
             now: "drp",
           };
-          console.log(obj[type], "???", rainData, this.props,featureObj);
+          // console.log(obj[type], "???", rainData, this.props,featureObj);
           //let drp = parseInt(featureObj.minuteAvg*1);
           // const { data } = featureObj;
           // console.log(featureObj, "featureObj");

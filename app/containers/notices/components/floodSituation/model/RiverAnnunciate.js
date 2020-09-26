@@ -38,9 +38,10 @@ class RiverAnnunciate extends React.PureComponent {
           style={{
             fontSize: 30,
             fontWeight: 1000,
+            color: "rgb(0, 153, 255)",
           }}
         >
-          河道水位统计表
+          河道水位统计表(m)
         </Col>
         <Col span={8}></Col>
       </Row>

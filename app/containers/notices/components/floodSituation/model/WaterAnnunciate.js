@@ -38,9 +38,10 @@ class WaterAnnunciate extends React.PureComponent {
           style={{
             fontSize: 30,
             fontWeight: 1000,
+            color: "rgb(0, 153, 255)",
           }}
         >
-          积水点水深统计表
+          积水点水深统计表(cm)
         </Col>
         <Col span={8}></Col>
       </Row>

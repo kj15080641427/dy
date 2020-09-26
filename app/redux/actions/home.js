@@ -1,19 +1,19 @@
-import * as actionTypes from '../constants/home';
+import * as actionTypes from "../constants/home";
 export function addUserInfo(data) {
   return {
     type: actionTypes.SET_USERINFO,
-    data
+    data,
   };
 }
-export function currency(data){
+export function currency(data) {
   return {
-    type:actionTypes.CURRENCY,
-    data
-  }
+    type: actionTypes.CURRENCY,
+    data,
+  };
 }
-export function showModal(data){
+export function showModal(data) {
   return {
-    type:actionTypes.SHOW_MODAL,
-    data
-  }
+    type: actionTypes.SHOW_MODAL,
+    data,
+  };
 }

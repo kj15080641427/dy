@@ -15,6 +15,9 @@ import videoMonitor from "@app/containers/video/video";
 import AsyncNoLogin from "@app/containers/home/NoLogin";
 import AsyncDisplay from "@app/containers/display/Display";
 import AsyncNotices from "@app/containers/notices/notices";
+
+import Ocean from "@app/containers/ocean";
+import YellowRiver from "@app/containers/yellowRiver";
 import "./style.scss";
 // const AsyncHome = AsyncComp(() => import(/*webpackChunkName:'Index'*/"@app/containers/home/Index").then((res) => { removeLoading(); return res; }));
 // const AsyncLogin = AsyncComp(() => import(/*webpackChunkName:'Login'*/"@app/containers/home/Login").then((res) => { removeLoading(); return res; }));
@@ -81,6 +84,8 @@ export class App extends React.Component {
               <Route path={`/floodwarning`} component={floodWarningMonitor} />
               <Route path={`/display`} component={AsyncDisplay} />
               <Route path={`/notices`} component={AsyncNotices} />
+              <Route path={`/ocean`} component={Ocean} />
+              <Route path={`/yellowRiver`} component={YellowRiver} />
             </>
           )}
           <Route component={AsyncLogin} />
