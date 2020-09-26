@@ -2,7 +2,7 @@ import { createHashHistory } from "history";
 const token = localStorage.getItem("token");
 const hashHistory = createHashHistory();
 // const hostUrl = "http://218.56.180.250:9109/tuhui-base";
-const dev = 0;
+const dev = 1;
 const URL = dev ? "api" : "api/v2";
 export function hasClassName(obj, name) {
   let tmpName = obj.className;

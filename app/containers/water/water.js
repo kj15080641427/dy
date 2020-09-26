@@ -247,7 +247,6 @@ class Monitor extends React.PureComponent {
                 dataSource={alarmData || []}
               />
             </div>
-<<<<<<< HEAD
             <div className="water-right-second-box ">
               <RenderBox title={"水位站点来源统计图"} hasTitle>
                 <div className="pie-flex-layout">
@@ -265,20 +264,7 @@ class Monitor extends React.PureComponent {
                     <div>
                       过去30天累计报警<a>{warningInfo?.mWarning}</a>次
                     </div>
-=======
-            <RenderBox title={"报警统计"} hasTitle containerStyle={{ height: '31.6%' }} style={{ height: '100%' }}>
-              <div className="pie-flex-layout" style={{ height: 'calc(100% - 25px)' }}>
-                <div className="radar-chart" id="radar-chart"></div>
-                <div className="flex-layout-right">
-                  <div>
-                    今日累计报警<a>{warningInfo?.today}</a>次
-                  </div>
-                  <div>
-                    过去七天累计报警<a>{warningInfo?.wWarning}</a>次
-                  </div>
-                  <div>
-                    过去30天累计报警<a>{warningInfo?.mWarning}</a>次
->>>>>>> 537b7211cd3bdf336edf806c32ec462364041301
+
                   </div>
                 </div> */}
               </RenderBox>
@@ -307,51 +293,18 @@ class Monitor extends React.PureComponent {
                     </TabPane>
                   </Tabs>
                 </div>
-<<<<<<< HEAD
                 {/* <WaterInfo dataSource={water} /> */}
                 {/* <WeatherTable></WeatherTable> */}
               </RenderBox>
             </div>
-=======
-              </div>
-            </RenderBox>
-            <RenderBox containerStyle={{ height: '37.3%' }} style={{ marginTop: 0, height: '100%' }}>
-              {/* <div className="water-select">
-                <label>
-                  超警戒信息 <span>单位(mm)</span>
-                </label>
-                <Select
-                  value={waterId}
-                  defaultActiveFirstOption
-                  onChange={(e) => {
-                    this.props.actions.changeWaterId(e);
-                  }}
-                >
-                  {water?.map((item, index) => (
-                    <Option key={index} value={item.stcd}>
-                      {item.name}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-              <div className="line-chart" id="line-chart"></div> */}
-              <div className="video-table">
-                <WeatherTable></WeatherTable>
-              </div>
-            </RenderBox>
-            {/* <div style={{ marginTop: "15px" }} >
-            </div> */}
->>>>>>> 537b7211cd3bdf336edf806c32ec462364041301
+
           </div>
         </div>
 
         <div style={{ display: displayRight }}>
           <div className="chart-right">
-<<<<<<< HEAD
             <div className="water-right-first-box">
-=======
-            <div style={{ height: '100%' }}>
->>>>>>> 537b7211cd3bdf336edf806c32ec462364041301
+
               {/* 水位站点在线统计图 */}
               <RenderBox title={"水位站点在线统计图"} containerStyle={{ height: '30.05%' }} style={{ width: '430px', height: '100%', marginTop: '10px' }} hasTitle>
                 <div className="bar-chart" id="bar-chart"></div>
@@ -359,7 +312,6 @@ class Monitor extends React.PureComponent {
             </div>
             <div className="water-left-first-box">
               {/* 来源图 */}
-<<<<<<< HEAD
               <RenderBox title={"24小时水位"} hasTitle>
                 <div className="water-select">
                   <div className="">
@@ -369,46 +321,19 @@ class Monitor extends React.PureComponent {
                     ).format("YYYY-MM-DD HH:mm:ss")} 至 ${moment(
                       new Date()
                     ).format("YYYY-MM-DD HH:mm:ss")}`}</div>
-=======
-              <RenderBox title={"水位站点来源统计图"} containerStyle={{ height: '31.08%' }} style={{ width: '430px', height: '100%', marginTop: '10px' }} hasTitle>
-                <div className="pie-flex-layout" style={{ height: 'calc(100% - 25px)' }}>
-                  <div className="pie-chart" id="pie-chart"></div>
-                  <div style={{ padding: '0 10px' }}>
-                    {count?.watercount?.list.map((item, index) => {
-                      return (
-                        <div key={index} className="flex-layout">
-                          <div>
-                            {item.dataSourceDesc == "农村基层防汛监测预警平台"
-                              ? "基层防汛"
-                              : item.dataSourceDesc == "河口区水利局"
-                              ? "水利局"
-                              : item.dataSourceDesc == "黄河东营境内水位站点"
-                              ? "黄河"
-                              : item.dataSourceDesc || "暂无数据"}
-                          </div>
-                          <div className="pie-number">{item.number}</div>
-                        </div>
-                      );
-                    })}
->>>>>>> 537b7211cd3bdf336edf806c32ec462364041301
+
                   </div>
                 </div>
                 <div className="line-chart" id="line-chart"></div>
                 <img src={video}></img>
               </RenderBox>
-<<<<<<< HEAD
             </div>
             {/* 视频 */}
             {/* <div className="radar-box"> */}
             {/* <div className="water-video-box">
               <RenderBox>
                 <img src={video}></img>
-=======
-              {/* 视频 */}
-              {/* <div className="radar-box"> */}
-              <RenderBox  containerStyle={{ height: '35.75%' }} style={{ width: '430px', height: '100%' }}>
-                <img src={video} style={{ width: '100%', height: '100%' }}></img>
->>>>>>> 537b7211cd3bdf336edf806c32ec462364041301
+
               </RenderBox>
             </div> */}
 
