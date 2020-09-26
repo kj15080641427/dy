@@ -40,17 +40,11 @@
 }
 
 .router-list {
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
   position: absolute;
-  right: 10px;
+  right: 0;
   top: 0;
-  bottom: 0;
   z-index: 10;
-  padding-top: 50px;
+  height: 100%;
 }
 .flex-layout-right {
   color: white;
@@ -112,7 +106,7 @@
   position: relative;
   border: 2px solid rgb(0, 153, 255);
   width: 535px;
-  height: 300px;
+  height: 29.53%;
 }
 
 .water-right-first-box {
@@ -131,7 +125,7 @@
 }
 .radar-chart {
   width: 330px;
-  height: 300px;
+  height: 100%;
 }
 .box-head-title {
   color: white;
@@ -147,7 +141,11 @@
   position: relative;
   border: 2px solid rgb(0, 153, 255);
   width: 535px;
+<<<<<<< HEAD
   height: 298px;
+=======
+  height: 305px;
+>>>>>>> 537b7211cd3bdf336edf806c32ec462364041301
   z-index: 9;
 }
 .chart-left {
@@ -230,10 +228,21 @@
   width: 540px;
   position: absolute;
   left: 15px;
+<<<<<<< HEAD
   top: 15px;
   bottom: 0;
   z-index: 10;
   margin-top: 80px;
+=======
+  top: 80px;
+  z-index: 10;
+  height: calc(100% - 80px - 10px - 15px);
+  .line-chart {
+    width: 500px;
+    height: 280px;
+    z-index: 10;
+  }
+>>>>>>> 537b7211cd3bdf336edf806c32ec462364041301
 
   .ant-pagination.mini .ant-pagination-total-text {
     color: white;
@@ -255,6 +264,7 @@
 }
 .chart-right {
   // background:rgba(255, 255, 255, 0.6)!important;
+<<<<<<< HEAD
   // width: 450px;
   position: absolute;
   right: 115px;
@@ -269,6 +279,21 @@
  
   .radar-box {
     width: 500px;
+=======
+  width: 430px;
+  position: absolute;
+  right: 110px;
+  top: 80px;
+  z-index: 10;
+  height: calc(100% - 80px - 10px - 15px);
+  .bar-chart {
+    width: 430px;
+    height: 100%;
+  }
+  .pie-chart {
+    width: 320px;
+    height: 100%;
+>>>>>>> 537b7211cd3bdf336edf806c32ec462364041301
   }
 }
 
@@ -276,7 +301,6 @@
   display: flex;
   align-items: center;
   color: white;
-  width: 100px;
 }
 .pie-number {
   color: #ea5c5a;

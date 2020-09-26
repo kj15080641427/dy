@@ -100,11 +100,21 @@
 .router-item {
   position: absolute;
   right: 15px;
+<<<<<<< HEAD
   top: 105px;
   background: rgba(255, 255, 255, 0);
   // padding-top: 20px;
   margin-left: 15px;
   width: 90px;
+=======
+  top: 90px;
+  height: calc(100% - 90px - 15px);
+  background: rgba(255, 255, 255, 0);
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+>>>>>>> 537b7211cd3bdf336edf806c32ec462364041301
   img {
     border-radius: 10px;
     margin-bottom: 17px;

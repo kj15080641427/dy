@@ -17,9 +17,9 @@ export const BoxHead = () => {
   );
 };
 export const RenderBox = (props) => {
-  const { hasHead, hasTitle, title, style } = props;
+  const { hasHead, hasTitle, title, style, containerStyle } = props;
   return (
-    <div>
+    <div style={containerStyle}>
       {hasHead && <BoxHead />}
       <div className="radar-box" style={style}>
         {hasTitle && <BoxTitle title={title} />}
