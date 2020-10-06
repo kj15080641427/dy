@@ -6,150 +6,22 @@
   .ocean-drawer-body{
     width: 1890px;
     height: 1110px;
-    // background: #003366;
-    // border-top: 20px solid #003366;
-    // border-right: 100px solid #003366;
-    // padding: ;
-  }
-}
-// .ocean-drawer {
-//   .ant-drawer-body {
-//     margin-top: -100px;
-//   }
-// }
-.flood-ocean {
-  
-  width: 100%;
-  // height: 100%;
-  padding-bottom: 15px;
-  background: rgb(0, 51, 102);
-  .ocean-div {
-    position: relative;
-    width: 100%;
-    height: 1555px;
-    left: 500px;
-    // position: relative;
-    // background: red;
-  }
-  .ocean-iframe {
-    position: relative;
-    z-index: 9;
-    left: -1050px;
-    // top: -100px;
-  }
-
-  .m-left-notices {
-    position: relative;
-    background: white;
-    margin-right: 105px;
-    // margin-left: 15px;
-    // // height: 2320px;
-    // padding: 15px;
-    // padding-left: 100px;
-    // padding-right: 100px;
-    // margin-bottom: 15px;
-    .ant-table-wrapper {
-      background: white;
-    }
-    .tg .tg-2xbj {
-      background: #003366;
-      color: white;
-    }
-    .noties-head {
-      display: flex;
-      div {
-        margin-right: 15px;
+    .router-item {
+      position: absolute;
+      right: 15px;
+      top: 105px;
+      background: rgba(255, 255, 255, 0);
+      padding-top: 20px;
+      margin-left: 15px;
+      width: 90px;
+    
+      img {
+        border-radius: 10px;
+        margin-bottom: 17px;
+        margin-left: 15px;
+        height: 70px;
+        width: 70px;
       }
     }
   }
-  .flood-noyices-top {
-    height: 105px;
-    width: 100%;
-    background: rgb(0, 51, 102);
-  }
-  // .monitor {
-  //   .tg .tg-2xbj {
-  //     background: #193184;
-  //     color: white;
-  //   }
-  //   .ant-table-thead > tr > th {
-  //     border-bottom: 0;
-  //     background: #193184;
-  //     color: white;
-  //   }
-  //   position: relative;
-  //   min-height: $monitorMinHeight;
-  //   height: 100%;
-  //   .m-left-notices {
-  //     display: flex;
-  //     flex-direction: column;
-  //     justify-content: space-between;
-  //     align-items: stretch;
-  //     position: absolute;
-  //     left: 0;
-  //     top: 0;
-  //     right: 120px;
-  //     bottom: 0;
-  //     width: 90%;
-  //     z-index: 10;
-  //     padding-top: 120px;
-  //     padding-left: $monitor_left_pd_left;
-  //     padding-bottom: $monitor_left_pd_bottom;
-  //   }
-  //   // .m-right {
-  //   //   background:#003366;
-  //   //   height:2500px;
-  //   //   width: 110px;
-  //   // }
-  //   .m-bottom {
-  //     display: flex;
-  //     justify-content: center;
-  //     align-items: flex-end;
-  //     position: absolute;
-  //     bottom: 20px;
-  //     left: 50%;
-  //     transform: translate(-50%, 0);
-  //     pointer-events: none;
-  //   }
-  // }
-  // .m-set-img {
-  //   position: absolute;
-  //   z-index: 999;
-  //   top: 20px;
-  //   right: 29px;
-  //   width: 25px;
-  //   height: 25px;
-  // }
-  // .tooltip {
-  //   position: relative;
-  //   background: rgba(0, 0, 0, 0.5);
-  //   border-radius: 4px;
-  //   color: white;
-  //   padding: 4px 8px;
-  //   opacity: 0.7;
-  //   white-space: nowrap;
-  // }
-  // .tooltip-measure {
-  //   opacity: 1;
-  //   font-weight: bold;
-  // }
-  // .tooltip-static {
-  //   background-color: #ffcc33;
-  //   color: black;
-  //   border: 1px solid white;
-  // }
-  // .tooltip-measure:before,
-  // .tooltip-static:before {
-  //   border-top: 6px solid rgba(0, 0, 0, 0.5);
-  //   border-right: 6px solid transparent;
-  //   border-left: 6px solid transparent;
-  //   content: "";
-  //   position: absolute;
-  //   bottom: -6px;
-  //   margin-left: -7px;
-  //   left: 50%;
-  // }
-  // .tooltip-static:before {
-  //   border-top-color: #ffcc33;
-  // }
 }

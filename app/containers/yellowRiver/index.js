@@ -7,7 +7,7 @@ export default () => {
     <div className="flood-river">
       <div className="flood-noyices-top"></div>
       <Head></Head>
-       <RouterList></RouterList>
+      <RouterList></RouterList>
       <div className="m-left-notices">
         <div style={{ width: "100%", height: "950px" }}>
           <iframe

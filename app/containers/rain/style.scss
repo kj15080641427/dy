@@ -55,7 +55,7 @@
   .rain-chart-right {
     position: absolute;
     right: 105px;
-    top: 10px;
+    top: 15px;
     bottom: 0;
     z-index: 10;
     margin-top: 80px;
@@ -171,7 +171,7 @@
       }
 
       .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-        color: white;
+        // color: white;
       }
     }
   }

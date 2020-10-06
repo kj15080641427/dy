@@ -84,7 +84,7 @@ class RouterList extends React.PureComponent {
             <img
               // onClick={() => this.setState({ showRain: true })}
               src={hhsq}
-              style={{ marginBottom: 0 }}
+              // style={{ marginBottom: 10 }}
             ></img>
           </Link>
           {/*  数据管理*/}

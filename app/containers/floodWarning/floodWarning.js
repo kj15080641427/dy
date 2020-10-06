@@ -445,7 +445,7 @@ class Monitor extends React.PureComponent {
 // -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
-  console.log(state, "STATE");
+  // console.log(state, "STATE");
   return {
     expertCount: state.mapAboutReducers.expertCount,
     floodRanks: state.mapAboutReducers.floodRanks,

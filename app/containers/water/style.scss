@@ -113,6 +113,9 @@
   .box-head {
     width: 200px;
   }
+  .radar-box{
+    width:496px
+  }
 }
 .box-head {
   border-top: 25px solid rgb(0, 153, 255);
@@ -252,7 +255,7 @@
   // width: 450px;
   position: absolute;
   right: 115px;
-  top: 10px;
+  top: 15px;
   bottom: 0;
   z-index: 10;
   margin-top: 80px;

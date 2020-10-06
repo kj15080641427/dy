@@ -187,3 +187,17 @@ export const setCountStation = (data) => {
     data,
   };
 };
+//防汛专家
+export const getFloodExpert = (data) => {
+  return {
+    type: types.GET_FLOOD_EXPERT,
+    data,
+  };
+};
+//发送消息
+export const sendMessage = (data) => {
+  return {
+    type: types.SEND_MESSAGE,
+    data,
+  };
+};

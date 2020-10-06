@@ -32,7 +32,7 @@ import SiteWaterPonit from "./subpages/site/siteWaterPoint";
 import SiteReservoir from "./subpages/site/siteReservoir";
 import SiteDike from "./subpages/site/siteDike";
 import SiteGate from "./subpages/site/siteGate";
-import Chart from "./subpages/site/chart";
+import Chart from "./subpages/site/task";
 const NoMatch = () => <div>没有找到该路由</div>;
 
 class ContentRouter extends React.PureComponent {

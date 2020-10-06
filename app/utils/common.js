@@ -1,9 +1,16 @@
 import { createHashHistory } from "history";
+// const host = "http://2287ym5502.51mypc.cn";
+const host = "http://172.19.112.74:8080/";
+//const host = "http://10.1.4.187:8080/";
+// element判断是否含有className
+//拿到token值
 const token = localStorage.getItem("token");
+// const token = "";
 const hashHistory = createHashHistory();
+const isV2 = 0;
+const URL = isV2 ? "/api/v2" : "/api";
 // const hostUrl = "http://218.56.180.250:9109/tuhui-base";
-const dev = 1;
-const URL = dev ? "api" : "api/v2";
+
 export function hasClassName(obj, name) {
   let tmpName = obj.className;
   let tmpReg = new RegExp(name, "g");
@@ -45,7 +52,7 @@ export function fetchData(method, url, data) {
       token: token,
     },
     // 注意 post 时候参数的形式
-    body: data,
+    body: data ? appendParam(url, data) : null,
   }).then((res) => {
     if (res.status == 400) {
       hashHistory.push("/");
@@ -66,6 +73,8 @@ export function fetchJSONData(method, url, data) {
     // 注意 post 时候参数的形式
     body: data ? JSON.stringify(data) : null,
   }).then((res) => {
+    // console.log(res, 7777777777);
+
     if (res.status == 400) {
       hashHistory.push("/");
     }
@@ -153,17 +162,17 @@ function download(data) {
 /*
  *   拼接参数
  */
-// function appendParam(url, params) {
-//   if (data) {
-//     var str = "";
-//     for (var key in data) {
-//       if (data.hasOwnProperty(key)) {
-//         str += key + "=" + data[key] + "&";
-//       }
-//     }
-//     return "?" + str;
-//   }
-// }
+function appendParam(url, params) {
+  if (data) {
+    var str = "";
+    for (var key in data) {
+      if (data.hasOwnProperty(key)) {
+        str += key + "=" + data[key] + "&";
+      }
+    }
+    return "?" + str;
+  }
+}
 /*
  *   拼接基础信息中站点名称和来源
  */

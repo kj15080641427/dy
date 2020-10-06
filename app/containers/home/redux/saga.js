@@ -178,7 +178,7 @@ function* readOnlyGetAll({ data }) {
   }
 }
 //获取字典数据
-function* getDict({ data }) {
+function* getDict() {
   try {
     const result = yield call(req.getSiteDict, { current: 1, size: -1 });
     if ((result.code = successCode)) {
@@ -195,20 +195,17 @@ function* getDict({ data }) {
     console.error(error);
   }
 }
-// // 获取站点来源
-// function* getCountStation() {
-//   try {
-//     const result = yield call(req.getCountStation, initSelect);
-//     if (result.code == successCode) {
-//       yield put({
-//         type: types.SET_COUNT_STATION,
-//         data: result.data,
-//       });
-//     }
-//   } catch (e) {
-//     console.error(e);
-//   }
-// }
+//发送消息
+function* sendMessage({ data }) {
+  try {
+    let result = yield call(req.sendMessage, data);
+    if (result.code == 200) {
+      console.log(result);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
 export default function* management() {
   yield all([
     takeEvery(types.GET_BASE, getbaseData),
@@ -220,6 +217,7 @@ export default function* management() {
     takeEvery(types.READ_ONLY_TABLE_GETALL, readOnlyGetAll),
     takeEvery(types.ADD_SITE_RELATION, addSiteRelation),
     takeEvery(types.GET_DICT, getDict),
+    takeEvery(types.SEND_MESSAGE, sendMessage),
     // takeEvery(types.GET_COUNT_STATION, getCountStation),
   ]);
 }

@@ -306,7 +306,7 @@ class Monitor extends React.PureComponent {
             <div className="water-right-first-box">
 
               {/* 水位站点在线统计图 */}
-              <RenderBox title={"水位站点在线统计图"} containerStyle={{ height: '30.05%' }} style={{ width: '430px', height: '100%', marginTop: '10px' }} hasTitle>
+              <RenderBox title={"水位站点在线统计图"} containerStyle={{ height: '30.05%' }} style={{ width: '496px', height: '100%', marginTop: '10px' }} hasTitle>
                 <div className="bar-chart" id="bar-chart"></div>
               </RenderBox>
             </div>

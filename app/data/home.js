@@ -82,7 +82,6 @@ export function getAllVideo(data) {
   return fetchJSONData("POST", "/base/StiteWaterRadio/getAll", data);
 }
 
-
 // 查询站点雨量
 export function getSIteRainData(data) {
   return fetchJSONData("POST", "/base/SiteRain/page", data);
@@ -318,7 +317,9 @@ export function delSiteRelation(data) {
 export function getCountStation(data) {
   //  return fetchJSONData("POST", "/count/getCountStation", data);
   return fetchJSONData("POST", "/base/SiteBase/getCountStation", data);
-
+}
+export function sendMessage(data) {
+  return fetchJSONData("POST", "/base/TaskMessage/save", data);
 }
 // 获取卫星云图
 //  export function getSatellite(data) {
