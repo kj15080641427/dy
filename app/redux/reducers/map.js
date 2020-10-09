@@ -121,6 +121,7 @@ export default function mapAboutReducers(state = initState, action) {
       newState = { ...newState, wareHouse: action.data };
       break;
     case types.SET_FLOOD_USER:
+      action.data[1].phone = "18159774272";
       newState = { ...newState, floodUser: action.data };
       break;
     case types.SET_FLOOD_EXPERT:
@@ -131,10 +132,27 @@ export default function mapAboutReducers(state = initState, action) {
       break;
     case types.SET_FLOOD_RANK_USER:
       let count = 0;
+      let rankSelect = {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: [],
+      };
       action.data.map((item) => {
         count = count + item.userList.length;
+        item.userList.map((t) => {
+          // console.log([`rank${item.floodRanksId}`][0]);
+          rankSelect[item.floodRanksId].push(t.floodId);
+        });
       });
-      newState = { ...newState, floodRanks: action.data, expertCount: count };
+      newState = {
+        ...newState,
+        floodRanks: action.data,
+        expertCount: count,
+        rankSelect: rankSelect,
+      };
       break;
     case types.SET_WATER_WARNING:
       newState = { ...newState, warningInfo: action.data };

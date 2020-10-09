@@ -194,10 +194,94 @@ export const getFloodExpert = (data) => {
     data,
   };
 };
+//获取防汛队伍人员
+export const getFloodRankUser = (data) => {
+  return {
+    type: types.GET_FLOOD_RANK_USER,
+    data,
+  };
+};
 //发送消息
 export const sendMessage = (data) => {
   return {
     type: types.SEND_MESSAGE,
+    data,
+  };
+};
+//查询消息
+export const getMessage = (data) => {
+  return {
+    type: types.GET_MESSAGE,
+    data,
+  };
+};
+//查询事件
+export const getTaskList = (data) => {
+  return {
+    type: types.GET_TASKEVENT_LIST,
+    data,
+  };
+};
+//事件详情
+export const setTaskInfo = (data) => {
+  return {
+    type: types.SET_TASK_INFO,
+    data,
+  };
+};
+//新增事件
+export const addTaskEvent = (data) => {
+  return {
+    type: types.ADD_TASK_EVENT,
+    data,
+  };
+};
+//新增事件
+export const setModalVislble = (data) => {
+  return {
+    type: types.SET_MODAL_VISIBLE,
+    data,
+  };
+};
+//改变input值
+export const changeTaskInput = (data) => {
+  return {
+    type: types.CHANGE_TASK_INPUT,
+    data,
+  };
+};
+//专家调度弹窗
+export const setExpertModal = (data) => {
+  return {
+    type: types.SET_EXPERT_MODAL,
+    data,
+  };
+};
+//定位
+export const getFloodAddress = (data) => {
+  return {
+    type: types.GET_FLOOD_ADDRESS,
+    data,
+  };
+};
+//所有防汛人员
+export const getAllFloodUser = (data) => {
+  return {
+    type: types.GET_FLOOD_USER,
+    data,
+  };
+};
+//根据事件查询已调度专家
+export const getTaskDispatchExpert = (data) => {
+  return {
+    type: types.GET_TASK_DISPATCH_EXPERT,
+    data,
+  };
+};
+//新增专家调度
+export const addExpertDispatch = (data) => {
+  return {
+    type: types.ADD_EXPERT_DISPATCH,
     data,
   };
 };

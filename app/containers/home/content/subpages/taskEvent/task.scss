@@ -1,0 +1,108 @@
+.task-list-head {
+  display: flex;
+  align-items: center;
+  input {
+    width: 300px;
+  }
+  button {
+    margin-left: 10px;
+  }
+}
+.task-list-card {
+  width: 100%;
+  .ant-card-bordered {
+    margin-left: 8px;
+    margin-bottom: 8px;
+    height: 300px;
+    width: 16vw;
+  }
+}
+.task-display {
+  display: flex;
+  // align-items: center;
+  justify-content: space-between;
+  color: red;
+  .task-display-left {
+    width: 60vw;
+  }
+  .task-display-right {
+    width: 40vw;
+  }
+}
+.task-voerflow {
+  height: 200px;
+  width: 100%;
+  overflow: auto;
+  // background: #eeeeee;
+}
+.task-info-modal {
+  z-index: 99;
+  position: absolute;
+  top: 150px;
+  width: 400px;
+}
+.task-info-fotter-center {
+  display: flex;
+  justify-content: center;
+}
+.task-info-fotter {
+  margin: 0 auto;
+  width: 800px;
+  position: absolute;
+  justify-content: space-around;
+  bottom: 0px;
+  display: flex;
+  div {
+    width: 90px;
+  }
+  .task-info-fotter-div {
+    cursor: pointer;
+  }
+  .task-info-fotter-text {
+    color: black;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .task-info-fotter-message {
+    border-radius: 50%;
+    border: 1px solid #8c8c8c;
+    width: 90px;
+    height: 90px;
+    background: white;
+  }
+}
+.expert-dispatch {
+  display: flex;
+  .expert-dispatch-left {
+    width: 70%;
+    .expert-select{
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  .expert-dispatch-right {
+    width: 30%;
+  }
+}
+.expert-dispatch-close {
+  position: absolute;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.expert-dispatch-right-div {
+  overflow: scroll;
+  width: 100%;
+  height: 800px;
+}
+.expert-right-button {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 150px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}

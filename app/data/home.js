@@ -318,8 +318,41 @@ export function getCountStation(data) {
   //  return fetchJSONData("POST", "/count/getCountStation", data);
   return fetchJSONData("POST", "/base/SiteBase/getCountStation", data);
 }
+//发送消息
 export function sendMessage(data) {
   return fetchJSONData("POST", "/base/TaskMessage/save", data);
+}
+//查询消息
+export function getMessage(data) {
+  return fetchJSONData("POST", "/base/TaskMessage/query", data);
+}
+//查询事件
+export function getTaskList(data) {
+  return fetchJSONData("POST", "/base/TaskEvents/page", data);
+}
+//新增事件
+export function addTaskEvent(data) {
+  return fetchJSONData("POST", "/base/TaskEvents/save", data);
+}
+//查询防汛队伍下的防汛人员
+export function getFloodRanksAll(data) {
+  return fetchJSONData("POST", "/base/FloodRanks/getAll", data);
+}
+//查询人员/设备定位
+export function getFloodAddress(data) {
+  return fetchJSONData("POST", "/base/DevicePosition/real", data);
+}
+// 获取所有防汛人员信息
+export function getfloodUser(data) {
+  return fetchJSONData("POST", "/base/floodUser/getAll", data);
+}
+// 根据事件查询已调度专家
+export function getTaskDispatchExpert(data) {
+  return fetchJSONData("POST", "/base/TaskFloodcontrolexpert/query", data);
+}
+// 新增专家调度
+export function addExpertDispatch(data) {
+  return fetchJSONData("POST", "/base/TaskFloodcontrolexpert/save", data);
 }
 // 获取卫星云图
 //  export function getSatellite(data) {

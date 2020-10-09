@@ -42,5 +42,23 @@ export const SET_DICT = "SET_DICT"; //设置字典
 export const GET_COUNT_STATION = "GET_COUNT_STATION"; //获取站点来源  getCountStation
 export const SET_COUNT_STATION = "SET_COUNT_STATION"; //设置数据
 
-export const GET_FLOOD_EXPERT = "GET_FLOOD_EXPERT";//防汛专家
-export const SEND_MESSAGE = "SEND_MESSAGE";//发送消息
+export const GET_FLOOD_EXPERT = "GET_FLOOD_EXPERT"; //防汛专家
+export const GET_FLOOD_RANK_USER = "GET_FLOOD_RANK_USER"; //防汛队伍
+export const SET_TASK_INFO = "SET_TASK_INFO"; //事件详情
+export const SEND_MESSAGE = "SEND_MESSAGE"; //发送消息
+export const GET_MESSAGE = "GET_MESSAGE"; //查询消息
+export const SET_MESSAGE = "SET_MESSAGE"; //设置消息
+export const GET_TASKEVENT_LIST = "GET_TASKEVENT_LIST"; //分页查询事件
+export const SET_TASKEVENT_LIST = "SET_TASKEVENT_LIST"; //设置事件
+export const ADD_TASK_EVENT = "ADD_TASK_EVENT"; //新增事件
+export const SET_MODAL_VISIBLE = "SET_MODAL_VISIBLE"; //弹窗
+export const CHANGE_TASK_INPUT = "CHANGE_TASK_INPUT"; //查询事件
+
+export const SET_EXPERT_MODAL = "SET_EXPERT_MODAL"; //专家调度弹窗
+export const GET_FLOOD_ADDRESS = "GET_FLOOD_ADDRESS"; //定位
+export const SET_FLOOD_ADDRESS = "SET_FLOOD_ADDRESS"; //定位
+export const GET_FLOOD_USER = "GET_FLOOD_USER"; //所有防汛人员
+
+export const GET_TASK_DISPATCH_EXPERT = "GET_TASK_DISPATCH_EXPERT"; //根据事件查询已调度专家
+export const SET_TASK_DISPATCH_EXPERT = "SET_TASK_DISPATCH_EXPERT";
+export const ADD_EXPERT_DISPATCH = "ADD_EXPERT_DISPATCH"; //新增专家调度

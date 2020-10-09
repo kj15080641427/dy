@@ -88,7 +88,9 @@ class Menus extends React.PureComponent {
               <Menu.Item key="/siteGate">闸信息</Menu.Item>
             </SubMenu>
             <SubMenu key="sub6" icon={<MailOutlined />} title="任务调度">
-              <Menu.Item key="/chart">任务调度</Menu.Item>
+              <Menu.Item key="/message">发送消息</Menu.Item>
+              <Menu.Item key="/taskList">事件中心</Menu.Item>
+              {/* <Menu.Item key="/taskInfo">事件信息</Menu.Item> */}
             </SubMenu>
           </Menu>
         </div>

@@ -32,7 +32,10 @@ import SiteWaterPonit from "./subpages/site/siteWaterPoint";
 import SiteReservoir from "./subpages/site/siteReservoir";
 import SiteDike from "./subpages/site/siteDike";
 import SiteGate from "./subpages/site/siteGate";
-import Chart from "./subpages/site/task";
+import TaskMessage from "./subpages/taskEvent/taskMessage";
+import TaskList from "./subpages/taskEvent/taskList";
+import TaskInfo from "./subpages/taskEvent/taskInfo";
+import ExpertDispatch from "./subpages/taskEvent/expertDispatch";
 const NoMatch = () => <div>没有找到该路由</div>;
 
 class ContentRouter extends React.PureComponent {
@@ -102,7 +105,13 @@ class ContentRouter extends React.PureComponent {
                   component={SiteReservoir}
                 />
                 <Route path={path + "/siteGate"} component={SiteGate} />
-                <Route path={path + "/chart"} component={Chart} />
+                <Route path={path + "/message"} component={TaskMessage} />
+                <Route path={path + "/taskList"} component={TaskList} />
+                <Route path={path + "/taskInfo"} component={TaskInfo} />
+                <Route
+                  path={path + "/expertDispatch"}
+                  component={ExpertDispatch}
+                />
               </>
             )}
           </>

@@ -316,6 +316,7 @@ function* getFloodExpert() {
       yield put({
         type: types.SET_FLOOD_EXPERT,
         data: {
+          all: result.data,
           city: city,
           citySelect: citySelect,
           countySelect: countySelect,

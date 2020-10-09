@@ -133,7 +133,7 @@ function* showSiteRelationModal({ data }) {
       siteDictionariesID: data,
     });
     if (result.code == successCode) {
-      console.log(result.data.records, "result");
+      console.log(result);
     }
   } catch (e) {
     console.error(e);
@@ -181,7 +181,7 @@ function* readOnlyGetAll({ data }) {
 function* getDict() {
   try {
     const result = yield call(req.getSiteDict, { current: 1, size: -1 });
-    if ((result.code = successCode)) {
+    if (result.code == successCode) {
       let obj = {};
       result.data.records.map((item) => {
         obj[item.stateRelationID] = item.name;
@@ -199,8 +199,136 @@ function* getDict() {
 function* sendMessage({ data }) {
   try {
     let result = yield call(req.sendMessage, data);
-    if (result.code == 200) {
-      console.log(result);
+    if (result.code == successCode) {
+      message.success("发送成功");
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+//查询消息
+function* getMessage() {
+  try {
+    let result = yield call(req.getMessage, {});
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_MESSAGE,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+function* getTaskList({ data }) {
+  try {
+    let result = yield call(req.getTaskList, data);
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_TASKEVENT_LIST,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+//新增事件
+function* addTaskEvent({ data }) {
+  try {
+    const result = yield call(req.addTaskEvent, data);
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_MODAL_VISIBLE,
+        data: false,
+      });
+      yield put({
+        type: types.CHANGE_TASK_INPUT,
+        data: "",
+      });
+      yield put({
+        type: types.GET_TASKEVENT_LIST,
+        data: {
+          current: 1,
+          name: "",
+          size: 10,
+        },
+      });
+      message.success("新增成功");
+    } else {
+      message.warning(result.msg);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+// //发送专家消息
+// function* sendExpertMessage({ data }) {
+//   try {
+//     const result = yield call(req.sendMessage, data);
+//     if (result.code == successCode) {
+//       message.success("发送成功");
+//       yield put({
+//         type: types.SET_EXPERT_MODAL,
+//         data: false,
+//       });
+//     } else {
+//       message.error(result.msg);
+//     }
+//   } catch (e) {
+//     console.error(e);
+//   }
+// }
+//定位
+function* getFloodAddress() {
+  try {
+    const result = yield call(req.getFloodAddress, { current: 1, size: -1 });
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_FLOOD_ADDRESS,
+        data: result.data,
+      });
+    } else {
+      message.error(result.msg);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+//根据事件查询已调度专家
+function* getTaskDispatchExpert({ data }) {
+  try {
+    const result = yield call(req.getTaskDispatchExpert, {
+      taskEventsID: data,
+    });
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_TASK_DISPATCH_EXPERT,
+        data: result.data,
+      });
+    } else {
+      message.error(result.msg);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+//新增专家调度
+function* addExpertDispatch({ data }) {
+  try {
+    const result = yield call(req.addExpertDispatch, data);
+    if (result.code == successCode) {
+      message.success("成功");
+      yield put({
+        type: types.SET_EXPERT_MODAL,
+        data: false,
+      });
+      yield put({
+        type: types.GET_TASK_DISPATCH_EXPERT,
+        data: data[0].taskEventsID,
+      });
+    } else {
+      message.error(result.msg);
     }
   } catch (e) {
     console.error(e);
@@ -218,6 +346,12 @@ export default function* management() {
     takeEvery(types.ADD_SITE_RELATION, addSiteRelation),
     takeEvery(types.GET_DICT, getDict),
     takeEvery(types.SEND_MESSAGE, sendMessage),
-    // takeEvery(types.GET_COUNT_STATION, getCountStation),
+    takeEvery(types.GET_TASKEVENT_LIST, getTaskList),
+    takeEvery(types.ADD_TASK_EVENT, addTaskEvent),
+    takeEvery(types.GET_MESSAGE, getMessage),
+    // takeEvery(types.SEND_EXPERT_MESSAGE, sendExpertMessage),
+    takeEvery(types.GET_FLOOD_ADDRESS, getFloodAddress),
+    takeEvery(types.GET_TASK_DISPATCH_EXPERT, getTaskDispatchExpert),
+    takeEvery(types.ADD_EXPERT_DISPATCH, addExpertDispatch),
   ]);
 }

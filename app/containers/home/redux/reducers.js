@@ -18,6 +18,9 @@ const initState = {
   modalVisible: false,
   readOnlyData: [],
   selected: [],
+  taskModalVisible: false,
+  expertVisible: false,
+  floodAddress: [],
 };
 
 export default function management(state = initState, action) {
@@ -76,6 +79,30 @@ export default function management(state = initState, action) {
           vodeocount: action.data[3],
         },
       };
+      break;
+    case types.SET_TASKEVENT_LIST:
+      newState = { ...newState, taskList: action.data };
+      break;
+    case types.SET_MODAL_VISIBLE:
+      newState = { ...newState, taskModalVisible: action.data };
+      break;
+    case types.CHANGE_TASK_INPUT:
+      newState = { ...newState, taskInput: action.data };
+      break;
+    case types.SET_MESSAGE:
+      newState = { ...newState, messageList: action.data };
+      break;
+    case types.SET_TASK_INFO:
+      newState = { ...newState, taskInfo: action.data };
+      break;
+    case types.SET_EXPERT_MODAL:
+      newState = { ...newState, expertVisible: action.data };
+      break;
+    case types.SET_FLOOD_ADDRESS:
+      newState = { ...newState, floodAddress: action.data };
+      break;
+    case types.SET_TASK_DISPATCH_EXPERT:
+      newState = { ...newState, dispatchExpert: action.data };
       break;
     default:
       break;
