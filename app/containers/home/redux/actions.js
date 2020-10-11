@@ -285,3 +285,61 @@ export const addExpertDispatch = (data) => {
     data,
   };
 };
+//根据事件查询已调度人员
+export const getUserDispatch = (data) => {
+  return {
+    type: types.GET_USER_DISPATCH,
+    data,
+  };
+};
+//新增人员调度
+export const addUserDispatch = (data) => {
+  return {
+    type: types.ADD_USER_DISPATCH,
+    data,
+  };
+};
+//根据事件查询已调度物资
+export const getMaterialDispatch = (data) => {
+  return {
+    type: types.GET_MATERIAL_DISPATCH,
+    data,
+  };
+};
+//新增物资调度
+export const addMaterialDispatch = (data) => {
+  return {
+    type: types.ADD_MATERIAL_DISPATCH,
+    data,
+  };
+};
+
+//调度list组件
+export const changeTaskRenderList = (data) => {
+  return {
+    type: types.CHANGE_TASK_RENDER_LIST,
+    data,
+  };
+};
+
+//单选框组件
+export const changeTaskRadioType = (data) => {
+  return {
+    type: types.CHANGE_TASK_RADIO,
+    data,
+  };
+};
+
+//获取防汛仓库
+export const getWarehouse = (data) => {
+  return {
+    type: types.GET_WAREHOUSE,
+    data,
+  };
+}; //选择人员
+export const setFormUser = (data) => {
+  return {
+    type: types.SET_FORM_USER,
+    data,
+  };
+};

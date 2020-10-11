@@ -1,6 +1,7 @@
 .task-list-head {
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
   input {
     width: 300px;
   }
@@ -10,10 +11,41 @@
 }
 .task-list-card {
   width: 100%;
+  .task-list-card-text-margin{
+    // margin-bottom: 15px;
+    line-height: 25px;
+  }
+  .task-list-card-remark {
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+  }
+  // .task-list-card-remark:hover {
+  //   text-overflow: inherit;
+  //   overflow: visible;
+  //   white-space: pre-line;
+  // }
+  .task-list-card-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .task-list-card-footer {
+    display: flex;
+  }
+  a {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    padding: 0 5px;
+  }
   .ant-card-bordered {
     margin-left: 8px;
     margin-bottom: 8px;
-    height: 300px;
+    height: 350px;
     width: 16vw;
   }
 }
@@ -23,16 +55,34 @@
   justify-content: space-between;
   color: red;
   .task-display-left {
-    width: 60vw;
+    width: 50vw;
+    .ant-card-bordered {
+      height: 100%;
+      margin-right: 30px;
+    }
   }
   .task-display-right {
-    width: 40vw;
+    width: 50vw;
+    .ant-card-bordered {
+      height: 100%;
+    }
+    .ant-card-body {
+      padding: 12px;
+    }
   }
 }
 .task-voerflow {
-  height: 200px;
+  height: 100px;
   width: 100%;
-  overflow: auto;
+  // display: flex;
+  // align-items: center;
+  // justify-content: flex-start;
+  .ant-select-selector {
+    // margin-top: 50px;
+    width: 100%;
+    min-width: 350px;
+  }
+  // overflow: auto;
   // background: #eeeeee;
 }
 .task-info-modal {
@@ -40,6 +90,8 @@
   position: absolute;
   top: 150px;
   width: 400px;
+  // right: 20px;
+  margin-left: 20px;
 }
 .task-info-fotter-center {
   display: flex;
@@ -76,7 +128,7 @@
   display: flex;
   .expert-dispatch-left {
     width: 70%;
-    .expert-select{
+    .expert-select {
       display: flex;
       justify-content: space-between;
     }
@@ -105,4 +157,19 @@
   left: 0;
   right: 0;
   margin: 0 auto;
+}
+.model-form-scroll {
+  .ant-tree-list-holder-inner {
+    overflow: scroll;
+    height: 300px;
+  }
+}
+.site-tree-search-value {
+  color: #f50;
+}
+.tree-select-input {
+  .ant-select-multiple.ant-select-allow-clear .ant-select-selector {
+    overflow: scroll;
+    max-height: 110px;
+  }
 }

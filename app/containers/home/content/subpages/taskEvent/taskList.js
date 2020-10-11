@@ -11,13 +11,15 @@ import {
   Card,
   Col,
   Row,
+  Popover,
 } from "antd";
 import DYForm from "@app/components/home/form";
 import moment from "moment";
 import "./task.scss";
 import { taskListform } from "./cconfig";
 const hashHistory = createHashHistory();
-
+const taskState = ["新事件", "进行中", "事件终止", "事件结束"];
+const taskStateColor = ["#DE7D0C", "#000AFF", "black", "#0F8A4F"];
 const TaskList = (props) => {
   const { taskList, taskModalVisible, taskInput } = props;
   const {
@@ -77,21 +79,45 @@ const TaskList = (props) => {
           {taskList?.records?.map((item) => {
             return (
               <Col key={item.taskEventsID}>
-                <Card title={item.name}>
-                  <div>事件时间:{item.happenTime}</div>
-                  <div>事发地点:{item.address}</div>
-                  <div>
-                    <div> 事件描述:</div>
-                    {item.remark}
+                <Card
+                  title={
+                    <div className="task-list-card-title">
+                      <div>{item.name}</div>
+                      <div
+                        style={{
+                          color: taskStateColor[item.state],
+                          fontSize: "14px",
+                        }}
+                      >
+                        {taskState[item.state]}
+                      </div>
+                    </div>
+                  }
+                >
+                  <div className="task-list-card-text-margin">
+                    时间：{item.happenTime?.substring(0, 16)}
                   </div>
-                  <Button
-                    onClick={() => {
-                      setTaskInfo(item);
-                      hashHistory.push("/home/taskInfo");
-                    }}
-                  >
-                    进入事件
-                  </Button>
+                  <div className="task-list-card-text-margin">
+                    地点：{item.address}
+                  </div>
+                  <div className="task-list-card-text-margin">
+                    <div> 事件描述：</div>
+                    <div className="task-list-card-remark">
+                      {" "}
+                      &nbsp;&nbsp; &nbsp;&nbsp;{" "}
+                      <Popover content={item.remark}>{item.remark}</Popover>
+                    </div>
+                  </div>
+                  <div className="task-list-card-footer">
+                    <a
+                      onClick={() => {
+                        setTaskInfo(item);
+                        hashHistory.push("/home/taskInfo");
+                      }}
+                    >
+                      进入事件
+                    </a>
+                  </div>
                 </Card>
               </Col>
             );

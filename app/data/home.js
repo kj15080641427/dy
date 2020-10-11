@@ -346,6 +346,7 @@ export function getFloodAddress(data) {
 export function getfloodUser(data) {
   return fetchJSONData("POST", "/base/floodUser/getAll", data);
 }
+
 // 根据事件查询已调度专家
 export function getTaskDispatchExpert(data) {
   return fetchJSONData("POST", "/base/TaskFloodcontrolexpert/query", data);
@@ -354,6 +355,25 @@ export function getTaskDispatchExpert(data) {
 export function addExpertDispatch(data) {
   return fetchJSONData("POST", "/base/TaskFloodcontrolexpert/save", data);
 }
+
+// 根据事件查询已调度人员
+export function getUserDispatch(data) {
+  return fetchJSONData("POST", "/base/TaskFlooduser/query", data);
+}
+// 新增人员调度
+export function addUserDispatch(data) {
+  return fetchJSONData("POST", "/base/TaskFlooduser/save", data);
+}
+
+// 根据事件查询已调度物资
+export function getMaterialDispatch(data) {
+  return fetchJSONData("POST", "/base/TaskMaterial/query", data);
+}
+// 新增物资调度
+export function addMaterialDispatch(data) {
+  return fetchJSONData("POST", "/base/TaskMaterial/save", data);
+}
+
 // 获取卫星云图
 //  export function getSatellite(data) {
 //    return fetchJSONData("POST", "/base/satellite/getSatellite", data);

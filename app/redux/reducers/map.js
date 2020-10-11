@@ -118,7 +118,15 @@ export default function mapAboutReducers(state = initState, action) {
       newState = { ...newState, floodRain: list };
       break;
     case types.SET_WAREHOUSE:
-      newState = { ...newState, wareHouse: action.data };
+      let wareHouseTask = {};
+      action.data.map((item) => {
+        wareHouseTask[item.code] = item.materialList;
+      });
+      newState = {
+        ...newState,
+        wareHouse: action.data,
+        wareHouseTask: wareHouseTask,
+      };
       break;
     case types.SET_FLOOD_USER:
       action.data[1].phone = "18159774272";
@@ -140,7 +148,37 @@ export default function mapAboutReducers(state = initState, action) {
         5: [],
         6: [],
       };
+      let floodRanksUser = {
+        city: [],
+        dy: [],
+        gr: [],
+        lj: [],
+        hk: [],
+        kl: [],
+      };
       action.data.map((item) => {
+        switch (item.name) {
+          case "市级防汛应急抢险队":
+            floodRanksUser.city = item.userList;
+            break;
+          case "东营区防汛应急抢险队":
+            floodRanksUser.dy = item.userList;
+            break;
+          case "垦利区防汛应急抢险队":
+            floodRanksUser.kl = item.userList;
+            break;
+          case "利津县防汛应急抢险队":
+            floodRanksUser.jl = item.userList;
+            break;
+          case "河口区防汛应急抢险队":
+            floodRanksUser.hk = item.userList;
+            break;
+          case "广饶县防汛应急抢险队":
+            floodRanksUser.gr = item.userList;
+            break;
+          default:
+            break;
+        }
         count = count + item.userList.length;
         item.userList.map((t) => {
           // console.log([`rank${item.floodRanksId}`][0]);
@@ -150,6 +188,7 @@ export default function mapAboutReducers(state = initState, action) {
       newState = {
         ...newState,
         floodRanks: action.data,
+        floodRanksUser: floodRanksUser,
         expertCount: count,
         rankSelect: rankSelect,
       };

@@ -11,6 +11,7 @@ import {
   SELECT_TABLE,
 } from "./types";
 import * as types from "./types";
+import { abstract } from "ol/util";
 const initState = {
   loading: false,
   readOnlyLoading: false,
@@ -21,6 +22,11 @@ const initState = {
   taskModalVisible: false,
   expertVisible: false,
   floodAddress: [],
+  listRender: [],
+  taskRadioType: "city",
+  dispatchUser: [],
+  dispatchMaterial: [],
+  materialWarehouseID: [],
 };
 
 export default function management(state = initState, action) {
@@ -104,9 +110,26 @@ export default function management(state = initState, action) {
     case types.SET_TASK_DISPATCH_EXPERT:
       newState = { ...newState, dispatchExpert: action.data };
       break;
+    case types.CHANGE_TASK_RENDER_LIST:
+      newState = { ...newState, listRender: action.data };
+      break;
+    case types.CHANGE_TASK_RADIO:
+      newState = { ...newState, taskRadioType: action.data };
+      break;
+    case types.SET_USER_DISPATCH:
+      newState = { ...newState, dispatchUser: action.data };
+      break;
+    case types.SET_MATERIAL_DISPATCH:
+      console.log(action.data, "DDs");
+      newState = { ...newState, dispatchMaterial: action.data };
+      break;
+    case types.SET_FORM_USER:
+      let a = [];
+      a.push(...action.data);
+      newState = { ...newState, formUser: a };
+      break;
     default:
       break;
   }
-  // console.log(newState, "NEWSTATE");
   return newState;
 }

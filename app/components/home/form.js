@@ -9,17 +9,24 @@ const DYForm = (props) => {
     formRef,
     id,
     showCancel = false,
-    cancelClick
+    cancelClick,
   } = props;
 
   return (
-    <Form name={name} onFinish={onFinish} ref={formRef}>
+    <Form
+      name={name}
+      onFinish={onFinish}
+      ref={formRef}
+      labelCol={{ span: 5 }}
+    >
       {formItem.map((item, index) => (
         <Form.Item
+          labelAlign="right"
           label={item.label}
           name={item.name}
           key={index}
           rules={item.rules}
+          width={item.width}
           // required
         >
           {item.ele}
@@ -37,7 +44,9 @@ const DYForm = (props) => {
             提交
           </Button>
           {showCancel ? (
-            <Button style={{ marginLeft: "50px" }} onClick={cancelClick}>取消</Button>
+            <Button style={{ marginLeft: "50px" }} onClick={cancelClick}>
+              取消
+            </Button>
           ) : (
             ""
           )}

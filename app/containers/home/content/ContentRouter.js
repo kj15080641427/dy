@@ -36,6 +36,8 @@ import TaskMessage from "./subpages/taskEvent/taskMessage";
 import TaskList from "./subpages/taskEvent/taskList";
 import TaskInfo from "./subpages/taskEvent/taskInfo";
 import ExpertDispatch from "./subpages/taskEvent/expertDispatch";
+import UserDispatch from "./subpages/taskEvent/userDispatch";
+import MaterialDispatch from "./subpages/taskEvent/materialDispatch";
 const NoMatch = () => <div>没有找到该路由</div>;
 
 class ContentRouter extends React.PureComponent {
@@ -112,6 +114,11 @@ class ContentRouter extends React.PureComponent {
                   path={path + "/expertDispatch"}
                   component={ExpertDispatch}
                 />
+                <Route path={path + "/userDispatch"} component={UserDispatch} />
+                <Route
+                  path={path + "/materialDispatch"}
+                  component={MaterialDispatch}
+                />
               </>
             )}
           </>
@@ -120,6 +127,5 @@ class ContentRouter extends React.PureComponent {
       </Switch>
     );
   }
-  componentDidMount() {}
 }
 export default ContentRouter;
