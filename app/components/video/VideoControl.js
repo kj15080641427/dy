@@ -1,7 +1,7 @@
 import { getRotateRadio } from "@app/data/request";
 
 //视频站点服务器的地址
-const videoSvrUrl = 'http://172.19.112.74:8888/';
+const videoSvrUrl = 'http://218.56.180.250:9108/';
 /**
  * 登录请求
  * @type {string}
@@ -60,7 +60,7 @@ export default class VideoControl{
     return this.isLogin;
   }
 
-  /** 
+  /**
    * 操作摄像头
    * token 摄像头的token值
    * action ： up/down/left/right/zoomin/zoomout
