@@ -30,6 +30,7 @@ const ModalForm = (props) => {
     name: "user",
     ele: (
       <TreeSelected
+        placeholderInfo="点击选择防汛人员"
         treeData={treeData}
         onChange={(value) => setFormUser(value)}
       />
@@ -57,7 +58,7 @@ const ModalForm = (props) => {
   );
 };
 const mapStateToProps = (state) => {
-  console.log(state, "SSSTATA");
+  // console.log(state, "SSSTATA");
   return {
     floodRanks: state.mapAboutReducers.floodRanks,
     listRender: state.management.listRender,

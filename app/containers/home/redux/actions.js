@@ -336,10 +336,19 @@ export const getWarehouse = (data) => {
     type: types.GET_WAREHOUSE,
     data,
   };
-}; //选择人员
+};
+//选择人员
 export const setFormUser = (data) => {
   return {
     type: types.SET_FORM_USER,
+    data,
+  };
+};
+
+//选择table输入框
+export const setMaterialTableInput = (data) => {
+  return {
+    type: types.SET_MATERIAL_TABLE_INPUT,
     data,
   };
 };

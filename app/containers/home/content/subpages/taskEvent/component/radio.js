@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button, Radio, Table, InputNumber } from "antd";
+import { Card, Button, Radio, Table, InputNumber, message } from "antd";
 import { connect } from "react-redux";
 import * as action from "../../../../redux/actions";
 import { bindActionCreators } from "redux";
@@ -16,11 +16,15 @@ const TaskRadio = (props) => {
     rowKey,
     isMaterial = false,
     addAll = true,
+    tableNumber,
   } = props;
-  const { changeTaskRenderList, changeTaskRadioType } = props.actions;
-  const [number, setNumber] = useState({});
+  const {
+    changeTaskRenderList,
+    changeTaskRadioType,
+    setMaterialTableInput, //table选择数量
+  } = props.actions;
   const filterSelect = (data) => {
-    return listRender.filter((item) => item == data);
+    return listRender.filter((item) => item.materialId == data.materialId);
   };
 
   const addColumns = {
@@ -32,15 +36,7 @@ const TaskRadio = (props) => {
           min={0}
           max={row.saveTotal}
           onChange={(e) => {
-            let a = {};
-            dataSource[taskRadioType].map((item) => {
-              if (item.materialId == row.materialId) {
-                const id = item.materialId;
-                a[id] = e;
-                item = { ...item, number: e };
-              }
-            });
-            setNumber(a);
+            setMaterialTableInput({ row: row, number: e });
           }}
         />
       );
@@ -52,15 +48,18 @@ const TaskRadio = (props) => {
     render: (row) => (
       <a
         onClick={() => {
-          for (let i in number) {
-            if ((row.materialId = number[i])) {
-              row.number = number[i];
+          tableNumber.map((item) => {
+            if (item.materialId == row.materialId) {
+              row = { ...item };
             }
-            // console.log(i, number[i]);
+          });
+          if (row.number) {
+            filterSelect(row)[0]
+              ? ""
+              : changeTaskRenderList([...listRender, row]);
+          } else {
+            message.error(`请选择${row.name}数量`);
           }
-          filterSelect(row)[0]
-            ? ""
-            : changeTaskRenderList([...listRender, row]);
         }}
       >
         添加
@@ -113,6 +112,8 @@ const mapStateToProps = (state) => {
   return {
     taskRadioType: state.management.taskRadioType,
     listRender: state.management.listRender,
+    tasMaterialkUser: state.taskReducers.tasMaterialkUser,
+    tableNumber: state.taskReducers.tableNumber, //物资数量
   };
 };
 const mapDispatchToProps = (dispatch) => {

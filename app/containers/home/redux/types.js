@@ -79,3 +79,6 @@ export const SET_WAREHOUSE = "WARE_WAREHOUSE";
 
 //选择人员
 export const SET_FORM_USER = "SET_FORM_USER";
+
+//选择物资
+export const SET_MATERIAL_TABLE_INPUT = "SET_MATERIAL_TABLE_INPUT";

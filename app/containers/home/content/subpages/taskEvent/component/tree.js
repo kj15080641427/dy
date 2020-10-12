@@ -16,7 +16,7 @@ class TreeSelected extends React.Component {
   };
 
   render() {
-    const { treeData, onChange } = this.props;
+    const { treeData, onChange, placeholderInfo } = this.props;
     return (
       <div className="tree-select-input">
         <TreeSelect
@@ -25,7 +25,7 @@ class TreeSelected extends React.Component {
           style={{ width: "100%" }}
           value={this.props.formUser}
           dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
-          placeholder="Please select"
+          placeholder={placeholderInfo}
           allowClear
           multiple
           treeDefaultExpandAll

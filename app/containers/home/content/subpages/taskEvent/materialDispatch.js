@@ -31,7 +31,7 @@ const MaterialDispatch = (props) => {
 
   useEffect(() => {
     if (taskInfo) {
-      getMaterialDispatch(taskInfo.taskEventsID);
+      getMaterialDispatch(taskInfo?.taskEventsID);
       getWarehouse();
       changeTaskRadioType("c6153f34ba574fd693977e4aa265ef05");
     } else {
@@ -48,7 +48,7 @@ const MaterialDispatch = (props) => {
     };
   });
   const onFinish = (data) => {
-    console.log(formUser, "formUser");
+    // console.log(formUser, "formUser");
     let formData = {
       flooduserList: formUser.map((item) => item.split("|")[1]),
       ...data,

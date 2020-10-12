@@ -116,6 +116,7 @@ const Task = (props) => {
                   <Descriptions.Item span={3} label={"防汛专家"}>
                     <div className="task-voerflow">
                       <TreeSelected
+                        placeholderInfo="点击选择防汛专家"
                         onChange={(value) => setSelectExpert(value)}
                         treeData={[
                           {
@@ -140,6 +141,7 @@ const Task = (props) => {
                   <Descriptions.Item span={3} label={"防汛人员"}>
                     <div className="task-voerflow">
                       <TreeSelected
+                        placeholderInfo="点击选择防汛人员"
                         onChange={(value) => setSelectFloodUser(value)}
                         treeData={floodRanks?.map((item) => {
                           return {
@@ -171,7 +173,7 @@ const Task = (props) => {
                       ele: <Input></Input>,
                     },
                     {
-                      label: '内容',
+                      label: "内容",
                       name: "content",
                       rules: [{ required: true }],
                       ele: (
