@@ -5,20 +5,23 @@ import * as actions from "@app/redux/actions/map";
 import Map from "./map/map";
 import "./style.scss";
 import Head from "./head/Head";
-import WeatherTable from "./left/WeatherTable";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
 import { Drawer, Row, Divider, Checkbox, Tabs } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
+import VideoComponent from "../../components/video/VideoComponent";
+import VideoControl from "../../components/video/VideoControl";
 import videoImg from "@app/resource/icon/video.png";
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
-import { pieChart, lineChart, barChart } from "../../components/chart/chart";
+import { pieChart, barChart } from "../../components/chart/chart";
 import VideoInfo from "./tabs";
 const { TabPane } = Tabs;
+
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
+    this.videoControl = new VideoControl();
     this.state = {
       showLeft: true,
       showRight: true,
@@ -55,8 +58,8 @@ class Monitor extends React.PureComponent {
     });
   };
   componentDidMount() {
+    this.setState({});
     this.props.actions.getCountStation();
-    // lineChart("line-chart", [2, 3, 4, 2], 450);
   }
   componentDidUpdate(pre) {
     const { video, count } = this.props;
@@ -222,7 +225,12 @@ class Monitor extends React.PureComponent {
               </RenderBox>
               <div className="video-img-box">
                 <RenderBox>
-                  <img src={videoImg} width="530px" height="340px"></img>
+                  <VideoComponent
+                    videoControl={this.videoControl}
+                    token={"ea7e--37050118581314000068"}
+                    type={1}
+                  ></VideoComponent>
+                  {/* <img src={videoImg} width="530px" height="340px"></img> */}
                 </RenderBox>
               </div>
               {/* <div className="video-line-box">
@@ -310,7 +318,6 @@ class Monitor extends React.PureComponent {
 }
 
 function mapStateToProps(state) {
-  console.log(state, "STATE");
   return {
     count: state.mapAboutReducers.count,
     video: state.monitor.video,

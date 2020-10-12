@@ -1,7 +1,7 @@
 import { getRotateRadio } from "@app/data/request";
 
 //视频站点服务器的地址
-const videoSvrUrl = 'http://218.56.180.250:9108/';
+const videoSvrUrl = "http://218.56.180.250:9108/";
 /**
  * 登录请求
  * @type {string}
@@ -14,9 +14,8 @@ const loginUrl = `${videoSvrUrl}api/v1/Login?user=admin&password=827ccb0eea8a706
 /**
  * 表示与视频服务器通讯的对象
  */
-export default class VideoControl{
-
-  constructor(){
+export default class VideoControl {
+  constructor() {
     this.isLogin = false;
     this.session = null;
   }
@@ -27,25 +26,25 @@ export default class VideoControl{
    * @param pwd 登录密码（密码的MD5)
    * @returns {Promise<any>}
    */
-  login(userName, pwd){
+  login(userName, pwd) {
     let _this = this;
 
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       //发送登录请求
       fetch(loginUrl)
-        .then(data => data.json())
-        .then(result => {
+        .then((data) => data.json())
+        .then((result) => {
           _this.isLogin = result.bStatus;
 
-          if(result.bStatus === true){
+          if (result.bStatus === true) {
             _this.session = result.strSession;
             resolve(result.strSession);
             //this.setState({sessionId: result.strSession})
           } else {
-            reject('登录失败');
+            reject("登录失败");
           }
         })
-        .catch(error => {
+        .catch((error) => {
           _this.isLogin = false;
           reject(error);
         });
@@ -56,7 +55,7 @@ export default class VideoControl{
    * 获取登录状态
    * @returns {boolean} true 已经登录， false 未登录
    */
-  getLoginStatus(){
+  getLoginStatus() {
     return this.isLogin;
   }
 
@@ -64,25 +63,24 @@ export default class VideoControl{
    * 操作摄像头
    * token 摄像头的token值
    * action ： up/down/left/right/zoomin/zoomout
-  */
+   */
   Ptz({ token, action }) {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       getRotateRadio({ token, action })
-        .then(result => resolve(result))
-        .catch(e => reject(e));
-     });
+        .then((result) => resolve(result))
+        .catch((e) => reject(e));
+    });
   }
 
   /**
    * 获取登录的session
    * @returns {}
    */
-  getSession(){
-    if(this.getLoginStatus()){
+  getSession() {
+    if (this.getLoginStatus()) {
       return this.session;
     }
 
     return null;
   }
-
 }

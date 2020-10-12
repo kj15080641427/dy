@@ -118,6 +118,7 @@ export const TabsList = (props) => {
           },
         ]}
         dataSource={dataSource}
+        rowKey={(row) => row.radioID}
       />
     </>
   );

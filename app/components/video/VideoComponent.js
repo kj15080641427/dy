@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class VideoComponent extends Component {
   constructor(props) {
@@ -6,17 +6,21 @@ class VideoComponent extends Component {
     const { videoControl } = props;
 
     this.state = {
-      session: videoControl?.getLoginStatus() === true ? videoControl.getSession() : null,
+      session:
+        videoControl?.getLoginStatus() === true
+          ? videoControl.getSession()
+          : null,
       token: props.token,
-      type: props.type
-    }
+      type: props.type,
+    };
   }
 
   componentDidMount() {
     const { videoControl } = this.props;
 
     if (videoControl && this.state.session === null) {
-      videoControl.login(null, null)
+      videoControl
+        .login(null, null)
         .then((sessionId) => this.setState({ session: sessionId }));
     }
   }
@@ -24,17 +28,18 @@ class VideoComponent extends Component {
   render() {
     return (
       <div>
-        {this.state.session !== null ?
+        {this.state.session !== null ? (
           <iframe
-            src={`http://218.56.180.250:9110/video/index.html?sessionId=${this.state.session}&token=${this.state.token}&type=${this.state.type}`}
+            src={`http://172.19.112.74/video/index.html?sessionId=${this.state.session}&token=${this.state.token}&type=${this.state.type}`}
             style={this.props.style}
             scrolling="no"
-            frameborder="0"
-            allowfullscreen="true"
+            frameBorder="0"
+            allowFullscreen="true"
             controls="true"
             webkitallowfullscreen="true"
             mozallowfullscreen="true"
-          /> : null}
+          />
+        ) : null}
       </div>
     );
   }

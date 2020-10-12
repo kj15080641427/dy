@@ -112,14 +112,14 @@ export class TableShow extends React.PureComponent {
     ),
   });
   render() {
-    const { columns, dataSource, onRow, pageSize } = this.props;
+    const { columns, dataSource, onRow, pageSize, rowKey } = this.props;
 
     return (
       <Table
         size="small"
         dataSource={dataSource}
         className="set-table-style"
-        rowKey={"siteBase"}
+        rowKey={rowKey}
         pagination={{ pageSize: pageSize || 4, showSizeChanger: false }}
         onRow={onRow}
         // height={'100px'}
