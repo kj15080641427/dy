@@ -9,11 +9,13 @@ import {
   Input,
   message,
   Table,
+  Popover,
 } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import DYForm from "@app/components/home/form";
 import * as actions from "../../../redux/actions";
+import TreeSelected from "./component/tree";
 import "./task.scss";
 const { TabPane } = Tabs;
 const { TextArea } = Input;
@@ -34,42 +36,36 @@ const Task = (props) => {
     getFloodRankUser,
     getMessage,
   } = props.actions;
-  const [selectExpert, setSelectExpert] = useState({
-    city: [],
-    county: [],
-    town: [],
-  });
-  const [selectFloodUser, setSelectFloodUser] = useState({
-    1: [],
-    2: [],
-    3: [],
-    4: [],
-    5: [],
-    6: [],
-  });
+  const [selectExpert, setSelectExpert] = useState([]);
+  const [selectFloodUser, setSelectFloodUser] = useState([]);
   const tableColumns = [
-    { title: "发送时间", dataIndex: "createTime" },
-    { title: "发送内容", dataIndex: "content" },
-    { title: "接收人", dataIndex: "name" },
-    { title: "反馈情况", dataIndex: "state", render: (e) => messageStatus[e] },
+    { title: "发送时间", dataIndex: "createTime", width: "20%" },
+    {
+      title: "发送内容",
+      dataIndex: "content",
+      render: (name) => (
+        <Popover content={name}>
+          {name?.length > 34 ? name.toString().substring(0, 34) + "..." : name}
+        </Popover>
+      ),
+    },
+    { title: "接收人", dataIndex: "name", width: "15%" },
+    {
+      title: "反馈情况",
+      dataIndex: "state",
+      width: "15%",
+      render: (e) => messageStatus[e],
+    },
   ];
+  const filteruser = (data) => {
+    return data.map((item) => item.split("|")[1]);
+  };
   const onFinish = (e) => {
     e = {
       ...e,
       typeCode: e.typeCode[0],
-      floodcontrolexpertList: [
-        ...selectExpert.city,
-        ...selectExpert.county,
-        ...selectExpert.town,
-      ],
-      flooduserList: [
-        ...selectFloodUser[1],
-        ...selectFloodUser[2],
-        ...selectFloodUser[3],
-        ...selectFloodUser[4],
-        ...selectFloodUser[5],
-        ...selectFloodUser[6],
-      ],
+      floodcontrolexpertList: filteruser(selectExpert),
+      flooduserList: filteruser(selectFloodUser),
     };
     if (e.floodcontrolexpertList[0] || e.flooduserList[0]) {
       sendMessage(e);
@@ -78,6 +74,25 @@ const Task = (props) => {
     }
     // console.log(e);
   };
+  const city = expert?.city?.map((item) => {
+    return {
+      title: item.name,
+      value: `${item.name}|${item.floodControlExpertId}`,
+    };
+  });
+  const county = expert?.county?.map((item) => {
+    return {
+      title: item.name,
+      value: `${item.name}|${item.floodControlExpertId}`,
+    };
+  });
+  const town = expert?.town?.map((item) => {
+    return {
+      title: item.name,
+      value: `${item.name}|${item.floodControlExpertId}`,
+    };
+  });
+  console.log(city, "CITY");
   useEffect(() => {
     getFloodExpert();
     getFloodRankUser();
@@ -97,187 +112,50 @@ const Task = (props) => {
                   >
                     <div style={{ width: "100%" }}>人员</div>
                   </Descriptions.Item>
-                  {/* 市级专家 */}
-                  <Descriptions.Item
-                    span={3}
-                    label={
-                      <Checkbox
-                        onChange={(e) => {
-                          e.target.checked
-                            ? setSelectExpert({
-                                ...selectExpert,
-                                city: expert?.citySelect,
-                              })
-                            : setSelectExpert({
-                                ...selectExpert,
-                                city: [],
-                              });
-                        }}
-                      >
-                        市级专家
-                      </Checkbox>
-                    }
-                  >
+                  {/* 防汛 */}
+                  <Descriptions.Item span={3} label={"防汛专家"}>
                     <div className="task-voerflow">
-                      <Checkbox.Group
-                        onChange={(e) =>
-                          setSelectExpert({ ...selectExpert, city: e })
-                        }
-                        value={selectExpert.city}
-                      >
-                        <Row>
-                          {expert?.city?.map((item) => {
-                            return (
-                              <Col key={item.floodControlExpertId} span={span}>
-                                <Checkbox value={item.floodControlExpertId}>
-                                  {item.name}&nbsp;
-                                  ({item.unit})
-                                </Checkbox>
-                              </Col>
-                            );
-                          })}
-                        </Row>
-                      </Checkbox.Group>
+                      <TreeSelected
+                        onChange={(value) => setSelectExpert(value)}
+                        treeData={[
+                          {
+                            title: "市级专家",
+                            value: "city",
+                            children: city,
+                          },
+                          {
+                            title: "县级专家",
+                            value: "county",
+                            children: county,
+                          },
+                          {
+                            title: "乡镇专家",
+                            value: "town",
+                            children: town,
+                          },
+                        ]}
+                      ></TreeSelected>
                     </div>
                   </Descriptions.Item>
-                  {/* 县级专家 */}
-                  <Descriptions.Item
-                    span={3}
-                    label={
-                      <Checkbox
-                        onChange={(e) => {
-                          e.target.checked
-                            ? setSelectExpert({
-                                ...selectExpert,
-                                county: expert?.countySelect,
-                              })
-                            : setSelectExpert({
-                                ...selectExpert,
-                                county: [],
-                              });
-                          console.log(selectExpert);
-                        }}
-                      >
-                        县级专家
-                      </Checkbox>
-                    }
-                  >
+                  <Descriptions.Item span={3} label={"防汛人员"}>
                     <div className="task-voerflow">
-                      <Checkbox.Group
-                        onChange={(e) =>
-                          setSelectExpert({ ...selectExpert, county: e })
-                        }
-                        value={selectExpert.county}
-                      >
-                        <Row>
-                          {expert?.county?.map((item) => {
-                            return (
-                              <Col key={item.floodControlExpertId} span={span}>
-                                <Checkbox value={item.floodControlExpertId}>
-                                  {item.name}&nbsp;
-                                  ({item.unit})
-                                </Checkbox>
-                              </Col>
-                            );
-                          })}
-                        </Row>
-                      </Checkbox.Group>
+                      <TreeSelected
+                        onChange={(value) => setSelectFloodUser(value)}
+                        treeData={floodRanks?.map((item) => {
+                          return {
+                            title: item.name,
+                            value: item.name,
+                            children: item?.userList?.map((t) => {
+                              return {
+                                title: t.name,
+                                value: `${t.name}|${t.floodId}`,
+                              };
+                            }),
+                          };
+                        })}
+                      ></TreeSelected>
                     </div>
                   </Descriptions.Item>
-                  {/* 乡镇专家 */}
-                  <Descriptions.Item
-                    span={3}
-                    label={
-                      <Checkbox
-                        onChange={(e) => {
-                          e.target.checked
-                            ? setSelectExpert({
-                                ...selectExpert,
-                                town: expert?.townSelect,
-                              })
-                            : setSelectExpert({
-                                ...selectExpert,
-                                town: [],
-                              });
-                        }}
-                      >
-                        乡镇专家
-                      </Checkbox>
-                    }
-                  >
-                    <div className="task-voerflow">
-                      <Checkbox.Group
-                        onChange={(e) =>
-                          setSelectExpert({ ...selectExpert, town: e })
-                        }
-                        value={selectExpert.town}
-                      >
-                        <Row>
-                          {expert?.town?.map((item) => {
-                            return (
-                              <Col key={item.floodControlExpertId} span={span}>
-                                <Checkbox value={item.floodControlExpertId}>
-                                  {item.name}&nbsp;
-                                  ({item.unit})
-                                </Checkbox>
-                              </Col>
-                            );
-                          })}
-                        </Row>
-                      </Checkbox.Group>
-                    </div>
-                  </Descriptions.Item>
-                  {floodRanks?.map((item) => {
-                    return (
-                      <Descriptions.Item
-                        key={item.floodRanksId}
-                        span={3}
-                        label={
-                          <Checkbox
-                            onChange={(e) => {
-                              e.target.checked
-                                ? setSelectFloodUser({
-                                    ...selectFloodUser,
-                                    [item.floodRanksId]:
-                                      rankSelect[item.floodRanksId],
-                                  })
-                                : setSelectFloodUser({
-                                    ...selectFloodUser,
-                                    [item.floodRanksId]: [],
-                                  });
-                            }}
-                          >
-                            {item.name}
-                          </Checkbox>
-                        }
-                      >
-                        <div className="task-voerflow">
-                          <Checkbox.Group
-                            onChange={(e) =>
-                              setSelectFloodUser({
-                                ...selectFloodUser,
-                                [item.floodRanksId]: e,
-                              })
-                            }
-                            value={selectFloodUser[item.floodRanksId]}
-                          >
-                            <Row>
-                              {item?.userList?.map((t) => {
-                                return (
-                                  <Col key={t.floodId} span={span}>
-                                    <Checkbox value={t.floodId}>
-                                      {t.name}&nbsp;
-                                      ({t.unit})
-                                    </Checkbox>
-                                  </Col>
-                                );
-                              })}
-                            </Row>
-                          </Checkbox.Group>
-                        </div>
-                      </Descriptions.Item>
-                    );
-                  })}
                 </Descriptions>
               </Card>
             </div>
@@ -285,8 +163,6 @@ const Task = (props) => {
               <Card title="发送内容">
                 <DYForm
                   id={"task"}
-                  // formRef={this.formRef}
-                  // name={storeKey}
                   formItem={[
                     {
                       label: "事件标题",
@@ -295,12 +171,12 @@ const Task = (props) => {
                       ele: <Input></Input>,
                     },
                     {
-                      label: "内容",
+                      label: '内容',
                       name: "content",
                       rules: [{ required: true }],
                       ele: (
                         <TextArea
-                          autoSize={{ minRows: 16, maxRows: 20 }}
+                          autoSize={{ minRows: 3, maxRows: 8 }}
                         ></TextArea>
                       ),
                     },
@@ -332,7 +208,6 @@ const Task = (props) => {
             dataSource={messageList}
             showEdit={false}
             // rowkey={(row) =>row.createTime}
-            // total={messageList?.length}
           ></Table>
         </TabPane>
       </Tabs>

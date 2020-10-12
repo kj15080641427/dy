@@ -12,8 +12,8 @@ const hashHistory = createHashHistory();
 const navi = [
   { icon: "", text: "发消息", url: "/message" },
   { icon: "", text: "专家调度", url: "/expertDispatch" },
-  { icon: "", text: "防汛人员调度", url: "/" },
-  { icon: "", text: "物资调度", url: "/" },
+  { icon: "", text: "防汛人员调度", url: "/userDispatch" },
+  { icon: "", text: "物资调度", url: "/materialDispatch" },
   { icon: "", text: "事件调整", url: "/" },
 ];
 const TaskInfo = (props) => {

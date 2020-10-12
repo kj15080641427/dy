@@ -200,6 +200,9 @@ function* sendMessage({ data }) {
   try {
     let result = yield call(req.sendMessage, data);
     if (result.code == successCode) {
+      yield put({
+        type: types.GET_MESSAGE,
+      });
       message.success("发送成功");
     }
   } catch (e) {
@@ -334,6 +337,86 @@ function* addExpertDispatch({ data }) {
     console.error(e);
   }
 }
+//根据事件查询已调度人员
+function* getUserDispatch({ data }) {
+  try {
+    const result = yield call(req.getUserDispatch, {
+      taskEventsID: data,
+    });
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_USER_DISPATCH,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+//新增人员调度
+function* addUserDispatch({ data }) {
+  try {
+    const result = yield call(req.addUserDispatch, data);
+    if (result.code == successCode) {
+      message.success("新增成功");
+      yield put({
+        type: types.SET_EXPERT_MODAL,
+        data: false,
+      });
+      yield put({
+        type: types.GET_USER_DISPATCH,
+        data: data[0].taskEventsID,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+//根据事件查询已调度物资
+function* getMaterialDispatch({ data }) {
+  try {
+    const result = yield call(req.getMaterialDispatch, {
+      taskEventsID: data,
+    });
+    if (result.code == successCode) {
+      let a = [];
+      result.data.map((item) => {
+        item.taskMaterialListList?.map((t) => {
+          a.push({ ...item, ...t });
+        });
+      });
+      yield put({
+        type: types.SET_MATERIAL_DISPATCH,
+        data: a,
+      });
+    } else {
+      message.error(result.msg);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+//新增物资调度
+function* addMaterialDispatch({ data }) {
+  try {
+    const result = yield call(req.addMaterialDispatch, data);
+    if (result.code == successCode) {
+      message.success("新增物资调度成功");
+      yield put({
+        type: types.SET_EXPERT_MODAL,
+        data: false,
+      });
+      yield put({
+        type: types.GET_MATERIAL_DISPATCH,
+        data: data.taskEventsID,
+      });
+    } else {
+      message.error(result.msg);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 export default function* management() {
   yield all([
     takeEvery(types.GET_BASE, getbaseData),
@@ -349,9 +432,13 @@ export default function* management() {
     takeEvery(types.GET_TASKEVENT_LIST, getTaskList),
     takeEvery(types.ADD_TASK_EVENT, addTaskEvent),
     takeEvery(types.GET_MESSAGE, getMessage),
-    // takeEvery(types.SEND_EXPERT_MESSAGE, sendExpertMessage),
     takeEvery(types.GET_FLOOD_ADDRESS, getFloodAddress),
     takeEvery(types.GET_TASK_DISPATCH_EXPERT, getTaskDispatchExpert),
     takeEvery(types.ADD_EXPERT_DISPATCH, addExpertDispatch),
+
+    takeEvery(types.GET_USER_DISPATCH, getUserDispatch),
+    takeEvery(types.ADD_USER_DISPATCH, addUserDispatch),
+    takeEvery(types.GET_MATERIAL_DISPATCH, getMaterialDispatch),
+    takeEvery(types.ADD_MATERIAL_DISPATCH, addMaterialDispatch),
   ]);
 }

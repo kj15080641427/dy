@@ -62,3 +62,20 @@ export const GET_FLOOD_USER = "GET_FLOOD_USER"; //所有防汛人员
 export const GET_TASK_DISPATCH_EXPERT = "GET_TASK_DISPATCH_EXPERT"; //根据事件查询已调度专家
 export const SET_TASK_DISPATCH_EXPERT = "SET_TASK_DISPATCH_EXPERT";
 export const ADD_EXPERT_DISPATCH = "ADD_EXPERT_DISPATCH"; //新增专家调度
+
+export const GET_USER_DISPATCH = "GET_USER_DISPATCH"; //根据事件查询已调度人员
+export const SET_USER_DISPATCH = "SET_USER_DISPATCH";
+export const ADD_USER_DISPATCH = "ADD_USER_DISPATCH"; //新增人员调度
+
+export const GET_MATERIAL_DISPATCH = "GET_MATERIAL_DISPATCH"; //根据事件查询已调度物资
+export const SET_MATERIAL_DISPATCH = "SET_MATERIAL_DISPATCH";
+export const ADD_MATERIAL_DISPATCH = "ADD_MATERIAL_DISPATCH"; //新增物资调度
+export const CHANGE_TASK_RENDER_LIST = "CHANGE_TASK_RENDER_LIST"; //调度list组件
+export const CHANGE_TASK_RADIO = "CHANGE_TASK_RADIO"; //单选框
+
+//防汛仓库
+export const GET_WAREHOUSE = "GET_WAREHOUSE";
+export const SET_WAREHOUSE = "WARE_WAREHOUSE";
+
+//选择人员
+export const SET_FORM_USER = "SET_FORM_USER";
