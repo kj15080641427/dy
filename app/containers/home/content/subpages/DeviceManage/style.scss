@@ -1,0 +1,26 @@
+.device-manage {
+  &-content {
+    display: flex;
+    margin-top: 16px;
+    &-left {
+      width: 320px;
+      margin-right: 16px;
+      padding: 8px;
+      border: 1px solid #d9d9d9;
+    }
+    &-right {
+      flex: 1;
+      padding: 16px;
+      border: 1px solid #d9d9d9;
+      &-title {
+        margin-bottom: 16px;
+        display: flex;
+        &-sub {
+          flex: 1;
+          font-size: 18px;
+          font-weight: 800;
+        }
+      }
+    }
+  }
+}

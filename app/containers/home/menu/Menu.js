@@ -48,6 +48,7 @@ class Menus extends React.PureComponent {
               <Menu.Item title={"站点数据"} key="/rwvdata">
                 站点数据
               </Menu.Item>
+              <Menu.Item key="/deviceManage">设备管理</Menu.Item>
               <Menu.Item key="/model">模型演示</Menu.Item>
               <Menu.Item key="/riverAnnunciate">河道信息</Menu.Item>
               {/* <Menu.Item key="/waterAnnunciate">
