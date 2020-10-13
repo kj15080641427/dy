@@ -10,6 +10,7 @@ import Expert from "./subpages/personnel/Expert";
 import FloodPrevention from "./subpages/personnel/FloodPrevention";
 import waterCondition from "./subpages/waterCondition/water";
 import rwvData from "./subpages/dataMonitoring/rwvData";
+import deviceManage from "./subpages/DeviceManage/index";
 import LoginLog from "./subpages/System/LoginLog";
 import User from "./subpages/System/User";
 import Login from "../Login";
@@ -74,6 +75,7 @@ class ContentRouter extends React.PureComponent {
                 <Route path={path + "/role"} component={Role} />
                 <Route path={path + "/jurisdiction"} component={Jurisdiction} />
                 <Route path={path + "/rwvdata"} component={rwvData} />
+                <Route path={path + "/deviceManage"} component={deviceManage} />
                 <Route path={path + "/model"} component={Model} />
                 <Route path={path + "/videoBasic"} component={VideoBasic} />
                 <Route path={path + "/stationBasic"} component={BaseStation} />
