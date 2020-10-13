@@ -174,8 +174,19 @@
       }
     }
     .video-img-box {
+      position: relative;
+      .set-rotate-radio {
+        transform: scale(0.3);
+        right: -90px;
+      }
+      .video-ing-title {
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
       .radar-box {
-        height: 340px;
+        height: 360px;
       }
     }
     .radar-box {

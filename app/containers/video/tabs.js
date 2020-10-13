@@ -9,7 +9,7 @@ import echarts from "echarts/lib/echarts";
 
 export const TabsList = (props) => {
   const { visible, dataSource, dayWater } = props;
-  const { changeModalVisible, getDayWater } = props.actions;
+  const { changeModalVisible, getDayWater, setVideoInfo } = props.actions;
   const showChart = (data, id) => {
     let xdata = [];
     let ydata = [];
@@ -95,7 +95,7 @@ export const TabsList = (props) => {
         onRow={(record) => {
           return {
             onClick: () =>
-              emitter.emit("map-move-focus", [record.lon, record.lat], 30000),
+              emitter.emit("map-move-focus", [record.lon, record.lat], 3000),
             onDoubleClick: () => {
               // changeModalVisible(true);
               // getDayWater(record.siteWaterLevels[0].stcd);
@@ -103,18 +103,29 @@ export const TabsList = (props) => {
           };
         }}
         columns={[
-          { name: "站名", dataIndex: "strname" },
+          { name: "站名", dataIndex: "strname", filter: "name" },
           {
             name: "状态",
             sorter: (a, b) => a.isOnline - b.isOnline,
             dataIndex: "isOnline",
+            width: "20%",
             render: (v) =>
               v == "0" ? <a>在线</a> : <a style={{ color: "red" }}>离线</a>,
           },
           {
             name: "操作",
-            dataIndex: "tm",
-            render: () => <a>播放</a>,
+            dataIndex: "",
+            width: "20%",
+            render: (row) => (
+              <a
+                onClick={() => {
+                  console.log(row);
+                  setVideoInfo(row);
+                }}
+              >
+                播放
+              </a>
+            ),
           },
         ]}
         dataSource={dataSource}

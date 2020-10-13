@@ -32,10 +32,13 @@
     .second-box {
       .radar-box {
         width: 500px;
-        height: 320px;
+        height: 302px;
         .box-head {
           width: 150px;
         }
+      }
+      .ant-table-pagination.ant-pagination {
+        margin: 10px 0;
       }
     }
     .floodWaringPie {
@@ -88,7 +91,6 @@
   }
   //
   .card-container {
-    margin-top: 5px;
     .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
       margin-left: 10px;
     }

@@ -2,6 +2,8 @@ import * as types from "../constants/handStateType";
 const initState = {
   visible: false,
   hourRain: "",
+  videoInfo: {},
+  waterVideoInfo: {},
 };
 export default function handState(state = initState, action) {
   let newState = Object.assign({}, state);
@@ -24,6 +26,12 @@ export default function handState(state = initState, action) {
       break;
     case types.SET_DISPLAY_WATER:
       newState = { ...newState, displayWater: action.data };
+      break;
+    case types.SET_VIDEO_INFO:
+      newState = { ...newState, videoInfo: action.data };
+      break;
+    case types.CHANGE_WATER_VIDEO:
+      newState = { ...newState, waterVideoInfo: action.data };
       break;
     default:
       return state;

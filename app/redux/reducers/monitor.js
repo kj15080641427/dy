@@ -2,7 +2,7 @@
 /*
  *  reducer
  */
-import * as actionTypes from '../constants/monitor';
+import * as actionTypes from "../constants/monitor";
 
 const defaultState = {
   rain: [], // 雨量基础数据
@@ -11,7 +11,7 @@ const defaultState = {
   video: [], // 视频基础信息
   gate: [], // 水闸信息
   pump: [], // 水泵信息
-  warehouse: [],// 防汛物资仓库
+  warehouse: [], // 防汛物资仓库
   details: {
     rain: {},
     water: {},
@@ -19,10 +19,10 @@ const defaultState = {
     ponding: {},
     warehouse: {}, // 防汛物资详情(即仓库物资)
   },
-  userinfo: {}
+  userinfo: {},
 };
 
-export default function main(state = defaultState, action) {
+export default function monitor(state = defaultState, action) {
   let newState = Object.assign({}, state);
   switch (action.type) {
     case actionTypes.INIT_BASE_DATA: {
@@ -33,7 +33,7 @@ export default function main(state = defaultState, action) {
     case actionTypes.SET_DETAIL_DATA: {
       let key = action.data.key;
       let value = action.data.value;
-      let detailIdKey = action.data.idKey || 'stcd';
+      let detailIdKey = action.data.idKey || "stcd";
       if (value && value[detailIdKey]) {
         let oldV = newState.details[key][value[detailIdKey]];
         if (oldV) {
@@ -64,6 +64,7 @@ export default function main(state = defaultState, action) {
     case actionTypes.ADD_VIDEOS: {
       let data = action.data;
       if (data && data.length) {
+        data.sort((a, b) => a.isOnline - b.isOnline);
         newState.video = data;
       }
       break;

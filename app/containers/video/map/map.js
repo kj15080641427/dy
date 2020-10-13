@@ -1,9 +1,8 @@
-
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/monitor";
-import * as mapActions from "@app/redux/actions/map";
+import * as handStateActions from "@app/redux/actions/handState";
 import UbiMap from "../../monitor/map/ubimap";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
@@ -93,8 +92,9 @@ class Map extends React.PureComponent {
   componentDidMount() {
     getAllVideo({})
       .then((res) => {
-        if (res.code === 200) {
+        if (res.code === 200 && res.data && res.data[0]) {
           this.props.actions.addVideos(res.data);
+          this.props.actions.setVideoInfo(res.data[0]);
           this.map.addFeatures(
             "video",
             res.data.map((item) => {
@@ -214,11 +214,11 @@ class Map extends React.PureComponent {
     //   this.addOverlay(Person.type, param);
     // });
     this.map.startSelectFeature("video", (param) => {
-
       if (this.props.onFeatureClick) {
         this.props.onFeatureClick(param);
       } else {
-        this.addOverlay(Video.type, { ...param });
+        this.props.handStateActions.setVideoInfo(param);
+        // this.addOverlay(Video.type, { ...param });
       }
     });
     this.map.on("moveend", () => {
@@ -464,7 +464,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    mapActions: bindActionCreators(mapActions, dispatch),
+    handStateActions: bindActionCreators(handStateActions, dispatch),
     actions: bindActionCreators(actions, dispatch),
   };
 }

@@ -107,6 +107,12 @@ function* getDisplayWater({ data }) {
       endtm: moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss"),
     });
     if (result.code == code) {
+      if (result?.data?.records) {
+        result?.data?.records?.map((item) => {
+          item.tm = item.tm.slice(5, -3);
+        });
+        result?.data?.records?.reverse();
+      }
       yield put({
         type: types.SET_DISPLAY_WATER,
         data: result.data.records,

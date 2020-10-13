@@ -19,7 +19,7 @@
     }
     .rain-pie-chart {
       width: 500px;
-      height: 330px;
+      height: 310px;
     }
   }
   .pie-title-flex {
@@ -59,6 +59,12 @@
     bottom: 0;
     z-index: 10;
     margin-top: 80px;
+    .ant-table-pagination.ant-pagination {
+      margin: 10px 0;
+    }
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: white;
+    }
     .right-first-box {
       .radar-box {
         height: 260px;
@@ -85,7 +91,7 @@
     }
     .rain-video-table {
       .radar-box {
-        height: 320px;
+        height: 300px;
       }
       .ant-tabs-tab {
         color: white;
@@ -170,9 +176,7 @@
         background: #141414;
       }
 
-      .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-        // color: white;
-      }
+     
     }
   }
   // .chart-right {
@@ -233,7 +237,7 @@
     position: relative;
     border: 2px solid rgb(0, 153, 255);
     width: 450px;
-    height: 95%;
+    height: 430px;
   }
 }
 

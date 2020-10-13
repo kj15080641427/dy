@@ -13,11 +13,18 @@ const initSelect = {
  */
 function* getWater() {
   try {
-    const result = yield call(req.getAll, { type: 2 });
+    const result = yield call(req.getAll, { type: "2,4" });
     if (result.code == code) {
+      let data = result.data.map((item) => {
+        if (item.stiteWaterRadios && item.stiteWaterRadios[0]) {
+          return { ...item, ...item.stiteWaterRadios[0] };
+        } else {
+          return item;
+        }
+      });
       yield put({
         type: types.SET_WATER,
-        data: result.data,
+        data: data,
       });
     }
   } catch (error) {
@@ -29,12 +36,20 @@ function* getWater() {
  */
 function* getFlood() {
   try {
-    const result = yield call(req.getAll, { type: 3 });
+    const result = yield call(req.getAll, { type: "3,4" });
     if (result.code == code) {
+      let data = result.data.map((item) => {
+        if (item.stiteWaterRadios && item.stiteWaterRadios[0]) {
+          return { ...item, ...item.stiteWaterRadios[0] };
+        } else {
+          return item;
+        }
+      });
       yield put({
         type: types.SET_FLOOD,
-        data: result.data,
+        data: data,
       });
+      console.log(data, "DDD");
     }
   } catch (e) {
     console.error(e);

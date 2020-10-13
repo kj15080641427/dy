@@ -30,7 +30,7 @@ class VideoComponent extends Component {
       <div>
         {this.state.session !== null ? (
           <iframe
-            src={`http://172.19.112.74/video/index.html?sessionId=${this.state.session}&token=${this.state.token}&type=${this.state.type}`}
+            src={`http://218.56.180.250:9110/video/index.html?sessionId=${this.state.session}&token=${this.props.token}&type=${this.state.type}`}
             style={this.props.style}
             scrolling="no"
             frameBorder="0"

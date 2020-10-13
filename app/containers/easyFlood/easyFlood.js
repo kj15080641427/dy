@@ -24,6 +24,7 @@ import {
   rotateBarChart,
   lineChart,
 } from "../../components/chart/chart";
+import VideoPlayer from "../../components/video/videoPlayer";
 import warningIcon from "@app/resource/icon/warning.svg";
 import { TableShow } from "../../components/chart/table";
 import emitter from "@app/utils/emitter.js";
@@ -80,7 +81,7 @@ class Monitor extends React.PureComponent {
     const { floodId } = this.props;
     this.props.actions.getFloodType(); //易涝点基本信息
     this.props.actions.getFloodRain(); //获取防汛雨量站 {type: "1",isshow: "1",datasource: "3",}
-    this.props.actions.getFloodInfoRealTime(floodId); //根据易涝点id获取实时数据
+    this.props.actions.getFloodInfoRealTime(floodId.id); //根据易涝点id获取实时数据
     this.props.actions.getCountStation();
     this.props.actions.getAlarm();
   }
@@ -93,7 +94,7 @@ class Monitor extends React.PureComponent {
       floodWarning,
     } = this.props;
     if (floodId != pre.floodId) {
-      this.props.actions.getFloodInfoRealTime(floodId);
+      this.props.actions.getFloodInfoRealTime(floodId.id);
     }
     if (historyFlood != pre.historyFlood) {
       lineChart("easyfloodLine", historyFlood, 380, floodWarning || -0.1);
@@ -238,7 +239,7 @@ class Monitor extends React.PureComponent {
   }
   render() {
     let { layerVisible, displayRight, displayLeft, onLine, line } = this.state;
-    const { initFlood, floodName, alarmData, count } = this.props;
+    const { initFlood, floodName, alarmData, count, floodId } = this.props;
     return (
       <div className="easy-flood-display">
         <Map layerVisible={layerVisible}></Map>
@@ -255,7 +256,11 @@ class Monitor extends React.PureComponent {
                   { name: "站点名称", dataIndex: "stnm" },
                   { name: "警戒水位", dataIndex: "baselevel" },
                   { name: "水位", dataIndex: "actuallevel" },
-                  { name: "更新时间", dataIndex: "alarmtime" },
+                  {
+                    name: "更新时间",
+                    dataIndex: "alarmtime",
+                    render: (value) => (value ? value.slice(0, -3) : "-"),
+                  },
                 ]}
                 dataSource={alarmData || []}
               />
@@ -290,7 +295,7 @@ class Monitor extends React.PureComponent {
                       name: "更新时间",
                       dataIndex: "riverwaterdataList",
                       render: (value) =>
-                        value && value[0] ? value[0].tm : "-",
+                        value && value[0] ? value[0].tm.slice(0, -3) : "-",
                     },
                   ]}
                   dataSource={initFlood || []}
@@ -330,17 +335,29 @@ class Monitor extends React.PureComponent {
             <div className="second-box">
               <RenderBox hasTitle title="易涝点24小时信息">
                 <div className="water-select">
-                  <div className="">
+                  <div className="water-select-flex">
                     <div className="water-select-flex">{floodName}</div>
                     <div className="water-select-flex">{`${moment(
                       new Date()
-                    ).format("YYYY-MM-DD")} 00:00 至 ${moment(
-                      new Date()
-                    ).format("YYYY-MM-DD")} 24:00`}</div>
+                    ).format("MM-DD")} 00:00 至 ${moment(new Date()).format(
+                      "MM-DD"
+                    )} 24:00`}</div>
                   </div>
                 </div>
                 <div className="easyfloodLine" id="easyfloodLine"></div>
-                <img src={video} width="430px" height="200px"></img>
+                {/* 视频 */}
+                <VideoPlayer
+                  style={{
+                    width: "620px",
+                    height: "350px",
+                    transform: "scale(0.73)",
+                    position: "absolute",
+                    left: "-85px",
+                    top: "225px",
+                  }}
+                  strtoken={floodId?.strtoken}
+                ></VideoPlayer>
+                {/* <img src={video} width="430px" height="200px"></img> */}
               </RenderBox>
             </div>
             {/* <RenderBox style={{ height: "280px" }}></RenderBox> */}

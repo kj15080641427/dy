@@ -9,9 +9,7 @@ import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
 import { Drawer, Row, Divider, Checkbox, Tabs } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
-import VideoComponent from "../../components/video/VideoComponent";
-import VideoControl from "../../components/video/VideoControl";
-import videoImg from "@app/resource/icon/video.png";
+import VideoPlayer from "../../components/video/videoPlayer";
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
 import { pieChart, barChart } from "../../components/chart/chart";
@@ -21,7 +19,6 @@ const { TabPane } = Tabs;
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
-    this.videoControl = new VideoControl();
     this.state = {
       showLeft: true,
       showRight: true,
@@ -58,7 +55,6 @@ class Monitor extends React.PureComponent {
     });
   };
   componentDidMount() {
-    this.setState({});
     this.props.actions.getCountStation();
   }
   componentDidUpdate(pre) {
@@ -178,7 +174,7 @@ class Monitor extends React.PureComponent {
       hk,
       gr,
     } = this.state;
-    const { video } = this.props;
+    const { video, videoInfo } = this.props;
     return (
       <div className="video">
         <Map layerVisible={layerVisible}></Map>
@@ -189,7 +185,7 @@ class Monitor extends React.PureComponent {
               <RenderBox hasTitle title="视频站点来源图">
                 <div className="videoFunnelChart" id="videoFunnelChart"></div>
               </RenderBox>
-              <RenderBox>
+              <RenderBox style={{ height: "500px" }}>
                 {/* <div className="video-table"> */}
                 <div className="card-container">
                   <Tabs type="card" style={{ color: "white" }}>
@@ -223,21 +219,12 @@ class Monitor extends React.PureComponent {
               <RenderBox hasTitle title="视频站点在线图">
                 <div className="videoBarChart" id="videoBarChart"></div>
               </RenderBox>
-              <div className="video-img-box">
+              <div className="video-img-box ">
                 <RenderBox>
-                  <VideoComponent
-                    videoControl={this.videoControl}
-                    token={"ea7e--37050118581314000068"}
-                    type={1}
-                  ></VideoComponent>
-                  {/* <img src={videoImg} width="530px" height="340px"></img> */}
+                  <div className="video-ing-title">{videoInfo.name}</div>
+                  <VideoPlayer strtoken={videoInfo?.strtoken}></VideoPlayer>
                 </RenderBox>
               </div>
-              {/* <div className="video-line-box">
-                <RenderBox>
-                  <div className="line-chart" id="line-chart"></div>
-                </RenderBox>
-              </div> */}
             </div>
             <RouterList />
           </div>
@@ -321,6 +308,7 @@ function mapStateToProps(state) {
   return {
     count: state.mapAboutReducers.count,
     video: state.monitor.video,
+    videoInfo: state.handState.videoInfo,
   };
 }
 

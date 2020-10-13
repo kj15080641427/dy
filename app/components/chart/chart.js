@@ -536,13 +536,13 @@ export const showChart = (data, id) => {
     ydata.push(item.z);
   });
   myChart.setOption({
-    dataZoom: [
-      {
-        type: "slider",
-        show: true,
-        xAxisIndex: [0],
-      },
-    ],
+    // dataZoom: [
+    //   {
+    //     type: "slider",
+    //     show: true,
+    //     xAxisIndex: [0],
+    //   },
+    // ],
     tooltip: {
       trigger: "axis",
       axisPointer: {
@@ -586,9 +586,13 @@ export const showChart = (data, id) => {
     },
     legend: {
       right: "center",
-      x: "190px",
-      y: "50px",
-      // data: ['1小时降水', '24小时降水'],
+      x: "0px",
+      y: "0px",
+      data: ['1小时降水', '24小时降水'],
+    },
+    grid: {
+      width: 400,
+      height:200
     },
     series: [
       {

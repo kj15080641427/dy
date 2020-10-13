@@ -10,7 +10,7 @@ import echarts from "echarts/lib/echarts";
 
 export const TabsList = (props) => {
   const { visible, dataSource, dayWater } = props;
-  const { changeModalVisible, getDayWater, getDsplayWater } = props.actions;
+  const { changeModalVisible, getDayWater, changeWaterVideo } = props.actions;
   const { changeWaterId } = props.mapActions;
   const showChart = (data, id) => {
     let xdata = [];
@@ -96,12 +96,16 @@ export const TabsList = (props) => {
         onRow={(record) => {
           return {
             onClick: () => {
-              changeWaterId({
-                id: record?.siteWaterLevels[0]?.stcd,
-                name: record.name,
-              });
-              emitter.emit("map-move-focus", [record.lon, record.lat], 30000);
-              getDsplayWater(record.siteWaterLevels[0]?.stcd);
+              changeWaterId(
+                {
+                  id: record?.siteWaterLevels[0]?.stcd,
+                  name: record.name,
+                },
+                console.log(record, "HHH"),
+                changeWaterVideo(record)
+              );
+              emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
+              // getDsplayWater(record.siteWaterLevels[0]?.stcd);
             },
             onDoubleClick: () => {
               changeModalVisible(true);
@@ -132,7 +136,7 @@ export const TabsList = (props) => {
             name: "更新时间",
             dataIndex: "riverwaterdataList",
             // width: "45%",
-            render: (v) => (v && v[0] ? v[0].tm : "-"),
+            render: (v) => (v && v[0] ? v[0].tm.slice(0, -3) : "-"),
           },
         ]}
         dataSource={dataSource}

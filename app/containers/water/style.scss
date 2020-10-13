@@ -2,7 +2,7 @@
 .water-display {
   position: relative;
   height: $mapDisplayHeight;
-  min-height: 1100px;
+  min-height: $minheight;
   .pie-chart {
     width: 480px;
     height: 300px;
@@ -27,10 +27,10 @@
     .radar-box {
       height: 640px;
     }
-    img {
-      width: 100%;
-      height: 280px;
-    }
+    // img {
+    //   width: 100%;
+    //   height: 280px;
+    // }
   }
   .water-right-second-box {
     .box-head {
@@ -38,7 +38,12 @@
     }
   }
 }
-
+.water-video-div{
+  .set-rotate-radio{
+    top: 350px;
+    right: -80px;
+  }
+}
 .router-list {
   position: absolute;
   right: 0;

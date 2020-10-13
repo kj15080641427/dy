@@ -80,7 +80,7 @@ export default function mapAboutReducers(state = initState, action) {
       console.log(action.data);
       newState = {
         ...newState,
-        floodId: action.data.id,
+        floodId: action.data,
         floodName: action.data.name,
         floodWarning: action.data.siteWaterPoints
           ? action.data.siteWaterPoints[0].warning
