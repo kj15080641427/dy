@@ -2,58 +2,17 @@
 import React, { Component } from 'react';
 import "./style.scss";
 import DYForm from "@app/components/home/form";
-import { Input, Tree, Table, Space, Button, Divider, Modal, DatePicker } from "antd";
+import { Input, Tree, Table, Space, Button, Divider, Modal, DatePicker, Spin } from "antd";
 const { Search, TextArea } = Input;
+
+const AllApi = require("@app/data/home");
 
 class DeviceManageFlood extends Component {
   constructor(props, context) {
       super(props, context);
       this.state = {
-        treeData: [{
-          title: '东营区',
-          dataIndex: '东营区',
-          children: [{
-            title: '明泓匣（匣前）',
-            dataIndex: '明泓匣（匣前）'
-          }, {
-            title: '明泓匣（匣后）',
-            dataIndex: '明泓匣（匣后）'
-          }]
-        }, {
-          title: '河口区',
-          dataIndex: '河口区',
-          children: [{
-            title: '四倾二',
-            dataIndex: '四倾二'
-          }, {
-            title: '丁王',
-            dataIndex: '丁王'
-          }, {
-            title: '龙王匣（匣下游）',
-            dataIndex: '龙王匣（匣下游）'
-          }]
-        }, {
-          title: '开发区',
-          dataIndex: '开发区',
-          children: [{
-            title: '开发区1',
-            dataIndex: '开发区1'
-          }]
-        }, {
-          title: '广饶县',
-          dataIndex: '广饶县',
-          children: [{
-            title: '稻三匣',
-            dataIndex: '稻三匣'
-          }]
-        }, {
-          title: '垦利区',
-          dataIndex: '垦利区',
-          children: [{
-            title: '永镇水库',
-            dataIndex: '永镇水库'
-          }]
-        }],
+        showLoading: true,
+        treeData: [],
         deviceList: [
           { a: '遥测终端机', b: '05461000192', c: '四信', d: 'FN-9153N', e: '2019-05', f: '2019-12-11' },
           { a: '遥测终端机', b: '05461000192', c: '四信', d: 'FN-9153N', e: '2019-05', f: '2019-12-11' },
@@ -131,9 +90,31 @@ class DeviceManageFlood extends Component {
         changeFormVisible: false
       };
   }
+  async componentDidMount () {
+    const { device } = this.props
+    const { data } = await AllApi[`getSite${device.typeName}Page`]({ current: 1, size: -1 })
+    const treeData = [{
+      title: '东营区', key: '370502', children: []
+    }, {
+      title: '河口区', key: '370503', children: []
+    }, {
+      title: '垦利区', key: '370521', children: []
+    }, {
+      title: '利津县', key: '370522', children: []
+    }, {
+      title: '广饶县', key: '370523', children: []
+    }]
+    treeData.map(td => {
+      data.records.filter(d => (d.region || d.addvcd) === td.key).map(d => {
+        td.children.push(Object.assign(d, { key: d[`site${device.typeName}ID`], title: d.name }))
+      })
+    })
+    this.setState({ treeData, showLoading: false })
+  }
 
-  handleTreeSelect () {
-    console.log(arguments)
+  handleTreeSelect (treeKey, event) {
+    const { node } = event
+    this.setState({ deviceList: node.children })
   }
 
   handleDiviceAdd () {
@@ -154,7 +135,17 @@ class DeviceManageFlood extends Component {
       title: '拆除设备',
       content: (<p>
         确认要拆除当前选择的设备？
-      </p>)
+      </p>),
+      onOk: async () => {
+        this.setState({ showLoading: true })
+        try {
+          const { device } = this.props
+          await AllApi[`delete${device.apiName}`]({ siteBaseID: record.siteBaseID })
+        } catch (e) {
+          console.error(e)
+        }
+        this.setState({ showLoading: false })
+      }
     });
   }
 
@@ -168,10 +159,10 @@ class DeviceManageFlood extends Component {
   }
 
   render () {
-    const { treeData, deviceList, deviceListColumns, repairList, repairListColumns, addFormVisible, repairFormVisible, changeFormVisible } = this.state;
+    const { showLoading, treeData, deviceList, deviceListColumns, repairList, repairListColumns, addFormVisible, repairFormVisible, changeFormVisible } = this.state;
 
     return (
-      <>
+      <Spin spinning={showLoading}>
         <div className="device-manage">
           <Search
             placeholder="请输入搜索内容"
@@ -180,8 +171,8 @@ class DeviceManageFlood extends Component {
           <div className="device-manage-content">
             <div className="device-manage-content-left">
               <Tree
-                defaultExpandAll
-                defaultSelectedKeys={['明泓匣（匣前）']}
+                key={this.props.siteType}
+                autoExpandParent
                 onSelect={this.handleTreeSelect}
                 treeData={treeData}
               />
@@ -300,7 +291,7 @@ class DeviceManageFlood extends Component {
             cancelClick={() => this.setState({ changeFormVisible: false })}
             ></DYForm>
         </Modal>
-      </>
+      </Spin>
     )
   }
 }

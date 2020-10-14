@@ -388,3 +388,38 @@ export function addMaterialDispatch(data) {
 //  export function getSatellite() {
 //    return fetchJSONData("GET", "/base/Weather/get");
 //  }
+
+
+
+// 分页查询站点水位
+export function getSiteWaterLevelsPage(data) {
+  return fetchJSONData("POST", "/base/SiteWaterLevels/page", data);
+}
+// 删除站点水位
+export function deleteSiteWaterLevels(data) {
+  return fetchJSONData("POST", "/base/SiteWaterLevels/delete", data);
+}
+// 分页查询站点雨量
+export function getSiteRainPage(data) {
+  return fetchJSONData("POST", "/base/SiteRain/page", data);
+}
+// 删除站点雨量
+export function deleteSiteRain(data) {
+  return fetchJSONData("POST", "/base/SiteRain/delete", data);
+}
+// 分页查询站点视频
+export function getSiteWaterRadioPage(data) {
+  return fetchJSONData("POST", "/base/StiteWaterRadio/page", data);
+}
+// 删除站点视频
+export function deleteSiteWaterRadio(data) {
+  return fetchJSONData("POST", "/base/StiteWaterRadio/delete", data);
+}
+// 分页查询站点积水点
+export function getSiteWaterPointPage(data) {
+  return fetchJSONData("POST", "/base/SiteWaterPoint/page", data);
+}
+// 删除站点积水点
+export function deleteSiteWaterPoint(data) {
+  return fetchJSONData("POST", "/base/SiteWaterPoint/delete", data);
+}
