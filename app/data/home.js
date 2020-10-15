@@ -423,3 +423,39 @@ export function getSiteWaterPointPage(data) {
 export function deleteSiteWaterPoint(data) {
   return fetchJSONData("POST", "/base/SiteWaterPoint/delete", data);
 }
+
+// 分页查询设备管理
+export function getSiteDevicePage(data) {
+  return fetchJSONData("POST", "/base/SiteDevice/page", data);
+}
+// 新增设备管理
+export function saveSiteDevice(data) {
+  return fetchJSONData("POST", "/base/SiteDevice/save", data);
+}
+// 修改设备管理
+export function updateSiteDevice(data) {
+  return fetchJSONData("POST", "/base/SiteDevice/update", data);
+}
+// 删除设备管理
+export function deleteSiteDevice(data) {
+  return fetchJSONData("POST", "/base/SiteDevice/delete", data);
+}
+// 导出设备管理
+export function exportSiteDevice(data) {
+  return fetchJSONData("POST", "/base/SiteDevice/export", data);
+}
+
+// 新增设备维修
+export function saveSiteDeviceRepair(data) {
+  return fetchJSONData("POST", "/base/SiteDeviceRepair/save", data);
+}
+// 分页查询设备维修
+export function getSiteDeviceRepairPage(data) {
+  return fetchJSONData("POST", "/base/SiteDeviceRepair/page", data);
+}
+
+// token换用户信息
+export function getUserInfoByToken(data) {
+  return fetchJSONData("POST", "/base/Users/getUser", data);
+}
+
