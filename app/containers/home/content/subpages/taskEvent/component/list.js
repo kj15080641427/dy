@@ -7,7 +7,7 @@ import { bindActionCreators } from "redux";
 import "../task.scss";
 
 const ListRender = (props) => {
-  const { listRender, buttonText = "调派专家" } = props;
+  const { listRender, buttonText = "调派专家", listItemText } = props;
   const { changeTaskRenderList, setExpertModal } = props.actions;
   return (
     <Card className="expert-dispatch-right">
@@ -36,7 +36,8 @@ const ListRender = (props) => {
                   <CloseOutlined />
                 </div>
                 <div>{item.name}</div>
-                <div>{item.major}</div>
+                <div>{item[listItemText]}</div>
+                {/* <div>{item.major}</div> */}
                 <div>{item.number}</div>
               </Card>
             </div>

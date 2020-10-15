@@ -209,100 +209,111 @@ class Map extends React.PureComponent {
       zIndex: 10,
       key: "river",
     });
-    // this.map.addImageTile({
-    //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
-    //   params: {
-    //     'LAYERS': 'dy:河流40',
-    //     'TILED': false
-    //   },
-    //   zIndex: 11,
-    //   key: "river40"
-    // });
-    // this.map.addGeo({
-    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-    //   params: {
-    //     LAYERS: "dy:河流40",
-    //     TILED: true,
-    //   },
-    //   zIndex: 10,
-    //   key: "river40",
-    // });
+    this.map.addImageTile({
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+      params: {
+        LAYERS: "dy:河流40",
+        TILED: false,
+      },
+      zIndex: 11,
+      key: "river40",
+    });
+    this.map.addGeo({
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+      params: {
+        LAYERS: "dy:河流40",
+        TILED: true,
+      },
+      zIndex: 10,
+      key: "river40",
+    });
 
-    //加入交通实况图
-    // this.map.addGeo({
-    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-    //   params: {
-    //     LAYERS: "dy:traffic",
-    //     TILED: true,
-    //   },
-    //   zIndex: 11,
-    //   key: "traffic",
-    // });
+   // 加入交通实况图;
+    this.map.addGeo({
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+      params: {
+        LAYERS: "dy:traffic",
+        TILED: true,
+      },
+      zIndex: 11,
+      key: "traffic",
+    });
 
-    // this.flood = new FloodAnimation({
-    //   map: this.map.getMap(),
-    //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/ows?service=WFS',
-    //   srsName: 'EPSG:4326', ns: 'www.gcspace.com', ws: 'dy',
-    //   layerName: 'River',
-    //   colorTable: [
-    //     { min: 0, max: 0.1, color: '#00ff00' },
-    //     {min: 0.1, max: 0.5, color: '#eee538'},
-    //     {min: 0.5, max: 0.75, color: '#ffa500'},
-    //     {min: 0.75, max: 1000, color: '#ff0000'}
-    //   ]
-    // });
-    // this.flood.on("click", this.onFloodClick);
-    // this.map.addWFS({
-    //   zIndex: 11,
-    //   key: "wfsRiver",
-    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
-    //   typename: "dy:河流40",
-    //   onClick: (props) => {
-    //     if (props && props.NAME) {
-    //       // 下2次事件循环
-    //       //console.log('addwfs',this._isClickInfoBox);
-    //       if (this._isClickInfoBox) return;
-    //       this.onWfsRiverClick(props);
-    //     }
-    //   },
-    // });
-    // this.map.addHeatmap({
-    //   key: "heatmap",
-    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
-    //   typename: "dy:雨情测站",
-    //   gradient: ["#A6F28F", "#3DBA3D", "#61B8FF", "#0000E1", '#FA00FA', "#800040"]
-    //   // url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs?service=wfs&version=1.1.0&request=GetFeature&typeNames=dy:DYWater&outputFormat=application/json&srsname=EPSG:4326%27"
-    // });
-    // this.map.addTile({
-    //   key: "traffic",
-    //   url: 'http://tm.amap.com/trafficengine/mapabc/traffictile?v=1.0&;t=1&x={x}&y={y}&z={z}&&t=longTime',
-    //   projection: true,
-    // });
-    // this.map.addTraffic({
-    //   key: "traffic",
-    //   zIndex: 19,
-    // });
-    // this.map.addVector({
-    //   key: "person",
-    //   zIndex: 20,
-    //   style: {
-    //     heading: function(featureObj) {
-    //         return featureObj.heading;
-    //     },
-    //     src: function(featureObj) { //
-    //         return require("../../../resource/icon/person.svg")["default"];
-    //     },
-    //     anchor: [0.5, 1],
-    //     strokeColor: "#1890ff",
-    //     width: 1,
-    //     fillColor: "#1890ff",
-    //     fontColor: "#82B2FF",
-    //     fontText: function(featureObj) {
-    //         return featureObj.id + "";
-    //     },
-    //     font: '16px sans-serif'
-    //   }
-    // });
+    this.flood = new FloodAnimation({
+      map: this.map.getMap(),
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/ows?service=WFS",
+      srsName: "EPSG:4326",
+      ns: "www.gcspace.com",
+      ws: "dy",
+      layerName: "River",
+      colorTable: [
+        { min: 0, max: 0.1, color: "#00ff00" },
+        { min: 0.1, max: 0.5, color: "#eee538" },
+        { min: 0.5, max: 0.75, color: "#ffa500" },
+        { min: 0.75, max: 1000, color: "#ff0000" },
+      ],
+    });
+    this.flood.on("click", this.onFloodClick);
+    this.map.addWFS({
+      zIndex: 11,
+      key: "wfsRiver",
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
+      typename: "dy:河流40",
+      onClick: (props) => {
+        if (props && props.NAME) {
+          // 下2次事件循环
+          //console.log('addwfs',this._isClickInfoBox);
+          if (this._isClickInfoBox) return;
+          this.onWfsRiverClick(props);
+        }
+      },
+    });
+    this.map.addHeatmap({
+      key: "heatmap",
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
+      typename: "dy:雨情测站",
+      gradient: [
+        "#A6F28F",
+        "#3DBA3D",
+        "#61B8FF",
+        "#0000E1",
+        "#FA00FA",
+        "#800040",
+      ],
+      // url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs?service=wfs&version=1.1.0&request=GetFeature&typeNames=dy:DYWater&outputFormat=application/json&srsname=EPSG:4326%27"
+    });
+    this.map.addTile({
+      key: "traffic",
+      url:
+        "http://tm.amap.com/trafficengine/mapabc/traffictile?v=1.0&;t=1&x={x}&y={y}&z={z}&&t=longTime",
+      projection: true,
+    });
+    this.map.addTraffic({
+      key: "traffic",
+      zIndex: 19,
+    });
+    this.map.addVector({
+      key: "person",
+      zIndex: 20,
+      style: {
+        heading: function (featureObj) {
+          return featureObj.heading;
+        },
+        src: function (featureObj) {
+          //
+          return require("../../../resource/icon/person.svg")["default"];
+        },
+        anchor: [0.5, 1],
+        strokeColor: "#1890ff",
+        width: 1,
+        fillColor: "#1890ff",
+        fontColor: "#82B2FF",
+        fontText: function (featureObj) {
+          return featureObj.id + "";
+        },
+        font: "16px sans-serif",
+      },
+    });
     this.map.addVector({
       key: "video",
       zIndex: 20,
@@ -866,7 +877,6 @@ class Map extends React.PureComponent {
     // 加载雨量站和水位站,水位站报警信息
     // 加载视频数据
     const { person } = this.props;
-    console.log(person, "PPPPP");
     this.map.addFeatures(
       "video",
       person.map((item) => {

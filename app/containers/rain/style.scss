@@ -4,6 +4,8 @@
   height: $mapDisplayHeight;
   min-height: $minheight;
   .chart-left {
+    display: flex;
+    flex-wrap: wrap;
     position: absolute;
     margin-top: 90px;
     width: 514px;
@@ -45,7 +47,7 @@
   }
   .ranSwitch {
     position: absolute;
-    right: 553px; 
+    right: 553px;
     bottom: 10%;
     .ant-btn-primary {
       background: #003366;
@@ -53,6 +55,9 @@
     }
   }
   .rain-chart-right {
+    display: flex;
+    flex-wrap: wrap;
+    width: 450px;
     position: absolute;
     right: 105px;
     top: 15px;
@@ -175,8 +180,6 @@
         border-color: #141414;
         background: #141414;
       }
-
-     
     }
   }
   // .chart-right {
@@ -246,4 +249,14 @@
 }
 .ol-layer-tiandi {
   opacity: 0.2;
+}
+.rain-display
+  .rain-chart-right
+  .rain-video-table
+  .card-container
+  > .ant-tabs-card
+  .ant-tabs-content
+  > .ant-tabs-tabpane {
+  background: rgba(0, 51, 102, 0.7);
+  padding: 0px 10px 0px 10px;
 }

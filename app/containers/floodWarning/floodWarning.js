@@ -171,6 +171,7 @@ class Monitor extends React.PureComponent {
                     defaultActiveKey="1"
                     onChange={(e) => this.props.actions.getMaterialById(e)}
                   >
+                    {console.log(wareHouse, "?????????")}
                     {wareHouse?.map((item) => (
                       <TabPane
                         key={item.materialWarehouseId}

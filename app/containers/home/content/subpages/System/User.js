@@ -1,44 +1,43 @@
 import React from "react";
 import BaseLayout from "../connectComponents";
-import { Input } from "antd";
-import { delUser, getUser, addUser, updUser } from "@app/data/home";
+import { Input, Select } from "antd";
+import { delUser, getUser, addUser, updUser, getRole } from "@app/data/home";
 const formItem = [
   {
-    label: "名称",
-    name: "name",
+    label: "账号",
+    name: "username",
     rules: [{ required: true }],
     ele: <Input></Input>,
   },
   {
-    label: "主建筑物级别",
-    name: "buidinglevel",
+    label: "密码",
+    name: "password",
+    rules: [{ required: true }],
+    ele: <Input type="password"></Input>,
+  },
+  {
+    label: "用户真实名称",
+    name: "realname",
     rules: [{ required: true }],
     ele: <Input></Input>,
   },
   {
-    label: "所在灌区",
-    name: "irrigateregion",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-
-  {
-    label: "管理部门",
-    name: "ownermanagement",
+    label: "单位",
+    name: "unit",
     rules: [{ required: true }],
     ele: <Input></Input>,
   },
   {
-    label: "管理单位",
-    name: "management",
+    label: "状态",
+    name: "state",
     rules: [{ required: true }],
     ele: <Input></Input>,
   },
   {
-    label: "河流名称",
-    name: "rivername",
+    label: "手机号码",
+    name: "phone",
     rules: [{ required: true }],
-    ele: <Input></Input>,
+    ele: <Input type="number"></Input>,
   },
 ];
 // 表格配置
@@ -51,6 +50,11 @@ const columns = [
   {
     title: "用户姓名",
     dataIndex: "realname",
+    className: "column-money",
+  },
+  {
+    title: "角色",
+    dataIndex: "roleName",
     className: "column-money",
   },
   {
@@ -79,8 +83,40 @@ const rowSelect = [
 class SiteGate extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      roleData: [],
+    };
+  }
+  componentDidMount() {
+    getRole({ current: 1, size: -1 }).then((res) => {
+      let data = res.data.records.map((item) => {
+        return {
+          id: item.roleId,
+          name: item.roleName,
+        };
+      });
+      this.setState({
+        roleData: data,
+      });
+    });
   }
   render() {
+    const roleColumns = {
+      label: "角色",
+      name: "roleId",
+      rules: [{ required: true }],
+      ele: (
+        <Select>
+          {this.state.roleData.map((item) => {
+            return (
+              <Select.Option key={item.id} value={item.id}>
+                {item.name}
+              </Select.Option>
+            );
+          })}
+        </Select>
+      ),
+    };
     return (
       <BaseLayout
         get={getUser} // 分页查询接口
@@ -88,7 +124,7 @@ class SiteGate extends React.Component {
         upd={updUser} // 更新数据接口
         del={delUser} // 删除数据接口
         columns={columns} // 表格配置项
-        formItem={formItem} // 表单配置项
+        formItem={[...formItem, roleColumns]} // 表单配置项
         keyId={"userId"} // 数据的唯一ID
         storeKey={"systemUser"} // store中的key值
         rowSelect={rowSelect}

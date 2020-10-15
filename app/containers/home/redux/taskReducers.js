@@ -1,5 +1,11 @@
 import * as types from "./types";
-const initState = { tasMaterialkUser: [], tableInput: [] };
+const initState = {
+  tasMaterialkUser: [],
+  tableNumber: [],
+  tableInput: [],
+  taskUpdateMidal: false,
+  taskTimeLine: [],
+};
 let selected = [];
 
 export default function taskReducers(state = initState, action) {
@@ -19,6 +25,12 @@ export default function taskReducers(state = initState, action) {
         selected.push(data);
       }
       newState = { ...newState, tableNumber: selected };
+      break;
+    case types.SET_TASKUPDATE_MODAL:
+      newState = { ...newState, taskUpdateMidal: action.data };
+      break;
+    case types.SET_TASK_TIMELINE:
+      newState = { ...newState, taskTimeLine: action.data };
       break;
     default:
       break;

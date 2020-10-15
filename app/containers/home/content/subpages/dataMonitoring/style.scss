@@ -1,59 +1,66 @@
-.div-right-table {
-    position: relative;
-    width: 1200px;
-    // height: 750px;
-    right: -20px;
-}
-.div-left-echarts {
+.div-site-flex {
+  display: flex;
+  .div-right-table {
+    width: 50vw;
+  }
+  .div-left-echarts {
     width: 420px;
     height: 810px;
+  }
 }
+.div-right-table {
+  position: relative;
+  width: 1200px;
+  // height: 750px;
+  right: -20px;
+}
+
 .echarts-isOnline {
-    height: 400px;
+  height: 400px;
 }
 .echarts-count {
-    height: 400px;
+  height: 400px;
 }
 .tg {
-    border-collapse: collapse;
-    border-color: #ccc;
-    border-spacing: 0;
-    width: 100%;
+  border-collapse: collapse;
+  border-color: #ccc;
+  border-spacing: 0;
+  width: 100%;
 }
 .tg td {
-    background-color: #fff;
-    border-color: #ccc;
-    border-style: solid;
-    border-width: 1px;
-    color: #333;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    overflow: hidden;
-    padding: 5px 20px;
-    word-break: normal;
+  background-color: #fff;
+  border-color: #ccc;
+  border-style: solid;
+  border-width: 1px;
+  color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  overflow: hidden;
+  padding: 5px 20px;
+  word-break: normal;
 }
 .tg th {
-    background-color: #f0f0f0;
-    border-color: #ccc;
-    border-style: solid;
-    border-width: 1px;
-    color: #333;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    font-weight: normal;
-    overflow: hidden;
-    padding: 5px 20px;
-    word-break: normal;
+  background-color: #f0f0f0;
+  border-color: #ccc;
+  border-style: solid;
+  border-width: 1px;
+  color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 5px 20px;
+  word-break: normal;
 }
 .tg .tg-9wq8 {
-    border-color: inherit;
-    text-align: center;
-    vertical-align: middle;
+  border-color: inherit;
+  text-align: center;
+  vertical-align: middle;
 }
 .tg .tg-2xbj {
-    border-color: inherit;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    vertical-align: top;
+  border-color: inherit;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: top;
 }

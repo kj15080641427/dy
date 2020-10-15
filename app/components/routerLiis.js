@@ -8,6 +8,8 @@ import { Drawer } from "antd";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import { Col } from "antd";
+import display from "../resource/icon/display.svg";
+import water from "../resource/icon/water.svg";
 import ddfa from "@app/resource/ddfa.png";
 import hyyb from "@app/resource/hyyb.png";
 import hhsq from "@app/resource/hhsq.png";
@@ -28,11 +30,48 @@ class RouterList extends React.PureComponent {
       weatherData: {}, //天气信息
     };
   }
-
+  routerList = [
+    {
+      text: "数据中心",
+      imgurl: display,
+      routerUrl: "/display",
+    },
+    {
+      text: "数据中心",
+      imgurl: display,
+      routerUrl: "/display",
+    },
+  ];
   render() {
     return (
       <>
         <div className="router-item">
+          {/* {this.routerList.map((item) => (
+            <Col key={item.routerUrl}>
+              <Link to={item.routerUrl}>
+                <div className="router-item-style">
+                  <div>
+                    <div className="router-item-style-img-div">
+                      <img src={item.imgurl}></img>
+                    </div>
+                    <div>{item.text}</div>
+                  </div>
+                </div>
+              </Link>
+            </Col>
+          ))} */}
+          {/* <Col>
+            <Link to={"/display"}>
+              <div className="router-item-style">
+                <div>
+                  <div className="router-item-style-img-div">
+                    <img src={display}></img>
+                  </div>
+                  <div>数据中心</div>
+                </div>
+              </div>
+            </Link>
+          </Col> */}
           <Col>
             <Link to={"/display"}>
               <img src={sjzx}></img>
@@ -72,7 +111,7 @@ class RouterList extends React.PureComponent {
           </Col>
           {/* 海洋预报 */}
           <Col>
-            <Link to={'/ocean'}>
+            <Link to={"/ocean"}>
               <img
                 // onClick={() => this.setState({ showSea: true })}
                 src={hyyb}
@@ -80,7 +119,7 @@ class RouterList extends React.PureComponent {
             </Link>
           </Col>
           {/* 黄河水情 */}
-          <Link to={'/yellowRiver'}>
+          <Link to={"/yellowRiver"}>
             <img
               // onClick={() => this.setState({ showRain: true })}
               src={hhsq}

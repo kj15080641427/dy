@@ -12,13 +12,15 @@
     margin: 0 0 5px 0;
   }
   .flood-warning-left {
-    // width: 500px;
+    width: 500px;
     position: absolute;
     left: 15px;
     top: 10px;
     bottom: 0;
     z-index: 10;
     margin-top: 80px;
+    display: flex;
+    flex-wrap: wrap;
     // height: 100vh;
     .first-box {
       .radar-box {
@@ -53,6 +55,9 @@
     }
   }
   .flood-warning-right {
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
     position: absolute;
     right: 105px;
     top: 10px;

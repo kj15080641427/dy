@@ -8,6 +8,7 @@ import rainMonitor from "@app/containers/rain/rain";
 import waterMonitor from "@app/containers/water/water";
 import easyFloodMonitor from "@app/containers/easyFlood/easyFlood";
 import AsyncLogin from "@app/containers/home/Login";
+import SingIn from "@app/containers/home/signIn";
 import AsyncMonitor from "@app/containers/monitor/Monitor";
 import floodWarningMonitor from "@app/containers/floodWarning/floodWarning";
 
@@ -71,6 +72,7 @@ export class App extends React.Component {
         <Switch>
           <Route exact path={`/login`} component={AsyncNoLogin} />
           <Route exact path={`/`} component={AsyncLogin} />
+          <Route exact path={`/signIn`} component={SingIn} />
           {localStorage.getItem("token") === null ? null : (
             <>
               {localStorage.getItem("username") === "admin1" ? null : (

@@ -8,6 +8,7 @@ import ModalForm from "./component/modalForm";
 import TaskRadio from "./component/radio";
 import { userColumns, userRadioList, userTab2Columns } from "./cconfig";
 import { createHashHistory } from "history";
+import PageHeader from "./component/pageHeader";
 
 const hashHistory = createHashHistory();
 const { TabPane } = Tabs;
@@ -49,6 +50,7 @@ const UserDispatch = (props) => {
   };
   return (
     <React.Fragment>
+      <PageHeader></PageHeader>
       <Tabs defaultActiveKey="1">
         <TabPane key="1" tab="防汛人员调度">
           <ModalForm onFinish={onFinish}></ModalForm>
@@ -60,7 +62,10 @@ const UserDispatch = (props) => {
               radioText={"抢险队"}
               defaultRadio="city"
             ></TaskRadio>
-            <ListRender buttonText="调派人员"></ListRender>
+            <ListRender
+              buttonText="调派人员"
+              listItemText="remark"
+            ></ListRender>
           </div>
         </TabPane>
         <TabPane key="2" tab="已调派人员">

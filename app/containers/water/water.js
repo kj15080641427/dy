@@ -23,6 +23,14 @@ import { TableShow } from "../../components/chart/table";
 import RouterList from "../../components/routerLiis";
 import WaterInfo from "./tabs";
 const { TabPane } = Tabs;
+const itemStyle = {
+  水文局: "rgba(141,81,152,1)",
+  水务局: "rgba(141,37,191,1)",
+  河口区水利局: "rgba(29,108,228,1)",
+  农村基层防汛监测预警平台: "rgba(73,80,229,1)",
+  黄河东营境内水位站点: "rgba(33,36,185,1)",
+  人工录入: "rgba(90,150,222,1)",
+};
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -77,6 +85,9 @@ class Monitor extends React.PureComponent {
             ? "黄河"
             : item.dataSourceDesc || "暂无数据",
         value: item.number,
+        itemStyle: {
+          color: itemStyle[item.dataSourceDesc],
+        },
       });
     });
     pieChart("pie-chart", data, 450);
@@ -226,20 +237,31 @@ class Monitor extends React.PureComponent {
               </div>
               <TableShow
                 columns={[
-                  { name: "站点名称", dataIndex: "stnm" },
-                  { name: "警戒水位", dataIndex: "baselevel" },
-                  { name: "水位", dataIndex: "actuallevel" },
+                  { name: "站点名称", dataIndex: "stnm", width: "47%" },
+                  {
+                    name: "警戒水位",
+                    dataIndex: "baselevel",
+                    width: "15%",
+                  },
+                  {
+                    name: "水位",
+                    dataIndex: "actuallevel",
+                    width: "10%",
+                    render: (e) => <div style={{ color: "red" }}>{e}</div>,
+                  },
                   {
                     name: "更新时间",
                     dataIndex: "alarmtime",
+                    width: "28%",
                     render: (e) => e.slice(0, -3),
                   },
                 ]}
-                dataSource={alarmData || []}
+                pageSize="3"
+                dataSource={alarmData}
               />
             </div>
             <div className="water-right-second-box ">
-              <RenderBox title={"水位站点来源统计图"} hasTitle>
+              <RenderBox title={"基本统计信息"} hasTitle>
                 <div className="pie-flex-layout">
                   <div className="pie-chart" id="pie-chart"></div>
                 </div>
@@ -281,7 +303,6 @@ class Monitor extends React.PureComponent {
               <RenderBox
                 title={"水位站点在线统计图"}
                 containerStyle={{ height: "30.05%" }}
-                style={{ width: "496px", height: "100%", marginTop: "10px" }}
                 hasTitle
               >
                 <div className="bar-chart" id="bar-chart"></div>
@@ -289,13 +310,13 @@ class Monitor extends React.PureComponent {
             </div>
             <div className="water-left-first-box">
               {/* 来源图 */}
-              <RenderBox title={"24小时水位"} hasTitle>
+              <RenderBox title={"水位站点"} hasTitle>
                 <div className="water-select">
                   <div className="">
-                    <div className="water-select-flex">{waterName}</div>
+                    <div className="water-select-flex">{waterName}24小时水位变化曲线</div>
                     <div className="water-select-flex">{`${moment(
                       new Date().getTime() - 24 * 60 * 60 * 1000
-                    ).format("MM-DD HH:mm")} 至 ${moment(new Date()).format(
+                    ).format("YYYY-MM-DD HH:mm")} --- ${moment(new Date()).format(
                       "MM-DD HH:mm"
                     )}`}</div>
                   </div>
@@ -310,7 +331,7 @@ class Monitor extends React.PureComponent {
                       transform: "scale(0.85)",
                       position: "absolute",
                       left: "-51px",
-                      top: "320px",
+                      top: "270px",
                     }}
                     strtoken={waterVideoInfo?.strtoken}
                   ></VideoPlayer>

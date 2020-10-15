@@ -4,7 +4,7 @@
   height: $mapDisplayHeight;
   min-height: $minheight;
   .pie-chart {
-    width: 480px;
+    width: 530px;
     height: 300px;
   }
   .water-left-first-box {
@@ -18,14 +18,14 @@
     }
     .line-chart {
       width: 500px;
-      height: 280px;
+      height: 250px;
       z-index: 10;
     }
     .box-head {
       width: 140px;
     }
     .radar-box {
-      height: 640px;
+      height: 590px;
     }
     // img {
     //   width: 100%;
@@ -33,14 +33,15 @@
     // }
   }
   .water-right-second-box {
+    margin-top: -5px;
     .box-head {
       width: 200px;
     }
   }
 }
-.water-video-div{
-  .set-rotate-radio{
-    top: 350px;
+.water-video-div {
+  .set-rotate-radio {
+    top: 260px;
     right: -80px;
   }
 }
@@ -104,6 +105,9 @@
   background: rgb(0, 192, 165);
 }
 .table-backgrpund {
+  .ant-table-pagination.ant-pagination {
+    margin: 10px;
+  }
   border: 2px solid rgb(0, 153, 255);
   // margin-top: 10px;
   background: rgba(6, 45, 102, 0.7);
@@ -111,15 +115,17 @@
   position: relative;
   border: 2px solid rgb(0, 153, 255);
   width: 535px;
-  height: 29.53%;
+  height: 245px;
 }
 
 .water-right-first-box {
   .box-head {
     width: 200px;
   }
-  .radar-box{
-    width:496px
+  .radar-box {
+    width: 496px;
+    height: 240px;
+    // height: "100%", marginTop: "10px"
   }
 }
 .box-head {
@@ -153,11 +159,19 @@
   z-index: 9;
 }
 .chart-left {
+  display: flex;
+  flex-wrap: wrap;
   .card-container {
+    .set-table-style .anticon svg {
+      color: #00a0ea;
+    }
     color: white;
     margin-top: 5px;
     .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
-      margin-left: 10px;
+      margin-left: 1px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
     }
   }
   .flood-warning-display .ant-tabs-top > .ant-tabs-nav {
@@ -176,7 +190,7 @@
   .card-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
     // background: #fff;
     background: rgba(0, 51, 102, 0.7);
-    padding: 16px 10px 0px 10px;
+    padding: 10px 10px 0px 10px;
   }
   .card-container > .ant-tabs-card > .ant-tabs-nav::before {
     display: none;
@@ -243,9 +257,6 @@
   .anticon svg {
     color: white;
   }
-  .ant-pagination-item a {
-    color: white;
-  }
   .ant-pagination-item-active a {
     color: #1890ff;
   }
@@ -258,6 +269,9 @@
 .chart-right {
   // background:rgba(255, 255, 255, 0.6)!important;
   // width: 450px;
+  display: flex;
+  width: 500px;
+  flex-wrap: wrap;
   position: absolute;
   right: 115px;
   top: 15px;
@@ -266,7 +280,7 @@
   margin-top: 80px;
   .bar-chart {
     width: 450px;
-    height: 280px;
+    height: 230px;
   }
 
   .radar-box {
@@ -285,8 +299,9 @@
   font-size: 18px;
 }
 .video-table {
+  margin-top: -5px;
   .radar-box {
-    height: 310px;
+    height: 280px;
   }
   .ant-table table {
     table-layout: fixed;
@@ -298,38 +313,7 @@
     border-collapse: separate;
     border-spacing: 0;
   }
-  tr.ant-table-expanded-row > td,
-  tr.ant-table-expanded-row:hover > td {
-    background: #003366;
-  }
-  .ant-table.ant-table-small .ant-table-thead .ant-table-filter-column-title {
-    padding: 8px 2.3em 8px 8px;
-    color: white;
-    background: #003366;
-  }
-  .ant-table.ant-table-small .ant-table-thead th.ant-table-column-has-sorters {
-    padding: 0;
-    color: white;
-    background: #003366;
-  }
-  .ant-table.ant-table-small .ant-table-thead > tr > th {
-    padding: 8px 8px;
-    color: white;
-    background: #003366;
-  }
-  .ant-table.ant-table-small .ant-table-tbody > tr > td {
-    background: #003366;
-  }
-  tr.ant-table-row ant-table-row-level-0 {
-    background: #000000;
-  }
-  .ant-table-row-expand-icon-collapsed::before {
-    color: black;
-  }
-  .ant-table-row-expand-icon-collapsed::after {
-    color: black;
-  }
-  .ant-table-row-expand-icon::after {
-    color: black;
+  .ant-table-pagination.ant-pagination {
+    margin: 10px 0 0 0;
   }
 }

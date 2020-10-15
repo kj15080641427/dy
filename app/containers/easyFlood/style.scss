@@ -4,19 +4,21 @@
   min-height: $minheight;
   height: $mapDisplayHeight;
   .easyFlood-left {
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
     position: absolute;
     top: 90px;
     bottom: 0px;
     left: 15px;
     .radar-box {
       width: 500px;
-      height: 30vh;
+      height: 280px;
       .box-head {
         width: 170px;
       }
     }
     .easyflood-left-bottom {
-      margin-top: 15px;
       .radar-box {
         width: 500px;
         height: 53vh;
@@ -34,12 +36,17 @@
     }
   }
   .easyFlood-right {
+    width: 460px;
+    display: flex;
+    flex-wrap: wrap;
     position: absolute;
     top: 90px;
     right: 105px;
+    bottom: 0px;
+    // height: 95vh;
     .ranSwitch {
       position: absolute;
-      right: 437px;
+      right: 457px;
       top: 700px;
       background: rgba(15, 50, 70, 0.5);
       height: 100px;
@@ -132,8 +139,7 @@
     }
     .flood-first-box {
       .radar-box {
-        width: 435px;
-        // height: 30vh;
+        width: 445px;
         height: 290px;
         .box-head {
           width: 180px;
@@ -142,7 +148,7 @@
     }
     .second-box {
       .radar-box {
-        width: 435px;
+        width: 445px;
         height: 540px;
         margin-top: 10px;
         min-height: 500px;
@@ -151,7 +157,7 @@
         }
       }
       .set-rotate-radio{
-        top: 280px;
+        top: 240px;
         right: -80px;
       }
     }

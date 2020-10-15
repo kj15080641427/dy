@@ -1,24 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import * as action from "../../../redux/actions";
 import { bindActionCreators } from "redux";
 import Map from "../../../../monitor/map/map";
-import { Card, Col, Row } from "antd";
+import { Card, Col, Row, Button } from "antd";
 import { createHashHistory } from "history";
 import { Link } from "react-router-dom";
+import taskTimelineSvg from "../../../../../resource/icon/taskTimeline.png";
+import {
+  MailOutlined,
+  UserOutlined,
+  TeamOutlined,
+  BuildOutlined,
+  SnippetsOutlined,
+} from "@ant-design/icons";
+import moment from "moment";
+import TaskUpdate from "./taskUpdate";
 import "./task.scss";
 const gutter = [1, 20];
 const hashHistory = createHashHistory();
+const iconStyle = {
+  fontSize: "50px",
+  width: "50px",
+  height: "50px",
+};
 const navi = [
-  { icon: "", text: "发消息", url: "/message" },
-  { icon: "", text: "专家调度", url: "/expertDispatch" },
-  { icon: "", text: "防汛人员调度", url: "/userDispatch" },
-  { icon: "", text: "物资调度", url: "/materialDispatch" },
-  { icon: "", text: "事件调整", url: "/" },
+  {
+    icon: <MailOutlined style={iconStyle} />,
+    text: "发消息",
+    url: "/message",
+  },
+  {
+    icon: <UserOutlined style={iconStyle} />,
+    text: "专家调度",
+    url: "/expertDispatch",
+  },
+  {
+    icon: <TeamOutlined style={iconStyle} />,
+    text: "防汛人员调度",
+    url: "/userDispatch",
+  },
+  {
+    icon: <BuildOutlined style={iconStyle} />,
+    text: "物资调度",
+    url: "/materialDispatch",
+  },
+  {
+    icon: <img src={taskTimelineSvg} style={iconStyle} />,
+    text: "事件处置动态",
+    url: "/taskTimeLine",
+  },
 ];
 const TaskInfo = (props) => {
   const { taskInfo, floodUser, floodAddress } = props;
-  const { getFloodAddress, getAllFloodUser } = props.actions;
+  const formRef = useRef(null);
+  const {
+    getFloodAddress,
+    getAllFloodUser,
+    setTaskUpdateModal,
+  } = props.actions;
   const [person, stPerson] = useState([]);
 
   useEffect(() => {
@@ -43,22 +83,37 @@ const TaskInfo = (props) => {
     };
   }, [floodUser, floodAddress]);
   return (
-    <React.Fragment>
+    <div style={{ height: "100%" }}>
       <Map layerVisible={{}} person={person}></Map>
-
+      <TaskUpdate formRef={formRef}></TaskUpdate>
       <div className="task-info-fotter-center">
         <div className="task-info-fotter">
           {navi.map((item) => (
             <Link key={item.text} to={`/home${item.url}`}>
-              <div
-                className="task-info-fotter-div"
-                // onClick={() => hashHistory.push(`/home${item.url}`)}
-              >
-                <div className="task-info-fotter-message"></div>
+              <div className="task-info-fotter-div">
+                <div className="task-info-fotter-message">{item.icon}</div>
                 <div className="task-info-fotter-text">{item.text}</div>
               </div>
             </Link>
           ))}
+          <a>
+            <div
+              className="task-info-fotter-div"
+              onClick={() => {
+                setTaskUpdateModal(true);
+                console.log(taskInfo, "taskInfo");
+                formRef.current.setFieldsValue({
+                  ...taskInfo,
+                  happenTime: moment(taskInfo.happenTime),
+                });
+              }}
+            >
+              <div className="task-info-fotter-message">
+                <SnippetsOutlined style={iconStyle} />
+              </div>
+              <div className="task-info-fotter-text">事件调整</div>
+            </div>
+          </a>
         </div>
       </div>
       <div className="task-info-modal">
@@ -83,9 +138,17 @@ const TaskInfo = (props) => {
             <Col span={5}>事件描述:</Col>
             <Col span={19}> {taskInfo?.remark}</Col>
           </Row>
+          <Row>
+            <Col span={12}>
+              <Button onClick={() => {}}>取消事件</Button>
+            </Col>
+            <Col span={12}>
+              <Button onClick={() => {}}>事件已完成</Button>
+            </Col>
+          </Row>
         </Card>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 const mapStateToProps = (state) => {

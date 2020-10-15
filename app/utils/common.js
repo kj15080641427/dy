@@ -1,14 +1,15 @@
 import { createHashHistory } from "history";
 // const host = "http://2287ym5502.51mypc.cn";
-const host = "http://172.19.112.74:8080/";
 //const host = "http://10.1.4.187:8080/";
 // element判断是否含有className
 //拿到token值
 const token = localStorage.getItem("token");
 // const token = "";
 const hashHistory = createHashHistory();
-const isV2 = 0;
+
+const isV2 = 1;
 const URL = isV2 ? "/api/v2" : "/api";
+
 // const hostUrl = "http://218.56.180.250:9109/tuhui-base";
 
 export function hasClassName(obj, name) {

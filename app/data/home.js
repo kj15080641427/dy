@@ -373,7 +373,22 @@ export function getMaterialDispatch(data) {
 export function addMaterialDispatch(data) {
   return fetchJSONData("POST", "/base/TaskMaterial/save", data);
 }
-
+// 根据token查询用户信息
+export function getUserByUser(data) {
+  return fetchJSONData("POST", "/base/Users/getUser", data);
+}
+// 修改事件
+export function updateTaskEvent(data) {
+  return fetchJSONData("POST", "/base/TaskEvents/update", data);
+}
+// 删除事件
+export function deleteTaskEvent(data) {
+  return fetchJSONData("POST", "/base/TaskEvents/deleteTaskEvents", data);
+}
+//查询事件动态
+export function getTaskTimeLine(data) {
+  return fetchJSONData("POST", "/base/TasKrel/dynamic", data);
+}
 // 获取卫星云图
 //  export function getSatellite(data) {
 //    return fetchJSONData("POST", "/base/satellite/getSatellite", data);

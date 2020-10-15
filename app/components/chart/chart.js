@@ -42,7 +42,7 @@ export const barChart = (domId, legend, online, line) => {
     xAxis: [
       {
         type: "category",
-        data: ["东营县", "广饶县", "利津县", "河口区", "垦利区"],
+        data: ["东营区", "广饶县", "利津县", "河口区", "垦利区"],
         splitNumber: 0,
         maxInterval: 0,
         axisLine: {
@@ -171,13 +171,16 @@ export const pieChart = (domId, data, width, legend) => {
         color: "white",
       },
     },
+    grid: {
+      left: "center",
+    },
     series: [
       {
         clockwise: false,
         startAngle: 140,
         name: "访问来源",
         type: "pie",
-        radius: ["50%", "75%"],
+        radius: ["50%", "65%"],
         data: data,
         left: "center",
         width: width || 400,
@@ -192,46 +195,6 @@ export const pieChart = (domId, data, width, legend) => {
           width: "30px",
           color: "white",
           formatter: "{b}: {@2012}",
-          // formatter: "{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ",
-          // backgroundColor: "#eee",
-          // borderColor: "#aaa",
-          // borderWidth: 1,
-          // borderRadius: 4,
-          // // shadowBlur:3,
-          // // shadowOffsetX: 2,
-          // // shadowOffsetY: 2,
-          // // shadowColor: '#999',
-          // // padding: [0, 7],
-          // rich: {
-          //   a: {
-          //     color: "#999",
-          //     lineHeight: 22,
-          //     align: "center",
-          //   },
-          //   // abg: {
-          //   //     backgroundColor: '#333',
-          //   //     width: '100%',
-          //   //     align: 'right',
-          //   //     height: 22,
-          //   //     borderRadius: [4, 4, 0, 0]
-          //   // },
-          //   hr: {
-          //     borderColor: "#aaa",
-          //     width: "100%",
-          //     borderWidth: 0.5,
-          //     height: 0,
-          //   },
-          //   b: {
-          //     fontSize: 16,
-          //     lineHeight: 33,
-          //   },
-          //   per: {
-          //     color: "#eee",
-          //     backgroundColor: "#334455",
-          //     padding: [2, 4],
-          //     borderRadius: 2,
-          //   },
-          // },
         },
       },
     ],
@@ -588,12 +551,12 @@ export const showChart = (data, id) => {
       right: "center",
       x: "0px",
       y: "0px",
-      data: ['1小时降水', '24小时降水'],
+      data: ["1小时降水", "24小时降水"],
     },
-    grid: {
-      width: 400,
-      height:200
-    },
+    // grid: {
+    //   width: 250,
+    //   height: 250,
+    // },
     series: [
       {
         // name: '1小时降水',
