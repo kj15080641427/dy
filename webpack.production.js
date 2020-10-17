@@ -8,9 +8,15 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 var ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 // const CopyPlugin = require('copy-webpack-plugin');
 // const devMode = process.env.NODE_ENV !== 'production';
 // console.log(devMode);
+
+// Cesium源码所在目录
+const cesiumSource = "node_modules/cesium/Source";
+const dirCesiumSource = '../node_modules/cesium/Source';
+const cesiumWorkers = '../Build/Cesium/Workers';
 
 module.exports = {
   mode: "production",
@@ -83,6 +89,14 @@ module.exports = {
       // 'process.env.NODE_ENV': JSON.stringify('production'),
       _DEV_: JSON.stringify(false),
       "process.env.NODE_ENV": JSON.stringify("production"),
+    }),
+    //加入cesium资源
+    new CopyWebpackPlugin({patterns:[{ from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' }]}),
+    new CopyWebpackPlugin({patterns:[{ from: path.join(cesiumSource, 'Assets'), to: 'Assets' }]}),
+    new CopyWebpackPlugin({patterns:[{ from: path.join(cesiumSource, 'Widgets'), to: 'Widgets' }]}),
+    new webpack.DefinePlugin({
+      //Cesium载入静态的资源的相对路径
+      CESIUM_BASE_URL: JSON.stringify('')
     }),
     new htmlPlugin({
       minify: {

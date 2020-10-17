@@ -2,7 +2,15 @@ const path = require("path");
 const htmlPlugin = require("html-webpack-plugin");
 var webpack = require("webpack");
 const ErrorOverlayPlugin = require("error-overlay-webpack-plugin");
-// const CopyPlugin = require('copy-webpack-plugin');
+//const CopyPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+// Cesium源码所在目录
+const cesiumSource = "node_modules/cesium/Source";
+const dirCesiumSource = '../node_modules/cesium/Source';
+const cesiumWorkers = '../Build/Cesium/Workers';
+
+
 // const os = require("os");
 const isTao = true;
 // const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -19,7 +27,11 @@ module.exports = {
     publicPath: "/",
     chunkFilename: "[name].chunk.js",
   },
+  amd: {
+    toUrlUndefined: true
+  },
   module: {
+    unknownContextCritical: false,
     rules: [
       {
         test: /\.(ts|tsx|jsx|js)$/,
@@ -107,6 +119,14 @@ module.exports = {
       "process.env.NODE_ENV": JSON.stringify("development"),
     }),
     new ErrorOverlayPlugin(),
+    //加入cesium资源
+    new CopyWebpackPlugin({patterns:[{ from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' }]}),
+    new CopyWebpackPlugin({patterns:[{ from: path.join(cesiumSource, 'Assets'), to: 'Assets' }]}),
+    new CopyWebpackPlugin({patterns:[{ from: path.join(cesiumSource, 'Widgets'), to: 'Widgets' }]}),
+    new webpack.DefinePlugin({
+      //Cesium载入静态的资源的相对路径
+      CESIUM_BASE_URL: JSON.stringify('')
+    }),
     // new CopyPlugin({
     //   patterns: [
     //     { from: 'vender', to: 'vender' },
