@@ -27,6 +27,7 @@ const ReadOnlyTable = (props) => {
     footer,
     initSelect = { current: 1, size: 10 },
     handPage,
+    scroll
   } = props;
   useEffect(() => {
     readOnlyTableGetAll({
@@ -97,6 +98,7 @@ const ReadOnlyTable = (props) => {
         </Form.Item>
       </Form>
       <Table
+        scroll={scroll}
         pagination={handPage ? handPage : pagination}
         onRow={(record) => {
           return {

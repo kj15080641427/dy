@@ -197,7 +197,8 @@ export function countMinutesRain(data) {
 
 // 统计小时雨量数据
 export function countHoursRain(data) {
-  return fetchJSONData("POST", "/base/RaindataHour/getByTime", data);
+  // return fetchJSONData("POST", "/base/RaindataHour/getByTime", data);
+  return fetchJSONData("POST", "/base/RaindataHour/getByCount", data);
 }
 
 // 统计各来源的站点数

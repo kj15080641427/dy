@@ -39,13 +39,28 @@ class Login extends Component {
         password: values.password,
       }).then((result) => {
         if (result.code == 200) {
-          console.log(result, "RRR");
+          localStorage.setItem("token", result.data.userToken);
           localStorage.setItem("username", values.username);
           // console.log(localStorage.getItem("token"));
-          this.props.history.push("/display");
-          window.location.reload();
-          message.success("登录成功！");
-          localStorage.setItem("token", result.data.userToken);
+          // this.props.history.push("/display");
+          // window.location.reload();
+          // message.success("登录成功！");
+          // localStorage.setItem("token", result.data.userToken);
+
+          const hrefNavi = window.location.href.split("?url=");
+          const url = unescape(hrefNavi[1]);
+          if (hrefNavi[1]) {
+            if (url.split("?")[1]) {
+              window.location.replace(`${url}&token=${result.data.userToken}`);
+            } else {
+              window.location.replace(`${url}?token=${result.data.userToken}`);
+            }
+          } else {
+            this.props.history.push("/display");
+            window.location.reload();
+            message.success("登录成功！");
+            localStorage.setItem("token", result.data.userToken);
+          }
           // queryUser({
           //   username: values.username,
           // }).then((res) => {

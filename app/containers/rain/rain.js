@@ -465,14 +465,11 @@ class Monitor extends React.PureComponent {
     }
   }
   componentDidMount() {
-    //this.props.actions.rainCurrent();
     //加载雨量站基础信息
     this.props.mapActions.getDict();
     this.props.actions.getAllRainStation();
     this.props.actions.rainCurrent();
     this.props.mapActions.getCountStation();
-
-    // this.props.mapActions.getWaterType();
   }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;

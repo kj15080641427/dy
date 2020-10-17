@@ -216,9 +216,11 @@ class Monitor extends React.PureComponent {
           </div>
           <div style={{ display: displayRight }}>
             <div className="chart-right-video">
-              <RenderBox hasTitle title="视频站点在线图">
-                <div className="videoBarChart" id="videoBarChart"></div>
-              </RenderBox>
+              <div>
+                <RenderBox hasTitle title="视频站点在线图">
+                  <div className="videoBarChart" id="videoBarChart"></div>
+                </RenderBox>
+              </div>
               <div className="video-img-box ">
                 <RenderBox>
                   <div className="video-ing-title">{videoInfo.name}</div>

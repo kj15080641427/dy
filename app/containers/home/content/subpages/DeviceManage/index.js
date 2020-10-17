@@ -12,15 +12,25 @@ import { Tabs } from "antd";
 const { TabPane } = Tabs;
 
 const deviceManage = (props) => {
+
+  const deviceTypeMap = [{
+    type: '2', name: '水位站', typeName: 'WaterLevels'
+  }, {
+    type: '3', name: '易涝点', typeName: 'WaterPoint'
+  }, {
+    type: '1', name: '雨量站', typeName: 'Rain'
+  }, {
+    type: '4', name: '视频站', typeName: 'WaterRadio'
+  }]
+
   return (
     <>
       <Tabs>
-        <TabPane tab="水位站" key="water-level">
-          <Flood />
-        </TabPane>
-        <TabPane tab="易涝点" key="flood"></TabPane>
-        <TabPane tab="雨量站" key="rain"></TabPane>
-        <TabPane tab="水质站" key="water-quality"></TabPane>
+        {deviceTypeMap.map(device => (
+          <TabPane tab={device.name} key={device.typeName}>
+            <Flood device={device}  />
+          </TabPane>
+        ))}
       </Tabs>
     </>
   );

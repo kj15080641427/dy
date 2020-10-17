@@ -8,7 +8,7 @@ import ModalForm from "./component/modalForm";
 import TaskRadio from "./component/radio";
 import { materialColumns, materiaTab2lColumns } from "./cconfig";
 import { createHashHistory } from "history";
-
+import PageHeader from "./component/pageHeader";
 const hashHistory = createHashHistory();
 const { TabPane } = Tabs;
 
@@ -69,6 +69,7 @@ const MaterialDispatch = (props) => {
   };
   return (
     <React.Fragment>
+      <PageHeader></PageHeader>
       <Tabs defaultActiveKey="1">
         <TabPane key="1" tab="物资调派">
           <ModalForm onFinish={onFinish} showTree={true}></ModalForm>

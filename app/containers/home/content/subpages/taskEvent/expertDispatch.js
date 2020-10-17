@@ -8,6 +8,7 @@ import ListRender from "./component/list";
 import ModalForm from "./component/modalForm";
 import TaskRadio from "./component/radio";
 import { expertRadioList, expertColumns } from "./cconfig";
+import PageHeader from "./component/pageHeader";
 const { TabPane } = Tabs;
 const hashHistory = createHashHistory();
 
@@ -50,6 +51,7 @@ const ExpertDispatch = (props) => {
 
   return (
     <React.Fragment>
+       <PageHeader></PageHeader>
       <Tabs defaultActiveKey="1">
         <TabPane key="1" tab="专家调度">
           {/* 发送消息 */}
@@ -62,7 +64,7 @@ const ExpertDispatch = (props) => {
               dataSource={expert}
               defaultRadio="all"
             ></TaskRadio>
-            <ListRender></ListRender>
+            <ListRender listItemText={'major'}></ListRender>
           </div>
         </TabPane>
         <TabPane key="2" tab="已调派专家">

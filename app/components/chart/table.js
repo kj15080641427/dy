@@ -1,16 +1,5 @@
 import React from "react";
-import {
-  Drawer,
-  Row,
-  Divider,
-  Checkbox,
-  Tabs,
-  Input,
-  Space,
-  Button,
-  Popover,
-  Table,
-} from "antd";
+import { Input, Space, Button, Popover, Table } from "antd";
 import "../style.scss";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
@@ -44,7 +33,7 @@ export class TableShow extends React.PureComponent {
     this.setState({ searchText: "" });
   };
   //检索数据搜索
-  getColumnSearchProps = (dataIndex) => ({
+  getColumnSearchProps = (dataIndex, number) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -103,8 +92,8 @@ export class TableShow extends React.PureComponent {
           searchWords={[this.state.searchText]}
           autoEscape
           textToHighlight={
-            text.toString().length > 6
-              ? text.toString().substring(0, 6) + "..."
+            text.toString().length > number
+              ? text.toString().substring(0, number) + "..."
               : text.toString()
           }
         />
@@ -112,7 +101,7 @@ export class TableShow extends React.PureComponent {
     ),
   });
   render() {
-    const { columns, dataSource, onRow, pageSize, rowKey } = this.props;
+    const { columns, dataSource, onRow, pageSize, rowKey, number } = this.props;
 
     return (
       <Table
@@ -120,7 +109,11 @@ export class TableShow extends React.PureComponent {
         dataSource={dataSource}
         className="set-table-style"
         rowKey={rowKey}
-        pagination={{ pageSize: pageSize || 4, showSizeChanger: false }}
+        pagination={{
+          pageSize: pageSize || 4,
+          showSizeChanger: false,
+          hideOnSinglePage: true,
+        }}
         onRow={onRow}
         // height={'100px'}
       >
@@ -131,10 +124,10 @@ export class TableShow extends React.PureComponent {
               dataIndex={item.dataIndex}
               key={item.dataIndex}
               className="table-background"
-              render={item.render}
               width={item.width}
               sorter={item.sorter}
-              {...this.getColumnSearchProps(item.filter)}
+              {...this.getColumnSearchProps(item.filter, number)}
+              render={item.render}
             />
           ) : (
             <Column

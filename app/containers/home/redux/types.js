@@ -82,3 +82,22 @@ export const SET_FORM_USER = "SET_FORM_USER";
 
 //选择物资
 export const SET_MATERIAL_TABLE_INPUT = "SET_MATERIAL_TABLE_INPUT";
+//事件调整modal
+export const SET_TASKUPDATE_MODAL = "SET_TASKUPDATE_MODAL";
+//修改事件
+export const UPDATE_TASK_INFO = "UPDATE_TASK_INFO";
+//删除事件
+export const DELETE_TASK_INFO = "DELETDE_TASK_INFO";
+//
+// export const ROUTER_BACK
+//取消事件
+export const RECALL_TASK = "RECALL_TASK";
+//完成事件
+export const COMPLETE_TASK = "COMPLETE_TASK";
+//查询事件流程
+export const GET_TASK_TIMELINE = "GET_TASK_TIMELINE";
+export const SET_TASK_TIMELINE = "SET_TASK_TIMELINE";
+//反馈事件
+export const FEED_TASK = "FEED_TASK";
+//事件反馈modal
+export const FEED_TASK_MODAL = "FEED_TASK_MODAL";

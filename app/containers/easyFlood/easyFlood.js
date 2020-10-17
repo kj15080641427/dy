@@ -1,11 +1,7 @@
-/**
- * Monitor 2020-05-12
- */
 import React from "react";
 import { connect } from "react-redux";
-import { bindActionCreators, compose } from "redux";
+import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/map";
-//import Map from "./map/map";
 import moment from "moment";
 import Map from "./map/map";
 import "./style.scss";
@@ -14,9 +10,6 @@ import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
 import { Drawer, Row, Divider, Checkbox, Col } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
-import video from "@app/resource/icon/video.png";
-import pondingimg from "@app/resource/icon/ponding.svg";
-import rainimg from "@app/resource/icon/5.svg";
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
 import {
@@ -253,16 +246,23 @@ class Monitor extends React.PureComponent {
               </div>
               <TableShow
                 columns={[
-                  { name: "站点名称", dataIndex: "stnm" },
-                  { name: "警戒水位", dataIndex: "baselevel" },
-                  { name: "水位", dataIndex: "actuallevel" },
+                  { name: "站点名称", dataIndex: "stnm", width: "35%" },
+                  { name: "警戒水位", dataIndex: "baselevel", width: "15%" },
+                  {
+                    name: "水位",
+                    dataIndex: "actuallevel",
+                    width: "15%",
+                    render: (e) => <div style={{ color: "red" }}>{e}</div>,
+                  },
                   {
                     name: "更新时间",
                     dataIndex: "alarmtime",
+                    width: "35%",
                     render: (value) => (value ? value.slice(0, -3) : "-"),
                   },
                 ]}
-                dataSource={alarmData || []}
+                pageSize={3}
+                dataSource={alarmData}
               />
             </RenderBox>
             <div className="easyflood-left-bottom">
@@ -283,8 +283,9 @@ class Monitor extends React.PureComponent {
                       },
                     };
                   }}
+                  pageSize={5}
                   columns={[
-                    { name: "易涝点名称", dataIndex: "name" },
+                    { name: "易涝点名称", dataIndex: "name", filter: "name" },
                     {
                       name: "积水水深(cm)",
                       dataIndex: "riverwaterdataList",
@@ -377,7 +378,6 @@ class Monitor extends React.PureComponent {
                       });
                     }}
                   >
-                    {/* <img src={rainimg} width="20px" height="20px"></img>  */}
                     <div className="switch-ponding-flex">
                       <div className="switch-rain"></div>
                       <div>雨量</div>
@@ -398,8 +398,6 @@ class Monitor extends React.PureComponent {
                       });
                     }}
                   >
-                    {/* <img src={pondingimg} width="20px" height="20px"></img>
-                    积水 */}
                     <div className="switch-ponding-flex">
                       <div className="switch-ponding"></div>
                       <div>积水</div>

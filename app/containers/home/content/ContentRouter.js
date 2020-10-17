@@ -39,6 +39,7 @@ import TaskInfo from "./subpages/taskEvent/taskInfo";
 import ExpertDispatch from "./subpages/taskEvent/expertDispatch";
 import UserDispatch from "./subpages/taskEvent/userDispatch";
 import MaterialDispatch from "./subpages/taskEvent/materialDispatch";
+import TaskTimeLine from "./subpages/taskEvent/taskTimeLine";
 const NoMatch = () => <div>没有找到该路由</div>;
 
 class ContentRouter extends React.PureComponent {
@@ -121,6 +122,7 @@ class ContentRouter extends React.PureComponent {
                   path={path + "/materialDispatch"}
                   component={MaterialDispatch}
                 />
+                <Route path={path + "/taskTimeLine"} component={TaskTimeLine} />
               </>
             )}
           </>

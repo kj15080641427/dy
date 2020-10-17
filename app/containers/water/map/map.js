@@ -204,6 +204,7 @@ class Map extends React.PureComponent {
         this.props.onFeatureClick(param);
       } else {
         this.props.mapActions.changeWaterId(param);
+        this.props.stateActions.changeWaterVideo(param);
         // this.addOverlay('water', { ...param });
       }
     });

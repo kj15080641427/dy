@@ -98,12 +98,12 @@ export const rain = [
     key: "riverwaterdataID",
     render: (value) => value || "-",
   },
-  {
-    title: "数据来源",
-    width: 110,
-    dataIndex: "dataSourceDesc",
-    render: (value) => value || "-",
-  },
+  // {
+  //   title: "数据来源",
+  //   width: 110,
+  //   dataIndex: "dataSourceDesc",
+  //   render: (value) => value || "-",
+  // },
   {
     title: "地址",
     ellipsis: true,

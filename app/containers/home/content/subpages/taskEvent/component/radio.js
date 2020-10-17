@@ -26,7 +26,9 @@ const TaskRadio = (props) => {
   const filterSelect = (data) => {
     return listRender.filter((item) => item.materialId == data.materialId);
   };
-
+  const baseFilter = (data) => {
+    return listRender.filter((item) => item == data);
+  };
   const addColumns = {
     title: "调派数量",
     dataIndex: "",
@@ -66,6 +68,21 @@ const TaskRadio = (props) => {
       </a>
     ),
   };
+  const baseEditColumns = {
+    title: "操作",
+    dataIndex: "",
+    render: (row) => (
+      <a
+        onClick={() => {
+          baseFilter(row)[0]
+            ? ""
+            : changeTaskRenderList([...listRender, row]);
+        }}
+      >
+        添加
+      </a>
+    ),
+  };
   return (
     <React.Fragment>
       <Card className="expert-dispatch-left">
@@ -99,7 +116,7 @@ const TaskRadio = (props) => {
           columns={
             isMaterial
               ? [...columns, addColumns, editColumns]
-              : [...columns, editColumns]
+              : [...columns, baseEditColumns]
           }
           dataSource={dataSource && dataSource[taskRadioType]}
           rowKey={(row) => row[rowKey]}

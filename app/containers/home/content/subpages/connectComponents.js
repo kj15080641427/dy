@@ -150,7 +150,16 @@ class BaseLayout extends React.Component {
               </Button>
             </Form.Item>
           </Form>
-          {showEdit ? <Button onClick={() => showModal()}>添加</Button> : null}
+          {showEdit ? (
+            <Button
+              onClick={() => {
+                this.formRef.current.resetFields;
+                showModal();
+              }}
+            >
+              添加
+            </Button>
+          ) : null}
         </div>
         <DYTable
           showEdit={showEdit}

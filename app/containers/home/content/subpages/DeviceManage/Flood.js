@@ -1,190 +1,397 @@
-
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import "./style.scss";
+import moment from "moment";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import DYForm from "@app/components/home/form";
-import { Input, Tree, Table, Space, Button, Divider, Modal, DatePicker } from "antd";
+import {
+  Input,
+  Tree,
+  Table,
+  Space,
+  Button,
+  Divider,
+  Modal,
+  DatePicker,
+  Spin,
+  message,
+} from "antd";
 const { Search, TextArea } = Input;
+
+const AllApi = require("@app/data/home");
 
 class DeviceManageFlood extends Component {
   constructor(props, context) {
-      super(props, context);
-      this.state = {
-        treeData: [{
-          title: '东营区',
-          dataIndex: '东营区',
-          children: [{
-            title: '明泓匣（匣前）',
-            dataIndex: '明泓匣（匣前）'
-          }, {
-            title: '明泓匣（匣后）',
-            dataIndex: '明泓匣（匣后）'
-          }]
-        }, {
-          title: '河口区',
-          dataIndex: '河口区',
-          children: [{
-            title: '四倾二',
-            dataIndex: '四倾二'
-          }, {
-            title: '丁王',
-            dataIndex: '丁王'
-          }, {
-            title: '龙王匣（匣下游）',
-            dataIndex: '龙王匣（匣下游）'
-          }]
-        }, {
-          title: '开发区',
-          dataIndex: '开发区',
-          children: [{
-            title: '开发区1',
-            dataIndex: '开发区1'
-          }]
-        }, {
-          title: '广饶县',
-          dataIndex: '广饶县',
-          children: [{
-            title: '稻三匣',
-            dataIndex: '稻三匣'
-          }]
-        }, {
-          title: '垦利区',
-          dataIndex: '垦利区',
-          children: [{
-            title: '永镇水库',
-            dataIndex: '永镇水库'
-          }]
-        }],
-        deviceList: [
-          { a: '遥测终端机', b: '05461000192', c: '四信', d: 'FN-9153N', e: '2019-05', f: '2019-12-11' },
-          { a: '遥测终端机', b: '05461000192', c: '四信', d: 'FN-9153N', e: '2019-05', f: '2019-12-11' },
-          { a: '遥测终端机', b: '05461000192', c: '四信', d: 'FN-9153N', e: '2019-05', f: '2019-12-11' },
-          { a: '遥测终端机', b: '05461000192', c: '四信', d: 'FN-9153N', e: '2019-05', f: '2019-12-11' },
-          { a: '遥测终端机', b: '05461000192', c: '四信', d: 'FN-9153N', e: '2019-05', f: '2019-12-11' },
-          { a: '遥测终端机', b: '05461000192', c: '四信', d: 'FN-9153N', e: '2019-05', f: '2019-12-11' }
-        ],
-        deviceListColumns: [{
-          align: 'center',
-          title: '设备名称',
-          dataIndex: 'a'
-        }, {
-          align: 'center',
-          title: '设备编号',
-          dataIndex: 'b'
-        }, {
-          align: 'center',
-          title: '厂家',
-          dataIndex: 'c'
-        }, {
-          align: 'center',
-          title: '型号',
-          dataIndex: 'd'
-        }, {
-          align: 'center',
-          title: '生产日期',
-          dataIndex: 'e'
-        }, {
-          align: 'center',
-          title: '安装时间',
-          dataIndex: 'f'
-        }, {
-          align: 'center',
-          title: '操作',
-          dataIndex: 'g',
-          render: (text, record) => (<Space>
-            <a onClick={() => this.handleRepair(record)}>维修</a>
-            <a onClick={() => this.handleChange(record)}>更换</a>
-            <a onClick={() => this.handleRemove(record)}>拆除</a>
-          </Space>)
-        }],
-        repairList: [
-          { a: '遥测终端', b: '05461000192', c: '更换设备', d: '原设备不能使用，更新型号', e: '张三', f: '2019-12-11' },
-          { a: '遥测终端', b: '05461000192', c: '更换设备', d: '原设备不能使用，更新型号', e: '张三', f: '2019-12-11' },
-          { a: '遥测终端', b: '05461000192', c: '更换设备', d: '原设备不能使用，更新型号', e: '张三', f: '2019-12-11' }
-        ],
-        repairListColumns: [{
-          align: 'center',
-          title: '设备名称',
-          dataIndex: 'a'
-        }, {
-          align: 'center',
-          title: '设备编号',
-          dataIndex: 'b'
-        }, {
-          align: 'center',
-          title: '维护类型',
-          dataIndex: 'c'
-        }, {
-          align: 'center',
-          title: '说明',
-          dataIndex: 'd'
-        }, {
-          align: 'center',
-          title: '维护人',
-          dataIndex: 'e'
-        }, {
-          align: 'center',
-          title: '维护时间',
-          dataIndex: 'f'
-        }],
-        addFormVisible: false,
-        repairFormVisible: false,
-        changeFormVisible: false
-      };
+    super(props, context);
+    this.addFormRef = React.createRef();
+    this.repairFormRef = React.createRef();
+    this.changeFormRef = React.createRef();
+    this.state = {
+      showLoading: true,
+      userinfo: null,
+      deviceTableSearchName: "",
+      deviceTablePage: 1,
+      deviceTableTotal: 0,
+      repairTablePage: 1,
+      repairTableTotal: 0,
+      treeDefaultStatus: {},
+      treeData: null,
+      currentSite: null,
+      deviceList: [],
+      repairList: [],
+      addFormVisible: false,
+      repairFormVisible: false,
+      changeFormVisible: false,
+    };
+  }
+  async componentDidMount() {
+    const { device } = this.props;
+    const { data } = await AllApi[`getSite${device.typeName}Page`]({
+      current: 1,
+      size: -1,
+    });
+    const treeDefaultStatus = {};
+    const treeData = [
+      { title: "东营区", key: "370502" },
+      { title: "河口区", key: "370503" },
+      { title: "垦利区", key: "370521" },
+      { title: "利津县", key: "370522" },
+      { title: "广饶县", key: "370523" },
+    ];
+
+    let first;
+    treeData.map((td) => {
+      td.selectable = false;
+      td.children = [];
+      data.records
+        .filter((d) => (d.region || d.addvcd) === td.key)
+        .map((d) => {
+          const child = Object.assign({}, d, {
+            key: d[`site${device.typeName}ID`],
+            title: d.name,
+          });
+          if (!first) {
+            first = child;
+            treeDefaultStatus.expand = td.key;
+            treeDefaultStatus.selected = child.key;
+          }
+          td.children.push(child);
+        });
+    });
+    this.setState({ treeData, showLoading: false, treeDefaultStatus });
+    this.handleTreeSelect({ node: first });
   }
 
-  handleTreeSelect () {
-    console.log(arguments)
+  handleTreeSelect({ node }) {
+    this.setState({ currentSite: node }, () => {
+      this.getDeviceData();
+      this.getDeviceRepairData();
+    });
+  }
+  //TODO
+  async getDeviceData7777() {
+    this.setState({ showLoading: true });
+    try {
+      const { device } = this.props;
+      const { currentSite, deviceTablePage, waterName } = this.state;
+      const siteDevices = await AllApi.getSiteWaterLevelsPage({
+        relTypeCode: device.type,
+        relTypeId: currentSite.key,
+        size: -1,
+        current: deviceTablePage,
+        name: waterName,
+      });
+      const treeData = [
+        { title: "东营区", key: "370502" },
+        { title: "河口区", key: "370503" },
+        { title: "垦利区", key: "370521" },
+        { title: "利津县", key: "370522" },
+        { title: "广饶县", key: "370523" },
+      ];
+      const treeDefaultStatus = {};
+      let first;
+      treeData.map((td) => {
+        td.selectable = false;
+        td.children = [];
+        siteDevices.data.records
+          .filter((d) => (d.region || d.addvcd) === td.key)
+          .map((d) => {
+            const child = Object.assign({}, d, {
+              key: d[`site${device.typeName}ID`],
+              title: d.name,
+            });
+            // if (!first) {
+            //   first = child;
+            //   treeDefaultStatus.expand = td.key;
+            //   treeDefaultStatus.selected = child.key;
+            // }
+            td.children.push(child);
+          });
+      });
+      this.setState({
+        treeData: treeData,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+    this.setState({ showLoading: false });
+  }
+  async getDeviceData() {
+    this.setState({ showLoading: true });
+    try {
+      const { device } = this.props;
+      const {
+        currentSite,
+        deviceTablePage,
+        deviceTableSearchName,
+      } = this.state;
+      const siteDevices = await AllApi.getSiteDevicePage({
+        relTypeCode: device.type,
+        relTypeId: currentSite.key,
+        size: 10,
+        current: deviceTablePage,
+        name: deviceTableSearchName,
+      });
+      this.setState({
+        deviceList: siteDevices.data.records,
+        deviceTableTotal: siteDevices.data.total,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+    this.setState({ showLoading: false });
   }
 
-  handleDiviceAdd () {
-    console.log('add')
-    this.setState({ addFormVisible: true })
+  async getDeviceRepairData() {
+    this.setState({ showLoading: true });
+    try {
+      const { device } = this.props;
+      const { currentSite, repairTablePage } = this.state;
+      const siteDeviceRepairs = await AllApi.getSiteDeviceRepairPage({
+        relTypeCode: device.type,
+        relTypeId: currentSite.key,
+        size: 10,
+        current: repairTablePage,
+      });
+      this.setState({
+        repairList: siteDeviceRepairs.data.records,
+        repairTableTotal: siteDeviceRepairs.data.total,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+    this.setState({ showLoading: false });
   }
 
-  handleRepair (record) {
-    this.setState({ repairFormVisible: true })
+  async getUserInfo() {
+    const { data: userdata } = await AllApi.getUserInfoByToken({
+      token: localStorage.getItem("token"),
+    });
+    this.setState({ userinfo: userdata });
   }
 
-  handleChange (record) {
-    this.setState({ changeFormVisible: true })
+  async handleImportDevice(tg) {
+    this.setState({ showLoading: true });
+    const formData = new FormData();
+    formData.append("uploadFile", tg.files[0]);
+    const rs = await fetch(
+      `/api/base/SiteDevice/import?relTypeCode=${this.props.device.type}&relTypeId=${this.state.currentSite.key}&relTypeNmae=${this.props.device.name}`,
+      {
+        method: "post",
+        credentials: "include",
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+        body: formData,
+      }
+    ).then((rs) => rs.json());
+    if (rs.code === 200) {
+      message.success(rs.data);
+    } else {
+      message.error(rs.data);
+    }
+    this.setState({ showLoading: false, deviceTablePage: 1 });
+    this.getDeviceData();
   }
 
-  handleRemove (record) {
+  handleExportDevice() {
+    this.downloadFile(
+      "/api/v2/base/SiteDevice/export",
+      {
+        relTypeCode: this.props.device.type,
+        relTypeId: this.state.currentSite.key,
+        size: -1,
+        current: 1,
+        name: this.state.deviceTableSearchName,
+      },
+      `device.xlsx`
+    );
+  }
+  handleExportDeviceRepair() {
+    this.downloadFile(
+      "/api/v2/base/SiteDevice/export",
+      {
+        relTypeCode: this.props.device.type,
+        relTypeId: this.state.currentSite.key,
+        size: 10,
+        current: 1,
+      },
+      `device-repair-${moment(new Date()).format("YYYY-MM-DD")}.xlsx`
+    );
+  }
+  downloadFile(url, params, filename) {
+    fetch(url, {
+      method: "post",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+      body: JSON.stringify(params),
+    })
+      .then(function (response) {
+        return response.blob();
+      })
+      .then(function (blob) {
+        const link = document.createElement("a");
+        link.style.display = "none";
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        URL.revokeObjectURL(link.href);
+        document.body.removeChild(link);
+      });
+  }
+
+  async handleRepair(record) {
+    if (!this.state.userinfo) {
+      await this.getUserInfo();
+    }
+    this.repairFormRef.current.setFieldsValue({
+      siteDeviceId: record.siteDeviceId,
+      repairUserName: this.state.userinfo.realname,
+      repairTime: moment(new Date()),
+    });
+    this.setState({ repairFormVisible: true });
+  }
+
+  async handleChange(record) {
+    if (!this.state.userinfo) {
+      await this.getUserInfo();
+    }
+    this.changeFormRef.current.setFieldsValue(
+      Object.assign({}, record, {
+        produceTime: moment(record.produceTime),
+        repairUserName: this.state.userinfo.realname,
+        repairTime: moment(new Date()),
+      })
+    );
+    this.setState({ changeFormVisible: true });
+  }
+
+  handleRemove(record) {
     Modal.confirm({
-      title: '拆除设备',
-      content: (<p>
-        确认要拆除当前选择的设备？
-      </p>)
+      title: "拆除设备",
+      content: <p>确认要拆除当前选择的设备？</p>,
+      onOk: async () => {
+        this.setState({ showLoading: true });
+        try {
+          await AllApi.deleteSiteDevice(record.siteDeviceId);
+          this.getDeviceData();
+        } catch (e) {
+          console.error(e);
+        }
+        this.setState({ showLoading: false });
+      },
     });
   }
 
-  handleAddFormSave () {
+  async handleAddFormSave(item) {
+    const { device } = this.props;
+    const { currentSite } = this.state;
+    if (item.produceTime) {
+      item.produceTime = moment(item.produceTime).format("YYYY-MM-DD HH:mm:ss");
+    }
+    await AllApi.saveSiteDevice(
+      Object.assign({}, item, {
+        relTypeCode: device.type,
+        relTypeId: currentSite.key,
+        relTypeNmae: device.name,
+      })
+    );
+    this.addFormRef.current.resetFields();
+    this.setState({ addFormVisible: false });
+    this.getDeviceData();
   }
 
-  handleRepairFormSave () {
+  async handleRepairFormSave(item) {
+    if (item.repairTime) {
+      item.repairTime = moment(item.repairTime).format("YYYY-MM-DD HH:mm:ss");
+    }
+    await AllApi.saveSiteDeviceRepair(item);
+    this.repairFormRef.current.resetFields();
+    this.setState({ repairFormVisible: false });
+    this.getDeviceRepairData();
   }
 
-  handleChangeFormSave () {
+  async handleChangeFormSave(item) {
+    if (item.produceTime) {
+      item.produceTime = moment(item.produceTime).format("YYYY-MM-DD HH:mm:ss");
+    }
+    if (item.repairTime) {
+      item.repairTime = moment(item.repairTime).format("YYYY-MM-DD HH:mm:ss");
+    }
+    await AllApi.updateSiteDevice(item);
+    this.changeFormRef.current.resetFields();
+    this.setState({ changeFormVisible: false });
+    this.getDeviceData();
+    this.getDeviceRepairData();
   }
 
-  render () {
-    const { treeData, deviceList, deviceListColumns, repairList, repairListColumns, addFormVisible, repairFormVisible, changeFormVisible } = this.state;
+  render() {
+    const {
+      showLoading,
+      deviceTablePage,
+      deviceTableTotal,
+      repairTablePage,
+      repairTableTotal,
+      treeDefaultStatus,
+      treeData,
+      deviceList,
+      repairList,
+      addFormVisible,
+      repairFormVisible,
+      changeFormVisible,
+    } = this.state;
 
     return (
-      <>
+      <Spin spinning={showLoading}>
         <div className="device-manage">
           <Search
             placeholder="请输入搜索内容"
-            onSearch={this.test}
+            onSearch={(value) => {
+              this.setState({ waterName: value, deviceTablePage: 1 }, () => {
+                this.getDeviceData7777();
+              });
+            }}
           />
           <div className="device-manage-content">
             <div className="device-manage-content-left">
-              <Tree
-                defaultExpandAll
-                defaultSelectedKeys={['明泓匣（匣前）']}
-                onSelect={this.handleTreeSelect}
-                treeData={treeData}
-              />
+              {treeData ? (
+                <Tree
+                  defaultExpandAll
+                  key={this.props.siteType}
+                  defaultExpandedKeys={[treeDefaultStatus.expand]}
+                  defaultSelectedKeys={[treeDefaultStatus.selected]}
+                  onSelect={(nodekey, nodeevent) =>
+                    this.handleTreeSelect(nodeevent)
+                  }
+                  treeData={treeData}
+                />
+              ) : (
+                "加载中......"
+              )}
             </div>
             <div className="device-manage-content-right">
               <div className="device-manage-content-right-title">
@@ -192,116 +399,284 @@ class DeviceManageFlood extends Component {
                   设备列表
                 </div>
                 <Space size="middle">
-                  <Button onClick={() => this.handleDiviceAdd()}>新增</Button>
-                  <Button>导入</Button>
-                  <Button>导出</Button>
+                  <Button
+                    onClick={() => this.setState({ addFormVisible: true })}
+                  >
+                    新增
+                  </Button>
+                  <Button>
+                    导入
+                    <input
+                      type="file"
+                      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                      className="upload"
+                      onChange={(e) => this.handleImportDevice(e.target)}
+                    />
+                  </Button>
+                  <Button onClick={() => this.handleExportDevice()}>
+                    导出
+                  </Button>
                 </Space>
               </div>
-              <Table bordered dataSource={deviceList} columns={deviceListColumns} />
+              <Table
+                bordered
+                dataSource={deviceList}
+                pagination={{
+                  current: deviceTablePage,
+                  total: deviceTableTotal,
+                  showSizeChanger: false,
+                  onChange: (page) => {
+                    this.setState({ deviceTablePage: page }, () => {
+                      this.getDeviceData();
+                    });
+                  },
+                }}
+                columns={[
+                  {
+                    align: "center",
+                    title: "设备名称",
+                    dataIndex: "name",
+                  },
+                  {
+                    align: "center",
+                    title: "设备编号",
+                    dataIndex: "no",
+                  },
+                  {
+                    align: "center",
+                    title: "厂家",
+                    dataIndex: "factory",
+                  },
+                  {
+                    align: "center",
+                    title: "型号",
+                    dataIndex: "specs",
+                  },
+                  {
+                    align: "center",
+                    title: "生产日期",
+                    dataIndex: "produceTime",
+                  },
+                  {
+                    align: "center",
+                    title: "安装时间",
+                    dataIndex: "createTime",
+                  },
+                  {
+                    align: "center",
+                    title: "操作",
+                    dataIndex: "g",
+                    render: (text, record) => (
+                      <Space>
+                        <a onClick={() => this.handleRepair(record)}>维修</a>
+                        <a onClick={() => this.handleChange(record)}>更换</a>
+                        <a onClick={() => this.handleRemove(record)}>拆除</a>
+                      </Space>
+                    ),
+                  },
+                ]}
+              />
               <Divider />
               <div className="device-manage-content-right-title">
                 <div className="device-manage-content-right-title-sub">
                   维修记录
                 </div>
-                <Button>导出</Button>
+                <Button onClick={() => this.handleExportDeviceRepair()}>
+                  导出
+                </Button>
               </div>
-              <Table bordered dataSource={repairList} columns={repairListColumns} />
+              <Table
+                bordered
+                dataSource={repairList}
+                pagination={{
+                  current: repairTablePage,
+                  total: repairTableTotal,
+                  showSizeChanger: false,
+                  onChange: (page) => {
+                    this.setState({ repairTablePage: page }, () => {
+                      this.getDeviceRepairData();
+                    });
+                  },
+                }}
+                columns={[
+                  {
+                    align: "center",
+                    title: "设备名称",
+                    dataIndex: "deviceName",
+                  },
+                  {
+                    align: "center",
+                    title: "设备编号",
+                    dataIndex: "deviceNo",
+                  },
+                  {
+                    align: "center",
+                    title: "说明",
+                    dataIndex: "remarks",
+                  },
+                  {
+                    align: "center",
+                    title: "维护人",
+                    dataIndex: "repairUserName",
+                  },
+                  {
+                    align: "center",
+                    title: "维护时间",
+                    dataIndex: "repairTime",
+                  },
+                ]}
+              />
             </div>
           </div>
         </div>
-        <Modal centered title="设备信息" visible={addFormVisible} footer={null} onCancel={() => this.setState({ addFormVisible: false })}>
+        <Modal
+          centered
+          forceRender
+          title="设备信息"
+          visible={addFormVisible}
+          footer={null}
+          onCancel={() => this.setState({ addFormVisible: false })}
+        >
           <DYForm
             showCancel
-            formItem={[{
-              label: "设备名称",
-              name: "a",
-              rules: [{ required: true }],
-              ele: <Input></Input>
-            }, {
-              label: "设备编号",
-              name: "b",
-              ele: <Input></Input>
-            }, {
-              label: "规格型号",
-              name: "c",
-              ele: <Input></Input>
-            }, {
-              label: "生产厂家",
-              name: "d",
-              ele: <Input></Input>
-            }, {
-              label: "生产日期",
-              name: "e",
-              ele: <DatePicker></DatePicker>
-            }]}
-            onFinish={this.handleAddFormSave}
+            formItem={[
+              {
+                label: "设备名称",
+                name: "name",
+                rules: [{ required: true }],
+                ele: <Input></Input>,
+              },
+              {
+                label: "设备编号",
+                name: "no",
+                ele: <Input></Input>,
+              },
+              {
+                label: "规格型号",
+                name: "specs",
+                ele: <Input></Input>,
+              },
+              {
+                label: "生产厂家",
+                name: "factory",
+                ele: <Input></Input>,
+              },
+              {
+                label: "生产日期",
+                name: "produceTime",
+                ele: <DatePicker></DatePicker>,
+              },
+            ]}
+            formRef={this.addFormRef}
+            onFinish={(values) => this.handleAddFormSave(values)}
             cancelClick={() => this.setState({ addFormVisible: false })}
           ></DYForm>
         </Modal>
-        <Modal centered title="维修设备" visible={repairFormVisible} footer={null} onCancel={() => this.setState({ repairFormVisible: false })}>
+        <Modal
+          centered
+          forceRender
+          title="维修设备"
+          visible={repairFormVisible}
+          footer={null}
+          onCancel={() => this.setState({ repairFormVisible: false })}
+        >
           <DYForm
             showCancel
-            formItem={[{
-              label: "维护人员",
-              name: "a",
-              ele: <Input></Input>
-            }, {
-              label: "维护日期",
-              name: "b",
-              ele: <DatePicker></DatePicker>
-            }, {
-              label: "维修情况说明",
-              name: "c",
-              rules: [{ required: true }],
-              ele: <TextArea rows={4} />
-            }]}
-            onFinish={this.handleRepairFormSave}
+            formItem={[
+              {
+                label: "维护人员",
+                name: "repairUserName",
+                ele: <Input></Input>,
+              },
+              {
+                label: "维护日期",
+                name: "repairTime",
+                ele: <DatePicker></DatePicker>,
+              },
+              {
+                label: "维修情况说明",
+                name: "remarks",
+                rules: [{ required: true }],
+                ele: <TextArea rows={4} />,
+              },
+              {
+                label: "设备id",
+                name: "siteDeviceId",
+                style: { display: "none" },
+                ele: <Input disabled></Input>,
+              },
+            ]}
+            formRef={this.repairFormRef}
+            onFinish={(values) => this.handleRepairFormSave(values)}
             cancelClick={() => this.setState({ repairFormVisible: false })}
-            ></DYForm>
+          ></DYForm>
         </Modal>
-        <Modal centered title="更换设备" visible={changeFormVisible} footer={null} onCancel={() => this.setState({ changeFormVisible: false })}>
+        <Modal
+          centered
+          forceRender
+          title="更换设备"
+          visible={changeFormVisible}
+          footer={null}
+          onCancel={() => this.setState({ changeFormVisible: false })}
+        >
           <DYForm
             showCancel
-            formItem={[{
-              label: "设备名称",
-              name: "a",
-              rules: [{ required: true }],
-              ele: <Input></Input>
-            }, {
-              label: "设备编号",
-              name: "b",
-              ele: <Input></Input>
-            }, {
-              label: "规格型号",
-              name: "c",
-              ele: <Input></Input>
-            }, {
-              label: "生产厂家",
-              name: "d",
-              ele: <Input></Input>
-            }, {
-              label: "生产日期",
-              name: "e",
-              ele: <DatePicker></DatePicker>
-            }, {
-              label: "维护人员",
-              name: "f",
-              ele: <Input></Input>
-            }, {
-              label: "更换日期",
-              name: "g",
-              ele: <DatePicker></DatePicker>
-            }, {
-              label: "情况说明",
-              name: "h",
-              ele: <TextArea rows={4} />
-            }]}
-            onFinish={this.handleChangeFormSave}
+            formItem={[
+              {
+                label: "设备名称",
+                name: "name",
+                rules: [{ required: true }],
+                ele: <Input></Input>,
+              },
+              {
+                label: "设备编号",
+                name: "no",
+                ele: <Input></Input>,
+              },
+              {
+                label: "规格型号",
+                name: "specs",
+                ele: <Input></Input>,
+              },
+              {
+                label: "生产厂家",
+                name: "factory",
+                ele: <Input></Input>,
+              },
+              {
+                label: "生产日期",
+                name: "produceTime",
+                ele: <DatePicker></DatePicker>,
+              },
+              {
+                label: "维护人员",
+                name: "repairUserName",
+                ele: <Input></Input>,
+              },
+              {
+                label: "更换时间",
+                name: "repairTime",
+                ele: <DatePicker></DatePicker>,
+              },
+              {
+                label: "情况说明",
+                name: "remarks",
+                ele: <TextArea rows={4} />,
+              },
+              {
+                label: "设备id",
+                name: "siteDeviceId",
+                style: { display: "none" },
+                ele: <Input disabled></Input>,
+              },
+            ]}
+            formRef={this.changeFormRef}
+            onFinish={(values) => this.handleChangeFormSave(values)}
             cancelClick={() => this.setState({ changeFormVisible: false })}
-            ></DYForm>
+          ></DYForm>
         </Modal>
-      </>
-    )
+      </Spin>
+    );
   }
 }
 

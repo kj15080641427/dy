@@ -11,7 +11,7 @@
 }
 .task-list-card {
   width: 100%;
-  .task-list-card-text-margin{
+  .task-list-card-text-margin {
     // margin-bottom: 15px;
     line-height: 25px;
   }
@@ -100,7 +100,7 @@
 .task-info-fotter {
   margin: 0 auto;
   width: 800px;
-  position: absolute;
+  position: fixed;
   justify-content: space-around;
   bottom: 0px;
   display: flex;
@@ -122,6 +122,9 @@
     width: 90px;
     height: 90px;
     background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 .expert-dispatch {
@@ -171,5 +174,23 @@
   .ant-select-multiple.ant-select-allow-clear .ant-select-selector {
     overflow: scroll;
     max-height: 110px;
+  }
+}
+.task-page-head {
+  position: absolute;
+  z-index: 99;
+  right: 40px;
+  .ant-page-header {
+    padding: 0px 0px;
+  }
+}
+.task-timeline-div {
+  margin: auto;
+  width: 640px;
+  .task-timeline-card {
+    width: 300px;
+  }
+  .task-timeline-arrow {
+    display: flex;
   }
 }

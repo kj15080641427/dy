@@ -3,7 +3,7 @@ import emitter from "@app/utils/emitter.js";
 import { TableShow } from "../../components/chart/table";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Modal, Row, Col, Tabs, Table, Popover } from "antd";
+import { Modal, Row, Col, Tabs, Table } from "antd";
 import * as actions from "../../redux/actions/handState";
 import * as mapActions from "../../redux/actions/map";
 import echarts from "echarts/lib/echarts";
@@ -86,7 +86,7 @@ export const TabsList = (props) => {
 
   useEffect(() => {
     if (dayWater instanceof Array) {
-      showChart(dayWater, "dayWaterDiv");
+      showChart(dayWater.reverse(), "dayWaterDiv");
     }
   }, [dayWater]);
 
@@ -101,11 +101,9 @@ export const TabsList = (props) => {
                   id: record?.siteWaterLevels[0]?.stcd,
                   name: record.name,
                 },
-                console.log(record, "HHH"),
                 changeWaterVideo(record)
               );
               emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
-              // getDsplayWater(record.siteWaterLevels[0]?.stcd);
             },
             onDoubleClick: () => {
               changeModalVisible(true);
@@ -118,24 +116,18 @@ export const TabsList = (props) => {
             name: "站名",
             dataIndex: "name",
             filter: "name",
-            render: (name) => (
-              <Popover content={name}>
-                {name?.length > 9
-                  ? name.toString().substring(0, 9) + "..."
-                  : name}
-              </Popover>
-            ),
+            width: "40%",
           },
           {
             name: "实时水位",
             dataIndex: "riverwaterdataList",
-            // width: "10%",
+            width: "15%",
             render: (v) => (v && v[0] ? v[0].z : "-"),
           },
           {
             name: "更新时间",
             dataIndex: "riverwaterdataList",
-            // width: "45%",
+            width: "25%",
             render: (v) => (v && v[0] ? v[0].tm.slice(0, -3) : "-"),
           },
         ]}
@@ -164,14 +156,23 @@ export const TabsList = (props) => {
                   size="small"
                   rowKey={(row) => row.riverwaterdataID}
                   columns={[
-                    { title: "站名", dataIndex: "stnm" },
+                    {
+                      title: "站名",
+                      dataIndex: "stnm",
+                      width: "40%",
+                      textWrap: "word-break",
+                    },
                     {
                       title: "水位",
                       dataIndex: "z",
+                      width: "20%",
+                      textWrap: "word-break",
                     },
                     {
                       title: "更新时间",
                       dataIndex: "tm",
+                      width: "20%",
+                      textWrap: "word-break",
                     },
                   ]}
                   dataSource={dayWater}

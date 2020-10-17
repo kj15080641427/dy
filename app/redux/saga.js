@@ -44,31 +44,33 @@ function* loadHourRain() {
 function* loadCurrentRain() {
   let endTime = moment().format("YYYY-MM-DD HH:mm:ss");
   let beginTime = moment().startOf("hour").format("YYYY-MM-DD HH:mm:ss");
-  let data = [];
+  // let data = [];
 
   try {
     let result = yield call(countMinutesRain, {
-      current: 1,
-      size: 10000,
+      current: 0,
+      size: -1,
       starttm: beginTime,
       endtm: endTime,
     });
     //let result = yield call(getByTimeMinute, {starttm: beginTime, endtm:endTime});
-
     if (result.code === 200) {
-      data = [...result.data];
+      // data = result.data;
+      let data = result.data.records.map((item) => ({
+        ...item,
+        avgDrp: item.drp,
+      }));
+      yield put({
+        type: RainTypes.UPDATE_RAIN,
+        payload: {
+          rainDataType: 0,
+          data: data,
+        },
+      });
     }
   } catch (e) {
     console.error(e);
   }
-
-  yield put({
-    type: RainTypes.UPDATE_RAIN,
-    payload: {
-      rainDataType: 0,
-      data,
-    },
-  });
 }
 
 /**

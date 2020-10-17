@@ -352,3 +352,52 @@ export const setMaterialTableInput = (data) => {
     data,
   };
 };
+//事件调整modal
+export const setTaskUpdateModal = (data) => {
+  return {
+    type: types.SET_TASKUPDATE_MODAL,
+    data,
+  };
+};
+//修改事件
+export const updateTaskInfo = (data) => {
+  return {
+    type: types.UPDATE_TASK_INFO,
+    data,
+  };
+};
+//删除事件
+export const deleteTaskInfo = (data) => {
+  return {
+    type: types.DELETE_TASK_INFO,
+    data,
+  };
+};
+//取消事件
+export const recallTask = (data) => {
+  return {
+    type: types.RECALL_TASK,
+    data,
+  };
+};
+//完成事件
+export const completeTask = (data) => {
+  return {
+    type: types.COMPLETE_TASK,
+    data,
+  };
+};
+//查询事件流程
+export const getTaskTimeLine = (data) => {
+  return {
+    type: types.GET_TASK_TIMELINE,
+    data,
+  };
+};
+//反馈事件modal
+export const setFeedTaskModal = (data) => {
+  return {
+    type: types.FEED_TASK_MODAL,
+    data,
+  };
+};

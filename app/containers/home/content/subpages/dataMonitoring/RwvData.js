@@ -155,32 +155,38 @@ const rwvData = (props) => {
         <TabPane tab="易涝点" key="flood"></TabPane>
         <TabPane tab="视频站点" key="video"></TabPane>
       </Tabs>
-      <div className="div-left-echarts">
-        <div className="echarts-count" id="count"></div>
-        <div className="echarts-isOnline" id="online"></div>
+      <div className="div-site-flex">
+        <div className="div-left-echarts">
+          <div className="echarts-count" id="count"></div>
+          <div className="echarts-isOnline" id="online"></div>
+        </div>
+        <div className="div-right-table">
+          {config.name === "视频" ? (
+            <ReadonlyTable
+              scroll={{ x: '1500px' }}
+              getAll
+              rowSelection={{}}
+              get={getAllVideo}
+              columns={video}
+              rowSelect={rowSelect}
+              rowKey={"siteBaseID"}
+              footer={() => footer()}
+            />
+          ) : (
+            <ReadonlyTable
+            scroll={{ x: '1500px' }}
+              getAll
+              rowSelection={{}}
+              get={getBasicsAll}
+              type={config.type}
+              columns={config.columns}
+              rowSelect={rowSelect}
+              rowKey={"siteBaseID"}
+              footer={() => footer()}
+            />
+          )}
+        </div>
       </div>
-      {config.name === "视频" ? (
-        <ReadonlyTable
-          getAll
-          rowSelection={{}}
-          get={getAllVideo}
-          columns={video}
-          rowSelect={rowSelect}
-          rowKey={"siteBaseID"}
-          footer={() => footer()}
-        />
-      ) : (
-        <ReadonlyTable
-          getAll
-          rowSelection={{}}
-          get={getBasicsAll}
-          type={config.type}
-          columns={config.columns}
-          rowSelect={rowSelect}
-          rowKey={"siteBaseID"}
-          footer={() => footer()}
-        />
-      )}
     </>
   );
 };

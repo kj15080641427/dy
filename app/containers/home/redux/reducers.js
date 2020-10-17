@@ -11,7 +11,6 @@ import {
   SELECT_TABLE,
 } from "./types";
 import * as types from "./types";
-import { abstract } from "ol/util";
 const initState = {
   loading: false,
   readOnlyLoading: false,
