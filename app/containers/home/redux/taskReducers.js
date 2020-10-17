@@ -5,6 +5,7 @@ const initState = {
   tableInput: [],
   taskUpdateMidal: false,
   taskTimeLine: [],
+  feedTaskModalVisible: false,
 };
 let selected = [];
 
@@ -31,6 +32,9 @@ export default function taskReducers(state = initState, action) {
       break;
     case types.SET_TASK_TIMELINE:
       newState = { ...newState, taskTimeLine: action.data };
+      break;
+    case types.FEED_TASK_MODAL:
+      newState = { ...newState, feedTaskModalVisible: action.data };
       break;
     default:
       break;

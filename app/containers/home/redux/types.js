@@ -97,3 +97,7 @@ export const COMPLETE_TASK = "COMPLETE_TASK";
 //查询事件流程
 export const GET_TASK_TIMELINE = "GET_TASK_TIMELINE";
 export const SET_TASK_TIMELINE = "SET_TASK_TIMELINE";
+//反馈事件
+export const FEED_TASK = "FEED_TASK";
+//事件反馈modal
+export const FEED_TASK_MODAL = "FEED_TASK_MODAL";

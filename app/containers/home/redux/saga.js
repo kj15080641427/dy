@@ -456,7 +456,7 @@ function* deleteTaskInfo({ data }) {
 //取消事件
 function* recallTask({ data }) {
   try {
-    const result = yield call(req, {});
+    const result = yield call(req.offTask, data);
     if (result.code == successCode) {
       yield put({});
       message.info("取消成功");
@@ -470,7 +470,7 @@ function* recallTask({ data }) {
 //完成事件
 function* completeTask({ data }) {
   try {
-    const result = yield call(req, {});
+    const result = yield call(req.completeTask, data);
     if (result.code == successCode) {
       message.info("成功");
     }
@@ -478,6 +478,7 @@ function* completeTask({ data }) {
     console.error(e);
   }
 }
+
 //查询事件流程
 function* getTaskTimeLine({ data }) {
   try {

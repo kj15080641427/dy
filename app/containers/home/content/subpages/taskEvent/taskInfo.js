@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import * as action from "../../../redux/actions";
 import { bindActionCreators } from "redux";
 import Map from "../../../../monitor/map/map";
-import { Card, Col, Row, Button } from "antd";
+import { Card, Col, Row, Button, Modal } from "antd";
 import { createHashHistory } from "history";
 import { Link } from "react-router-dom";
 import taskTimelineSvg from "../../../../../resource/icon/taskTimeline.png";
@@ -14,8 +14,10 @@ import {
   BuildOutlined,
   SnippetsOutlined,
 } from "@ant-design/icons";
+import DYForm from "@app/components/home/form";
 import moment from "moment";
 import TaskUpdate from "./taskUpdate";
+import { offTaskForm } from "./cconfig";
 import "./task.scss";
 const gutter = [1, 20];
 const hashHistory = createHashHistory();
@@ -52,12 +54,14 @@ const navi = [
   },
 ];
 const TaskInfo = (props) => {
-  const { taskInfo, floodUser, floodAddress } = props;
+  const { taskInfo, floodUser, floodAddress, feedTaskModalVisible } = props;
   const formRef = useRef(null);
   const {
     getFloodAddress,
     getAllFloodUser,
     setTaskUpdateModal,
+    setFeedTaskModal,
+    recallTask,
   } = props.actions;
   const [person, stPerson] = useState([]);
 
@@ -82,6 +86,11 @@ const TaskInfo = (props) => {
       stPerson([]);
     };
   }, [floodUser, floodAddress]);
+
+  const onOffFinish = (data) => {
+    data = { ...data, taskEventsID: taskInfo?.taskEventsID };
+    recallTask(data);
+  };
   return (
     <div style={{ height: "100%" }}>
       <Map layerVisible={{}} person={person}></Map>
@@ -130,22 +139,45 @@ const TaskInfo = (props) => {
             <Col span={5}>区域位置:</Col>
             <Col span={19}>{taskInfo?.address}</Col>
           </Row>
-          {/* <Row gutter={gutter}>
-            <Col span={10}>上报人及电话:</Col>
-            <Col span={14}>111111</Col>
-          </Row> */}
+          <Row gutter={gutter}>
+            <Col span={10}>
+              上报人及电话:{taskInfo?.reportPersonName}
+              {taskInfo?.reportPersonPhone}
+            </Col>
+            <Col span={14}></Col>
+          </Row>
           <Row gutter={gutter}>
             <Col span={5}>事件描述:</Col>
             <Col span={19}> {taskInfo?.remark}</Col>
           </Row>
           <Row>
             <Col span={12}>
-              <Button onClick={() => {}}>取消事件</Button>
+              <Button
+                onClick={() => {
+                  setFeedTaskModal(true);
+                  console.log(taskInfo, "--");
+                }}
+              >
+                取消事件
+              </Button>
             </Col>
             <Col span={12}>
               <Button onClick={() => {}}>事件已完成</Button>
             </Col>
           </Row>
+          <Modal
+            visible={feedTaskModalVisible}
+            title="事件取消描述"
+            footer={null}
+            onCancel={() => setFeedTaskModal(false)}
+          >
+            <DYForm
+              formItem={offTaskForm}
+              onFinish={onOffFinish}
+              showCancel
+              cancelClick={() => setFeedTaskModal(false)}
+            ></DYForm>
+          </Modal>
         </Card>
       </div>
     </div>
@@ -153,6 +185,7 @@ const TaskInfo = (props) => {
 };
 const mapStateToProps = (state) => {
   return {
+    feedTaskModalVisible: state.taskReducers.feedTaskModalVisible,
     floodAddress: state.management.floodAddress,
     taskInfo: state.management.taskInfo,
     floodUser: state.mapAboutReducers.floodUser,

@@ -195,9 +195,7 @@ class Monitor extends React.PureComponent {
   componentDidUpdate(pre) {
     const { water, count, displayWater, waterId } = this.props;
     if (waterId != pre.waterId) {
-      console.log("DD", waterId);
       this.props.stateActions.getDsplayWater(waterId);
-      // this.props.actions.getWaterHistory(waterId);
     }
     if (count != pre.count) {
       this.sourceChart();
@@ -331,7 +329,7 @@ class Monitor extends React.PureComponent {
                       transform: "scale(0.85)",
                       position: "absolute",
                       left: "-51px",
-                      top: "270px",
+                      top: "260px",
                     }}
                     strtoken={waterVideoInfo?.strtoken}
                   ></VideoPlayer>

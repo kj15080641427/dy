@@ -278,23 +278,12 @@ class Map extends React.PureComponent {
       style: {
         src: function (featureObj) {
           const type = rainData?.type;
-          const obj = {
-            now: "drp",
-          };
-          // console.log(obj[type], "???", rainData, this.props,featureObj);
-          //let drp = parseInt(featureObj.minuteAvg*1);
-          // const { data } = featureObj;
-          // console.log(featureObj, "featureObj");
-          // const {
-
+          let drp = featureObj.avgDrp;
+          // try {
+          //   drp = parseFloat(featureObj?.avgDrp * 1);
+          // } catch (e) {
+          //   drp = 0.0;
           // }
-          let drp = 0.0;
-
-          try {
-            drp = parseFloat(featureObj.drp * 1);
-          } catch (e) {
-            drp = 0.0;
-          }
           if (drp === 0) {
             return require("../../../resource/icon/1.svg")["default"];
           } else if (drp > 0 && drp <= 10) {
@@ -950,12 +939,18 @@ class Map extends React.PureComponent {
   drawFeatures(data) {
     // data 实时雨量
     const { stations } = this.props;
-
+    let list = [];
+    data.map((item) => {
+      stations?.map((st) => {
+        if (item.stcd == st.stcd) {
+          list.push({ ...item, ...st, lonlat: [st.lon, st.lat] });
+        }
+      });
+    });
     if (stations) {
       for (let key in stations) {
         stations[key].data = null;
       }
-      // console.log(stations, "SSS");
     }
 
     if (data && stations) {
@@ -970,8 +965,8 @@ class Map extends React.PureComponent {
 
     let features = [];
 
-    for (let key in stations) {
-      let station = stations[key];
+    for (let key in list) {
+      let station = list[key];
       features.push({
         type: "Point",
         id: station.stcd,
@@ -980,10 +975,11 @@ class Map extends React.PureComponent {
         ...station,
       });
     }
-
     this.map.removeFeatures("rain", features);
     this.map.addFeatures("rain", features);
-    this.addRainTagBox(data);
+    // this.map.removeFeatures("rain", list);
+    // this.map.addFeatures("rain", list);
+    this.addRainTagBox(list);
     // 计算是或否显示tagbox
     this._zoom = null;
     this.toggleTagByMapZoom();

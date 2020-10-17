@@ -134,3 +134,11 @@ export const materiaTab2lColumns = [
   { title: "电话", dataIndex: "phone" },
   { title: "时间", dataIndex: "createTime" },
 ];
+export const offTaskForm = [
+  {
+    label: "",
+    name: "endRemark",
+    rules: [{ required: true }],
+    ele: <TextArea />,
+  },
+];

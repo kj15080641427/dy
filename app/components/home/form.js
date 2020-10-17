@@ -24,6 +24,7 @@ const DYForm = (props) => {
           key={index}
           rules={item.rules}
           width={item.width}
+          style={item.style}
           // required
         >
           {item.ele}

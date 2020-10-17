@@ -161,6 +161,14 @@ module.exports = {
         secure: true,
         changeOrigin: true,
       },
+      "/api/v2/*": {
+        target: isTao
+          ? "http://218.56.180.250:9109/tuhui-base/"
+          : "http://172.19.112.76:8080",
+        // pathRewrite: {'^/api' : ''},
+        secure: true,
+        changeOrigin: true,
+      },
     },
   },
 };

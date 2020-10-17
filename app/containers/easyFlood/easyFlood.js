@@ -248,7 +248,12 @@ class Monitor extends React.PureComponent {
                 columns={[
                   { name: "站点名称", dataIndex: "stnm", width: "35%" },
                   { name: "警戒水位", dataIndex: "baselevel", width: "15%" },
-                  { name: "水位", dataIndex: "actuallevel", width: "15%" },
+                  {
+                    name: "水位",
+                    dataIndex: "actuallevel",
+                    width: "15%",
+                    render: (e) => <div style={{ color: "red" }}>{e}</div>,
+                  },
                   {
                     name: "更新时间",
                     dataIndex: "alarmtime",

@@ -9,18 +9,16 @@ import { Link } from "react-router-dom";
 import "./style.scss";
 import { Col } from "antd";
 import display from "../resource/icon/display.svg";
-import water from "../resource/icon/water.svg";
-import ddfa from "@app/resource/ddfa.png";
-import hyyb from "@app/resource/hyyb.png";
-import hhsq from "@app/resource/hhsq.png";
-import fxyj from "../resource/fxyj.png";
-import sjzx from "../resource/sjzx.png";
-import spjk from "../resource/spjk.png";
-import yqjk from "../resource/yqjk.png";
-import sqjk from "../resource/sqjk.png";
-import yld from "../resource/yld.png";
-import xqkb from "@app/resource/xqkb.png";
-import sjgl from "@app/resource/sjgl.png";
+import waterRouter from "../resource/icon/waterRouter.svg";
+import rain from "../resource/icon/rain.svg";
+import easyflood from "../resource/icon/easyflood.svg";
+import video from "../resource/icon/videoTitle.svg";
+import floodmaterial from "../resource/icon/floodmaterial.svg";
+import notices from "../resource/icon/notices.svg";
+import ocean from "../resource/icon/ocean.svg";
+import yellowRiver from "../resource/icon/yellowRiver.svg";
+import home from "../resource/icon/home.svg";
+import forecast from "../resource/icon/forecast.svg";
 class RouterList extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -30,6 +28,7 @@ class RouterList extends React.PureComponent {
       weatherData: {}, //天气信息
     };
   }
+
   routerList = [
     {
       text: "数据中心",
@@ -37,100 +36,86 @@ class RouterList extends React.PureComponent {
       routerUrl: "/display",
     },
     {
-      text: "数据中心",
-      imgurl: display,
-      routerUrl: "/display",
+      text: "河流水情",
+      imgurl: waterRouter,
+      routerUrl: "/water",
+    },
+    {
+      text: "雨情监测",
+      imgurl: rain,
+      routerUrl: "/rain",
+    },
+    {
+      text: "城市防汛",
+      imgurl: easyflood,
+      routerUrl: "/easyflood",
+    },
+    {
+      text: "视频监控",
+      imgurl: video,
+      routerUrl: "/video",
+    },
+    {
+      text: "防汛资源",
+      imgurl: floodmaterial,
+      routerUrl: "/floodwarning",
+    },
+    {
+      text: "汛情快报",
+      imgurl: notices,
+      routerUrl: "/notices",
+    },
+    {
+      text: "海洋预报",
+      imgurl: ocean,
+      routerUrl: "/ocean",
+    },
+    {
+      text: "黄河水情",
+      imgurl: yellowRiver,
+      routerUrl: "/yellowRiver",
+    },
+    {
+      text: "洪涝预报",
+      imgurl: forecast,
+      routerUrl: "/forecast",
+    },
+    {
+      text: "数据管理",
+      imgurl: home,
+      routerUrl: "/home",
     },
   ];
   render() {
     return (
       <>
         <div className="router-item">
-          {/* {this.routerList.map((item) => (
-            <Col key={item.routerUrl}>
-              <Link to={item.routerUrl}>
-                <div className="router-item-style">
-                  <div>
-                    <div className="router-item-style-img-div">
-                      <img src={item.imgurl}></img>
-                    </div>
-                    <div>{item.text}</div>
-                  </div>
-                </div>
-              </Link>
-            </Col>
-          ))} */}
-          {/* <Col>
-            <Link to={"/display"}>
-              <div className="router-item-style">
+          {this.routerList.map((item) => (
+            <Link
+              key={item.routerUrl}
+              to={item.routerUrl}
+              target={item.routerUrl == "/home" ? "_blank" : ""}
+            >
+              <div
+                className="router-item-style"
+                style={
+                  window.location.href.split("#")[1] == item.routerUrl
+                    ? { background: "rgb(227,152,62)", color: "white" }
+                    : {
+                        background: "rgb(46, 49, 146)",
+                        color: "rgb(132,135,192)",
+                      }
+                }
+              >
                 <div>
                   <div className="router-item-style-img-div">
-                    <img src={display}></img>
+                    <img src={item.imgurl}></img>
                   </div>
-                  <div>数据中心</div>
+                  <div className={"router-item-text"}>{item.text}</div>
                 </div>
               </div>
             </Link>
-          </Col> */}
-          <Col>
-            <Link to={"/display"}>
-              <img src={sjzx}></img>
-            </Link>
-          </Col>
-          <Col>
-            {/* 河流水情 */}
-            <Link to={"/water"}>
-              <img src={sqjk}></img>
-            </Link>
-          </Col>
-          <Col>
-            <Link to={"/rain"}>
-              <img src={yqjk}></img>
-            </Link>
-          </Col>
-          <Col>
-            <Link to={"/easyFlood"}>
-              <img src={yld}></img>
-            </Link>
-          </Col>
-          <Col>
-            <Link to={"/video"}>
-              <img src={spjk}></img>
-            </Link>
-          </Col>
-          <Col>
-            <Link to={"/floodWarning"}>
-              <img src={fxyj}></img>
-            </Link>
-          </Col>
-          <Col>
-            {/* 汛情快报 */}
-            <Link to={"/notices"}>
-              <img src={xqkb}></img>
-            </Link>
-          </Col>
-          {/* 海洋预报 */}
-          <Col>
-            <Link to={"/ocean"}>
-              <img
-                // onClick={() => this.setState({ showSea: true })}
-                src={hyyb}
-              ></img>
-            </Link>
-          </Col>
-          {/* 黄河水情 */}
-          <Link to={"/yellowRiver"}>
-            <img
-              // onClick={() => this.setState({ showRain: true })}
-              src={hhsq}
-              // style={{ marginBottom: 10 }}
-            ></img>
-          </Link>
-          {/*  数据管理*/}
-          <Link to={"/home/rwvdata"} target="_blank">
-            <img src={sjgl}></img>
-          </Link>
-          {/* <TowBtn></TowBtn> */}
+          ))}
         </div>
         {/* 黄河水情 */}
         <Drawer

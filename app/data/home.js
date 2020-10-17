@@ -389,6 +389,14 @@ export function deleteTaskEvent(data) {
 export function getTaskTimeLine(data) {
   return fetchJSONData("POST", "/base/TasKrel/dynamic", data);
 }
+//取消事件
+export function offTask(data) {
+  return fetchJSONData("POST", "/base/TaskEvents/offTaskEvents", data);
+}
+//完成事件
+export function completeTask(data) {
+  return fetchJSONData("POST", "/base/TaskEvents/completeTaskEvents", data);
+}
 // 获取卫星云图
 //  export function getSatellite(data) {
 //    return fetchJSONData("POST", "/base/satellite/getSatellite", data);
@@ -403,3 +411,71 @@ export function getTaskTimeLine(data) {
 //  export function getSatellite() {
 //    return fetchJSONData("GET", "/base/Weather/get");
 //  }
+
+// 分页查询站点水位
+export function getSiteWaterLevelsPage(data) {
+  return fetchJSONData("POST", "/base/SiteWaterLevels/page", data);
+}
+// 删除站点水位
+export function deleteSiteWaterLevels(data) {
+  return fetchJSONData("POST", "/base/SiteWaterLevels/delete", data);
+}
+// 分页查询站点雨量
+export function getSiteRainPage(data) {
+  return fetchJSONData("POST", "/base/SiteRain/page", data);
+}
+// 删除站点雨量
+export function deleteSiteRain(data) {
+  return fetchJSONData("POST", "/base/SiteRain/delete", data);
+}
+// 分页查询站点视频
+export function getSiteWaterRadioPage(data) {
+  return fetchJSONData("POST", "/base/StiteWaterRadio/page", data);
+}
+// 删除站点视频
+export function deleteSiteWaterRadio(data) {
+  return fetchJSONData("POST", "/base/StiteWaterRadio/delete", data);
+}
+// 分页查询站点积水点
+export function getSiteWaterPointPage(data) {
+  return fetchJSONData("POST", "/base/SiteWaterPoint/page", data);
+}
+// 删除站点积水点
+export function deleteSiteWaterPoint(data) {
+  return fetchJSONData("POST", "/base/SiteWaterPoint/delete", data);
+}
+
+// 分页查询设备管理
+export function getSiteDevicePage(data) {
+  return fetchJSONData("POST", "/base/SiteDevice/page", data);
+}
+// 新增设备管理
+export function saveSiteDevice(data) {
+  return fetchJSONData("POST", "/base/SiteDevice/save", data);
+}
+// 修改设备管理
+export function updateSiteDevice(data) {
+  return fetchJSONData("POST", "/base/SiteDevice/update", data);
+}
+// 删除设备管理
+export function deleteSiteDevice(data) {
+  return fetchJSONData("POST", "/base/SiteDevice/delete", data);
+}
+// 导出设备管理
+export function exportSiteDevice(data) {
+  return fetchJSONData("POST", "/base/SiteDevice/export", data);
+}
+
+// 新增设备维修
+export function saveSiteDeviceRepair(data) {
+  return fetchJSONData("POST", "/base/SiteDeviceRepair/save", data);
+}
+// 分页查询设备维修
+export function getSiteDeviceRepairPage(data) {
+  return fetchJSONData("POST", "/base/SiteDeviceRepair/page", data);
+}
+
+// token换用户信息
+export function getUserInfoByToken(data) {
+  return fetchJSONData("POST", "/base/Users/getUser", data);
+}

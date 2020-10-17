@@ -394,3 +394,10 @@ export const getTaskTimeLine = (data) => {
     data,
   };
 };
+//反馈事件modal
+export const setFeedTaskModal = (data) => {
+  return {
+    type: types.FEED_TASK_MODAL,
+    data,
+  };
+};
