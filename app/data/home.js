@@ -479,3 +479,13 @@ export function getSiteDeviceRepairPage(data) {
 export function getUserInfoByToken(data) {
   return fetchJSONData("POST", "/base/Users/getUser", data);
 }
+
+// 河道水情
+export function getRiverwaterdata(data) {
+  return fetchJSONData("POST", "/base/Riverwaterdata/realTime", data);
+}
+
+// 河道水情日志
+export function getRiverwaterdatalog(data) {
+  return fetchJSONData("POST", "/base/RiverwaterdataLog/history", data);
+}
