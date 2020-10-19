@@ -24,7 +24,7 @@ class WeatherChart extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      weathershow: true,
+      weathershow: false,
       weatherstyle: "black",
     };
     this.selectInit = this.selectInit.bind(this);
@@ -78,31 +78,20 @@ class WeatherChart extends React.PureComponent {
     return (
       <div className="m-wth-chart-rain">
         <img className="m-chart-img" src={imgURL} alt="" />
-        {/* <Radio.Group onChange={this.btnClick}>
-          <Radio.Button size="small" value="a">县区降雨</Radio.Button>
-          <Radio.Button size="small" value="b">气象预警</Radio.Button>
-        </Radio.Group> */}
         <div className="m-chart-dev-rain">
-          {this.state.weathershow ? (
-            <>
-              <Row className="time-select">
-                <span style={{ color: "white" }}>时间选择:</span>&nbsp;{" "}
-                <RangePicker
-                  size="small"
-                  format="YYYY-MM-DD HH"
-                  showTime={{ format: "HH" }}
-                  // allowClear={false}
-                  bordered={false}
-                  suffixIcon={null}
-                  onChange={onChange}
-                  // format="YYYY-MM-DD HH"
-                />
-              </Row>
-              <div id="main" className="m-chart-table-rain"></div>
-            </>
-          ) : (
-            <WeatherDy></WeatherDy>
-          )}
+          <Row className="time-select" style={{ display: this.state.weathershow ? 'block': 'none' }}>
+            <span style={{ color: "white" }}>时间选择:</span>&nbsp;{" "}
+            <RangePicker
+              size="small"
+              format="YYYY-MM-DD HH"
+              showTime={{ format: "HH" }}
+              bordered={false}
+              suffixIcon={null}
+              onChange={onChange}
+              className="whitePicker"
+            />
+          </Row>
+          <div id="main" className="m-chart-table-rain"></div>
         </div>
       </div>
     );
@@ -123,6 +112,14 @@ class WeatherChart extends React.PureComponent {
         let areaName = areaMap[result.data[i].areaId];
         addData.push({ value: areaName, textStyle: { color: "white" } });
       }
+      
+      myChart.on('legendselectchanged', (params) => {
+        const isDiy = params.name === '自定义'
+        this.setState({
+          weathershow: isDiy
+        });
+      });
+
       myChart.setOption({
         // color:["#c23531","#99CCFF","#FFFF66","#666666",],
         tooltip: {
