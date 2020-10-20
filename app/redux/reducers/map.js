@@ -13,6 +13,8 @@ const initState = {
   historyFlood: [],
   historyWater: [],
   floodRain: [],
+  initFlood: [],
+  floodLoading: true,
 };
 export default function mapAboutReducers(state = initState, action) {
   let newState = Object.assign({}, state);
@@ -56,6 +58,7 @@ export default function mapAboutReducers(state = initState, action) {
       });
       newState.flood = floodList;
       newState.initFlood = action.data;
+      newState.floodLoading = false;
       break;
     case types.SET_COUNT_STATION:
       newState = {

@@ -479,6 +479,7 @@ export function getSiteDeviceRepairPage(data) {
 export function getUserInfoByToken(data) {
   return fetchJSONData("POST", "/base/Users/getUser", data);
 }
+
 // 新建群聊
 export function addChartGroup(data) {
   return fetchJSONData("POST", "/base/ChatGroup/save", data);
@@ -494,4 +495,14 @@ export function getChartGroupList(data) {
 // 修改群聊
 export function setChartGroup(data) {
   return fetchJSONData("POST", "/base/ChatGroup/update", data);
+}
+
+// 河道水情
+export function getRiverwaterdata(data) {
+  return fetchJSONData("POST", "/base/Riverwaterdata/realTime", data);
+}
+
+// 河道水情日志
+export function getRiverwaterdatalog(data) {
+  return fetchJSONData("POST", "/base/RiverwaterdataLog/history", data);
 }

@@ -3,6 +3,9 @@
  */
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "@app/redux/actions/map";
 import "./style.scss";
 import TableWrap from "./table/TableWrap";
 import { Table, Row, Col, Button } from "antd";
@@ -46,6 +49,7 @@ class Tables extends React.PureComponent {
       waterlod,
       videolod,
     } = this.state;
+    const { initFlood, floodLoading, initWater } = this.props;
     return (
       <div className="dis-tables">
         <div className="dis-table-btns">
@@ -80,13 +84,24 @@ class Tables extends React.PureComponent {
         </div>
         <div className="dis-table-con">
           <TableWrap title={"雨量站(" + rainCount + ")"} extra={"单位：mm"}>
-            <Precipitation dataSource={rainData} lod={rainlod} dict={dict}></Precipitation>
+            <Precipitation
+              dataSource={rainData}
+              lod={rainlod}
+              dict={dict}
+            ></Precipitation>
           </TableWrap>
           <TableWrap title={"视频站点(" + videoCount + ")"}>
             <Video dataSource={videoData} lod={videolod}></Video>
           </TableWrap>
-          <TableWrap title={"易涝点(" + easyCount + ")"} extra={"单位：m"}>
-            <EasyFlood dataSource={easyData} lod={easylod} dict={dict}></EasyFlood>
+          <TableWrap
+            title={"易涝点(" + initFlood?.length + ")"}
+            extra={"单位：m"}
+          >
+            <EasyFlood
+              dataSource={initFlood}
+              lod={floodLoading}
+              dict={dict}
+            ></EasyFlood>
           </TableWrap>
           {/* <TableWrap title={"水位站(" + waterCount + ")"} extra={"单位：m"}> */}
           <TableWrap title={`水位站(${waterCount})`} extra={"单位：m"}>
@@ -112,31 +127,33 @@ class Tables extends React.PureComponent {
         rainlod: false,
       });
     });
-    getBasicsAll({
-      type: 2,
-    }).then((result) => {
-      this.setState({
-        waterData: result.data,
-        waterCount: result?.data?.length,
-        waterlod: false,
-      });
-    });
-    getBasicsAll({
-      type: 3,
-    }).then((result) => {
-      console.log(result);
-      let arr = [];
-      for (let i = 0; i < result.data.length; i++) {
-        if (result.data[i].indtype !== 11) {
-          arr.push(result.data[i]);
-        }
-      }
-      this.setState({
-        easyData: arr,
-        easyCount: arr.length,
-        easylod: false,
-      });
-    });
+    // getBasicsAll({
+    //   type: 2,
+    // }).then((result) => {
+    //   this.setState({
+    //     waterData: result.data,
+    //     waterCount: result?.data?.length,
+    //     waterlod: false,
+    //   });
+    // });
+    this.props.actions.getWaterType();
+    this.props.actions.getFloodType();
+    // getBasicsAll({
+    //   type: 3,
+    // }).then((result) => {
+    //   console.log(result);
+    //   let arr = [];
+    //   for (let i = 0; i < result.data.length; i++) {
+    //     if (result.data[i].indtype !== 11) {
+    //       arr.push(result.data[i]);
+    //     }
+    //   }
+    //   this.setState({
+    //     easyData: arr,
+    //     easyCount: arr.length,
+    //     easylod: false,
+    //   });
+    // });
     getRadioAll({
       isShow: "0",
     }).then((result) => {
@@ -166,4 +183,17 @@ class Tables extends React.PureComponent {
     clearTimeout(this.init);
   }
 }
-export default Tables;
+function mapStateToProps(state) {
+  return {
+    initFlood: state.mapAboutReducers.initFlood,
+    floodLoading: state.mapAboutReducers.floodLoading,
+    initWater: state.mapAboutReducers.initWater,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Tables);

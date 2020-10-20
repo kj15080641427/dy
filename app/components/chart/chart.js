@@ -158,9 +158,10 @@ export const radarChart = (domId, data) => {
   };
   myChartcount.setOption(option);
 };
-export const pieChart = (domId, data, width, legend) => {
+export const pieChart = (domId, data, width, legend, title) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let option = {
+    title,
     tooltip: {
       formatter: "{a} <br/>{b} : {c} ({d}%)",
     },
