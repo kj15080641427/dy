@@ -351,7 +351,7 @@ export const rotateBarChart = (domId, data, width, height) => {
           value: "短历时强降雨",
           textStyle: { color: "white", fontSize: fontSize },
         },
-      ],
+      ].reverse(),
     },
     series: [
       {
