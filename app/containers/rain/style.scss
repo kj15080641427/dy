@@ -48,7 +48,7 @@
   .ranSwitch {
     position: absolute;
     right: 553px;
-    bottom: 10%;
+    bottom: 0;
     .ant-btn-primary {
       background: #003366;
       border-color: #003366;
@@ -107,6 +107,15 @@
         margin-top: 5px;
         .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
           margin-left: 10px;
+          .ant-tabs-tab {
+            padding: 8px 10px!important;
+          }
+        }
+        .ant-table-pagination {
+          margin: 0!important;
+          bottom: 16px;
+          position: fixed;
+          right: 108px;
         }
       }
       .flood-warning-display .ant-tabs-top > .ant-tabs-nav {

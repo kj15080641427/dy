@@ -175,7 +175,7 @@ class Monitor extends React.PureComponent {
         {/* <div className="m-rain-button"> */}
         <div className="ranSwitch">
           <RainSwitcher //切换雨晴数据
-            style={{ width: 150 }}
+            style={{ width: 100 }}
             onClick={this.onRainSwitch.bind(this)}
           />
         </div>
@@ -465,7 +465,7 @@ class Monitor extends React.PureComponent {
         { value: g, itemStyle: { color: "rgb(123,42,51)" } },
         { value: h, itemStyle: { color: "rgb(228,41,50)" } },
       ];
-      rotateBarChart("rotateBarChart", list, 400);
+      rotateBarChart("rotateBarChart", list.reverse(), 400);
     }
   }
   componentDidMount() {
