@@ -46,3 +46,14 @@ export function templateWareHouse(baseData, detailData) {
     };
   });
 }
+export function templateWarePerson(baseData, detailData) {
+  if (!baseData) return [];
+  return baseData.map((item) => {
+    return {
+      type: "Point",
+      id: item.floodId,
+      lonlat: [item.longitude, item.latitude],
+      ...item,
+    };
+  });
+}

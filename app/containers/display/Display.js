@@ -76,13 +76,13 @@ class Display extends React.PureComponent {
   componentDidMount() {
     this.props.actions.getDict({
       current: 1,
-      size: 10,
+      size: -1,
       type: 1,
     });
   }
 }
 function mapStateToProps(state) {
-  // console.log(state, "STATE");
+  console.log(state, "STATE");
   return {
     dict: state.currency.dict,
   };

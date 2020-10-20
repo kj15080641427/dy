@@ -37,6 +37,21 @@
     .box-head {
       width: 200px;
     }
+    .pie-lauout-text {
+      width: 100px;
+      height: 60px;
+      z-index: 99;
+      color: white;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 70px;
+      bottom: 0;
+      margin: auto;
+      div {
+        text-align: center;
+      }
+    }
   }
 }
 .water-video-div {
@@ -279,7 +294,7 @@
   z-index: 10;
   margin-top: 80px;
   .bar-chart {
-    width: 450px;
+    width: 500px;
     height: 230px;
   }
 

@@ -280,6 +280,7 @@ class Monitor extends React.PureComponent {
                         };
                         this.props.actions.changeFloodId(record);
                         this.locationClick(record);
+                        console.log(floodId, floodName, "=========");
                       },
                     };
                   }}

@@ -14,8 +14,8 @@ import floodWarningMonitor from "@app/containers/floodWarning/floodWarning";
 
 import videoMonitor from "@app/containers/video/video";
 import AsyncNoLogin from "@app/containers/home/NoLogin";
-import AsyncDisplay from "@app/containers/display/Display";
-import AsyncNotices from "@app/containers/notices/notices";
+// import AsyncDisplay from "@app/containers/display/Display";
+// import AsyncNotices from "@app/containers/notices/notices";
 
 import Ocean from "@app/containers/ocean";
 import YellowRiver from "@app/containers/yellowRiver";
@@ -43,22 +43,29 @@ import "./style.scss";
 //     }
 //   )
 // );
-// const AsyncDisplay = AsyncComp(() =>
-//   import(/*webpackChunkName:'display'*/ "@app/containers/display/Display").then(
-//     (res) => {
-//       removeLoading();
-//       return res;
-//     }
-//   )
-// );
-// const AsyncNotices = AsyncComp(() =>
-//   import(/*webpackChunkName:'display'*/ "@app/containers/notices/notices").then(
-//     (res) => {
-//       removeLoading();
-//       return res;
-//     }
-//   )
-// );
+function removeLoading() {
+  let $loading = document.getElementById("loading");
+  if ($loading) {
+    $loading.parentNode.removeChild($loading);
+  }
+}
+const AsyncDisplay = AsyncComp(() =>
+  import(/*webpackChunkName:'display'*/ "@app/containers/display/Display").then(
+    (res) => {
+      removeLoading();
+      console.log(res, "RESRSERE");
+      return res;
+    }
+  )
+);
+const AsyncNotices = AsyncComp(() =>
+  import(/*webpackChunkName:'display'*/ "@app/containers/notices/notices").then(
+    (res) => {
+      removeLoading();
+      return res;
+    }
+  )
+);
 
 export class App extends React.Component {
   render() {
@@ -94,11 +101,5 @@ export class App extends React.Component {
         </Switch>
       </HashRouter>
     );
-  }
-}
-function removeLoading() {
-  let $loading = document.getElementById("loading");
-  if ($loading) {
-    $loading.parentNode.removeChild($loading);
   }
 }

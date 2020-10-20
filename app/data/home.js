@@ -479,3 +479,19 @@ export function getSiteDeviceRepairPage(data) {
 export function getUserInfoByToken(data) {
   return fetchJSONData("POST", "/base/Users/getUser", data);
 }
+// 新建群聊
+export function addChartGroup(data) {
+  return fetchJSONData("POST", "/base/ChatGroup/save", data);
+}
+// 添加群聊人员
+export function addChartGroupUser(data) {
+  return fetchJSONData("POST", "/base/ChatPeople/save", data);
+}
+// 添加群聊人员
+export function getChartGroupList(data) {
+  return fetchJSONData("POST", "/base/ChatGroup/page", data);
+}
+// 修改群聊
+export function setChartGroup(data) {
+  return fetchJSONData("POST", "/base/ChatGroup/update", data);
+}

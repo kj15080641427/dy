@@ -40,9 +40,9 @@ class easyFlood extends React.PureComponent {
             : "--") +
           "</span>",
         "<span style='font-size:19px; '>" +
-          (data[i].ztm === null
-            ? "--"
-            : moment(data[i].ztm).format("MM-DD HH:mm")) +
+          (data[i].riverwaterdataList && data[i].riverwaterdataList[0]
+            ? moment(data[i].riverwaterdataList[0].tm).format("MM-DD HH:mm")
+            : "--") +
           "</span>",
       ]);
     }

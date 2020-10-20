@@ -251,3 +251,14 @@
   top: 815px;
   z-index: 196;
 }
+
+.county-rain-chart {
+  .ant-modal-body {
+    padding: 2px 24px;
+  }
+}
+.county-radar-chart{
+  .ant-modal-body{
+    padding: 40px 24px 24px 4px;
+  }
+}

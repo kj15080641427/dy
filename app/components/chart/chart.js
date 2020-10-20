@@ -24,7 +24,7 @@ export const barChart = (domId, legend, online, line) => {
       },
     },
     toolbox: {
-      show: true,
+      show: false,
       feature: {
         mark: { show: true },
         dataView: { show: true, readOnly: false },
@@ -537,7 +537,7 @@ export const showChart = (data, id) => {
     },
     yAxis: {
       type: "value",
-      name: "水位（mm）",
+      name: "水位（m）",
       axisLabel: {
         color: "white",
       },
@@ -567,6 +567,9 @@ export const showChart = (data, id) => {
             { type: "max", name: "最大值" },
             { type: "min", name: "最小值" },
           ],
+        },
+        lineStyle: {
+          color: "rgb(27,184,108)", //改变折线颜色
         },
       },
     ],

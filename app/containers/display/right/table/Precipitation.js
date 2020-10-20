@@ -47,9 +47,9 @@ class Precipitation extends React.PureComponent {
               : "--") +
             "</span>",
           "<span style='font-size:19px; '>" +
-            (data[i].tm === null
-              ? "--"
-              : moment(data[i].tm).format("MM-DD HH:mm")) +
+            (data[i].raindataList && data[i].raindataList[0]
+              ? moment(data[i].raindataList[0].tm).format("MM-DD HH:mm")
+              : "--") +
             "</span>",
         ]
       );

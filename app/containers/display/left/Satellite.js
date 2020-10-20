@@ -89,14 +89,15 @@ class Satellite extends React.PureComponent {
           width={"50%"}
           footer={null}
           centered={true}
+          className='county-rain-chart'
         >
           <div style={{
             'overflow-y': "hidden",
             padding: '8px 0',
             position: 'relative',
             overflow: 'hidden',
-            height: "100%",
-            width: "1000px",
+            height: "940px",
+            // width: "1000px",
             margin: '0 auto',
           }}>
             <iframe src="http://m.nmc.cn/publish/precipitation/1-day.html" width="753px" height="1010px"
@@ -113,8 +114,9 @@ class Satellite extends React.PureComponent {
           height={"100%"}
           footer={null}
           centered={true}
+          className='county-rain-chart'
         >
-          <div style={{ height: '976px', width: '910px', margin: '0 auto', }}>
+          <div style={{ height: '946px',  margin: '0 auto', }}>
             <PlayCircleOutlined className="m-pic-icon-big" onClick={() => this.slickPlayRoPause(lunboSetting)} />
             <Carousel effect="fade" dots={false} autoplaySpeed={400} speed={1} {...lunboSetting} ref={el => (this.slider = el)}>
               {elements}
@@ -130,16 +132,17 @@ class Satellite extends React.PureComponent {
           height="100%"
           footer={null}
           centered={true}
+          className='county-radar-chart'
         >
           <div style={{
             'overflow-y': "hidden",
             position: 'relative',
             overflow: 'hidden',
-            height: "975px",
+            height: "955px",
             width: "100%",
           }}>
             <iframe src="http://58.59.29.51:14003/Radar"
-              frameborder="0" scrolling="no" style={{ position: 'relative', top: '-300px', width: "100%", height: "1275px" }}></iframe>
+              frameBorder="0" scrolling="no" style={{ position: 'relative', top: '-300px', width: "100%", height: "1275px" }}></iframe>
           </div>
         </Modal>
         <div className="div-precipitation4" onClick={this.showtyphoon}></div>
@@ -156,11 +159,11 @@ class Satellite extends React.PureComponent {
             'overflow-y': "hidden",
             position: 'relative',
             overflow: 'hidden',
-            height: "975px",
+            height: "920px",
             width: "100%",
           }}>
             <iframe src="https://tf.istrongcloud.com/release/index-id.html?id=1260387956"
-              frameborder="0" scrolling="no" style={{ position: 'relative', width: "100%", height: "100%" }}></iframe>
+              frameBorder="0" scrolling="no" style={{ position: 'relative', width: "100%", height: "945px" }}></iframe>
           </div>
         </Modal>
         <BorderBox8 style={{
