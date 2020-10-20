@@ -169,7 +169,7 @@ export const pieChart = (domId, data, width, legend, title) => {
       data: legend ? legend : [],
       bottom: 10,
       textStyle: {
-        color: "white",
+        color: "white"
       },
     },
     grid: {
@@ -192,7 +192,7 @@ export const pieChart = (domId, data, width, legend, title) => {
           },
         },
         label: {
-          fontSize: "18",
+          fontSize: "12",
           width: "30px",
           color: "white",
           formatter: "{b}: {@2012}",
@@ -285,12 +285,31 @@ export const lineChart = (domId, data, width, warningline) => {
 export const rotateBarChart = (domId, data, width, height) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let fontSize = 15;
+  const max = Math.max(...data.map(d => d.value));
+  const min = Math.min(...data.filter(d => d.value > 0).map(d => d.value));
+  let reduceNum = Math.floor(max / 15);
+  if (reduceNum >= min) {
+    reduceNum = min - 1;
+  }
+  data.map(d => {
+    if (d.value == 0) {
+      d.value = reduceNum;
+      d.reduceFlag = true;
+    }
+  });
   let option = {
     tooltip: {
       trigger: "axis",
       axisPointer: {
         type: "shadow",
       },
+      formatter: (params) => {
+        if (params[0].data.reduceFlag) {
+          return 0;
+        } else {
+          return params[0].value;
+        }
+      }
     },
     legend: {
       data: [],
@@ -361,6 +380,14 @@ export const rotateBarChart = (domId, data, width, height) => {
           show: true,
           position: "left",
           color: "white",
+          formatter: (params) => {
+            console.log(params)
+            if (params.data.reduceFlag) {
+              return 0;
+            } else {
+              return params.value;
+            }
+          }
         },
         width: width || 300,
         height: height,
