@@ -126,6 +126,7 @@ export class TableShow extends React.PureComponent {
               className="table-background"
               width={item.width}
               sorter={item.sorter}
+              align={item.align}
               {...this.getColumnSearchProps(item.filter, number)}
               render={item.render}
             />
@@ -137,6 +138,7 @@ export class TableShow extends React.PureComponent {
               className="table-background"
               render={item.render}
               width={item.width}
+              align={item.align}
               sorter={item.sorter}
             />
           );

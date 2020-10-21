@@ -26,6 +26,8 @@ class WeatherChart extends React.PureComponent {
     this.state = {
       weathershow: false,
       weatherstyle: "black",
+      timeList: ['1小时', '12小时', '24小时', '近三天', '今年以来', '自定义'],
+      selectedTime: "24小时"
     };
     this.selectInit = this.selectInit.bind(this);
     this.btnClick = this.btnClick.bind(this);
@@ -52,19 +54,8 @@ class WeatherChart extends React.PureComponent {
           setData.push((result.data[i].prd * 1).toFixed(1));
         }
         myChart.setOption({
-          legend: {
-            selected: {
-              "1小时": false,
-              "24小时": false,
-              近三天: false,
-              近一周: false,
-              今年以来: false,
-              自定义: true,
-            },
-          },
           series: [
             {
-              name: "自定义",
               data: setData,
               label: {
                 show: true,
@@ -79,6 +70,13 @@ class WeatherChart extends React.PureComponent {
       <div className="m-wth-chart-rain">
         <img className="m-chart-img" src={imgURL} alt="" />
         <div className="m-chart-dev-rain">
+          <div className="time-selector">
+            {this.state.timeList.map(tm => (
+              <label className={this.state.selectedTime === tm? 'active': ''} onClick={() => {
+                this.setState({ selectedTime: tm, weathershow: tm === '自定义' }, () => this.selectInit());
+              }}>{tm}</label>
+            ))}
+          </div>
           <Row className="time-select" style={{ display: this.state.weathershow ? 'block': 'none' }}>
             <span style={{ color: "white" }}>时间选择:</span>&nbsp;{" "}
             <RangePicker
@@ -97,285 +95,118 @@ class WeatherChart extends React.PureComponent {
     );
   }
 
-  selectInit() {
-    getFiveCitydata({ type: 1 }).then((result) => {//TODO
-      let hourData = [];
-      let towData = [];
-      let dayData = [];
-      let thDayData = [];
-      let addData = [];
-      let yearData = [];
-
-      var myChart = echarts.init(document.getElementById("main"));
-      for (var i = result.data.length - 1; i >= 0; i--) {
-        hourData.push((result.data[i].prd * 1));
-        let areaName = areaMap[result.data[i].areaId];
-        addData.push({ value: areaName, textStyle: { color: "white" } });
-      }
-      
-      myChart.on('legendselectchanged', (params) => {
-        const isDiy = params.name === '自定义'
-        this.setState({
-          weathershow: isDiy
-        });
-      });
-
-      myChart.setOption({
-        // color:["#c23531","#99CCFF","#FFFF66","#666666",],
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            // 坐标轴指示器，坐标轴触发有效
-            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
-          },
+  async selectInit() {
+    let params = null
+    switch(this.state.selectedTime) {
+      case '1小时':
+        params = { type: 1 };
+        break;
+      case '12小时':
+        params = {
+          startTime: moment(new Date().getTime() - 12 * 60 * 60 * 1000).format("YYYY-MM-DD HH:00:00"),
+          endTime: moment(new Date().getTime()).format("YYYY-MM-DD HH:00:00")
+        };
+        break;
+      case '24小时':
+        params = { type: 2 };
+        break;
+      case '近三天':
+        params = { type: 3 };
+        break;
+      case '今年以来':
+        params = { type: 5 };
+        break;
+      case '自定义':
+        break;
+    }
+    let dataSource
+    if (params) {
+      const { data } = await getFiveCitydata(params);
+      data.map(d => d.value = Number(d.prd))
+      dataSource = data
+    }
+    const myChart = echarts.init(document.getElementById("main"));
+    myChart.setOption({
+      // color:["#c23531","#99CCFF","#FFFF66","#666666",],
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          // 坐标轴指示器，坐标轴触发有效
+          type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
         },
-        title: {
-          text: "县区降雨量(单位mm)",
-          left: "center",
+      },
+      title: {
+        text: "县区降雨量(单位mm)",
+        left: "center",
+        top: "2px",
+        textStyle: {
+          color: "#ffffff",
+          fontWeight: "200",
+          fontSize: "18"
+        }
+      },
+      grid: {
+        top: this.state.selectedTime === '自定义'?"120px": "90px",
+        left: "5%",
+        right: "0%",
+        bottom: "3%",
+        containLabel: true,
+        show: true,
+        borderColor: '#00A0FD'
+      },
+      xAxis: {
+        data: dataSource ? dataSource.map(ds => ds.areaName): [],
+        axisLabel: {
           textStyle: {
-            color: "#007ed7",
-            fontStyle: "normal",
-            fontWeight: "bold",
-            fontFamily: "sans-serif",
-            fontSize: "18",
-          },
+            color: '#ffffff'
+          }
         },
-        legend: {
-          textStyle: { color: "white" },
-          right: "center",
-          x: "10px",
-          y: "30px",
-          data: ["1小时", "12小时", "24小时", "近三天", "今年以来", "自定义"],
-          selectedMode: "single",
-          selected: {
-            "1小时": false,
-            "12小时": false,
-            "24小时": true,
-            近三天: false,
-            今年以来: false,
-            自定义: false,
-          },
+        axisLine: {
+          lineStyle: {
+            color: '#00A0FD'
+          }
+        }
+      },
+      yAxis: {
+        type: "value",
+        axisLabel: {
+            textStyle: {
+                color: '#00A0FD'
+            }
         },
-        grid: {
-          top: "25%",
-          left: "3%",
-          right: "0%",
-          bottom: "3%",
-          containLabel: true,
+        axisLine: {
+          lineStyle: {
+            color: '#00A0FD'
+          }
         },
-        xAxis: [
-          {
-            // position: 'top',
-            type: "category",
-            data: addData,
-            axisTick: {
-              alignWithLabel: true,
-            },
-            axisLabel: {
-              show: true,
-              textStyle: {
-                //更改坐标轴文字颜色
-                fontSize: 11, //更改坐标轴文字大小
-              },
-            },
-          },
-        ],
-        yAxis: [
-          {
-            axisLabel: {
-              formatter: "{value}",
-            },
-            // inverse: true,
-            type: "value",
-          },
-          // {
-          //   type: 'value',
-          //   name: 'mm',
-          //   inverse: true,
-          // }
-        ],
-        series: [
-          {
-            name: "1小时",
-            type: "bar",
-            barWidth: "50%",
-            data: hourData == 0 ? null : hourData,
-            // markPoint: {
-            //   data: [
-            //     {
-            //       type: 'max',
-            //       label: {
-            //         show: hourData,
-            //         // position: 'top'
-            //       },
-            //       symbolSize: 1,
-            //     },
-            //     // {
-            //     //   type: 'min', name: '最小值', itemStyle: {
-            //     //     color: '#03d6d6'
-            //     //   }
-            //     // }
-            //   ],
-
-            // },
-            label: {
-              show: true,
-              position: "top",
-            },
-          },
-          {
-            name: "12小时",
-            type: "bar",
-            barWidth: "50%",
-            data: towData,
-          },
-          {
-            name: "24小时",
-            type: "bar",
-            barWidth: "50%",
-            data: dayData,
-          },
-          {
-            name: "近三天",
-            type: "bar",
-            barWidth: "50%",
-          },
-          // {
-          //   name: '近一周',
-          //   type: 'bar',
-          //   barWidth: '50%',
-
-          // },
-          {
-            name: "今年以来",
-            type: "bar",
-            barWidth: "50%",
-          },
-          {
-            name: "自定义",
-            type: "bar",
-            barWidth: "50%",
-          },
-        ],
-      });
-      //12小时
-      getFiveCitydata({
-        startTime: moment(new Date().getTime() - 12 * 60 * 60 * 1000).format(
-          "YYYY-MM-DD HH:00:00"
-        ),
-        endTime: moment(new Date().getTime()).format("YYYY-MM-DD HH:00:00"),
-      }).then((result) => {
-        for (var i = result.data.length - 1; i >= 0; i--) {
-          towData.push((result.data[i].prd * 1).toFixed(1));
+        splitLine: {
+          lineStyle: {
+            color: '#00A0FD'
+          }
         }
-        myChart.setOption({
-          series: [
-            {
-              name: "12小时",
-              data: towData,
-              label: {
-                show: true,
-                position: "top",
-              },
-            },
-          ],
-        });
-      });
-      getFiveCitydata({ type: 2 }).then((result) => {
-        for (var i = result.data.length - 1; i >= 0; i--) {
-          dayData.push((result.data[i].prd * 1).toFixed(1));
+      },
+      series: [
+        {
+          type: "bar",
+          barWidth: "30%",
+          label: {
+            show: true,
+            position: 'top',
+            color: '#ffffff'
+          },
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(
+              0, 0, 0, 1,
+              [
+                { offset: 0, color: 'rgba(156, 79, 245, 1)' },
+                { offset: 0.5, color: 'rgba(156, 79, 245, 0.5)' },
+                { offset: 1, color: 'rgba(156, 79, 245, 0.1)' }
+              ]
+            )
+          },
+          data: dataSource ? dataSource.map(ds => ds.value): []
         }
-        myChart.setOption({
-          series: [
-            {
-              name: "24小时",
-              data: dayData,
-              label: {
-                show: true,
-                position: "top",
-              },
-            },
-          ],
-        });
-      });
-      getFiveCitydata({ type: 3 }).then((result) => {
-        for (var i = result.data.length - 1; i >= 0; i--) {
-          thDayData.push((result.data[i].prd * 1).toFixed(1));
-        }
-        myChart.setOption({
-          series: [
-            {
-              name: "近三天",
-              data: thDayData,
-              label: {
-                show: true,
-                position: "top",
-              },
-              // markPoint: {
-              //   data: [
-              //     {
-              //       type: 'max', name: '最大值',
-              //       label: {
-              //         show: thDayData = 0 ? false : true,
-              //         // position: 'Right'
-              //       },
-              //       symbolSize: 1,
-              //     }
-              //   ],
-
-              // },
-            },
-          ],
-        });
-      });
-      // getFiveCitydata({ "type": 4 })
-      //   .then((result) => {
-      //     for (var i = result.data.length - 1; i >= 0; i--) {
-      //       seDayData.push((result.data[i].prd * 1).toFixed(1))
-      //     }
-      //     myChart.setOption({
-      //       series: [
-      //         {
-      //           name: '近一周',
-      //           data: seDayData,
-      //           label: {
-      //             show: true,
-      //             position: 'top'
-
-      //           },
-      //         },
-      //       ]
-      //     })
-      //   });
-      getFiveCitydata({ type: 5 }).then((result) => {
-        for (var i = result.data.length - 1; i >= 0; i--) {
-          yearData.push((result.data[i].prd * 1).toFixed(1));
-        }
-        myChart.setOption({
-          series: [
-            {
-              name: "今年以来",
-              data: yearData,
-              // markPoint: {
-              //   data: [
-              //     {
-              //       type: 'max', name: '最大值',
-              //       label: {
-              //         show: yearData = 0 ? false : true,
-              //         position: 'bottom'
-              //       },
-              //       symbolSize: 1,
-              //     }
-              //   ],
-              // },
-              label: {
-                show: true,
-                position: "top",
-              },
-            },
-          ],
-        });
-      });
+      ],
     });
   }
   //初始化数据

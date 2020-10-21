@@ -333,7 +333,7 @@ class Monitor extends React.PureComponent {
               ? "河口区"
               : item.dataSourceDesc || "暂无数据",
           value: item.number,
-          textStyle: { fontSize: "24px" },
+          textStyle: { fontSize: "12px" },
           itemStyle: {
             color:
               desc === "气象局"
@@ -348,7 +348,6 @@ class Monitor extends React.PureComponent {
           },
         });
       });
-      console.log(data)
       pieChart("rain-pie-chart", data, 300, [
         "河口区",
         "基层防汛",
@@ -356,7 +355,7 @@ class Monitor extends React.PureComponent {
         "气象局",
         "水文局"
       ], {
-        text: '雨量站点\n来源统计图', left: 'center', top: 'center', textStyle: { color: 'white' }
+        text: '雨量站点\n\n来源统计图', left: 'center', top: 'center', textStyle: { color: 'white', fontWeight: '200', fontSize: 14 }
       });
     }
     if (rain != pre.rain) {

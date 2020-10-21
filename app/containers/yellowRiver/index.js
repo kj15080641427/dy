@@ -32,7 +32,6 @@ export default class yellowRiver extends React.PureComponent {
 
   async buildTableData () {
     const { siteData, tm } = this.state
-    console.log(Number(tm))
     const { data: { records: riverwaterdata } } = await getRiverwaterdata({
       current: 0, stcd: siteData.map(td => td.stcd).join(','), size: -1,
       starttm: moment(Number(tm) - 7 * 24 * 60 * 60 * 1000).format('YYYY-MM-DD 00:00:00'),
@@ -50,6 +49,10 @@ export default class yellowRiver extends React.PureComponent {
 
   async buildChartData () {
     const { selectedSite, tm } = this.state
+    const tmRange = {
+      starttm: moment(Number(tm) - 7 * 24 * 60 * 60 * 1000).format('YYYY-MM-DD 00:00:00'),
+      endtm: moment(tm).format('YYYY-MM-DD 23:59:59')
+    }
     const { data: { records: riverwaterdatalog } } = await getRiverwaterdatalog({
       current: 0, stcd: selectedSite.stcd, size: -1,
       starttm: moment(Number(tm) - 7 * 24 * 60 * 60 * 1000).format('YYYY-MM-DD 00:00:00'),
@@ -57,25 +60,33 @@ export default class yellowRiver extends React.PureComponent {
     })
     const sortData = riverwaterdatalog.sort((a, b) => Date.parse(a.tm) - Date.parse(b.tm))
     const xData = sortData.map(rwdl => moment(rwdl.tm).format("YYYY-MM-DD HH"))
+    const titleDesc = `${moment(Number(tm) - 7 * 24 * 60 * 60 * 1000).format('YYYY-MM-DD 00:00')} ~ ${moment(tm).format('YYYY-MM-DD 23:59')}`
     this.initLineChart(
       "siteWater",
       xData,
       sortData.map(rwdl => rwdl.z),
-      '站点水位走势图'
+      '七日水位走势图',
+      titleDesc
     )
     this.initLineChart(
       "siteFlow",
       xData,
       sortData.map(rwdl => rwdl.q),
-      '流量走势图'
+      '七日流量走势图',
+      titleDesc
     )
   }
 
-  initLineChart (domId, xdata, ydata, title) {
+  initLineChart (domId, xdata, ydata, title, titleDesc) {
     let myChartcount = echarts.init(document.getElementById(domId));
     let option = {
       title: {
-        text: title
+        text: title,
+        subtext: titleDesc,
+        left: 'center'
+      },
+      grid: {
+        right: '0%'
       },
       xAxis: {
         type: "category",
@@ -119,7 +130,7 @@ export default class yellowRiver extends React.PureComponent {
           <div className="m-left-notices-table">
             <div className="m-left-notices-table-params">
               <Space size="middle">
-                <labe>数据更新时间：{this.state.newestTM}</labe>
+                <labe>{this.state.newestTM}</labe>
                 <labe>水情日报</labe>
                 <labe>
                   查询时间：
@@ -146,12 +157,11 @@ export default class yellowRiver extends React.PureComponent {
                 align: "center",
                 title: "站名",
                 dataIndex: "name",
-                render: (text, row) => (<Button
-                    type={this.state.selectedSite.name === text?'primary': ''}
+                render: (text, row) => (<a
                     onClick={() => this.setState({ selectedSite: row }, () => this.buildChartData())}
                   >
                     {text}
-                  </Button>),
+                  </a>),
               }, {
                 align: "center",
                 title: "水位(m)",
@@ -161,6 +171,9 @@ export default class yellowRiver extends React.PureComponent {
                 title: "流量(m³/s)",
                 dataIndex: "ll",
               }]}
+              rowClassName={(record) => {
+                return this.state.selectedSite.name === record.name? 'primary-row': ''
+              }}
             />
           </div>
           <div className="m-left-notices-chart">
