@@ -57,7 +57,7 @@ class Video extends React.PureComponent {
         <tr key={i}>
           <td style={{ width: 200 }}>{data[i].name}</td>
           {/* <td>{data[i].address}</td> */}
-          <td>{data[i].isOnline == 0 ? "在线" : <a>离线</a>}</td>
+          <td>{<a>在线</a>}</td>
           <td>
             <Button
               type="primary"
@@ -120,14 +120,14 @@ class Video extends React.PureComponent {
           width={"100%"}
           footer={null}
           centered={true}
-          className='county-video-chart'
+          className="county-video-chart"
         >
           {/* <FullScreen ></FullScreen> */}
           <div
             style={{
               "overflow-y": "hidden",
               padding: "8px 0",
-            //   background: "#000000",
+              //   background: "#000000",
               position: "relative",
               overflow: "hidden",
               height: 925,

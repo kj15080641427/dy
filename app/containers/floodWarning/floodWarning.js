@@ -11,6 +11,7 @@ import Head from "./head/Head";
 import WeatherPic from "./right/WeatherPic";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
+import Satellite from '../display/left/SatelliteFlood'
 import {
   Drawer,
   Row,
@@ -356,6 +357,7 @@ class Monitor extends React.PureComponent {
             <div className="flood-warning-chart">
               <div style={{ height: "20px" }}></div>
               <WeatherPic></WeatherPic>
+              {/* <Satellite type={2}></Satellite> */}
             </div>
 
             {/* <PannelBtn></PannelBtn> */}

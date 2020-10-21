@@ -37,27 +37,24 @@ export default function mapAboutReducers(state = initState, action) {
           }
         }
       });
+      console.log(action.data, waterList, "=======");
       waterList.sort((a, b) => moment(b.tm).unix() - moment(a.tm).unix());
       newState.water = waterList;
       newState.initWater = action.data;
       break;
     case types.SET_FLOOD:
       action.data.forEach((item) => {
-        if (
-          item.riverwaterdataList &&
-          item.riverwaterdataList[0] &&
-          item.siteWaterPoints
-        ) {
+        if (item.riverwaterdataList && item.riverwaterdataList[0]) {
           floodList.push({
             ...item,
             ...item.riverwaterdataList[0],
-            ...item.siteWaterPoints[0],
-            z: (item.riverwaterdataList[0].z * 100).toFixed(2),
           });
+        } else {
+          floodList.push(item);
         }
       });
       newState.flood = floodList;
-      newState.initFlood = action.data;
+      newState.initFlood = floodList;
       newState.floodLoading = false;
       break;
     case types.SET_COUNT_STATION:

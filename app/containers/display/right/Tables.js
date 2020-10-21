@@ -95,7 +95,7 @@ class Tables extends React.PureComponent {
           </TableWrap>
           <TableWrap
             title={"易涝点(" + initFlood?.length + ")"}
-            extra={"单位：m"}
+            extra={"单位：cm"}
           >
             <EasyFlood
               dataSource={initFlood}
@@ -104,8 +104,8 @@ class Tables extends React.PureComponent {
             ></EasyFlood>
           </TableWrap>
           {/* <TableWrap title={"水位站(" + waterCount + ")"} extra={"单位：m"}> */}
-          <TableWrap title={`水位站(${waterCount})`} extra={"单位：m"}>
-            <Water dataSource={waterData} lod={waterlod} dict={dict}></Water>
+          <TableWrap title={`水位站(${initWater?.length})`} extra={"单位：m"}>
+            <Water dataSource={initWater} lod={false} dict={dict}></Water>
           </TableWrap>
         </div>
       </div>
@@ -155,12 +155,17 @@ class Tables extends React.PureComponent {
     //   });
     // });
     getRadioAll({
-      isShow: "0",
+      type: "4",
     }).then((result) => {
       // console.log(result.data, "Result");
       let arr = [];
       for (let i = 0; i < result.data.length; i++) {
-        if (result.data[i].isOnline * 1 === 0) {
+        const item = result.data[i];
+        if (
+          item.stiteWaterRadios &&
+          item.stiteWaterRadios[0] &&
+          item.stiteWaterRadios[0].isOnline == 0
+        ) {
           arr.push(result.data[i]);
         }
       }
@@ -184,6 +189,7 @@ class Tables extends React.PureComponent {
   }
 }
 function mapStateToProps(state) {
+  console.log(state, "SSS");
   return {
     initFlood: state.mapAboutReducers.initFlood,
     floodLoading: state.mapAboutReducers.floodLoading,

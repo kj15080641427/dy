@@ -79,7 +79,7 @@ export function delSiteVideoData(data) {
 }
 // 获取所有视频站点信息
 export function getAllVideo(data) {
-  return fetchJSONData("POST", "/base/StiteWaterRadio/getAll", data);
+  return fetchJSONData("POST", "/base/SiteBase/getAll", data);
 }
 
 // 查询站点雨量

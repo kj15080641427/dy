@@ -1,62 +1,77 @@
 .situation-title {
-    font-size: 50px;
-    font-family: serif;
-    margin: auto;
-    font-weight: bold;
+  font-size: 50px;
+  font-family: serif;
+  margin: auto;
+  font-weight: bold;
 }
 .situation-text {
+  font-size: 20px;
+  // margin: inherit;
+  .text-title {
     font-size: 20px;
-    // margin: inherit;
-    .text-title {
-        font-size: 20px;
-        font-weight: bold;
-        color:#0099ff;
-    }
+    font-weight: bold;
+    color: #0099ff;
+  }
 }
 .tg {
-    border-collapse: collapse;
-    border-color: #ccc;
-    border-spacing: 0;
-    width: 100%;
+  border-collapse: collapse;
+  border-color: #ccc;
+  border-spacing: 0;
+  width: 100%;
 }
 .tg td {
-    background-color: #fff;
-    border-color: #ccc;
-    border-style: solid;
-    border-width: 1px;
-    color: #333;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    overflow: hidden;
-    padding: 5px 20px;
-    word-break: normal;
+  background-color: #fff;
+  border-color: #ccc;
+  border-style: solid;
+  border-width: 1px;
+  color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  overflow: hidden;
+  padding: 5px 20px;
+  word-break: normal;
 }
 .tg th {
-    background-color: #f0f0f0;
-    border-color: #ccc;
-    border-style: solid;
-    border-width: 1px;
-    color: #333;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    font-weight: normal;
-    overflow: hidden;
-    padding: 5px 20px;
-    word-break: normal;
+  background-color: #f0f0f0;
+  border-color: #ccc;
+  border-style: solid;
+  border-width: 1px;
+  color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 5px 20px;
+  word-break: normal;
 }
 .tg .tg-9wq8 {
-    border-color: inherit;
-    text-align: center;
-    vertical-align: middle;
-    font-size: 20px;
+  border-color: inherit;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 20px;
 }
 .tg .tg-2xbj {
-    border-color: inherit;
-    font-size: 25px;
-    font-weight: bold;
-    text-align: center;
-    vertical-align: top;
+  border-color: inherit;
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: top;
 }
 .table-title-column {
-    font-size: 20px;
+  font-size: 20px;
+}
+.water-table-style {
+  .ant-table-title
+    + .ant-table-container
+    table
+    > thead
+    > tr:first-child
+    th:first-child {
+    background: #003366;
+    color: white;
+  }
+  .ant-table.ant-table-small .ant-table-thead > tr > th {
+    background: #003366;
+    color: white;
+  }
 }

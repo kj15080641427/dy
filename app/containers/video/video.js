@@ -307,6 +307,7 @@ class Monitor extends React.PureComponent {
 }
 
 function mapStateToProps(state) {
+  console.log( state.monitor.video)
   return {
     count: state.mapAboutReducers.count,
     video: state.monitor.video,

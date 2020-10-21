@@ -23,7 +23,6 @@ function* getWater() {
         }
       });
       data.sort((a, b) => {
-        console.log(a, "AAA");
         return a.tm - b.tm;
       });
       yield put({
@@ -356,16 +355,16 @@ function* getAlarmData() {
     let list = [];
     const result = yield call(req.getAlarmWarning, {});
     const resultwater = yield call(req.getAll, { type: "2,4" });
-    resultwater.data.map((item) => {
-      result.data.map((st) => {
-        if (item?.riverwaterdataList && item?.riverwaterdataList[0]) {
-          if (item?.riverwaterdataList[0].stcd == st.stcd) {
-            list.push({ ...item, ...item.stiteWaterRadios[0], ...st });
+    if (result.code == code && resultwater.code == code) {
+      resultwater.data.map((item) => {
+        result.data.map((st) => {
+          if (item?.riverwaterdataList && item?.riverwaterdataList[0]) {
+            if (item?.riverwaterdataList[0].stcd == st.stcd) {
+              list.push({ ...item, ...item.stiteWaterRadios[0], ...st });
+            }
           }
-        }
+        });
       });
-    });
-    if (resultwater.code) {
       let data = resultwater.data.map((item) => {
         if (item.stiteWaterRadios && item.stiteWaterRadios[0]) {
           return { ...item, ...item.stiteWaterRadios[0] };
@@ -374,18 +373,11 @@ function* getAlarmData() {
         }
       });
       data.sort((a, b) => {
-        console.log(a, "AAA");
         return a.tm - b.tm;
       });
       yield put({
         type: types.SET_WATER,
         data: data,
-      });
-    }
-    if ((result.code = code)) {
-      yield put({
-        type: types.SET_ALARM_DATA,
-        data: list,
       });
       if (list[0]) {
         list[0] = { ...list[0], name: list[0].stnm };
@@ -411,29 +403,48 @@ function* getAlarmData() {
             ...list[0],
           },
         });
-      }
-      {
+        yield put({
+          type: types.SET_ALARM_DATA,
+          data: list,
+        });
+      } else {
+        let resdata = resultwater.data;
+        resdata[0] = resdata[0].riverwaterdataList[0]
+          ? {
+              ...resdata[0],
+              stnm: resdata[0].riverwaterdataList[0].stnm,
+              stcd: resdata[0].riverwaterdataList[0].stcd,
+            }
+          : {
+              ...resdata[0],
+              a: 1,
+            };
+        console.log(resdata[0], "resultwater____");
         yield put({
           type: types.CHANGE_WATER_ID,
           data: {
-            ...resultwater[0],
-            id: resultwater[0].stcd,
-            name: resultwater[0].stnm,
+            ...resdata[0],
+            id: resdata[0].stcd,
+            name: resdata[0].stnm,
           },
         });
         yield put({
           type: types.CHANGE_WATER_VIDEO,
           data: {
-            ...resultwater[0],
+            ...resdata[0],
           },
         });
         yield put({
           type: types.CHANGE_FLOOD_ID,
           data: {
-            floodId: resultwater[0].stcd,
-            floodName: resultwater[0],
-            ...resultwater[0],
+            floodId: resdata[0].stcd,
+            floodName: resdata[0],
+            ...resdata[0],
           },
+        });
+        yield put({
+          type: types.SET_ALARM_DATA,
+          data: result.data,
         });
       }
     }

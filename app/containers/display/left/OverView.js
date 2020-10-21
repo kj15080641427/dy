@@ -36,7 +36,7 @@ class OverView extends React.PureComponent {
     };
   }
   render() {
-    const { initFlood } = this.props;
+    const { initFlood, initWater } = this.props;
     return (
       <div className="dis-overview">
         <div className="dis-ov-board">
@@ -147,7 +147,7 @@ class OverView extends React.PureComponent {
                   </div>
                   <div className="dis-ov-div-right2">
                     <Row className="dos-vo-div-row2">
-                      <span className="dis-ov-value3">120</span>
+                      <span className="dis-ov-value3">{initWater?.length}</span>
                       <span className="dis-ov-unit">座</span>
                     </Row>
                     <Row>
@@ -513,6 +513,7 @@ function mapStateToProps(state) {
   return {
     initFlood: state.mapAboutReducers.initFlood,
     floodLoading: state.mapAboutReducers.floodLoading,
+    initWater: state.mapAboutReducers.initWater,
   };
 }
 

@@ -187,11 +187,11 @@ class Monitor extends React.PureComponent {
     );
   };
   componentDidMount() {
-    // const { waterId } = this.props;
+    const { waterId } = this.props;
     // this.props.actions.getWaterType(); //水位站点
     this.props.actions.getCountStation(); //来源统计
     this.props.actions.getAlarm();
-    // this.props.stateActions.getDsplayWater(waterId);
+    this.props.stateActions.getDsplayWater(waterId);
   }
   componentDidUpdate(pre) {
     const { water, count, displayWater, waterId } = this.props;
@@ -205,6 +205,7 @@ class Monitor extends React.PureComponent {
       this.onlineChart();
     }
     if (displayWater != pre.displayWater) {
+      console.log(displayWater, "displayWaterdisplayWater");
       showChart(displayWater, "line-chart");
     }
   }
@@ -349,7 +350,7 @@ class Monitor extends React.PureComponent {
                     </div>
                     <div className="water-select-flex">{`${moment(
                       new Date().getTime() - 24 * 60 * 60 * 1000
-                    ).format("YYYY-MM-DD HH:mm")}  ——— ${moment(
+                    ).format("YYYY-MM-DD HH:mm")}  —— ${moment(
                       new Date()
                     ).format("MM-DD HH:mm")}`}</div>
                   </div>

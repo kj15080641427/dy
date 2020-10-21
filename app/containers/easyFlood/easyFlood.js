@@ -286,18 +286,27 @@ class Monitor extends React.PureComponent {
                   }}
                   pageSize={5}
                   columns={[
-                    { name: "易涝点名称", dataIndex: "name", filter: "name" },
+                    {
+                      name: "易涝点名称",
+                      dataIndex: "name",
+                      filter: "name",
+                      width: "45%",
+                    },
                     {
                       name: "积水水深(cm)",
                       dataIndex: "riverwaterdataList",
+                      width: "25%",
                       render: (value) =>
                         value && value[0] ? (value[0].z * 100).toFixed(2) : "-",
                     },
                     {
+                      width: "30%",
                       name: "更新时间",
-                      dataIndex: "riverwaterdataList",
-                      render: (value) =>
-                        value && value[0] ? value[0].tm.slice(0, -3) : "-",
+                      dataIndex: "tm",
+                      render: (value) => (value ? value.slice(0, -3) : "-"),
+                      sorter: (a, b) => {
+                        return moment(a.tm).unix() - moment(b.tm).unix();
+                      },
                     },
                   ]}
                   dataSource={initFlood || []}
