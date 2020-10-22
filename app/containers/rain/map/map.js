@@ -80,7 +80,7 @@ class Map extends React.PureComponent {
     );
   }
   componentDidUpdate(prevProps, prevState) {
-    let { layerVisible, rainData } = this.props;
+    let { layerVisible, rainData, stations } = this.props;
     if (layerVisible !== prevProps.layerVisible) {
       this.setVisible();
     }
@@ -92,7 +92,8 @@ class Map extends React.PureComponent {
       this.toggleTagByMapZoom();
     }
 
-    if (rainData) {
+    if ((rainData, stations)) {
+      console.log(77777, "///");
       this.drawFeatures(rainData.data);
     }
   }
@@ -278,9 +279,14 @@ class Map extends React.PureComponent {
       style: {
         src: function (featureObj) {
           const type = rainData?.type;
-          let drp = featureObj.avgDrp;
+          let drp = 0;
+          if (featureObj?.avgDrp) {
+            drp = featureObj?.avgDrp;
+          } else {
+            drp = 0.0;
+          }
           // try {
-          //   drp = parseFloat(featureObj?.avgDrp * 1);
+          //   drp = parseFloat(featureObj?.avgDrp );
           // } catch (e) {
           //   drp = 0.0;
           // }
@@ -939,13 +945,15 @@ class Map extends React.PureComponent {
   drawFeatures(data) {
     // data 实时雨量
     const { stations } = this.props;
+    console.log(data, stations, "---------");
     let list = [];
-    data.map((item) => {
-      stations?.map((st) => {
+    stations?.map((item) => {
+      data?.map((st) => {
         if (item.stcd == st.stcd) {
-          list.push({ ...item, ...st, lonlat: [st.lon, st.lat] });
+          item = { ...item, ...st, lonlat: [item.lon, item.lat] };
         }
       });
+      list.push(item);
     });
     if (stations) {
       for (let key in stations) {
@@ -975,6 +983,7 @@ class Map extends React.PureComponent {
         ...station,
       });
     }
+    console.log(list, "LIST");
     this.map.removeFeatures("rain", features);
     this.map.addFeatures("rain", features);
     // this.map.removeFeatures("rain", list);

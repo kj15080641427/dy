@@ -1,5 +1,5 @@
 import * as types from "../constants/map";
-
+import moment from "moment";
 const initState = {
   water: [],
   initWater: [],
@@ -13,6 +13,8 @@ const initState = {
   historyFlood: [],
   historyWater: [],
   floodRain: [],
+  initFlood: [],
+  floodLoading: true,
 };
 export default function mapAboutReducers(state = initState, action) {
   let newState = Object.assign({}, state);
@@ -34,27 +36,26 @@ export default function mapAboutReducers(state = initState, action) {
             newState.waterWarning++;
           }
         }
-        newState.water = waterList;
-        newState.initWater = action.data;
       });
+      console.log(action.data, waterList, "=======");
+      waterList.sort((a, b) => moment(b.tm).unix() - moment(a.tm).unix());
+      newState.water = waterList;
+      newState.initWater = action.data;
       break;
     case types.SET_FLOOD:
       action.data.forEach((item) => {
-        if (
-          item.riverwaterdataList &&
-          item.riverwaterdataList[0] &&
-          item.siteWaterPoints
-        ) {
+        if (item.riverwaterdataList && item.riverwaterdataList[0]) {
           floodList.push({
             ...item,
             ...item.riverwaterdataList[0],
-            ...item.siteWaterPoints[0],
-            z: (item.riverwaterdataList[0].z * 100).toFixed(2),
           });
+        } else {
+          floodList.push(item);
         }
       });
       newState.flood = floodList;
-      newState.initFlood = action.data;
+      newState.initFlood = floodList;
+      newState.floodLoading = false;
       break;
     case types.SET_COUNT_STATION:
       newState = {
@@ -77,7 +78,6 @@ export default function mapAboutReducers(state = initState, action) {
       newState = { ...newState, historyWater: historyWater };
       break;
     case types.CHANGE_FLOOD_ID: //改变易涝点id
-      console.log(action.data);
       newState = {
         ...newState,
         floodId: action.data,
@@ -98,7 +98,6 @@ export default function mapAboutReducers(state = initState, action) {
       action.data.records.map((item) => {
         let tm = item.tm.split(" ")[1].split(":");
         if (tm[0] % 2 == 0 && tm[1] == "00") {
-          // console.log(tm, "TTTMM",item.z);
           historyFlood.unshift(item.z * 10);
         }
       });
@@ -130,6 +129,7 @@ export default function mapAboutReducers(state = initState, action) {
       break;
     case types.SET_FLOOD_USER:
       action.data[1].phone = "18159774272";
+      // action.data[0].phone = "1";
       newState = { ...newState, floodUser: action.data };
       break;
     case types.SET_FLOOD_EXPERT:

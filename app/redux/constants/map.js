@@ -54,3 +54,4 @@ export const SET_DICT = "SET_DICT"; //设置字典
 //获取实时水位警戒数据
 export const GET_ALARM_DATA = "GET_ALARM_DATA";
 export const SET_ALARM_DATA = "SET_ALARM_DATA";
+export const CHANGE_WATER_VIDEO = "CHANGE_WATER_VIDEO";//水位站点视频

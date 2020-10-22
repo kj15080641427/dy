@@ -60,7 +60,6 @@ class RainSwitcher extends Component {
                   type={type}
                   block
                   onClick={this.onButtonClick.bind(this, param)}
-                  size={"large"}
                 >
                   {item.text}
                 </Button>

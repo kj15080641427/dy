@@ -30,7 +30,7 @@ class Water extends React.PureComponent {
       //     ...(data[i].riverwaterdataList && data[i].riverwaterdataList[0]),
       //   };
       let name = `${data[i]?.name}  ( ${
-        data[i].siteWaterLevels && data[i]?.siteWaterLevels[0]
+        data[i]?.siteWaterLevels && data[i]?.siteWaterLevels[0]
           ? dict[data[i]?.siteWaterLevels[0]?.siteDictionariesID]
           : ""
       } )`;
@@ -40,7 +40,9 @@ class Water extends React.PureComponent {
           ? "--"
           : data[i]?.siteWaterLevels[0]?.warning;
       let time =
-        data[i].ztm === null ? "--" : moment(data[i].ztm).format("MM-DD HH:mm");
+        data[i].riverwaterdataList && data[i].riverwaterdataList[0]
+          ? moment(data[i].riverwaterdataList[0].tm).format("MM-DD HH:mm")
+          : "--";
       if (z - warning > 0 && warning !== "--") {
         elements.push([
           "<span style='font-size:19px; color:#fb7293;'>" + name + "</span>",

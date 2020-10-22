@@ -9,7 +9,7 @@ import emitter from "@app/utils/emitter.js";
 import "./style.scss";
 import { templateWater } from "./template";
 import VideoControl from "@app/components/video/VideoControl";
-import { getAllVideo } from "@app/data/request";
+import { getAllVideo2 } from "@app/data/request";
 import Person from "./overlays/Person";
 import Rain from "./overlays/Rain";
 import Water from "./overlays/Water";
@@ -90,7 +90,7 @@ class Map extends React.PureComponent {
     }
   }
   componentDidMount() {
-    getAllVideo({})
+    getAllVideo2({ type: '4' })
       .then((res) => {
         if (res.code === 200 && res.data && res.data[0]) {
           this.props.actions.addVideos(res.data);
@@ -101,7 +101,7 @@ class Map extends React.PureComponent {
               return {
                 ...item,
                 type: "Point",
-                id: item.radioID + "",
+                id: item.siteBaseID + "",
                 lonlat: [item.lon, item.lat],
               };
             })

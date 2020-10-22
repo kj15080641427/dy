@@ -79,7 +79,7 @@ export function delSiteVideoData(data) {
 }
 // 获取所有视频站点信息
 export function getAllVideo(data) {
-  return fetchJSONData("POST", "/base/StiteWaterRadio/getAll", data);
+  return fetchJSONData("POST", "/base/SiteBase/getAll", data);
 }
 
 // 查询站点雨量
@@ -478,4 +478,31 @@ export function getSiteDeviceRepairPage(data) {
 // token换用户信息
 export function getUserInfoByToken(data) {
   return fetchJSONData("POST", "/base/Users/getUser", data);
+}
+
+// 新建群聊
+export function addChartGroup(data) {
+  return fetchJSONData("POST", "/base/ChatGroup/save", data);
+}
+// 添加群聊人员
+export function addChartGroupUser(data) {
+  return fetchJSONData("POST", "/base/ChatPeople/save", data);
+}
+// 添加群聊人员
+export function getChartGroupList(data) {
+  return fetchJSONData("POST", "/base/ChatGroup/page", data);
+}
+// 修改群聊
+export function setChartGroup(data) {
+  return fetchJSONData("POST", "/base/ChatGroup/update", data);
+}
+
+// 河道水情
+export function getRiverwaterdata(data) {
+  return fetchJSONData("POST", "/base/Riverwaterdata/realTime", data);
+}
+
+// 河道水情日志
+export function getRiverwaterdatalog(data) {
+  return fetchJSONData("POST", "/base/RiverwaterdataLog/history", data);
 }

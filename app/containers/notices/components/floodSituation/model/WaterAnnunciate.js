@@ -5,6 +5,7 @@
 import React from "react";
 import { Table, Row, Col } from "antd";
 import { tableColumnWater } from "../columns/columsData";
+import "./style.scss";
 class WaterAnnunciate extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -16,7 +17,7 @@ class WaterAnnunciate extends React.PureComponent {
     let { data } = this.state;
     let { loding } = this.props;
     return (
-      <>
+      <div className='water-table-style'>
         <br />
         <Table
           title={this.title}
@@ -26,7 +27,7 @@ class WaterAnnunciate extends React.PureComponent {
           rowKey={(row) => row.number}
           size="small"
         ></Table>
-      </>
+      </div>
     );
   }
   title() {

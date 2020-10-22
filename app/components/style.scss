@@ -2,6 +2,12 @@
   color: white;
   background: #003366;
 }
+.ant-table-thead .table-background {
+  background: #132F90!important;
+}
+.ant-table.ant-table-small .ant-table-thead .ant-table-filter-column-title {
+  padding: 8px;
+}
 .ant-table-thead > tr > th {
   border-bottom: 0;
 }
@@ -107,6 +113,7 @@
   top: 105px;
   background: rgba(255, 255, 255, 0);
   width: 85px;
+  z-index: 9;
   .router-item-style {
     
     border-radius: 10px;

@@ -18,15 +18,17 @@ export default () => {
         }
       >
         <div className='ocean-drawer-body'>
-        <RouterList></RouterList>
-          <iframe
-            src="http://hsdy.dongying.gov.cn/col/col36593/index.html"
-            width="100%"
-            height="100%"
-            frameBorder="0"
-            scrolling="no"
-            style={{ position: "relative", top: -330, left: -670 }}
-          ></iframe>
+          <RouterList></RouterList>
+          <div style={{ width: '50%', height: '100%', overflow: 'hidden', margin: '0 auto' }}>
+            <iframe
+              src="http://hsdy.dongying.gov.cn/col/col36593/index.html"
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              scrolling="no"
+              style={{ position: "relative", top: -327, left: -300 }}
+            ></iframe>
+          </div>
         </div>
       </Drawer>
     </div>

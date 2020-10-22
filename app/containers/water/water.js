@@ -22,6 +22,7 @@ import { showChart, barChart, pieChart } from "../../components/chart/chart";
 import { TableShow } from "../../components/chart/table";
 import RouterList from "../../components/routerLiis";
 import WaterInfo from "./tabs";
+import emitter from "@app/utils/emitter.js";
 const { TabPane } = Tabs;
 const itemStyle = {
   水文局: "rgba(141,81,152,1)",
@@ -187,7 +188,7 @@ class Monitor extends React.PureComponent {
   };
   componentDidMount() {
     const { waterId } = this.props;
-    this.props.actions.getWaterType(); //水位站点
+    // this.props.actions.getWaterType(); //水位站点
     this.props.actions.getCountStation(); //来源统计
     this.props.actions.getAlarm();
     this.props.stateActions.getDsplayWater(waterId);
@@ -204,12 +205,18 @@ class Monitor extends React.PureComponent {
       this.onlineChart();
     }
     if (displayWater != pre.displayWater) {
+      console.log(displayWater, "displayWaterdisplayWater");
       showChart(displayWater, "line-chart");
     }
   }
   render() {
     const { waterName, alarmData, water, waterVideoInfo } = this.props;
-
+    const { changeWaterId } = this.props.actions;
+    const {
+      changeModalVisible,
+      getDayWater,
+      changeWaterVideo,
+    } = this.props.stateActions;
     let {
       layerVisible,
       displayRight,
@@ -235,16 +242,16 @@ class Monitor extends React.PureComponent {
               </div>
               <TableShow
                 columns={[
-                  { name: "站点名称", dataIndex: "stnm", width: "47%" },
+                  { name: "站点名称", dataIndex: "stnm", width: "38%" },
                   {
-                    name: "警戒水位",
+                    name: "警戒水位(m)",
                     dataIndex: "baselevel",
-                    width: "15%",
+                    width: "19%",
                   },
                   {
-                    name: "水位",
+                    name: "水位(m)",
                     dataIndex: "actuallevel",
-                    width: "10%",
+                    width: "14%",
                     render: (e) => <div style={{ color: "red" }}>{e}</div>,
                   },
                   {
@@ -256,12 +263,39 @@ class Monitor extends React.PureComponent {
                 ]}
                 pageSize="3"
                 dataSource={alarmData}
+                onRow={(record) => {
+                  return {
+                    onClick: () => {
+                      console.log(record);
+                      changeWaterId(
+                        {
+                          id: record?.stcd,
+                          name: record.stnm,
+                        },
+                        changeWaterVideo(record)
+                      );
+                      emitter.emit(
+                        "map-move-focus",
+                        [record.lon, record.lat],
+                        3000
+                      );
+                    },
+                    onDoubleClick: () => {
+                      changeModalVisible(true);
+                      getDayWater(record?.stcd);
+                    },
+                  };
+                }}
               />
             </div>
             <div className="water-right-second-box ">
               <RenderBox title={"基本统计信息"} hasTitle>
                 <div className="pie-flex-layout">
                   <div className="pie-chart" id="pie-chart"></div>
+                </div>
+                <div className="pie-lauout-text">
+                  <div>水位站点</div>
+                  <div>来源统计图</div>
                 </div>
               </RenderBox>
             </div>
@@ -311,12 +345,14 @@ class Monitor extends React.PureComponent {
               <RenderBox title={"水位站点"} hasTitle>
                 <div className="water-select">
                   <div className="">
-                    <div className="water-select-flex">{waterName}24小时水位变化曲线</div>
+                    <div className="water-select-flex">
+                      {waterName}24小时水位变化曲线
+                    </div>
                     <div className="water-select-flex">{`${moment(
                       new Date().getTime() - 24 * 60 * 60 * 1000
-                    ).format("YYYY-MM-DD HH:mm")} --- ${moment(new Date()).format(
-                      "MM-DD HH:mm"
-                    )}`}</div>
+                    ).format("YYYY-MM-DD HH:mm")}  —— ${moment(
+                      new Date()
+                    ).format("MM-DD HH:mm")}`}</div>
                   </div>
                 </div>
                 <div className="line-chart" id="line-chart"></div>

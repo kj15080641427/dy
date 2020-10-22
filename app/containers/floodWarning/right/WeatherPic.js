@@ -11,7 +11,7 @@ import moment from "moment";
 import { PlayCircleOutlined } from "@ant-design/icons";
 const { TabPane } = Tabs;
 import { getSatellite } from "@app/data/request";
-import Forecast from "./Module/Forecast";
+import Satellite from "../../display/left/SatelliteFlood";
 let count = 0;
 class WeatherPic extends React.PureComponent {
   constructor(props, context) {
@@ -246,16 +246,7 @@ class WeatherPic extends React.PureComponent {
               </TabPane>
               <TabPane tab="全国预报" key="4">
                 <div className="m-pic-div-img">
-                  <iframe
-                    frameBorder="0"
-                    scrolling="300px"
-                    src="http://m.nmc.cn/publish/precipitation/1-day.html"
-                    width="400px"
-                    height="800px"
-                    marginHeight="200px"
-                    // style={{ position: "fixed", top: "-212px" }}
-                    className="radar-chart"
-                  ></iframe>
+                  <Satellite />
                 </div>
                 <Drawer
                   title="全国降雨量预报图"
@@ -282,53 +273,6 @@ class WeatherPic extends React.PureComponent {
                       style={{
                         position: "relative",
                         top: "-222px",
-                        transform: "scale(1.3)",
-                      }}
-                    ></iframe>
-                  </div>
-                </Drawer>
-              </TabPane>
-              <TabPane tab="全国时报" key="5">
-                {/* <img
-                  width='400px'
-                  height='300px'
-                src='http://image.nmc.cn/product/2020/09/24/STFC/SEVP_NMC_STFC_SFER_ER24_ACHN_L88_P9_20200924120002400.JPG?v=1600936687084'></img> */}
-                <div className="m-pic-div-img">
-                  <iframe
-                    frameBorder="0"
-                    scrolling="300px"
-                    src={`http://m.nmc.cn/publish/observations/hourly-precipitation.html#&gid=1&pid=3`}
-                    width="500px"
-                    height="575px"
-                    // style={{ position: "absolute", marginTop: "-175px" }}
-                    className="radar-chart-pre"
-                  ></iframe>
-                </div>
-                <Drawer
-                  title="全国降雨量实况图"
-                  placement="right"
-                  closable={false}
-                  onClose={this.onClose}
-                  visible={this.state.timesvisible}
-                  width={1378}
-                >
-                  <div
-                    style={{
-                      height: "950px",
-                      width: "950px",
-                      position: "relative",
-                      left: 270,
-                    }}
-                  >
-                    <iframe
-                      src="http://m.nmc.cn/publish/observations/hourly-precipitation.html"
-                      width="753px"
-                      height="950px"
-                      frameBorder="0"
-                      scrolling="no"
-                      style={{
-                        position: "relative",
-                        top: "-160px",
                         transform: "scale(1.3)",
                       }}
                     ></iframe>

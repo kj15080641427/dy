@@ -17,6 +17,7 @@ import {
   templateRain,
   templatePonding,
   templateWareHouse,
+  templateWarePerson,
 } from "./template";
 import {
   getAll,
@@ -44,24 +45,12 @@ import Pump from "./overlays/Pump";
 import WfsRiver from "./overlays/WfsRiver";
 import Warehouse from "./overlays/Warehouse";
 import { message } from "antd";
-import TileSource from "ol/source/Tile";
 import { getWaterHistory } from "../../../data/request";
-import * as userAddress from "../../../resource/人员定位.svg";
 class Map extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      overlays: {
-        // [Person.type]: {},
-        // [Rain.type]: {},
-        // [Water.type]: {},
-        // [Video.type]: {},
-        // [Gate.type]: {},
-        // [Pump.type]: {},
-        // [WfsRiver.type]: {},
-        // [Ponding.type]: {},
-        // [Warehouse.type]: {}
-      },
+      overlays: {},
     };
     this.type = [
       Person,
@@ -145,7 +134,7 @@ class Map extends React.PureComponent {
       clearTimeout(this._resizeTimeout);
     }
 
-    this.map.stopSelectFeature("video");
+    this.map.stopSelectFeature("person");
     // this.map.stopSelectFeature("ponding");
     // this.map.stopSelectFeature("rain");
     // this.map.stopSelectFeature("water");
@@ -209,35 +198,35 @@ class Map extends React.PureComponent {
       zIndex: 10,
       key: "river",
     });
-    this.map.addImageTile({
-      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-      params: {
-        LAYERS: "dy:河流40",
-        TILED: false,
-      },
-      zIndex: 11,
-      key: "river40",
-    });
-    this.map.addGeo({
-      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-      params: {
-        LAYERS: "dy:河流40",
-        TILED: true,
-      },
-      zIndex: 10,
-      key: "river40",
-    });
+    // this.map.addImageTile({
+    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+    //   params: {
+    //     LAYERS: "dy:河流40",
+    //     TILED: false,
+    //   },
+    //   zIndex: 11,
+    //   key: "river40",
+    // });
+    // this.map.addGeo({
+    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+    //   params: {
+    //     LAYERS: "dy:河流40",
+    //     TILED: true,
+    //   },
+    //   zIndex: 10,
+    //   key: "river40",
+    // });
 
-   // 加入交通实况图;
-    this.map.addGeo({
-      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-      params: {
-        LAYERS: "dy:traffic",
-        TILED: true,
-      },
-      zIndex: 11,
-      key: "traffic",
-    });
+    // // 加入交通实况图;
+    // this.map.addGeo({
+    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+    //   params: {
+    //     LAYERS: "dy:traffic",
+    //     TILED: true,
+    //   },
+    //   zIndex: 11,
+    //   key: "traffic",
+    // });
 
     this.flood = new FloodAnimation({
       map: this.map.getMap(),
@@ -305,35 +294,37 @@ class Map extends React.PureComponent {
         },
         anchor: [0.5, 1],
         strokeColor: "#1890ff",
-        width: 1,
+        // width: 1,
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontText: function (featureObj) {
           return featureObj.id + "";
         },
         font: "16px sans-serif",
+        width: "20px",
+        height: "20px",
       },
     });
-    this.map.addVector({
-      key: "video",
-      zIndex: 20,
-      style: {
-        src: function (featureObj) {
-          //
-          return require("../../../resource/icon/person.svg")["default"];
-        },
-        anchor: [0.5, 0.5],
-        strokeColor: "#1890ff",
-        width: 1,
-        fillColor: "#1890ff",
-        fontColor: "#82B2FF",
-        fontOffset: [10, 0],
-        fontText: function (featureObj) {
-          return featureObj.name + "";
-        },
-        font: "16px sans-serif",
-      },
-    });
+    // this.map.addVector({
+    //   key: "person",
+    //   zIndex: 20,
+    //   style: {
+    //     src: function (featureObj) {
+    //       //
+    //       return require("../../../resource/icon/personTrack.svg")["default"];
+    //     },
+    //     anchor: [0.5, 0.5],
+    //     strokeColor: "#1890ff",
+    //     width: 1,
+    //     fillColor: "#1890ff",
+    //     fontColor: "#82B2FF",
+    //     fontOffset: [10, 0],
+    //     fontText: function (featureObj) {
+    //       return featureObj.name + "";
+    //     },
+    //     font: "16px sans-serif",
+    //   },
+    // });
     this.map.addVector({
       key: "rain",
       zIndex: 20,
@@ -484,10 +475,10 @@ class Map extends React.PureComponent {
     this.map.startHighlightFeatureonLayer("ponding");
     this.map.startHighlightFeatureonLayer("gate");
     this.map.startHighlightFeatureonLayer("pump");
-    // this.map.startHighlightFeatureonLayer("wfsRiver");
+    this.map.startHighlightFeatureonLayer("wfsRiver");
     this.map.startHighlightFeatureonLayer("warehouse");
-    // this.map.startTagOnLayer("water");
-    // this.map.startTagOnLayer("rain");
+    this.map.startTagOnLayer("water");
+    this.map.startTagOnLayer("rain");
     this.map.startSelectFeature("person", (param) => {
       this.addOverlay(Person.type, param);
       // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
@@ -630,7 +621,7 @@ class Map extends React.PureComponent {
           message.error("获取水位详情失败");
         });
     });
-    this.map.startSelectFeature("video", (param) => {
+    this.map.startSelectFeature("person", (param) => {
       this.addOverlay(Person.type, param);
     });
     this.map.startSelectFeature("gate", (param) => {
@@ -874,127 +865,108 @@ class Map extends React.PureComponent {
     }, 0);
   }
   loadData() {
-    // 加载雨量站和水位站,水位站报警信息
-    // 加载视频数据
     const { person } = this.props;
-    this.map.addFeatures(
-      "video",
+    // 加载视频数据
+    console.log(
       person.map((item) => {
         return {
           ...item,
           type: "Point",
-          id: item.floodId + "",
+          id: item.name,
+          lonlat: [item.longitude, item.latitude],
+        };
+      }),
+      "iii"
+    );
+    this.map.addFeatures(
+      "person",
+      // templateWarePerson(person, {})
+      person.map((item) => {
+        return {
+          ...item,
+          type: "Point",
+          id: item.name,
           lonlat: [item.longitude, item.latitude],
         };
       })
     );
-    // getAllVideo({})
-    //   .then((res) => {
-    //     if (res.code === 200) {
-    //       this.props.actions.addVideos(res.data);
-    //       this.map.addFeatures(
-    //         "video",
-    //         res.data.map((item) => {
-    //           return {
-    //             ...item,
-    //             type: "Point",
-    //             id: item.radioID + "",
-    //             lonlat: [item.lon, item.lat],
-    //           };
-    //         })
-    //       );
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
-    // // 模拟洪水
-    // setInterval(() => {
-    //   let data = [];
-    //   for (let i = 0; i < 195; i++){
-    //     let r = 'R' + i;
-    //     data.push({ r: r, d: Math.random() });
-    //   }
-    //   this.flood.updateData(data)
-    // }, 1000);
-    // this.map.addAlarm("alarm001", [118.67, 37.43]);
   }
-  drawFeatures(data) {
-    let { rain, water, details, ponding } = this.props;
-    if (!data) return;
-    if (rain && rain.length) {
-      this.map.addFeatures("rain", templateRain(rain, details.rain));
-      this.addRainTagBox(rain);
-    }
-    if (water && water.length) {
-      this.map.addFeatures("water", templateWater(water, details.water));
-      this.addWaterWaring(Object.values(details.water));
-      this.addWaterTagBox(water);
-      // this.map.startTagOnLayer("water");
-    }
-    if (ponding && ponding.length) {
-      this.map.addFeatures("ponding", templatePonding(ponding, details.water));
-      this.addPondingTagBox(ponding);
-    }
-    // 计算是或否显示tagbox
-    this._zoom = null;
-    this.toggleTagByMapZoom();
-  }
-  addRainTagBox(rain) {
-    if (rain && rain.length) {
-      rain.forEach((r) => {
-        let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("rain_tag_" + r.stcd, [r.lon, r.lat], {
-          title: name,
-          subTitle:
-            r.dayAvg === null || r.dayAvg === undefined
-              ? "--"
-              : (r.dayAvg * 1).toFixed(1) + "mm",
-          prefix: "rain_tag",
-        });
-      });
-    }
-  }
-  addWaterTagBox(water) {
-    if (water && water.length) {
-      water.forEach((r) => {
-        let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("water_tag_" + r.stcd, [r.lon, r.lat], {
-          title: name,
-          subTitle:
-            r.z === null || r.z === undefined
-              ? "--"
-              : (r.z * 1).toFixed(2) + "m",
-          prefix: "water_tag",
-        });
-      });
-    }
-  }
+  // drawFeatures(data) {
+  //   let { rain, water, details, ponding } = this.props;
+  //   if (!data) return;
+  //   if (rain && rain.length) {
+  //     this.map.addFeatures("rain", templateRain(rain, details.rain));
+  //     this.addRainTagBox(rain);
+  //   }
+  //   if (water && water.length) {
+  //     this.map.addFeatures("water", templateWater(water, details.water));
+  //     this.addWaterWaring(Object.values(details.water));
+  //     this.addWaterTagBox(water);
+  //     // this.map.startTagOnLayer("water");
+  //   }
+  //   if (ponding && ponding.length) {
+  //     this.map.addFeatures("ponding", templatePonding(ponding, details.water));
+  //     this.addPondingTagBox(ponding);
+  //   }
+  //   // 计算是或否显示tagbox
+  //   this._zoom = null;
+  //   this.toggleTagByMapZoom();
+  // }
+  // addRainTagBox(rain) {
+  //   if (rain && rain.length) {
+  //     rain.forEach((r) => {
+  //       let name = r.aliasNme ? r.aliasNme : r.name;
+  //       this.map.addTagBox("rain_tag_" + r.stcd, [r.lon, r.lat], {
+  //         title: name,
+  //         subTitle:
+  //           r.dayAvg === null || r.dayAvg === undefined
+  //             ? "--"
+  //             : (r.dayAvg * 1).toFixed(1) + "mm",
+  //         prefix: "rain_tag",
+  //       });
+  //     });
+  //   }
+  // }
+  // addWaterTagBox(water) {
+  //   if (water && water.length) {
+  //     water.forEach((r) => {
+  //       let name = r.aliasNme ? r.aliasNme : r.name;
+  //       this.map.addTagBox("water_tag_" + r.stcd, [r.lon, r.lat], {
+  //         title: name,
+  //         subTitle:
+  //           r.z === null || r.z === undefined
+  //             ? "--"
+  //             : (r.z * 1).toFixed(2) + "m",
+  //         prefix: "water_tag",
+  //       });
+  //     });
+  //   }
+  // }
 
-  addPondingTagBox(water) {
-    if (water && water.length) {
-      water.forEach((r) => {
-        let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("ponding_tag_" + r.stcd, [r.lon, r.lat], {
-          title: name,
-          subTitle:
-            r.z === null || r.z === undefined
-              ? "--"
-              : (r.z * 100).toFixed(1) + "cm",
-          prefix: "ponding_tag",
-        });
-      });
-    }
-  }
-  addWaterWaring(warningWater) {
-    this.map.removeAlarmByString("alarm_water_");
-    if (!warningWater || !warningWater.length) return;
-    if (this.props.layerVisible.waterWarning === true) {
-      warningWater.forEach((w) => {
-        this.map.addAlarm("alarm_water_" + w.stcd, [w.lon, w.lat]);
-      });
-    }
-  }
+  // addPondingTagBox(water) {
+  //   if (water && water.length) {
+  //     water.forEach((r) => {
+  //       let name = r.aliasNme ? r.aliasNme : r.name;
+  //       this.map.addTagBox("ponding_tag_" + r.stcd, [r.lon, r.lat], {
+  //         title: name,
+  //         subTitle:
+  //           r.z === null || r.z === undefined
+  //             ? "--"
+  //             : (r.z * 100).toFixed(1) + "cm",
+  //         prefix: "ponding_tag",
+  //       });
+  //     });
+  //   }
+  // }
+  // addWaterWaring(warningWater) {
+  //   this.map.removeAlarmByString("alarm_water_");
+  //   if (!warningWater || !warningWater.length) return;
+  //   if (this.props.layerVisible.waterWarning === true) {
+  //     warningWater.forEach((w) => {
+  //       this.map.addAlarm("alarm_water_" + w.stcd, [w.lon, w.lat]);
+  //     });
+  //   }
+  // }
   transformData(data) {
     if (!data || !data.length) return {};
     let obj = {

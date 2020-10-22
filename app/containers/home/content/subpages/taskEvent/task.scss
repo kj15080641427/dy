@@ -194,3 +194,32 @@
     display: flex;
   }
 }
+.chart-group-flex{
+  display: flex;
+  .chart-group-left{
+    width: 70vw;
+  }
+  .chart-group-right{
+    width: 30vw;
+    height: 600px;
+    overflow: scroll;
+  }
+  .chart-group-right-button{
+    position: fixed;
+    bottom:100px;
+    right: 200px;
+  }
+}
+.track-query-box{
+  height: 80vh;
+}
+.track-query-body{
+  position: absolute;
+  top: 200px;
+  right: 100px;
+  z-index: 99;
+  .track-query-icon{
+    width: 30px;
+    height: 30px;
+  }
+}

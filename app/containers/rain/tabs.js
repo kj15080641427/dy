@@ -121,25 +121,29 @@ export const TabsList = (props) => {
             name: "站名",
             dataIndex: "name",
             filter: "name",
-            width: "35%"
+            width: "35%",
+            align: "center"
           },
           {
             name: "1小时",
             dataIndex: "raindataList",
             width: "15%",
             render: (v) => (v && v[0] ? v[0].hourDrp : "-"),
+            align: "center"
           },
           {
             name: "24小时",
             dataIndex: "raindataList",
             width: "15%",
             render: (v) => (v && v[0] ? v[0].dayDrp : "-"),
+            align: "center"
           },
           {
             name: "更新时间",
             dataIndex: "raindataList",
             width: "35%",
             render: (v) => (v && v[0] ? v[0].tm.slice(0,-3) : "-"),
+            align: "center"
           },
         ]}
         dataSource={dataSource}

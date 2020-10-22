@@ -93,7 +93,7 @@ function* getDayWater({ data }) {
     console.log(e);
   }
 }
-//24小时降雨
+//24小时水位
 function* getDisplayWater({ data }) {
   // const {stcd,} = data
   try {

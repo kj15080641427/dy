@@ -1,13 +1,22 @@
 .dis-satellite {
-  width: 360px;
-  height: 100%;
+  width: 497px;
+  height: 332px;
   background: #010a4b00;
   position: relative;
   .dis-satellite-div {
-    height: 251px;
+    height: 100%;
     background: #ffffff00;
     position: relative;
     width: 360px;
+    overflow: hidden;
+    margin-top: 10px;
+    border: 1px solid #007ed7;
+  }
+  .dis-satellite-div-flood {
+    height: 301px;
+    background: #ffffff00;
+    position: relative;
+    width: 500px;
     overflow: hidden;
     margin-top: 10px;
     border: 1px solid #007ed7;
@@ -221,7 +230,7 @@
 }
 .div-precipitation1 {
   width: 360px;
-  height: 253px;
+  height: 100%px;
   background: rgba(255, 255, 255, 0) (219, 209, 209);
   position: absolute;
   top: 30px;
@@ -250,4 +259,15 @@
   position: absolute;
   top: 815px;
   z-index: 196;
+}
+
+.county-rain-chart {
+  .ant-modal-body {
+    padding: 2px 24px;
+  }
+}
+.county-radar-chart {
+  .ant-modal-body {
+    padding: 40px 24px 24px 4px;
+  }
 }

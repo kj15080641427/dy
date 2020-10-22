@@ -34,22 +34,22 @@ class Rain extends Base {
     let tmDesc = model.tm ? model.tm : "--";
     return (
       <div
-        className="m-ovl-box m-ovl-rain"
+        className="m-ovl-box m-ovl-rain luo-ovl-rain"
         style={{ display: "none" }}
         ref={(node) => {
           this.container = node;
         }}
       >
-        <div className="m-ovl-line">雨量站点：{model.name}</div>
-        <div className="m-ovl-line">站点编号：{model.stcd}</div>
+        <div className="m-ovl-line luo-ovl-title">雨量站点：{model.name}</div>
+        <div className="m-ovl-line"><label>站点编号：</label>{model.stcd}</div>
         <div className="m-ovl-line">
-          数据来源：{dict ? dict[model.siteDictionariesID] : "--"}
+        <label>数据来源：</label>{dict ? dict[model.siteDictionariesID] : "--"}
         </div>
-        <div className="m-ovl-line">站点地址：{model.address}</div>
-        <div className="m-ovl-line">5分钟降水量：{drpLevel}</div>
-        <div className="m-ovl-line">1小时降水量: {hourRain}</div>
-        <div className="m-ovl-line">24小时降水量：{dayRain}</div>
-        <div className="m-ovl-line">更新时间：{tmDesc}</div>
+        <div className="m-ovl-line"><label>站点地址：</label>{model.address}</div>
+        <div className="m-ovl-line"><label>5分钟降水量：</label>{drpLevel}</div>
+        <div className="m-ovl-line"><label>1小时降水量：</label>{hourRain}</div>
+        <div className="m-ovl-line"><label>24小时降水量：</label>{dayRain}</div>
+        <div className="m-ovl-line"><label>更新时间：</label>{tmDesc}</div>
         <span className="iconfont iconcuo m-ovl-close"></span>
       </div>
     );

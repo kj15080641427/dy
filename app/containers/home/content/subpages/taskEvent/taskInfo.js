@@ -30,7 +30,7 @@ const navi = [
   {
     icon: <MailOutlined style={iconStyle} />,
     text: "发消息",
-    url: "/message",
+    url: "/taskInfoMessage",
   },
   {
     icon: <UserOutlined style={iconStyle} />,
@@ -140,11 +140,11 @@ const TaskInfo = (props) => {
             <Col span={19}>{taskInfo?.address}</Col>
           </Row>
           <Row gutter={gutter}>
-            <Col span={10}>
+            <Col span={16}>
               上报人及电话:{taskInfo?.reportPersonName}
               {taskInfo?.reportPersonPhone}
             </Col>
-            <Col span={14}></Col>
+            <Col span={8}></Col>
           </Row>
           <Row gutter={gutter}>
             <Col span={5}>事件描述:</Col>

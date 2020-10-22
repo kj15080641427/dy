@@ -7,7 +7,7 @@ import { Modal, Row, Col, Tabs, Table } from "antd";
 import * as actions from "../../redux/actions/handState";
 import * as mapActions from "../../redux/actions/map";
 import echarts from "echarts/lib/echarts";
-
+import moment from "moment";
 export const TabsList = (props) => {
   const { visible, dataSource, dayWater } = props;
   const { changeModalVisible, getDayWater, changeWaterVideo } = props.actions;
@@ -120,15 +120,20 @@ export const TabsList = (props) => {
           },
           {
             name: "实时水位",
-            dataIndex: "riverwaterdataList",
+            dataIndex: "z",
             width: "15%",
-            render: (v) => (v && v[0] ? v[0].z : "-"),
+            render: (v) => (v ? v : "-"),
+            sorter: (a, b) => a.z - b.z,
           },
           {
             name: "更新时间",
-            dataIndex: "riverwaterdataList",
+            dataIndex: "tm",
             width: "25%",
-            render: (v) => (v && v[0] ? v[0].tm.slice(0, -3) : "-"),
+            render: (v) => (v ? v.slice(0, -3) : "-"),
+            sorter: (a, b) => {
+              console.log(moment(a.tm));
+              return moment(a.tm).unix() - moment(b.tm).unix();
+            },
           },
         ]}
         dataSource={dataSource}

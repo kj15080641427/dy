@@ -175,7 +175,7 @@ class Monitor extends React.PureComponent {
         {/* <div className="m-rain-button"> */}
         <div className="ranSwitch">
           <RainSwitcher //切换雨晴数据
-            style={{ width: 150 }}
+            style={{ width: 100 }}
             onClick={this.onRainSwitch.bind(this)}
           />
         </div>
@@ -330,30 +330,33 @@ class Monitor extends React.PureComponent {
             item.dataSourceDesc == "农村基层防汛监测预警平台"
               ? "基层防汛"
               : item.dataSourceDesc == "河口区水利局"
-              ? "水利局"
+              ? "河口区"
               : item.dataSourceDesc || "暂无数据",
           value: item.number,
-          textStyle: { fontSize: "24px" },
+          textStyle: { fontSize: "12px" },
           itemStyle: {
             color:
               desc === "气象局"
-                ? "rgba(145,151,222,1)"
-                : desc === "基层防汛"
-                ? "rgba(78,82,232,1)"
+                ? "#5E9BDF"
+                : desc === "农村基层防汛监测预警平台"
+                ? "#444EB3"
                 : desc === "河口区水利局"
-                ? "rgba(145,36,189,1)"
+                ? "#2374E7"
                 : desc === "经开区"
-                ? "rgba(29,37,182,1)"
-                : "rgba(78,32,232,1)",
+                ? "#1823B1"
+                : "#9325B8",
           },
         });
       });
       pieChart("rain-pie-chart", data, 300, [
+        "河口区",
         "基层防汛",
-        "水利局",
-        "水文局",
+        "经开区",
         "气象局",
-      ]);
+        "水文局"
+      ], {
+        text: '雨量站点\n\n来源统计图', left: 'center', top: 'center', textStyle: { color: 'white', fontWeight: '200', fontSize: 14 }
+      });
     }
     if (rain != pre.rain) {
       this.onlineChart();
@@ -461,7 +464,7 @@ class Monitor extends React.PureComponent {
         { value: g, itemStyle: { color: "rgb(123,42,51)" } },
         { value: h, itemStyle: { color: "rgb(228,41,50)" } },
       ];
-      rotateBarChart("rotateBarChart", list, 400);
+      rotateBarChart("rotateBarChart", list.reverse(), 400);
     }
   }
   componentDidMount() {

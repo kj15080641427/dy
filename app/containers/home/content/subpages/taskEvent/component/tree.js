@@ -16,7 +16,12 @@ class TreeSelected extends React.Component {
   };
 
   render() {
-    const { treeData, onChange, placeholderInfo } = this.props;
+    const {
+      treeData,
+      onChange,
+      placeholderInfo,
+      treeDefaultExpandAll = true,
+    } = this.props;
     return (
       <div className="tree-select-input">
         <TreeSelect
@@ -28,7 +33,7 @@ class TreeSelected extends React.Component {
           placeholder={placeholderInfo}
           allowClear
           multiple
-          treeDefaultExpandAll
+          treeDefaultExpandAll={treeDefaultExpandAll}
           onChange={onChange || this.onChange}
           treeData={treeData}
         ></TreeSelect>

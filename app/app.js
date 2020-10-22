@@ -19,7 +19,7 @@ import AsyncNotices from "@app/containers/notices/notices";
 
 import Ocean from "@app/containers/ocean";
 import YellowRiver from "@app/containers/yellowRiver";
-import FloodModel from '@app/containers/floodModel';
+import DisplaySmall from "@app/containers/display/DisplaySmall";
 import "./style.scss";
 // const AsyncHome = AsyncComp(() => import(/*webpackChunkName:'Index'*/"@app/containers/home/Index").then((res) => { removeLoading(); return res; }));
 // const AsyncLogin = AsyncComp(() => import(/*webpackChunkName:'Login'*/"@app/containers/home/Login").then((res) => { removeLoading(); return res; }));
@@ -44,10 +44,17 @@ import "./style.scss";
 //     }
 //   )
 // );
+function removeLoading() {
+  let $loading = document.getElementById("loading");
+  if ($loading) {
+    $loading.parentNode.removeChild($loading);
+  }
+}
 // const AsyncDisplay = AsyncComp(() =>
 //   import(/*webpackChunkName:'display'*/ "@app/containers/display/Display").then(
 //     (res) => {
 //       removeLoading();
+//       console.log(res, "RESRSERE");
 //       return res;
 //     }
 //   )
@@ -65,7 +72,11 @@ export class App extends React.Component {
   render() {
     {
       let $loading = document.getElementById("loading");
-      $loading.parentNode.removeChild($loading);
+      if ($loading) {
+        $loading.parentNode.removeChild($loading);
+      }
+      // let $loading = document.getElementById("loading");
+      // $loading.parentNode.removeChild($loading);
     }
     console.log("apppp", this.props.history);
     return (
@@ -89,18 +100,12 @@ export class App extends React.Component {
               <Route path={`/notices`} component={AsyncNotices} />
               <Route path={`/ocean`} component={Ocean} />
               <Route path={`/yellowRiver`} component={YellowRiver} />
-              <Route path={`/floodModel`} component={FloodModel} />
+              <Route path={`/displaySmall`} component={DisplaySmall} />
             </>
           )}
-          <Route component={AsyncLogin} />
+          {/* <Route component={AsyncLogin} /> */}
         </Switch>
       </HashRouter>
     );
-  }
-}
-function removeLoading() {
-  let $loading = document.getElementById("loading");
-  if ($loading) {
-    $loading.parentNode.removeChild($loading);
   }
 }

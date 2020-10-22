@@ -22,6 +22,9 @@ function* getWater() {
           return item;
         }
       });
+      data.sort((a, b) => {
+        return a.tm - b.tm;
+      });
       yield put({
         type: types.SET_WATER,
         data: data,
@@ -346,14 +349,104 @@ function* getFloodExpert() {
     console.error(e);
   }
 }
+//水位报警TODO
 function* getAlarmData() {
   try {
+    let list = [];
     const result = yield call(req.getAlarmWarning, {});
-    if ((result.code = code)) {
-      yield put({
-        type: types.SET_ALARM_DATA,
-        data: result.data,
+    const resultwater = yield call(req.getAll, { type: "2,4" });
+    if (result.code == code && resultwater.code == code) {
+      resultwater.data.map((item) => {
+        result.data.map((st) => {
+          if (item?.riverwaterdataList && item?.riverwaterdataList[0]) {
+            if (item?.riverwaterdataList[0].stcd == st.stcd) {
+              list.push({ ...item, ...item.stiteWaterRadios[0], ...st });
+            }
+          }
+        });
       });
+      let data = resultwater.data.map((item) => {
+        if (item.stiteWaterRadios && item.stiteWaterRadios[0]) {
+          return { ...item, ...item.stiteWaterRadios[0] };
+        } else {
+          return item;
+        }
+      });
+      data.sort((a, b) => {
+        return a.tm - b.tm;
+      });
+      yield put({
+        type: types.SET_WATER,
+        data: data,
+      });
+      if (list[0]) {
+        list[0] = { ...list[0], name: list[0].stnm };
+        yield put({
+          type: types.CHANGE_WATER_ID,
+          data: {
+            ...list[0],
+            id: list[0].stcd,
+            name: list[0].stnm,
+          },
+        });
+        yield put({
+          type: types.CHANGE_WATER_VIDEO,
+          data: {
+            ...list[0],
+          },
+        });
+        yield put({
+          type: types.CHANGE_FLOOD_ID,
+          data: {
+            floodId: list[0].stcd,
+            floodName: list[0],
+            ...list[0],
+          },
+        });
+        yield put({
+          type: types.SET_ALARM_DATA,
+          data: list,
+        });
+      } else {
+        let resdata = resultwater.data;
+        resdata[0] = resdata[0].riverwaterdataList[0]
+          ? {
+              ...resdata[0],
+              stnm: resdata[0].riverwaterdataList[0].stnm,
+              stcd: resdata[0].riverwaterdataList[0].stcd,
+            }
+          : {
+              ...resdata[0],
+              a: 1,
+            };
+        console.log(resdata[0], "resultwater____");
+        yield put({
+          type: types.CHANGE_WATER_ID,
+          data: {
+            ...resdata[0],
+            id: resdata[0].stcd,
+            name: resdata[0].stnm,
+          },
+        });
+        yield put({
+          type: types.CHANGE_WATER_VIDEO,
+          data: {
+            ...resdata[0],
+          },
+        });
+        yield put({
+          type: types.CHANGE_FLOOD_ID,
+          data: {
+            floodId: resdata[0].stcd,
+            floodName: resdata[0],
+            ...resdata[0],
+          },
+        });
+        yield put({
+          type: types.SET_ALARM_DATA,
+          data: result.data,
+        });
+      }
     }
   } catch (e) {
     console.log(e);

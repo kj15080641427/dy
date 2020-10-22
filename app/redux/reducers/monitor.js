@@ -63,9 +63,19 @@ export default function monitor(state = defaultState, action) {
     }
     case actionTypes.ADD_VIDEOS: {
       let data = action.data;
+      let list = [];
       if (data && data.length) {
         data.sort((a, b) => a.isOnline - b.isOnline);
-        newState.video = data;
+
+        data.map((item) => {
+          if (item.stiteWaterRadios && item.stiteWaterRadios[0]) {
+            list.push({...item, ...item.stiteWaterRadios[0]});
+          } else {
+            list.push(item);
+          }
+        });
+        console.log(list, "?????");
+        newState.video = list;
       }
       break;
     }

@@ -17,6 +17,10 @@ export function login(data) {
 export function getAllVideo(data) {
   return fetchJSONData("POST", "/base/StiteWaterRadio/getAll", data);
 }
+// 获取所有视频站点信息
+export function getAllVideo2(data) {
+  return fetchJSONData("POST", "/base/SiteBase/getAll", data);
+}
 // 分区获取视频站点
 export function getAllAreaVideo(data) {
   return fetchJSONData("POST", "/base/StiteWaterRadio/getAllArea", data);
@@ -94,7 +98,7 @@ export function getBasicsAll(data) {
 }
 // 获取所有视频站点信息
 export function getRadioAll(data) {
-  return fetchJSONData("POST", "/base/StiteWaterRadio/getAll", data);
+  return fetchJSONData("POST", "/base/SiteBase/getAll", data);
 }
 //查询防汛队伍下的防汛人员
 export function getFloodRanksAll(data) {
