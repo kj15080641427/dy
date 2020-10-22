@@ -48,6 +48,7 @@
     "@jiaminghi/data-view-react": "^1.2.3",
     "antd": "^4.2.3",
     "cesium": "^1.74.0",
+    "cnpm": "^6.1.1",
     "core-js": "^3.6.5",
     "echarts": "^4.7.0",
     "echarts-for-react": "^2.0.15-beta.1",

@@ -19,6 +19,7 @@ import AsyncNotices from "@app/containers/notices/notices";
 
 import Ocean from "@app/containers/ocean";
 import YellowRiver from "@app/containers/yellowRiver";
+import FloodModel from '@app/containers/floodModel';
 import "./style.scss";
 // const AsyncHome = AsyncComp(() => import(/*webpackChunkName:'Index'*/"@app/containers/home/Index").then((res) => { removeLoading(); return res; }));
 // const AsyncLogin = AsyncComp(() => import(/*webpackChunkName:'Login'*/"@app/containers/home/Login").then((res) => { removeLoading(); return res; }));
@@ -88,6 +89,7 @@ export class App extends React.Component {
               <Route path={`/notices`} component={AsyncNotices} />
               <Route path={`/ocean`} component={Ocean} />
               <Route path={`/yellowRiver`} component={YellowRiver} />
+              <Route path={`/floodModel`} component={FloodModel} />
             </>
           )}
           <Route component={AsyncLogin} />

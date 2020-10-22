@@ -1,0 +1,72 @@
+@import "@app/variable.scss";
+.flood-model-display {
+  position: relative;
+  min-height: $minheight;
+  height: $mapDisplayHeight;
+}
+.m-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: $monitor_left_w;
+  z-index: 10;
+  padding-top: $monitor_left_pd_top;
+  padding-left: $monitor_left_pd_left;
+  padding-bottom: $monitor_left_pd_bottom;
+  span {
+    color: white;
+  }
+}
+.m-left-div{
+  margin: 20px;
+  //border: solid 1px black;
+}
+
+.ant-table-bordered .ant-table-header > table,
+.ant-table-bordered .ant-table-body > table,
+.ant-table-bordered .ant-table-fixed-left table,
+.ant-table-bordered .ant-table-fixed-right table{
+  border-left: none;
+}
+
+.ant-table-bordered {
+  .ant-table-thead > tr > th:last-child{
+    border-right: none;
+  }
+  .ant-table-tbody > tr > td:last-child{
+    border-right: none;
+  }
+}
+
+.ant-table-tbody > tr:last-child > td{
+  border-bottom: none;
+}
+
+.ant-table-tbody > tr > th {
+  //color: white;
+  //background: #003366 !important;
+  //border: none;
+}
+
+.ant-table-thead > tr > th {
+  color: white;
+  background: #003366 !important;
+  border: none;
+}
+
+.ant-table-cell {
+  color: white;
+  background: #003366 !important;
+  border: none;
+}
+.ant-empty-description {
+  color: gray;
+}
+
+
+
