@@ -178,9 +178,10 @@
     .video-img-box {
       position: relative;
       .set-rotate-radio {
-        transform: scale(0.35);
+        background: none;
+        // transform: scale(0.);
         right: -90px;
-        top: 50px;
+        top: 90px;
       }
       .video-ing-title {
         color: white;
