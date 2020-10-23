@@ -20,13 +20,11 @@ class Holder extends Component {
     this.state = {};
   }
   setVideo = (value) => {
-    console.log(value);
     getRotateRadio({
       token: this.props.token,
       action: value,
     }).then((rest) => {
       this.setStopVideo();
-      console.log(rest);
     });
   };
   setTimeVideo = (value) => {
@@ -34,7 +32,6 @@ class Holder extends Component {
       token: this.props.token,
       action: value,
     }).then((rest) => {
-      console.log(rest);
     });
   };
   setStopVideo = () => {
@@ -42,7 +39,6 @@ class Holder extends Component {
       token: this.props.token,
       action: "stop",
     }).then((rest) => {
-      console.log(rest);
     });
   };
 

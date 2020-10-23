@@ -34,7 +34,12 @@ export function rain24Hours() {
     type: RainActionTypes.LOAD_TWENTY_FOUR_HOURS_RAIN,
   };
 }
-
+//加载24小时雨量
+export function getDayRainByCity() {
+  return {
+    type: RainActionTypes.GET_DAY_RAIN_BY_CITY,
+  };
+}
 //加载雨量站点基础信息
 export function getAllRainStation() {
   return {

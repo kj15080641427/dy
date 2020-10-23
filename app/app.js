@@ -78,7 +78,6 @@ export class App extends React.Component {
       // let $loading = document.getElementById("loading");
       // $loading.parentNode.removeChild($loading);
     }
-    console.log("apppp", this.props.history);
     return (
       <HashRouter>
         <Switch>

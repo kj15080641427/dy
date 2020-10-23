@@ -185,7 +185,7 @@ class Monitor extends React.PureComponent {
               <RenderBox hasTitle title="视频站点来源图">
                 <div className="videoFunnelChart" id="videoFunnelChart"></div>
               </RenderBox>
-              <RenderBox style={{ height: "500px" }}>
+              <RenderBox style={{ height: "400px" }}>
                 {/* <div className="video-table"> */}
                 <div className="card-container">
                   <Tabs type="card" style={{ color: "white" }}>

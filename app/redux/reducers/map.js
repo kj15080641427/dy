@@ -6,10 +6,10 @@ const initState = {
   waterWarning: 0,
   flood: [],
   count: {},
-  floodId: "46660007",
-  floodName: "东八路南涵洞（东）",
-  waterId: "41801500", //stcd
-  waterName: "石村站",
+  floodId: { id: "46010128", stcd: "46010128", strtoken: "device1--18" },
+  floodName: "沂河路（玉苑小区）",
+  waterId: "41800264", //stcd
+  waterName: "明海（闸前）",
   historyFlood: [],
   historyWater: [],
   floodRain: [],
@@ -30,17 +30,19 @@ export default function mapAboutReducers(state = initState, action) {
             ...item,
             ...item.riverwaterdataList[0],
             ...item.siteWaterLevels[0],
+            ...(item.stiteWaterRadios ? { ...item.stiteWaterRadios[0] } : {}),
           };
           waterList.push(items);
           if (items.z >= item.warning) {
             newState.waterWarning++;
           }
+        } else {
+          waterList.push(item);
         }
       });
-      console.log(action.data, waterList, "=======");
-      waterList.sort((a, b) => moment(b.tm).unix() - moment(a.tm).unix());
+      // waterList.sort((a, b) => moment(b.tm).unix() - moment(a.tm).unix());
       newState.water = waterList;
-      newState.initWater = action.data;
+      newState.initWater = waterList;
       break;
     case types.SET_FLOOD:
       action.data.forEach((item) => {
@@ -98,7 +100,7 @@ export default function mapAboutReducers(state = initState, action) {
       action.data.records.map((item) => {
         let tm = item.tm.split(" ")[1].split(":");
         if (tm[0] % 2 == 0 && tm[1] == "00") {
-          historyFlood.unshift(item.z * 10);
+          historyFlood.unshift(item.z * 100);
         }
       });
       newState = { ...newState, historyFlood: historyFlood };

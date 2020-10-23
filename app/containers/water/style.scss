@@ -37,6 +37,11 @@
     .box-head {
       width: 200px;
     }
+    .bar-chart {
+      // margin-top: 50px;
+      width: 535px;
+      height: 280px;
+    }
     .pie-lauout-text {
       width: 100px;
       height: 60px;
@@ -293,10 +298,10 @@
   bottom: 0;
   z-index: 10;
   margin-top: 80px;
-  .bar-chart {
-    width: 500px;
-    height: 230px;
-  }
+  // .bar-chart {
+  //   width: 500px;
+  //   height: 230px;
+  // }
 
   .radar-box {
     width: 500px;
@@ -331,4 +336,9 @@
   .ant-table-pagination.ant-pagination {
     margin: 10px 0 0 0;
   }
+}
+.water-chart-radio{
+  position: absolute;
+  top: 30px;
+  right: 0px;
 }

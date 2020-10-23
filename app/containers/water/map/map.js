@@ -372,15 +372,16 @@ class Map extends React.PureComponent {
     this.toggleTagByMapZoom();
   }
   addWaterTagBox(water) {
+    // console.log(water, "WW");
+    const nowDate = new Date().getTime();
     if (water && water.length) {
       water.forEach((r) => {
         let name = r.aliasNme ? r.aliasNme : r.name;
-        this.map.addTagBox("water_tag_" + r.stcd, [r.lon, r.lat], {
+        let isonlise = nowDate - new Date(r.tm).getTime() < 259200000;
+
+        this.map.addTagBox("water_tag_" + r.stcd + r.name, [r.lon, r.lat], {
           title: name,
-          subTitle:
-            r.z === null || r.z === undefined
-              ? "--"
-              : (r.z * 1).toFixed(2) + "m",
+          subTitle: r.z && isonlise ? `${r.z.toFixed(2)}m` : "--",
           prefix: "water_tag",
         });
       });

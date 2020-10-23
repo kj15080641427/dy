@@ -183,6 +183,20 @@ function* loadRainStations() {
   });
 }
 
+//24小时降雨
+function* getDayRainBycity() {
+  let endTime = moment().startOf("hour");
+  let beginTime = moment().subtract(24, "hour").startOf("hour");
+  try {
+    const result = yield call(countHoursRain, {
+      stcd: "",
+      starttm: beginTime.format("YYYY-MM-DD HH:mm:ss"),
+      endtm: endTime.format("YYYY-MM-DD HH:mm:ss"),
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
 /**
  * 初始化
  * @returns {IterableIterator<*>}

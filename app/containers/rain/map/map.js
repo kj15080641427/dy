@@ -93,8 +93,7 @@ class Map extends React.PureComponent {
     }
 
     if ((rainData, stations)) {
-      console.log(77777, "///");
-      this.drawFeatures(rainData.data);
+      this.drawFeatures(rainData?.data);
     }
   }
   componentDidMount() {
@@ -310,7 +309,7 @@ class Map extends React.PureComponent {
         strokeColor: "#1890ff",
         width: 1,
         fillColor: "#1890ff",
-        fontColor: "#82B2FF",
+        fontColor: "red",
         fontOffset: [10, 0],
         fontText: function (featureObj) {
           return featureObj.name + "";
@@ -945,7 +944,6 @@ class Map extends React.PureComponent {
   drawFeatures(data) {
     // data 实时雨量
     const { stations } = this.props;
-    console.log(data, stations, "---------");
     let list = [];
     stations?.map((item) => {
       data?.map((st) => {
@@ -983,7 +981,6 @@ class Map extends React.PureComponent {
         ...station,
       });
     }
-    console.log(list, "LIST");
     this.map.removeFeatures("rain", features);
     this.map.addFeatures("rain", features);
     // this.map.removeFeatures("rain", list);

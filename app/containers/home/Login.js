@@ -31,7 +31,6 @@ class Login extends Component {
   }
   render() {
     const onFinish = (values) => {
-      console.log("Received values of form: ", values);
       login({
         channel: "common",
         username: values.username,
@@ -55,8 +54,7 @@ class Login extends Component {
               window.location.replace(`${url}?token=${result.data.userToken}`);
             }
           } else {
-            console.log(window.innerWidth);
-            if (window.innerWidth > 200) {
+            if (window.innerWidth > 2000) {
               this.props.history.push("/display");
               window.location.reload();
               message.success("登录成功！");
@@ -65,7 +63,9 @@ class Login extends Component {
               this.props.history.push("/displaySmall");
               window.location.reload();
               message.success("登录成功！");
+              // localStorage.removeItem("token");
               localStorage.setItem("token", result.data.userToken);
+              // console.log(localStorage.getItem("token"));
             }
           }
           // queryUser({
@@ -91,7 +91,6 @@ class Login extends Component {
     // 		console.log(localStorage.getItem("userInfo"))
     // 	})
     // }
-    console.log(this.props);
     return (
       <div className="container">
         <img className="swlogo" src={swlogo}></img>

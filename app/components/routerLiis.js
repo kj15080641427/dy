@@ -33,7 +33,7 @@ class RouterList extends React.PureComponent {
     {
       text: "数据中心",
       imgurl: display,
-      routerUrl: "/display",
+      routerUrl: window.innerWidth > 2000 ? "/display" : "/displaySmall",
     },
     {
       text: "河流水情",
@@ -103,7 +103,8 @@ class RouterList extends React.PureComponent {
                     ? { background: "rgb(227,152,62)", color: "white" }
                     : {
                         background: "rgb(46, 49, 146)",
-                        color: "rgb(132,135,192)",
+                        // color: "rgb(132,135,192)",
+                        color: "white",
                       }
                 }
               >

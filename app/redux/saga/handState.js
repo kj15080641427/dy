@@ -32,7 +32,7 @@ function* getHourRain({ data }) {
 function* getDayRain({ data }) {
   // const {stcd,} = data
   try {
-    const result = yield call(req.countHoursRain, {
+    const result = yield call(req.getByTimeHour, {
       stcd: data,
       starttm: moment(new Date().getTime() - 24 * 60 * 60 * 1000).format(
         "YYYY-MM-DD HH:mm:ss"

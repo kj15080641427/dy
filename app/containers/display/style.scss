@@ -3,6 +3,7 @@
   width: 3840px; //* 80%;
   height: 1080px;
 }
+
 .dis-left {
   position: absolute;
   display: flex;
@@ -12,6 +13,7 @@
   padding-left: 20px;
   justify-content: stretch;
 }
+
 .dis-right {
   position: absolute;
   top: 0;
@@ -19,4 +21,65 @@
   bottom: 0;
   padding-right: 20px;
   padding-top: 65px;
+}
+
+.small-display {
+  position: relative;
+  width: 100%; //* 80%;
+  height: 1080px;
+}
+.small-dis-left {
+  position: absolute;
+  display: flex;
+  left: 0;
+  top: -35px;
+  bottom: 0;
+  padding-left: 0px;
+  justify-content: stretch;
+  .dis-overview {
+    transform: scale(0.8);
+    margin-left: -80px;
+  }
+}
+.small-dis-head {
+  .dis-head {
+    z-index: 99;
+    .dis-hd-weather {
+      left: 0px;
+    }
+  }
+}
+.small-dis-table {
+  .dis-tables {
+    width: 600px;
+    position: absolute;
+    bottom:0px;
+    right: 0;
+    .dis-table-btns {
+      top: 50px;
+      right: 80px;
+      z-index: 999;
+    }
+    .dis-table-con {
+      margin-top: 70px;
+      .dis-table-wrap {
+        transform: scale(0.9);
+        margin-top: -20px;
+        height: 260px;
+        margin-bottom: 5px;
+        .table-wrapper {
+          height: 200px;
+          .dv-scroll-board {
+            height: 200px;
+          }
+        }
+        .fl-table{
+          height: 180px;
+          .fl-table-height{
+            height: 150px;
+          }
+        }
+      }
+    }
+  }
 }

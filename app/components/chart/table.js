@@ -101,10 +101,19 @@ export class TableShow extends React.PureComponent {
     ),
   });
   render() {
-    const { columns, dataSource, onRow, pageSize, rowKey, number } = this.props;
+    const {
+      columns,
+      dataSource,
+      onRow,
+      pageSize,
+      rowKey,
+      number,
+      locale,
+    } = this.props;
 
     return (
       <Table
+        locale={locale}
         size="small"
         dataSource={dataSource}
         className="set-table-style"

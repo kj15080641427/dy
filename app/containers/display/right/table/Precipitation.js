@@ -14,7 +14,7 @@ class Precipitation extends React.PureComponent {
     this.state = {};
   }
   render() {
-    const { dict } = this.props;
+    const { dict, rowNum } = this.props;
     let data = this.props.dataSource;
     // console.log(data, "DATA");
     let elements = [];
@@ -65,7 +65,7 @@ class Precipitation extends React.PureComponent {
       headerBGC: "#123ead42",
       oddRowBGC: "0px 35px 50px rgba(0, 0, 0, 0)",
       evenRowBGC: "0px 35px 50px rgba(0, 0, 0, 0)",
-      rowNum: 6,
+      rowNum: rowNum || 6,
       columnWidth: [210, 100, 120, 140],
       headerHeight: 50,
       align: ["left", "center", "center", "center"],
@@ -85,7 +85,7 @@ class Precipitation extends React.PureComponent {
           ) : (
             <ScrollBoard
               config={config}
-              style={{ width: "100%", height: "350px", fontSize: 18 }}
+              className='table-wrapper-table-water'
             />
           )}
 

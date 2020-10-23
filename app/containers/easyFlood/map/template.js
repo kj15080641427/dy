@@ -5,8 +5,9 @@ export function templateWater(baseData, detailData) {
       type: "Point",
       id: item.stcd,
       lonlat: [item.lon, item.lat],
-      warningOver: detailData[item.stcd] && detailData[item.stcd].warning || 0,
-      warningTime: detailData[item.stcd] && detailData[item.stcd].tm || "",
+      warningOver:
+        (detailData[item.stcd] && detailData[item.stcd].warning) || 0,
+      warningTime: (detailData[item.stcd] && detailData[item.stcd].tm) || "",
       ...item,
     };
   });
@@ -20,7 +21,7 @@ export function templateRain(baseData, detailData) {
       lonlat: [item.lon, item.lat],
       ...item,
     };
-  })
+  });
 }
 export function templatePonding(baseData, detailData) {
   if (!baseData) return [];
