@@ -5,7 +5,7 @@
  */
 import React, { Component } from "react";
 // import Particles from 'react-particles-js';
-import { Form, Input, Button, Checkbox, message } from "antd";
+import { Form, Input, Button, Checkbox, message, Select } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -141,16 +141,19 @@ class Login extends Component {
                 type="password"
               />
             </Form.Item>
-            <Form.Item>
-              <Form.Item
-                name="remember"
-                valuePropName="checked"
-                style={{ float: "right" }}
-              >
+            <Form.Item
+              name="remember"
+              valuePropName="checked"
+            >
+              <div style={{ display: "flex" }}>
+                <Select defaultValue="东营市智慧水务系统" style={{ flex: 1, marginRight: 16 }}>
+                  <Select.Option value="东营市智慧水务系统">东营市智慧水务系统</Select.Option>
+                  <Select.Option value="水质监测系统">水质监测系统</Select.Option>
+                </Select>
                 <Checkbox>
                   <span className="remenberpass">记住密码</span>
                 </Checkbox>
-              </Form.Item>
+              </div>
             </Form.Item>
             <br />
             <br />
