@@ -58,7 +58,6 @@ const ChartGroup = (props) => {
     });
   }, []);
   const onFinish = (data) => {
-    console.log(data, "DDD");
     req.addChartGroup(data).then((res) => {
       let data = userList.map((item) => ({
         chatGroupId: item.data,

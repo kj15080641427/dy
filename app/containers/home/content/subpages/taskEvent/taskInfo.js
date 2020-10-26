@@ -72,20 +72,20 @@ const TaskInfo = (props) => {
     getFloodAddress();
     getAllFloodUser();
   }, []);
-  useEffect(() => {
-    if (floodUser && floodAddress) {
-      floodUser?.map((item) => {
-        floodAddress?.records?.map((t) => {
-          if (item.phone == t.deviceSerial) {
-            stPerson([...person, { ...item, ...t }]);
-          }
-        });
-      });
-    }
-    return () => {
-      stPerson([]);
-    };
-  }, [floodUser, floodAddress]);
+  // useEffect(() => {
+  //   if (floodUser && floodAddress) {
+  //     floodUser?.map((item) => {
+  //       floodAddress?.records?.map((t) => {
+  //         if (item.phone == t.deviceSerial) {
+  //           stPerson([...person, { ...item, ...t }]);
+  //         }
+  //       });
+  //     });
+  //   }
+  //   return () => {
+  //     stPerson([]);
+  //   };
+  // }, [floodUser, floodAddress]);
 
   const onOffFinish = (data) => {
     data = { ...data, taskEventsID: taskInfo?.taskEventsID };
@@ -93,7 +93,7 @@ const TaskInfo = (props) => {
   };
   return (
     <div style={{ height: "100%" }}>
-      <Map layerVisible={{}} person={person}></Map>
+      <Map layerVisible={{}} person={[]}></Map>
       <TaskUpdate formRef={formRef}></TaskUpdate>
       <div className="task-info-fotter-center">
         <div className="task-info-fotter">

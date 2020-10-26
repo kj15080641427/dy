@@ -22,4 +22,13 @@ export const SET_VIDEO_DATA = "SET_VIDEO_DATA";
 
 export const ROTATE_VIDEO = "ROTATE_VIDEO"; //视频旋转
 
-export const CHANGE_WATER_VIDEO = "CHANGE_WATER_VIDEO";//水位站点视频
+export const CHANGE_WATER_VIDEO = "CHANGE_WATER_VIDEO"; //水位站点视频
+export const SET_FLOOD_ALARM_DATA = "SET_FLOOD_ALARM_DATA";
+
+//24小时降雨
+export const GET_DAY_RAIN_BY_SITE = "GET_DAY_RAIN_BY_SITE";
+export const SET_DAY_RAIN_BY_SITE = "SET_DAY_RAIN_BY_SITE";
+
+//获取河流下水位站点
+export const GET_SITE_WATER_BY_RIVER = "GET_SITE_WATER_BY_RIVER";
+export const SET_SITE_WATER_BY_RIVER = "SET_SITE_WATER_BY_RIVER";

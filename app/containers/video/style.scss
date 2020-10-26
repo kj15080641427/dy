@@ -90,16 +90,27 @@
     bottom: 0;
     z-index: 10;
     margin-top: 80px;
-    // padding: 4px;
+    display: flex;
+    flex-direction: column;
+    & > div:first-child {
+      flex: 1;
+    }
+    & > div:last-child {
+      margin-top: 8px;
+      height: 380px;
+    }
     .videoFunnelChart {
       width: 500px;
-      height: 300px;
+      height: calc(100% - 25px);
     }
     .radar-box {
-      height: 100%;
+      margin-top: 0;
+      height: calc(100% - 8px)!important;
     }
   }
   .chart-right-video {
+    // display: flex;
+    // flex-wrap: wrap;
     width: 550px;
     position: absolute;
     right: 90px;
@@ -107,6 +118,15 @@
     bottom: 0;
     z-index: 10;
     margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    & > div:first-child {
+      flex: 1;
+    }
+    & > div:last-child {
+      margin: 8px 0;
+      height: 396px;
+    }
     .line-chart {
       width: 500px;
       height: 280px;
@@ -116,8 +136,8 @@
       height: 280px;
     }
     .videoBarChart {
-      width: 500px;
-      height: 300px;
+      width: 530px;
+      height: calc(100% - 25px);
     }
     .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
       color: white;
@@ -176,22 +196,25 @@
     .video-img-box {
       position: relative;
       .set-rotate-radio {
-        transform: scale(0.35);
+        background: none;
+        // transform: scale(0.);
         right: -90px;
-        top: 50px;
-      }
-      .video-ing-title {
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        top: 90px;
       }
       .radar-box {
-        height: 360px;
+        height: 400px;
       }
     }
+    .video-ing-title {
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      padding: 10px 0;
+    }
     .radar-box {
-      height: 300px;
+      height: 329px;
     }
     .bar-chart {
       width: 535px;

@@ -32,7 +32,7 @@ function* getHourRain({ data }) {
 function* getDayRain({ data }) {
   // const {stcd,} = data
   try {
-    const result = yield call(req.countHoursRain, {
+    const result = yield call(req.getByTimeHour, {
       stcd: data,
       starttm: moment(new Date().getTime() - 24 * 60 * 60 * 1000).format(
         "YYYY-MM-DD HH:mm:ss"
@@ -122,10 +122,61 @@ function* getDisplayWater({ data }) {
     console.log(e);
   }
 }
+function* getDayRainBySite({ data }) {
+  let endTime = moment().startOf("hour");
+  let beginTime = moment().subtract(24, "hour").startOf("hour");
+  try {
+    const result = yield call(req.getByTimeHour, {
+      stcd: data,
+      starttm: beginTime.format("YYYY-MM-DD HH:mm:ss"),
+      endtm: endTime.format("YYYY-MM-DD HH:mm:ss"),
+    });
+    if (result.code == code) {
+      result.data.forEach((item) => {
+        item.tm = item.endTime.slice(0, -3);
+      });
+      yield put({
+        type: types.SET_DAY_RAIN_BY_SITE,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+//获取河流下的水位站点
+function* getSiteWaterByRiver({ data }) {
+  try {
+    const result = yield call(req.getWfsRiverByName, { name: data });
+    if (result.code == code) {
+      const stcd = result.data[0].siteBaseDo.siteWaterLevels.map(
+        (item) => item.stcd
+      );
+      const waterResult = yield call(req.getWaterRealTime, {
+        current: 1,
+        size: -1,
+        stcd: stcd.toString(),
+      });
+      if (waterResult.code == code) {
+        yield put({
+          type: types.SET_SITE_WATER_BY_RIVER,
+          data: waterResult.data.records,
+        });
+      }
+    }
+    // const waterResult = yield call(req.getWaterRealTime, {});
+    // if (result.code == code) {
+    // }
+  } catch (e) {
+    console.error(e);
+  }
+}
 export default function* handState() {
   yield all([takeEvery(types.GET_HOUR_RAIN, getHourRain)]);
   yield all([takeEvery(types.GET_DAY_RAIN, getDayRain)]);
   yield all([takeEvery(types.GET_SEVEN_DAY_RAIN, getSevenDayRain)]);
   yield all([takeEvery(types.GET_DAY_WATER, getDayWater)]);
   yield all([takeEvery(types.GET_DISPLAY_WATER, getDisplayWater)]);
+  yield all([takeEvery(types.GET_DAY_RAIN_BY_SITE, getDayRainBySite)]);
+  yield all([takeEvery(types.GET_SITE_WATER_BY_RIVER, getSiteWaterByRiver)]);
 }

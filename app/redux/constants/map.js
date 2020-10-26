@@ -54,4 +54,10 @@ export const SET_DICT = "SET_DICT"; //设置字典
 //获取实时水位警戒数据
 export const GET_ALARM_DATA = "GET_ALARM_DATA";
 export const SET_ALARM_DATA = "SET_ALARM_DATA";
-export const CHANGE_WATER_VIDEO = "CHANGE_WATER_VIDEO";//水位站点视频
+export const CHANGE_WATER_VIDEO = "CHANGE_WATER_VIDEO"; //水位站点视频
+export const GET_FLOOD_ALARM_DATA = "GET_FLOOD_ALARM_DATA";
+export const SET_FLOOD_ALARM_DATA = "SET_FLOOD_ALARM_DATA";
+
+//24小时降雨
+export const GET_DAY_RAIN_BY_SITE = "GET_DAY_RAIN_BY_SITE";
+export const SET_DAY_RAIN_BY_SITE = "SET_DAY_RAIN_BY_SITE";

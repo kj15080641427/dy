@@ -3,7 +3,7 @@ import emitter from "@app/utils/emitter.js";
 import { TableShow } from "../../components/chart/table";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Modal, Row, Col, Tabs, Table } from "antd";
+import { Modal, Row, Col, Tabs, Table, Popover } from "antd";
 import * as actions from "../../redux/actions/handState";
 import * as mapActions from "../../redux/actions/map";
 import echarts from "echarts/lib/echarts";
@@ -47,7 +47,7 @@ export const TabsList = (props) => {
       toolbox: {
         show: true,
         feature: {
-          dataView: { show: true, readOnly: true },
+          // dataView: { show: true, readOnly: true },
           magicType: { show: true, type: ["line", "bar"] },
           restore: { show: true },
           saveAsImage: { show: true },
@@ -93,6 +93,7 @@ export const TabsList = (props) => {
   return (
     <>
       <TableShow
+        number={6}
         onRow={(record) => {
           return {
             onClick: () => {
@@ -114,16 +115,36 @@ export const TabsList = (props) => {
         columns={[
           {
             name: "站名",
-            dataIndex: "name",
-            filter: "name",
-            width: "40%",
+            dataIndex: "aliasName",
+            filter: "aliasName",
+            width: "20%",
+            render: (name) => {
+              return name.length > 6 ? (
+                <Popover content={name} title="站名全称">
+                  {name.toString().substring(0, 7) + "..."}
+                </Popover>
+              ) : (
+                name
+              );
+            },
+          },
+          {
+            name: "河流",
+            dataIndex: "siteWaterLevels",
+            width: "20%",
+            // sorter: (a, b) => (a & a[0] ? a[0].rvnm - b[0].rvnm : 1),
+            render: (v) => {
+              return v && v[0] ? v[0].rvnm : "-";
+            },
           },
           {
             name: "实时水位",
-            dataIndex: "z",
+            dataIndex: "riverwaterdataList",
             width: "15%",
-            render: (v) => (v ? v : "-"),
-            sorter: (a, b) => a.z - b.z,
+            render: (v) => {
+              return v && v[0] ? v[0].z : "-";
+            },
+            // sorter: (a, b) => a.z - b.z,
           },
           {
             name: "更新时间",

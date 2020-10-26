@@ -31,7 +31,6 @@ class VideoStation extends React.Component {
     super(props);
   }
   componentDidMount() {
-    console.log(this.props, "PROPS");
     this.props.getDict({
       current: 1,
       size: 10,
@@ -40,7 +39,6 @@ class VideoStation extends React.Component {
   }
   render() {
     const { dict } = this.props;
-    console.log(dict, "DICT");
     const columns = [
       {
         title: "站点ID",

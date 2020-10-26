@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import * as action from "../../../redux/actions";
 import { bindActionCreators } from "redux";
 import Map from "../../../../monitor/map/map";
-import { Input } from "antd";
+import { Input, TreeSelect } from "antd";
 import trackQuery from "../../../../../resource/icon/trackQuery.svg";
 import trackQuery2 from "../../../../../resource/icon/trackQuery2.svg";
 import trackTime from "../../../../../resource/icon/trackTime.svg";
@@ -76,15 +76,18 @@ const TrackQuery = (props) => {
   const [person, stPerson] = useState([]);
 
   useEffect(() => {
+    let a = [];
     if (floodUser && floodAddress) {
-      init = floodUser?.map((item) => {
+      floodUser?.map((item) => {
         floodAddress?.records?.map((t) => {
-          if (item.phone !== t.deviceSerial) {
+          if (item.userid === t.userid) {
+            a.push({ ...item, ...t });
             stPerson([...person, { ...item, ...t }]);
-            return { ...item, ...t };
+            return;
           }
         });
       });
+      console.log(a, "AAAAAA");
     }
     return () => {
       stPerson([]);
@@ -94,7 +97,7 @@ const TrackQuery = (props) => {
   useEffect(() => {
     getFloodAddress();
     getAllFloodUser();
-    getFloodExpert()
+    getFloodExpert();
   }, []);
   const onSearch = (value) => {
     if (value) {
@@ -112,7 +115,7 @@ const TrackQuery = (props) => {
   return (
     <div className="track-query-box">
       <div className="track-query-body">
-        <Search onSearch={onSearch} suffix={trackQuery}></Search>
+        <Search  onSearch={onSearch} suffix={trackQuery}></Search>
         <img className="track-query-icon" src={trackQuery}></img>
       </div>
       <Map layerVisible={{}} person={person} />

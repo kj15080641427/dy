@@ -5,7 +5,7 @@
  */
 import React, { Component } from "react";
 // import Particles from 'react-particles-js';
-import { Form, Input, Button, Checkbox, message } from "antd";
+import { Form, Input, Button, Checkbox, message, Select } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -14,6 +14,8 @@ import "./style.scss";
 import { login, queryUser } from "@app/data/request";
 import dyszhswxt from "@app/resource/login/dyszhswxt.png";
 import swlogo from "@app/resource/login/swlogo.png";
+const innerWidth = document.body.clientWidth;
+
 const FormItem = Form.Item;
 class Login extends Component {
   constructor(props) {
@@ -31,7 +33,6 @@ class Login extends Component {
   }
   render() {
     const onFinish = (values) => {
-      console.log("Received values of form: ", values);
       login({
         channel: "common",
         username: values.username,
@@ -55,8 +56,7 @@ class Login extends Component {
               window.location.replace(`${url}?token=${result.data.userToken}`);
             }
           } else {
-            console.log(window.innerWidth);
-            if (window.innerWidth > 200) {
+            if (innerWidth > 3000) {
               this.props.history.push("/display");
               window.location.reload();
               message.success("登录成功！");
@@ -65,7 +65,9 @@ class Login extends Component {
               this.props.history.push("/displaySmall");
               window.location.reload();
               message.success("登录成功！");
+              // localStorage.removeItem("token");
               localStorage.setItem("token", result.data.userToken);
+              // console.log(localStorage.getItem("token"));
             }
           }
           // queryUser({
@@ -91,7 +93,6 @@ class Login extends Component {
     // 		console.log(localStorage.getItem("userInfo"))
     // 	})
     // }
-    console.log(this.props);
     return (
       <div className="container">
         <img className="swlogo" src={swlogo}></img>
@@ -142,16 +143,19 @@ class Login extends Component {
                 type="password"
               />
             </Form.Item>
-            <Form.Item>
-              <Form.Item
-                name="remember"
-                valuePropName="checked"
-                style={{ float: "right" }}
-              >
+            <Form.Item
+              name="remember"
+              valuePropName="checked"
+            >
+              <div style={{ display: "flex" }}>
+                <Select defaultValue="东营市智慧水务系统" style={{ flex: 1, marginRight: 16 }}>
+                  <Select.Option value="东营市智慧水务系统">东营市智慧水务系统</Select.Option>
+                  <Select.Option value="水质监测系统">水质监测系统</Select.Option>
+                </Select>
                 <Checkbox>
                   <span className="remenberpass">记住密码</span>
                 </Checkbox>
-              </Form.Item>
+              </div>
             </Form.Item>
             <br />
             <br />

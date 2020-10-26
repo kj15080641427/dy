@@ -133,10 +133,21 @@
 .time-select {
   position: absolute;
   z-index: 77;
-  left: 70px;
+  left: 150px;
   top: 70px;
   z-index: 100;
   * {
     color: #3397d4!important;
+  }
+}
+.time-select2 {
+  height: 30px;
+  position: absolute;
+  z-index: 77;
+  left: 30px;
+  top: 5px;
+  z-index: 100;
+  * {
+    color: #a8cbf7 !important;
   }
 }

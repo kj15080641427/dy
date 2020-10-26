@@ -12,7 +12,7 @@ const VideoPlayer = (props) => {
         style={
           style || {
             width: "620px",
-            height: "350px",
+            height: "357px",
             transform: "scale(0.9)",
             position: "absolute",
             left: "-30px",

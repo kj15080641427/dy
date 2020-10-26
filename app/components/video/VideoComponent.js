@@ -27,20 +27,20 @@ class VideoComponent extends Component {
 
   render() {
     return (
-      <div>
+      <>
         {this.state.session !== null ? (
           <iframe
             src={`http://218.56.180.250:9110/video/index.html?sessionId=${this.state.session}&token=${this.props.token}&type=${this.state.type}`}
             style={this.props.style}
             scrolling="no"
             frameBorder="0"
-            allowFullscreen="true"
-            controls="true"
-            webkitallowfullscreen="true"
-            mozallowfullscreen="true"
+            allowFullScreen={true}
+            controls={true}
+            webkitallowfullscreen={true}
+            mozallowfullscreen={true}
           />
         ) : null}
-      </div>
+      </>
     );
   }
 }

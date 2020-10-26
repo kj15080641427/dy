@@ -25,6 +25,7 @@ class Video extends React.PureComponent {
   }
   playV = (value) => {
     console.log(value);
+    value = { ...value, ...value.stiteWaterRadios[0] };
     if (value.isOnline == "0") {
       this.videoControl.login().then(() => {
         this.setState({ videoobj: this.videoControl });
@@ -50,7 +51,7 @@ class Video extends React.PureComponent {
   };
   render() {
     let data = this.props.dataSource;
-
+    const { rowNum } = this.props;
     let elements = [];
     for (let i = 0; i < data.length; i++) {
       elements.push(
@@ -83,7 +84,7 @@ class Video extends React.PureComponent {
       headerBGC: "#123ead42",
       oddRowBGC: "0px 35px 50px rgba(0, 0, 0, 0)",
       evenRowBGC: "0px 35px 50px rgba(0, 0, 0, 0)",
-      rowNum: 6,
+      rowNum: rowNum || 6,
       columnWidth: [210],
     };
     return (
@@ -107,7 +108,7 @@ class Video extends React.PureComponent {
                   <th>操作</th>
                 </tr>
               </thead>
-              <tbody style={{ height: 300 }}>{elements}</tbody>
+              <tbody className="fl-table-height">{elements}</tbody>
             </table>
           )}
           {/* <ScrollBoard config={config} style={{ width: '100%', height: '350px' }} /> */}
@@ -117,7 +118,7 @@ class Video extends React.PureComponent {
           // placement="top"
           onCancel={this.handleCancel}
           visible={this.state.visible}
-          width={"100%"}
+          width={"50%"}
           footer={null}
           centered={true}
           className="county-video-chart"
@@ -151,7 +152,7 @@ class Video extends React.PureComponent {
                   // scrolling: "no",
                   // borderWidth: 0,
                   position: "absolute",
-                  left: 390,
+                  left: 200,
                   top: 190,
                 }}
                 type={this.state.type}

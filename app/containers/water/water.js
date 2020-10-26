@@ -13,12 +13,17 @@ import Head from "./head/Head";
 import VideoPlayer from "../../components/video/videoPlayer";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
-import { Drawer, Row, Divider, Checkbox, Tabs } from "antd";
+import { Drawer, Row, Divider, Checkbox, Tabs, Radio, Select } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
 import warningIcon from "@app/resource/icon/warning.svg";
 import { BoxHead, RenderBox } from "../../components/chart/decorate";
 import moment from "moment";
-import { showChart, barChart, pieChart } from "../../components/chart/chart";
+import {
+  showChart,
+  barChart,
+  pieChart,
+  showChartRiver,
+} from "../../components/chart/chart";
 import { TableShow } from "../../components/chart/table";
 import RouterList from "../../components/routerLiis";
 import WaterInfo from "./tabs";
@@ -36,12 +41,14 @@ class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      typeOnline: { q: "", w: "", e: "", r: "" },
       showLeft: true,
       showRight: true,
       // showBottom: true,
       visible: false,
       dispalyLeft: "block",
       displayRight: "block",
+      radio: "a",
       // dispalyBottom: 'block',
       layerVisible: {
         showRain: true,
@@ -74,24 +81,43 @@ class Monitor extends React.PureComponent {
   //来源图
   sourceChart = () => {
     const { count } = this.props;
+    const { typeOnline } = this.state;
+    // console.log(typeOnline, "typeOnline");
     let data = [];
+    let number = 0;
     count?.watercount?.list?.forEach((item) => {
-      data.push({
-        name:
-          item.dataSourceDesc == "农村基层防汛监测预警平台"
-            ? "基层防汛"
-            : item.dataSourceDesc == "河口区水利局"
-            ? "水利局"
-            : item.dataSourceDesc == "黄河东营境内水位站点"
-            ? "黄河"
-            : item.dataSourceDesc || "暂无数据",
-        value: item.number,
-        itemStyle: {
-          color: itemStyle[item.dataSourceDesc],
-        },
-      });
+      if (
+        item.dataSourceDesc == "河口区水利局" ||
+        item.dataSourceDesc == "人工录入" ||
+        item.dataSourceDesc == "黄河东营境内水位站点"
+      ) {
+        number = number + Number(item.number);
+      } else {
+        data.push({
+          name:
+            item.dataSourceDesc == "农村基层防汛监测预警平台"
+              ? "基层防汛"
+              : item.dataSourceDesc,
+          value: item.number,
+          itemStyle: {
+            color: itemStyle[item.dataSourceDesc],
+          },
+        });
+      }
     });
-    pieChart("pie-chart", data, 450);
+    data.push({
+      name: "其他来源",
+      value: number,
+      itemStyle: {
+        color: "rgba(90,150,222,1)",
+      },
+    });
+    pieChart("pie-chart", data, 450, [], {
+      text: `水文局在线:${typeOnline.q}\n\n水务局在线:${typeOnline.w}\n\n基层防汛在线:${typeOnline.e}\n\n其他来源在线:${typeOnline.r}`,
+      left: "center",
+      top: "center",
+      textStyle: { color: "white", fontWeight: "200", fontSize: 14 },
+    });
   };
   //在线图
   onlineChart = () => {
@@ -114,13 +140,41 @@ class Monitor extends React.PureComponent {
     let lj = [];
     let hk = [];
     // 1000 * 60 * 60 * 24 * 3
+    let q = 0; //水文局
+    let w = 0; //水务局
+    let e = 0; //基层防汛
+    let r = 0; //其他
     initWater.forEach((item) => {
+      // console.log(item.siteWaterLevels[0].siteDictionariesID, "??????");
       if (
         item.riverwaterdataList &&
         item.riverwaterdataList[0] &&
         startdata - new Date(item.riverwaterdataList[0].tm).getTime() <
           259200000
       ) {
+        switch (item.siteWaterLevels[0].siteDictionariesID) {
+          case 1:
+            q = q + 1;
+            break;
+          case 3:
+            w = w + 1;
+            break;
+          case 4:
+            e = e + 1;
+            break;
+          case 6:
+            r = r + 1;
+            break;
+          case 22:
+            r = r + 1;
+            break;
+          case 23:
+            r = r + 1;
+            break;
+          default:
+            // r = r + 1;
+            break;
+        }
         switch (item.region) {
           case "370502":
             dyOnline++;
@@ -143,6 +197,7 @@ class Monitor extends React.PureComponent {
             hk.push(item);
             break;
           default:
+            // console.log(item, "III");
             break;
         }
       } else {
@@ -168,16 +223,24 @@ class Monitor extends React.PureComponent {
             hk.push(item);
             break;
           default:
+            // console.log(item, "RRRRRRR");
             break;
         }
       }
     });
+    let typeOnline = {
+      q: q, //水文局
+      w: w, //水务局
+      e: e, //基层防汛
+      r: r, //其他
+    };
     this.setState({
       dy: dy,
       kl: kl,
       lj: lj,
       hk: hk,
       gr: gr,
+      typeOnline: typeOnline,
     });
     barChart(
       "bar-chart",
@@ -192,30 +255,42 @@ class Monitor extends React.PureComponent {
     this.props.actions.getCountStation(); //来源统计
     this.props.actions.getAlarm();
     this.props.stateActions.getDsplayWater(waterId);
+    this.props.stateActions.getSiteWaterByRiver("广利河");
   }
   componentDidUpdate(pre) {
-    const { water, count, displayWater, waterId } = this.props;
+    const { water, count, displayWater, waterId, riverSiteWater } = this.props;
+    const { typeOnline } = this.state;
     if (waterId != pre.waterId) {
       this.props.stateActions.getDsplayWater(waterId);
     }
-    if (count != pre.count) {
+    if (typeOnline != pre.typeOnline && count) {
       this.sourceChart();
     }
     if (water != pre.water) {
       this.onlineChart();
     }
     if (displayWater != pre.displayWater) {
-      console.log(displayWater, "displayWaterdisplayWater");
       showChart(displayWater, "line-chart");
+    }
+    if (riverSiteWater != pre.riverSiteWater) {
+      console.log(riverSiteWater, "=======");
+      showChartRiver(riverSiteWater, "waterRiversite");
     }
   }
   render() {
-    const { waterName, alarmData, water, waterVideoInfo } = this.props;
+    const {
+      waterName,
+      alarmData,
+      water,
+      waterVideoInfo,
+      riverSiteWater,
+    } = this.props;
     const { changeWaterId } = this.props.actions;
     const {
       changeModalVisible,
       getDayWater,
       changeWaterVideo,
+      getSiteWaterByRiver,
     } = this.props.stateActions;
     let {
       layerVisible,
@@ -238,9 +313,14 @@ class Monitor extends React.PureComponent {
             <div className="table-backgrpund">
               <div className="table-title-text">
                 <img src={warningIcon}></img> 超警戒水位
-                <span>{alarmData?.length}</span>次
+                <span>{alarmData?.length}</span>站
               </div>
               <TableShow
+                locale={{
+                  emptyText: (
+                    <div style={{ color: "white" }}>无超警戒水位站</div>
+                  ),
+                }}
                 columns={[
                   { name: "站点名称", dataIndex: "stnm", width: "38%" },
                   {
@@ -266,7 +346,6 @@ class Monitor extends React.PureComponent {
                 onRow={(record) => {
                   return {
                     onClick: () => {
-                      console.log(record);
                       changeWaterId(
                         {
                           id: record?.stcd,
@@ -290,13 +369,37 @@ class Monitor extends React.PureComponent {
             </div>
             <div className="water-right-second-box ">
               <RenderBox title={"基本统计信息"} hasTitle>
-                <div className="pie-flex-layout">
-                  <div className="pie-chart" id="pie-chart"></div>
+                <div
+                  className="bar-chart"
+                  id="bar-chart"
+                  style={{
+                    display: this.state.radio == "b" ? "block" : "none",
+                  }}
+                ></div>
+                <div
+                  style={{
+                    display: this.state.radio == "a" ? "block" : "none",
+                  }}
+                >
+                  <div className="pie-flex-layout">
+                    <div className="pie-chart" id="pie-chart"></div>
+                  </div>
+                  {/* <div className="pie-lauout-text">
+                    <div>水位站点</div>
+                    <div>来源统计图</div>
+                  </div> */}
                 </div>
-                <div className="pie-lauout-text">
-                  <div>水位站点</div>
-                  <div>来源统计图</div>
-                </div>
+                <Radio.Group
+                  defaultValue={this.state.radio}
+                  buttonStyle="solid"
+                  className="water-chart-radio"
+                  onChange={(e) => {
+                    this.setState({ radio: e.target.value });
+                  }}
+                >
+                  <Radio.Button value="a">来源</Radio.Button>
+                  <Radio.Button value="b">区县</Radio.Button>
+                </Radio.Group>
               </RenderBox>
             </div>
             <div className="video-table">
@@ -331,13 +434,27 @@ class Monitor extends React.PureComponent {
         <div style={{ display: displayRight }}>
           <div className="chart-right">
             <div className="water-right-first-box">
-              {/* 水位站点在线统计图 */}
               <RenderBox
                 title={"水位站点在线统计图"}
                 containerStyle={{ height: "30.05%" }}
                 hasTitle
               >
-                <div className="bar-chart" id="bar-chart"></div>
+                <Select
+                  defaultValue="广利河"
+                  onChange={(e) => {
+                    getSiteWaterByRiver(e);
+                  }}
+                >
+                  <Select.Option value="广利河">广利河</Select.Option>
+                  <Select.Option value="溢洪河">溢洪河</Select.Option>
+                  <Select.Option value="永丰河">永丰河</Select.Option>
+                  <Select.Option value="马新河">马新河</Select.Option>
+                  <Select.Option value="小清河">小清河</Select.Option>
+                  <Select.Option value="草桥沟">草桥沟</Select.Option>
+                </Select>
+                <div className="water-river-site-div">
+                  <div className="water-river-site" id="waterRiversite"></div>
+                </div>
               </RenderBox>
             </div>
             <div className="water-left-first-box">
@@ -481,6 +598,7 @@ function mapStateToProps(state) {
     count: state.mapAboutReducers.count,
     alarmData: state.currency.alarmData,
     waterVideoInfo: state.handState.waterVideoInfo,
+    riverSiteWater: state.handState.riverSiteWater,
   };
 }
 

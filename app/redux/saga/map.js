@@ -52,7 +52,6 @@ function* getFlood() {
         type: types.SET_FLOOD,
         data: data,
       });
-      console.log(data, "DDD");
     }
   } catch (e) {
     console.error(e);
@@ -174,7 +173,6 @@ function* getWaterWarning() {
           warningInfo.f++;
         }
       });
-      console.log(warningInfo);
       yield put({
         type: types.SET_WATER_WARNING,
         data: warningInfo,
@@ -204,7 +202,6 @@ function* getFloodRain() {
 }
 //根据id获取易涝点实时数据
 function* getFloodInfoRealTime({ data }) {
-  // console.log(data, "DDDDa");
   try {
     const nowDate = moment(new Date()).format("YYYY-MM-DD");
     const result = yield call(req.getWaterHistory, {
@@ -356,6 +353,7 @@ function* getAlarmData() {
     const result = yield call(req.getAlarmWarning, {});
     const resultwater = yield call(req.getAll, { type: "2,4" });
     if (result.code == code && resultwater.code == code) {
+      result.data = result.data.filter((item) => item.sttype == 0);
       resultwater.data.map((item) => {
         result.data.map((st) => {
           if (item?.riverwaterdataList && item?.riverwaterdataList[0]) {
@@ -396,14 +394,6 @@ function* getAlarmData() {
           },
         });
         yield put({
-          type: types.CHANGE_FLOOD_ID,
-          data: {
-            floodId: list[0].stcd,
-            floodName: list[0],
-            ...list[0],
-          },
-        });
-        yield put({
           type: types.SET_ALARM_DATA,
           data: list,
         });
@@ -419,31 +409,78 @@ function* getAlarmData() {
               ...resdata[0],
               a: 1,
             };
-        console.log(resdata[0], "resultwater____");
         yield put({
-          type: types.CHANGE_WATER_ID,
-          data: {
-            ...resdata[0],
-            id: resdata[0].stcd,
-            name: resdata[0].stnm,
-          },
+          type: types.SET_ALARM_DATA,
+          data: result.data,
         });
-        yield put({
-          type: types.CHANGE_WATER_VIDEO,
-          data: {
-            ...resdata[0],
-          },
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+//城市防汛水位报警
+function* getFloodAlarmData() {
+  try {
+    let list = [];
+    const result = yield call(req.getAlarmWarning, {});
+    const resultwater = yield call(req.getAll, { type: "3,4" });
+    if (result.code == code && resultwater.code == code) {
+      result.data = result.data.filter((item) => item.sttype == 1);
+      resultwater.data.map((item) => {
+        result.data.map((st) => {
+          if (item?.riverwaterdataList && item?.riverwaterdataList[0]) {
+            if (item?.riverwaterdataList[0].stcd == st.stcd) {
+              list.push({ ...item, ...item.stiteWaterRadios[0], ...st });
+            }
+          }
         });
+      });
+      let data = resultwater.data.map((item) => {
+        if (item.stiteWaterRadios && item.stiteWaterRadios[0]) {
+          return { ...item, ...item.stiteWaterRadios[0] };
+        } else {
+          return item;
+        }
+      });
+      data.sort((a, b) => {
+        return a.tm - b.tm;
+      });
+      yield put({
+        type: types.SET_FLOOD,
+        data: data,
+      });
+      if (list[0]) {
+        list[0] = { ...list[0], name: list[0].stnm };
         yield put({
           type: types.CHANGE_FLOOD_ID,
           data: {
-            floodId: resdata[0].stcd,
-            floodName: resdata[0],
-            ...resdata[0],
+            floodId: list[0].stcd,
+            floodName: list[0],
+            ...list[0],
           },
         });
         yield put({
-          type: types.SET_ALARM_DATA,
+          type: types.SET_FLOOD_ALARM_DATA,
+          data: list,
+        });
+      } else {
+        let resdata = resultwater.data;
+        resdata[0] = resdata[0].riverwaterdataList[0]
+          ? {
+              ...resdata[0],
+              stnm: resdata[0].riverwaterdataList[0].stnm,
+              stcd: resdata[0].riverwaterdataList[0].stcd,
+              ...(resdata[0].stiteWaterRadios &&
+                resdata[0].stiteWaterRadios[0]),
+            }
+          : {
+              ...resdata[0],
+              a: 1,
+            };
+        yield put({
+          type: types.SET_FLOOD_ALARM_DATA,
           data: result.data,
         });
       }
@@ -468,5 +505,6 @@ export default function* mapAbout() {
     takeEvery(types.GET_MATERIAL_BY_ID, getMaterialById),
     takeEvery(types.GET_FLOOD_RANK_USER, getFloodRankUser),
     takeEvery(types.GET_ALARM_DATA, getAlarmData),
+    takeEvery(types.GET_FLOOD_ALARM_DATA, getFloodAlarmData),
   ]);
 }

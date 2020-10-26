@@ -19,6 +19,7 @@ import ocean from "../resource/icon/ocean.svg";
 import yellowRiver from "../resource/icon/yellowRiver.svg";
 import home from "../resource/icon/home.svg";
 import forecast from "../resource/icon/forecast.svg";
+const innerWidth = document.body.clientWidth;
 class RouterList extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -33,7 +34,7 @@ class RouterList extends React.PureComponent {
     {
       text: "数据中心",
       imgurl: display,
-      routerUrl: "/display",
+      routerUrl: innerWidth > 3000 ? "/display" : "/displaySmall",
     },
     {
       text: "河流水情",
@@ -103,7 +104,8 @@ class RouterList extends React.PureComponent {
                     ? { background: "rgb(227,152,62)", color: "white" }
                     : {
                         background: "rgb(46, 49, 146)",
-                        color: "rgb(132,135,192)",
+                        // color: "rgb(132,135,192)",
+                        color: "white",
                       }
                 }
               >

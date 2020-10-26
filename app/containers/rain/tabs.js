@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { Modal, Row, Col, Tabs, Table, Popover } from "antd";
 import * as actions from "../../redux/actions/handState";
 import echarts from "echarts/lib/echarts";
+import Highlighter from "react-highlight-words";
 
 export const TabsList = (props) => {
   const { visible, rain, hourRain, dayRain, sevenDayRain, dataSource } = props;
@@ -50,7 +51,7 @@ export const TabsList = (props) => {
       toolbox: {
         show: true,
         feature: {
-          dataView: { show: true, readOnly: true },
+          // dataView: { show: true, readOnly: true },
           magicType: { show: true, type: ["line", "bar"] },
           restore: { show: true },
           saveAsImage: { show: true },
@@ -119,31 +120,38 @@ export const TabsList = (props) => {
         columns={[
           {
             name: "站名",
-            dataIndex: "name",
-            filter: "name",
-            width: "35%",
-            align: "center"
+            dataIndex: "aliasName",
+            filter: "aliasName",
+            width: "37%",
+            align: "center",
+            render: (text) => (
+              <Popover content={text.toString()} title="站名全称">
+                {text.toString().length > 9
+                  ? text.toString().substring(0, 9) + "..."
+                  : text.toString()}
+              </Popover>
+            ),
           },
           {
             name: "1小时",
             dataIndex: "raindataList",
-            width: "15%",
+            width: "13%",
             render: (v) => (v && v[0] ? v[0].hourDrp : "-"),
-            align: "center"
+            align: "center",
           },
           {
             name: "24小时",
             dataIndex: "raindataList",
             width: "15%",
             render: (v) => (v && v[0] ? v[0].dayDrp : "-"),
-            align: "center"
+            align: "center",
           },
           {
             name: "更新时间",
             dataIndex: "raindataList",
             width: "35%",
-            render: (v) => (v && v[0] ? v[0].tm.slice(0,-3) : "-"),
-            align: "center"
+            render: (v) => (v && v[0] ? v[0].tm.slice(0, -3) : "-"),
+            align: "center",
           },
         ]}
         dataSource={dataSource}

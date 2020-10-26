@@ -13,7 +13,7 @@ class easyFlood extends React.PureComponent {
     this.state = {};
   }
   render() {
-    const { dict } = this.props;
+    const { dict, rowNum } = this.props;
     let data = this.props.dataSource;
     let elements = [];
     for (let i = 0; i < data.length; i++) {
@@ -56,7 +56,7 @@ class easyFlood extends React.PureComponent {
       headerBGC: "#123ead42",
       oddRowBGC: "0px 35px 50px rgba(0, 0, 0, 0)",
       evenRowBGC: "0px 35px 50px rgba(0, 0, 0, 0)",
-      rowNum: 6,
+      rowNum: rowNum || 6,
       columnWidth: [300, 120, 140],
       headerHeight: 50,
       align: ["left", "center", "center"],
@@ -76,7 +76,7 @@ class easyFlood extends React.PureComponent {
           ) : (
             <ScrollBoard
               config={config}
-              style={{ width: "100%", height: "350px", fontSize: 18 }}
+              className="table-wrapper-flood-height"
             />
           )}
 

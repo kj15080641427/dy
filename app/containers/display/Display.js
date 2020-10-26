@@ -56,17 +56,15 @@ class Display extends React.PureComponent {
             {/* <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked} clicks={this.onShow}></CheckBoxs> */}
             {/* <Legend></Legend> */}
           </div>
-          <Tables dict={dict}></Tables>
+          <Tables dict={dict}rowNum={6}></Tables>
         </div>
       </div>
     );
   }
   onShow(layerKey) {
-    console.log(layerKey);
   }
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
-    console.log(layerVisible[layerKey]);
     if (layerVisible[layerKey] === checked) return;
     layerVisible[layerKey] = checked;
     this.setState({
@@ -82,7 +80,6 @@ class Display extends React.PureComponent {
   }
 }
 function mapStateToProps(state) {
-  console.log(state, "STATE");
   return {
     dict: state.currency.dict,
   };

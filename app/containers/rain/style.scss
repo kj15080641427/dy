@@ -4,6 +4,11 @@
   height: $mapDisplayHeight;
   min-height: $minheight;
   .chart-left {
+    .rain-online {
+      // margin-top: 100px;
+      width: 500px;
+      height: 300px;
+    }
     display: flex;
     flex-wrap: wrap;
     position: absolute;
@@ -45,6 +50,27 @@
       font-weight: bold;
     }
   }
+  .pie-title-flex-online {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
+    div {
+      width: 100px;
+    }
+    label {
+      width: 100px;
+      display: flex;
+      justify-content: center;
+    }
+    .number-color {
+      color: #0099ff;
+      font-size: 34px;
+      font-weight: bold;
+    }
+  }
   .ranSwitch {
     position: absolute;
     right: 553px;
@@ -72,15 +98,12 @@
     }
     .right-first-box {
       .radar-box {
-        height: 260px;
+        height: 100%;
         .box-head {
           width: 180px;
         }
       }
-      .rain-online {
-        width: 450px;
-        height: 260px;
-      }
+      
     }
     .right-second-box {
       .radar-box {
@@ -96,7 +119,7 @@
     }
     .rain-video-table {
       .radar-box {
-        height: 300px;
+        height: 270px;
       }
       .ant-tabs-tab {
         color: white;
@@ -112,9 +135,10 @@
           }
         }
         .ant-table-pagination {
-          margin: 0!important;
-          bottom: 16px;
-          position: fixed;
+          margin-top: 5px;
+          // margin: 0!important;
+          // bottom: 16px;
+          // position: fixed;
           right: 108px;
         }
       }
@@ -191,58 +215,7 @@
       }
     }
   }
-  // .chart-right {
-  //   // width: 480px;
-  //   position: absolute;
-  //   right: 100px;
-  //   top: 10px;
-  //   bottom: 0;
-  //   z-index: 10;
-  //   margin-top: 80px;
-  //   .right-second-box{
-
-  //   }
-  //   .right-first-box{
-
-  //   }
-  //   .rain-online {
-  //     width: 450px;
-  //     height: 300px;
-  //   }
-  //   .rotateBarChart {
-  //     width: 500px;
-  //     height: 250px;
-  //   }
-  //   .bar-chart {
-  //     width: 535px;
-  //     height: 280px;
-  //     z-index: 1;
-  //   }
-  //   .pie-chart {
-  //     width: 330px;
-  //     height: 300px;
-  //   }
-  //   .radius-chart {
-  //     width: 330px;
-  //     height: 300px;
-  //   }
-  //   .rain-set-table {
-  //     display: flex;
-  //     justify-items: center;
-  //   }
-  //   .ant-pagination.mini .ant-pagination-total-text {
-  //     color: white;
-  //   }
-  //   .anticon svg {
-  //     color: white;
-  //   }
-  //   .ant-pagination-item a {
-  //     color: white;
-  //   }
-  //   .ant-pagination-item-active a {
-  //     color: #1890ff;
-  //   }
-  // }
+  
   .radar-box {
     background: rgba(0, 51, 102, 0.7);
     margin-top: 10px;
@@ -268,4 +241,10 @@
   > .ant-tabs-tabpane {
   background: rgba(0, 51, 102, 0.7);
   padding: 0px 10px 0px 10px;
+}
+.rain-chart-radio{
+  z-index: 99;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }

@@ -59,7 +59,7 @@ class notices extends React.PureComponent {
     );
   }
   downl = () => {
-    var url = "/api/base/SiteBase/word?";
+    var url = "/api/v2/base/SiteBase/word?";
     if (this.state.time !== "") {
       url +=
         "startTime=" + this.state.starttime + "&endTime=" + this.state.endtime;

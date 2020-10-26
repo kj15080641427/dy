@@ -169,7 +169,7 @@ export const pieChart = (domId, data, width, legend, title) => {
       data: legend ? legend : [],
       bottom: 10,
       textStyle: {
-        color: "white"
+        color: "white",
       },
     },
     grid: {
@@ -204,6 +204,7 @@ export const pieChart = (domId, data, width, legend, title) => {
 };
 export const lineChart = (domId, data, width, warningline) => {
   let myChartcount = echarts.init(document.getElementById(domId));
+  console.log(data, "DD");
   const time = [
     "00:00",
     "02:00",
@@ -236,6 +237,7 @@ export const lineChart = (domId, data, width, warningline) => {
       },
     },
     yAxis: {
+      min: 10,
       name: "积水(cm)",
       nameTextStyle: {
         color: "white",
@@ -275,7 +277,7 @@ export const lineChart = (domId, data, width, warningline) => {
           ],
         },
       },
-      { data: warningline == -0.1 ? warning : null, type: "line" },
+      // { data: warningline == -0.1 ? warning : null, type: "line" },
     ],
   };
   myChartcount.setOption(option);
@@ -285,13 +287,13 @@ export const lineChart = (domId, data, width, warningline) => {
 export const rotateBarChart = (domId, data, width, height) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let fontSize = 15;
-  const max = Math.max(...data.map(d => d.value));
-  const min = Math.min(...data.filter(d => d.value > 0).map(d => d.value));
+  const max = Math.max(...data.map((d) => d.value));
+  const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
   let reduceNum = Math.floor(max / 15);
   if (reduceNum >= min) {
     reduceNum = min - 1;
   }
-  data.map(d => {
+  data.map((d) => {
     if (d.value == 0) {
       d.value = reduceNum;
       d.reduceFlag = true;
@@ -309,7 +311,7 @@ export const rotateBarChart = (domId, data, width, height) => {
         } else {
           return params[0].value;
         }
-      }
+      },
     },
     legend: {
       data: [],
@@ -366,11 +368,11 @@ export const rotateBarChart = (domId, data, width, height) => {
           value: "特大暴雨(>250)",
           textStyle: { color: "white", fontSize: fontSize },
         },
-        {
-          value: "短历时强降雨",
-          textStyle: { color: "white", fontSize: fontSize },
-        },
-      ].reverse(),
+        // {
+        //   value: "短历时强降雨",
+        //   textStyle: { color: "white", fontSize: fontSize },
+        // },
+      ],
     },
     series: [
       {
@@ -381,13 +383,12 @@ export const rotateBarChart = (domId, data, width, height) => {
           position: "left",
           color: "white",
           formatter: (params) => {
-            console.log(params)
             if (params.data.reduceFlag) {
               return 0;
             } else {
               return params.value;
             }
-          }
+          },
         },
         width: width || 300,
         height: height,
@@ -518,22 +519,15 @@ export const funnelChart = (domId, data) => {
   myChartcount.setOption(option);
 };
 //24小时折线图
-export const showChart = (data, id) => {
+export const showChart = (data, id, yd) => {
   let xdata = [];
   let ydata = [];
   var myChart = echarts.init(document.getElementById(id));
   data.forEach((item) => {
     xdata.push(item.tm);
-    ydata.push(item.z);
+    yd ? ydata.push(item[yd]) : ydata.push(item.z);
   });
   myChart.setOption({
-    // dataZoom: [
-    //   {
-    //     type: "slider",
-    //     show: true,
-    //     xAxisIndex: [0],
-    //   },
-    // ],
     tooltip: {
       trigger: "axis",
       axisPointer: {
@@ -544,7 +538,7 @@ export const showChart = (data, id) => {
     toolbox: {
       show: true,
       feature: {
-        dataView: { show: true, readOnly: true },
+        // dataView: { show: true, readOnly: true },
         magicType: { show: true, type: ["line", "bar"] },
         restore: { show: true },
         saveAsImage: { show: true },
@@ -556,6 +550,7 @@ export const showChart = (data, id) => {
       name: "时间",
       axisLabel: {
         color: "white",
+        fontSize: 16,
       },
       axisLine: {
         lineStyle: {
@@ -564,10 +559,12 @@ export const showChart = (data, id) => {
       },
     },
     yAxis: {
+      min: 1,
       type: "value",
       name: "水位（m）",
       axisLabel: {
         color: "white",
+        fontSize: 16,
       },
       axisLine: {
         lineStyle: {
@@ -592,13 +589,82 @@ export const showChart = (data, id) => {
         type: "line",
         markPoint: {
           data: [
-            { type: "max", name: "最大值" },
-            { type: "min", name: "最小值" },
+            {
+              type: "max",
+              name: "最高",
+              label: { show: true, formatter: "{b}{c}" },
+            },
+            {
+              type: "min",
+              name: "最低",
+              label: { show: true, formatter: "{b}{c}" },
+            },
           ],
         },
         lineStyle: {
           color: "rgb(27,184,108)", //改变折线颜色
         },
+      },
+    ],
+  });
+};
+
+export const showChartRiver = (data, id) => {
+  let xdata = [];
+  let ydata = [];
+  var myChart = echarts.init(document.getElementById(id));
+  data.forEach((item) => {
+    item.stnm = `${item.stnm.slice(0, 3)}\n${item.stnm.slice(3, 33)}`;
+    xdata.push(item.stnm);
+    ydata.push(item.z);
+  });
+  myChart.setOption({
+    color: ["#3398DB"],
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        // 坐标轴指示器，坐标轴触发有效
+        type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+      },
+    },
+    grid: {
+      left: "3%",
+      right: "4%",
+      bottom: "3%",
+      containLabel: true,
+    },
+    xAxis: [
+      {
+        // name: "站点",
+        type: "category",
+        data: xdata,
+        axisTick: {
+          alignWithLabel: true,
+        },
+        axisLine: {
+          lineStyle: {
+            color: "white",
+          },
+        },
+      },
+    ],
+    yAxis: [
+      {
+        name: "水位(m)",
+        barWidth: 25,
+        type: "value",
+        axisLine: {
+          lineStyle: {
+            color: "white",
+          },
+        },
+      },
+    ],
+    series: [
+      {
+        name: "站点",
+        type: "bar",
+        data: ydata,
       },
     ],
   });

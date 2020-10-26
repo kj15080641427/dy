@@ -91,7 +91,7 @@ export const TabsList = (props) => {
   return (
     <>
       <TableShow
-        pageSize={9}
+        pageSize={6}
         onRow={(record) => {
           return {
             onClick: () =>

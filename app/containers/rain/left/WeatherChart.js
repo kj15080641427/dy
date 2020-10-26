@@ -26,8 +26,9 @@ class WeatherChart extends React.PureComponent {
     this.state = {
       weathershow: false,
       weatherstyle: "black",
-      timeList: ['1小时', '12小时', '24小时', '近三天', '今年以来', '自定义'],
-      selectedTime: "24小时"
+      timeList: ["1小时", "12小时", "24小时", "近三天", "今年以来", "自定义"],
+      selectedTime: "24小时",
+      cityData: "",
     };
     this.selectInit = this.selectInit.bind(this);
     this.btnClick = this.btnClick.bind(this);
@@ -41,7 +42,7 @@ class WeatherChart extends React.PureComponent {
   };
   render() {
     const { RangePicker } = DatePicker;
-
+    const that = this;
     function onChange(value, dateString) {
       getFiveCitydata({
         startTime: moment(value[0]).format("YYYY-MM-DD HH:00:00"),
@@ -50,8 +51,12 @@ class WeatherChart extends React.PureComponent {
         console.log(result);
         var myChart = echarts.init(document.getElementById("main"));
         let setData = [];
+        let c = result.data.pop();
+        that.setState({
+          cityData: Number(c.prd).toFixed(2),
+        });
         for (var i = result.data.length - 1; i >= 0; i--) {
-          setData.push((result.data[i].prd * 1).toFixed(1));
+          setData.unshift((result.data[i].prd * 1).toFixed(1));
         }
         myChart.setOption({
           series: [
@@ -69,15 +74,31 @@ class WeatherChart extends React.PureComponent {
     return (
       <div className="m-wth-chart-rain">
         <img className="m-chart-img" src={imgURL} alt="" />
+
         <div className="m-chart-dev-rain">
           <div className="time-selector">
-            {this.state.timeList.map(tm => (
-              <label className={this.state.selectedTime === tm? 'active': ''} onClick={() => {
-                this.setState({ selectedTime: tm, weathershow: tm === '自定义' }, () => this.selectInit());
-              }}>{tm}</label>
+            {this.state.timeList.map((tm, index) => (
+              <label
+                key={index}
+                className={this.state.selectedTime === tm ? "active" : ""}
+                onClick={() => {
+                  this.setState(
+                    { selectedTime: tm, weathershow: tm === "自定义" },
+                    () => this.selectInit()
+                  );
+                }}
+              >
+                {tm}
+              </label>
             ))}
           </div>
-          <Row className="time-select" style={{ display: this.state.weathershow ? 'block': 'none' }}>
+          <Row className="time-select2">
+            <div>东营市降雨:{this.state.cityData}</div>
+          </Row>
+          <Row
+            className="time-select"
+            style={{ display: this.state.weathershow ? "block" : "none" }}
+          >
             <span style={{ color: "white" }}>时间选择:</span>&nbsp;{" "}
             <RangePicker
               size="small"
@@ -89,6 +110,7 @@ class WeatherChart extends React.PureComponent {
               className="whitePicker"
             />
           </Row>
+
           <div id="main" className="m-chart-table-rain"></div>
         </div>
       </div>
@@ -96,34 +118,39 @@ class WeatherChart extends React.PureComponent {
   }
 
   async selectInit() {
-    let params = null
-    switch(this.state.selectedTime) {
-      case '1小时':
+    let params = null;
+    switch (this.state.selectedTime) {
+      case "1小时":
         params = { type: 1 };
         break;
-      case '12小时':
+      case "12小时":
         params = {
-          startTime: moment(new Date().getTime() - 12 * 60 * 60 * 1000).format("YYYY-MM-DD HH:00:00"),
-          endTime: moment(new Date().getTime()).format("YYYY-MM-DD HH:00:00")
+          startTime: moment(new Date().getTime() - 12 * 60 * 60 * 1000).format(
+            "YYYY-MM-DD HH:00:00"
+          ),
+          endTime: moment(new Date().getTime()).format("YYYY-MM-DD HH:00:00"),
         };
         break;
-      case '24小时':
+      case "24小时":
         params = { type: 2 };
         break;
-      case '近三天':
+      case "近三天":
         params = { type: 3 };
         break;
-      case '今年以来':
+      case "今年以来":
         params = { type: 5 };
         break;
-      case '自定义':
+      case "自定义":
         break;
     }
-    let dataSource
+    let dataSource;
     if (params) {
       const { data } = await getFiveCitydata(params);
-      data.map(d => d.value = Number(d.prd))
-      dataSource = data
+      let c = data.pop();
+      this.setState({ cityData: Number(c.prd).toFixed(2) });
+
+      data.map((d) => (d.value = Number(d.prd)));
+      dataSource = data;
     }
     const myChart = echarts.init(document.getElementById("main"));
     myChart.setOption({
@@ -142,48 +169,52 @@ class WeatherChart extends React.PureComponent {
         textStyle: {
           color: "#ffffff",
           fontWeight: "200",
-          fontSize: "18"
-        }
+          fontSize: "18",
+        },
       },
       grid: {
-        top: this.state.selectedTime === '自定义'?"120px": "90px",
+        top: this.state.selectedTime === "自定义" ? "120px" : "90px",
         left: "5%",
         right: "0%",
         bottom: "3%",
         containLabel: true,
         show: true,
-        borderColor: '#00A0FD'
+        borderColor: "#00A0FD",
       },
       xAxis: {
-        data: dataSource ? dataSource.map(ds => ds.areaName): [],
+        data: dataSource
+          ? dataSource.map((ds) => ({
+              value: ds.areaName.split("(").join("\n("),
+            }))
+          : [],
         axisLabel: {
           textStyle: {
-            color: '#ffffff'
-          }
+            color: "#ffffff",
+          },
         },
         axisLine: {
           lineStyle: {
-            color: '#00A0FD'
-          }
-        }
+            color: "#00A0FD",
+          },
+        },
       },
       yAxis: {
         type: "value",
         axisLabel: {
-            textStyle: {
-                color: '#00A0FD'
-            }
+          textStyle: {
+            color: "white",
+          },
         },
         axisLine: {
           lineStyle: {
-            color: '#00A0FD'
-          }
+            color: "#00A0FD",
+          },
         },
         splitLine: {
           lineStyle: {
-            color: '#00A0FD'
-          }
-        }
+            color: "#00A0FD",
+          },
+        },
       },
       series: [
         {
@@ -191,21 +222,18 @@ class WeatherChart extends React.PureComponent {
           barWidth: "30%",
           label: {
             show: true,
-            position: 'top',
-            color: '#ffffff'
+            position: "top",
+            color: "#ffffff",
           },
           itemStyle: {
-            color: new echarts.graphic.LinearGradient(
-              0, 0, 0, 1,
-              [
-                { offset: 0, color: 'rgba(156, 79, 245, 1)' },
-                { offset: 0.5, color: 'rgba(156, 79, 245, 0.5)' },
-                { offset: 1, color: 'rgba(156, 79, 245, 0.1)' }
-              ]
-            )
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: "rgba(156, 79, 245, 1)" },
+              { offset: 0.5, color: "rgba(156, 79, 245, 0.5)" },
+              { offset: 1, color: "rgba(156, 79, 245, 0.1)" },
+            ]),
           },
-          data: dataSource ? dataSource.map(ds => ds.value): []
-        }
+          data: dataSource ? dataSource.map((ds) => ds.value) : [],
+        },
       ],
     });
   }

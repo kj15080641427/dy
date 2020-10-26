@@ -117,3 +117,17 @@ export const getAlarm = (data) => {
     data,
   };
 };
+//易涝点警戒信息
+export const getFloodAlarm = (data) => {
+  return {
+    type: types.GET_FLOOD_ALARM_DATA,
+    data,
+  };
+};
+//24小时降雨
+export const getDayRainBySite = (data) => {
+  return {
+    type: types.GET_DAY_RAIN_BY_SITE,
+    data,
+  };
+};
