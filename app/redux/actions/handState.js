@@ -64,3 +64,10 @@ export const changeWaterVideo = (data) => {
     data,
   };
 };
+//获取河流下水位站点
+export const getSiteWaterByRiver = (data) => {
+  return {
+    type: types.GET_SITE_WATER_BY_RIVER,
+    data,
+  };
+};

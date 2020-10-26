@@ -120,8 +120,8 @@ export const TabsList = (props) => {
         columns={[
           {
             name: "站名",
-            dataIndex: "name",
-            filter: "name",
+            dataIndex: "aliasName",
+            filter: "aliasName",
             width: "37%",
             align: "center",
             render: (text) => (
@@ -129,16 +129,6 @@ export const TabsList = (props) => {
                 {text.toString().length > 9
                   ? text.toString().substring(0, 9) + "..."
                   : text.toString()}
-                {/* <Highlighter
-                  highlightStyle={{ backgroundColor: "red", padding: 0 }}
-                  searchWords={['1']}
-                  autoEscape
-                  textToHighlight={
-                    text.toString().length > 10
-                      ? text.toString().substring(0, 11) + "..."
-                      : text.toString()
-                  }
-                /> */}
               </Popover>
             ),
           },

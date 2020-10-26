@@ -1,3 +1,4 @@
+@import "@app/variable.scss";
 .display {
   position: relative;
   width: 3840px; //* 80%;
@@ -22,16 +23,21 @@
   padding-right: 20px;
   padding-top: 65px;
 }
-
+.display-body {
+  height: 100vh;
+}
 .small-display {
   position: relative;
   width: 100%; //* 80%;
-  height: 1080px;
+  // height: 1030px
+  height: $mapDisplayHeight;
+  min-height: $minheight;
 }
 .small-dis-left {
+  transform: scaleX(0.88);
   position: absolute;
   display: flex;
-  left: 0;
+  left: -35px;
   top: -35px;
   bottom: 0;
   padding-left: 0px;
@@ -50,10 +56,11 @@
   }
 }
 .small-dis-table {
+
   .dis-tables {
     width: 600px;
     position: absolute;
-    bottom:0px;
+    bottom: 0px;
     right: 0;
     .dis-table-btns {
       top: 50px;
@@ -65,7 +72,7 @@
       .dis-table-wrap {
         transform: scale(0.9);
         margin-top: -20px;
-        height: 260px;
+        height: 245px;
         margin-bottom: 5px;
         .table-wrapper {
           height: 200px;
@@ -73,13 +80,37 @@
             height: 200px;
           }
         }
-        .fl-table{
+        .fl-table {
           height: 180px;
-          .fl-table-height{
+          .fl-table-height {
             height: 150px;
+          }
+          .fl-table-height{
+            height: 140px;
           }
         }
       }
     }
   }
+}
+.download-app {
+  position: absolute;
+  color: white;
+  right: 200px;
+  z-index: 9999;
+  top: 50px;
+  width: 97px;
+  height: 40px;
+  background: #3c47a6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1px;
+  cursor: pointer;
+}
+.download-app-img {
+  position: absolute;
+  z-index: 99;
+  right: 150px;
+  top: 90px;
 }

@@ -14,6 +14,8 @@ import "./style.scss";
 import { login, queryUser } from "@app/data/request";
 import dyszhswxt from "@app/resource/login/dyszhswxt.png";
 import swlogo from "@app/resource/login/swlogo.png";
+const innerWidth = document.body.clientWidth;
+
 const FormItem = Form.Item;
 class Login extends Component {
   constructor(props) {
@@ -54,7 +56,7 @@ class Login extends Component {
               window.location.replace(`${url}?token=${result.data.userToken}`);
             }
           } else {
-            if (window.innerWidth > 2000) {
+            if (innerWidth > 3000) {
               this.props.history.push("/display");
               window.location.reload();
               message.success("登录成功！");

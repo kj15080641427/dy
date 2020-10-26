@@ -7,7 +7,21 @@
     width: 530px;
     height: 300px;
   }
+  .water-river-site-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 210px;
+    height: 26vh;
+  }
+  .water-river-site {
+    width: 480px;
+    min-height: 210px;
+    height: 20vh;
+    text-align: center;
+  }
   .water-left-first-box {
+    margin-top: -15px;
     .water-select {
       color: white;
       .water-select-flex {
@@ -25,7 +39,7 @@
       width: 140px;
     }
     .radar-box {
-      height: 590px;
+      height: 570px;
     }
     // img {
     //   width: 100%;
@@ -145,8 +159,14 @@
   }
   .radar-box {
     width: 496px;
-    height: 240px;
+    min-height: 250px;
+    height: 30vh;
     // height: "100%", marginTop: "10px"
+    .ant-select {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+    }
   }
 }
 .box-head {
@@ -180,6 +200,7 @@
   z-index: 9;
 }
 .chart-left {
+  transform: scaleX(1);
   display: flex;
   flex-wrap: wrap;
   .card-container {
@@ -288,14 +309,15 @@
   }
 }
 .chart-right {
+  transform: scaleX(0.9);
   // background:rgba(255, 255, 255, 0.6)!important;
   // width: 450px;
   display: flex;
   width: 500px;
   flex-wrap: wrap;
   position: absolute;
-  right: 105px;
-  top: 15px;
+  right: 85px;
+  top: 10px;
   bottom: 0;
   z-index: 10;
   margin-top: 80px;
@@ -338,7 +360,7 @@
     margin: 10px 0 0 0;
   }
 }
-.water-chart-radio{
+.water-chart-radio {
   position: absolute;
   top: 30px;
   right: 0px;

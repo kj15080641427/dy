@@ -320,7 +320,7 @@ class Map extends React.PureComponent {
         strokeColor: "#ff0000",
         width: 1,
         fillColor: "#1890ff",
-        fontColor: "#82B2FF",
+        fontColor: "#f5222d",
         fontOffset: [20, 0],
         src: function (featureObj) {
           return require("../../../resource/icon/warehouse.svg")["default"];

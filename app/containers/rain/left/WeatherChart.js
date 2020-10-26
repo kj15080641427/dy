@@ -182,7 +182,11 @@ class WeatherChart extends React.PureComponent {
         borderColor: "#00A0FD",
       },
       xAxis: {
-        data: dataSource ? dataSource.map((ds) => ds.areaName) : [],
+        data: dataSource
+          ? dataSource.map((ds) => ({
+              value: ds.areaName.split("(").join("\n("),
+            }))
+          : [],
         axisLabel: {
           textStyle: {
             color: "#ffffff",

@@ -519,22 +519,15 @@ export const funnelChart = (domId, data) => {
   myChartcount.setOption(option);
 };
 //24小时折线图
-export const showChart = (data, id) => {
+export const showChart = (data, id, yd) => {
   let xdata = [];
   let ydata = [];
   var myChart = echarts.init(document.getElementById(id));
   data.forEach((item) => {
     xdata.push(item.tm);
-    ydata.push(item.z);
+    yd ? ydata.push(item[yd]) : ydata.push(item.z);
   });
   myChart.setOption({
-    // dataZoom: [
-    //   {
-    //     type: "slider",
-    //     show: true,
-    //     xAxisIndex: [0],
-    //   },
-    // ],
     tooltip: {
       trigger: "axis",
       axisPointer: {
@@ -557,6 +550,7 @@ export const showChart = (data, id) => {
       name: "时间",
       axisLabel: {
         color: "white",
+        fontSize: 16,
       },
       axisLine: {
         lineStyle: {
@@ -570,6 +564,7 @@ export const showChart = (data, id) => {
       name: "水位（m）",
       axisLabel: {
         color: "white",
+        fontSize: 16,
       },
       axisLine: {
         lineStyle: {
@@ -609,6 +604,67 @@ export const showChart = (data, id) => {
         lineStyle: {
           color: "rgb(27,184,108)", //改变折线颜色
         },
+      },
+    ],
+  });
+};
+
+export const showChartRiver = (data, id) => {
+  let xdata = [];
+  let ydata = [];
+  var myChart = echarts.init(document.getElementById(id));
+  data.forEach((item) => {
+    item.stnm = `${item.stnm.slice(0, 3)}\n${item.stnm.slice(3, 33)}`;
+    xdata.push(item.stnm);
+    ydata.push(item.z);
+  });
+  myChart.setOption({
+    color: ["#3398DB"],
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        // 坐标轴指示器，坐标轴触发有效
+        type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+      },
+    },
+    grid: {
+      left: "3%",
+      right: "4%",
+      bottom: "3%",
+      containLabel: true,
+    },
+    xAxis: [
+      {
+        // name: "站点",
+        type: "category",
+        data: xdata,
+        axisTick: {
+          alignWithLabel: true,
+        },
+        axisLine: {
+          lineStyle: {
+            color: "white",
+          },
+        },
+      },
+    ],
+    yAxis: [
+      {
+        name: "水位(m)",
+        barWidth: 25,
+        type: "value",
+        axisLine: {
+          lineStyle: {
+            color: "white",
+          },
+        },
+      },
+    ],
+    series: [
+      {
+        name: "站点",
+        type: "bar",
+        data: ydata,
       },
     ],
   });

@@ -16,15 +16,19 @@ import {
   funnelChart,
   rotateBarChart,
   lineChart,
+  showChart,
 } from "../../components/chart/chart";
 import VideoPlayer from "../../components/video/videoPlayer";
 import warningIcon from "@app/resource/icon/warning.svg";
 import { TableShow } from "../../components/chart/table";
+
+const floodRainId = "46020108";
 import emitter from "@app/utils/emitter.js";
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      floodRainName: "胜利花苑站",
       radio: "a",
       onLine: 0,
       line: 0,
@@ -77,7 +81,7 @@ class Monitor extends React.PureComponent {
     this.props.actions.getFloodRain(); //获取防汛雨量站 {type: "1",isshow: "1",datasource: "3",}
     this.props.actions.getFloodInfoRealTime(floodId.id); //根据易涝点id获取实时数据
     this.props.actions.getCountStation();
-    // this.props.actions.getAlarm();
+    this.props.actions.getDayRainBySite(floodRainId);
     this.props.actions.getFloodAlarm();
   }
   componentDidUpdate(pre) {
@@ -87,6 +91,7 @@ class Monitor extends React.PureComponent {
       historyFlood,
       floodRain,
       floodWarning,
+      floodDayRain,
     } = this.props;
     if (floodId != pre.floodId) {
       this.props.actions.getFloodInfoRealTime(
@@ -94,7 +99,9 @@ class Monitor extends React.PureComponent {
       );
     }
     if (historyFlood != pre.historyFlood) {
-      lineChart("easyfloodLine", historyFlood, 380, floodWarning || -0.1);
+      showChart(historyFlood, "easyfloodLine");
+
+      // lineChart("easyfloodLine", historyFlood, 380, floodWarning || -0.1);
     }
     if (floodRain != pre.floodRain) {
       let noRain = 0;
@@ -233,17 +240,22 @@ class Monitor extends React.PureComponent {
       });
       funnelChart("funnel-chart", data);
     }
+    if (floodDayRain != pre.floodDayRain) {
+      showChart(floodDayRain, "floodRainChart", "avgDrp");
+    }
   }
   render() {
-    let { layerVisible, displayRight, displayLeft, onLine, line } = this.state;
+    {
+    }
+    let { layerVisible, displayRight, displayLeft, floodRainName } = this.state;
     const {
       initFlood,
       floodName,
       floodAlarmData,
-      count,
       floodId,
       floodRain,
     } = this.props;
+    const { getDayRainBySite } = this.props.actions;
     return (
       <div className="easy-flood-display">
         <Map layerVisible={layerVisible}></Map>
@@ -291,8 +303,8 @@ class Monitor extends React.PureComponent {
                     this.setState({ radio: e.target.value });
                   }}
                 >
-                  <Radio.Button value="a">来源图</Radio.Button>
-                  <Radio.Button value="b">在线图</Radio.Button>
+                  <Radio.Button value="a">积水</Radio.Button>
+                  <Radio.Button value="b">雨量</Radio.Button>
                 </Radio.Group>
                 <div
                   style={{
@@ -379,30 +391,46 @@ class Monitor extends React.PureComponent {
                       />
                     </Tabs.TabPane>
                     <Tabs.TabPane key="rain" tab="雨量站">
-                      <TableShow
-                        dataSource={floodRain}
-                        columns={[
-                          {
-                            name: "雨量站名称",
-                            dataIndex: "name",
-                            filter: "name",
-                            width: "45%",
-                          },
-                          {
-                            name: "雨量",
-                            dataIndex: "drp",
-                            width: "25%",
-                          },
-                          {
-                            name: "更新时间",
-                            dataIndex: "tm",
-                            width: "30%",
-                            sorter: (a, b) => {
-                              return moment(a.tm).unix() - moment(b.tm).unix();
+                      <>
+                        <TableShow
+                          onRow={(record) => {
+                            return {
+                              onClick: () => {
+                                this.setState({ floodName: record.aliasName });
+                                getDayRainBySite(record.stcd);
+                              },
+                            };
+                          }}
+                          dataSource={floodRain}
+                          columns={[
+                            {
+                              name: "雨量站名称",
+                              dataIndex: "name",
+                              filter: "name",
+                              width: "45%",
                             },
-                          },
-                        ]}
-                      ></TableShow>
+                            {
+                              name: "雨量",
+                              dataIndex: "raindataList",
+                              width: "15%",
+                              render: (v) => v[0].dayDrp,
+                            },
+                            {
+                              name: "更新时间",
+                              dataIndex: "tm",
+                              width: "40%",
+                              render: (v) => {
+                                return v?.slice(0, -3);
+                              },
+                              sorter: (a, b) => {
+                                return (
+                                  moment(a.tm).unix() - moment(b.tm).unix()
+                                );
+                              },
+                            },
+                          ]}
+                        ></TableShow>
+                      </>
                     </Tabs.TabPane>
                   </Tabs>
                 </div>
@@ -414,7 +442,21 @@ class Monitor extends React.PureComponent {
         <div style={{ display: displayRight }}>
           <div className="easyFlood-right">
             <div className="flood-first-box">
-              <RenderBox hasTitle title="易涝点基本信息"></RenderBox>
+              <RenderBox hasTitle title="雨量站24小时信息">
+                <div className="water-select">
+                  <div className="water-select-flex">
+                    <div className="water-select-flex">
+                      {floodRainName} &nbsp;
+                    </div>
+                    <div className="water-select-flex">{`${moment(
+                      new Date().getTime() - 24 * 60 * 60 * 1000
+                    ).format("MM-DD HH:mm")}  —— ${moment(new Date()).format(
+                      "MM-DD HH:mm"
+                    )}`}</div>
+                  </div>
+                </div>
+                <div className="flood-rain-chart" id="floodRainChart"></div>
+              </RenderBox>
             </div>
             <div className="second-box">
               <RenderBox hasTitle title="易涝点24小时信息">
@@ -589,6 +631,7 @@ function mapStateToProps(state) {
     floodName: state.mapAboutReducers.floodName,
     initFlood: state.mapAboutReducers.initFlood,
     floodAlarmData: state.handState.floodAlarmData,
+    floodDayRain: state.handState.floodDayRain,
   };
 }
 

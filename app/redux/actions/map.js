@@ -124,3 +124,10 @@ export const getFloodAlarm = (data) => {
     data,
   };
 };
+//24小时降雨
+export const getDayRainBySite = (data) => {
+  return {
+    type: types.GET_DAY_RAIN_BY_SITE,
+    data,
+  };
+};

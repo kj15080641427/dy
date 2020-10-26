@@ -5,6 +5,8 @@ const initState = {
   videoInfo: {},
   waterVideoInfo: { strtoken: "ea7e--3c87ed62d2a7444187a93c190f9be4e9" },
   floodAlarmData: [],
+  floodDayRain: [],
+  riverSiteWater: [],
 };
 export default function handState(state = initState, action) {
   let newState = Object.assign({}, state);
@@ -36,6 +38,12 @@ export default function handState(state = initState, action) {
       break;
     case types.SET_FLOOD_ALARM_DATA:
       newState = { ...newState, floodAlarmData: action.data };
+      break;
+    case types.SET_DAY_RAIN_BY_SITE:
+      newState = { ...newState, floodDayRain: action.data };
+      break;
+    case types.SET_SITE_WATER_BY_RIVER:
+      newState = { ...newState, riverSiteWater: action.data };
       break;
     default:
       return state;

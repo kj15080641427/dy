@@ -31,6 +31,7 @@ class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      typeOnline: { q: 0, w: 0, e: 0, r: 0 },
       radio: "a",
       numberList: {},
       tabsList: {
@@ -80,8 +81,14 @@ class Monitor extends React.PureComponent {
       displayLeft,
       numberList,
       tabsList,
+      typeOnline,
     } = this.state;
-
+    let d = tabsList?.dy[[tabsList?.dy.length - 1]];
+    let k = tabsList?.kl[[tabsList?.kl.length - 1]];
+    let h = tabsList?.hk[[tabsList?.hk.length - 1]];
+    let g = tabsList?.gr[[tabsList?.gr.length - 1]];
+    let l = tabsList?.lj[[tabsList?.lj.length - 1]];
+    let a = tabsList?.all[[tabsList?.all.length - 1]];
     return (
       <div className="rain-display">
         <Map layerVisible={layerVisible} />
@@ -99,12 +106,38 @@ class Monitor extends React.PureComponent {
                     this.setState({ radio: e.target.value });
                   }}
                 >
-                  <Radio.Button value="a">来源图</Radio.Button>
-                  <Radio.Button value="b">在线图</Radio.Button>
+                  <Radio.Button value="a">来源</Radio.Button>
+                  <Radio.Button value="b">区县</Radio.Button>
                 </Radio.Group>
                 <div
                   style={{
                     display: this.state.radio == "a" ? "block" : "none",
+                  }}
+                >
+                  <div className="pie-title-flex-online">
+                    <div>
+                      <label className="number-color">{typeOnline?.q}</label>
+                      <label>基层防汛在线</label>
+                    </div>
+                    <div>
+                      <label className="number-color">{typeOnline?.w}</label>
+                      <label>其他来源在线</label>
+                    </div>
+                    <div>
+                      <label className="number-color">{typeOnline?.e}</label>
+                      <label>气象局在线</label>
+                    </div>
+                    <div>
+                      <label className="number-color">{typeOnline?.r}</label>
+                      <label>水文局在线</label>
+                    </div>
+                  </div>
+                  <div className="rain-pie-chart" id="rain-pie-chart" />
+                </div>
+
+                <div
+                  style={{
+                    display: this.state.radio == "b" ? "block" : "none",
                   }}
                 >
                   <div className="pie-title-flex">
@@ -129,15 +162,8 @@ class Monitor extends React.PureComponent {
                       <label>东营区</label>
                     </div>
                   </div>
-                  <div className="rain-pie-chart" id="rain-pie-chart" />
+                  <div className="rain-online" id="rainOnline"></div>
                 </div>
-                <div
-                  style={{
-                    display: this.state.radio == "b" ? "block" : "none",
-                  }}
-                  className="rain-online"
-                  id="rainOnline"
-                ></div>
               </RenderBox>
             </div>
 
@@ -159,44 +185,44 @@ class Monitor extends React.PureComponent {
                     {
                       address: "东营区",
                       max: `${tabsList?.dy[0]?.aliasName}(${tabsList?.dy[0]?.raindataList[0]?.dayDrp})`,
-                      min: `${
-                        tabsList?.dy[[tabsList?.dy.length - 1]]?.aliasName
-                      }(${tabsList?.dy[0]?.raindataList[0]?.dayDrp})`,
+                      min: d?.raindataList[0]
+                        ? `${d?.aliasName}(${d?.raindataList[0]?.dayDrp})`
+                        : `${d?.aliasName}(0)`,
                     },
                     {
                       address: "垦利区",
                       max: `${tabsList?.kl[0]?.aliasName}(${tabsList?.kl[0]?.raindataList[0]?.dayDrp})`,
-                      min: `${
-                        tabsList?.kl[[tabsList?.kl.length - 1]]?.aliasName
-                      }(${tabsList?.kl[0]?.raindataList[0]?.dayDrp})`,
+                      min: k?.raindataList[0]
+                        ? `${k?.aliasName}(${k?.raindataList[0]?.dayDrp})`
+                        : `${k?.aliasName}(0)`,
                     },
                     {
                       address: "河口区",
                       max: `${tabsList?.hk[0]?.aliasName}(${tabsList?.hk[0]?.raindataList[0]?.dayDrp})`,
-                      min: `${
-                        tabsList?.hk[[tabsList?.hk.length - 1]]?.aliasName
-                      }(${tabsList?.hk[0]?.raindataList[0]?.dayDrp})`,
+                      min: h?.raindataList[0]
+                        ? `${h?.aliasName}(${h?.raindataList[0]?.dayDrp})`
+                        : `${h?.aliasName}(0)`,
                     },
                     {
                       address: "利津区",
                       max: `${tabsList?.lj[0]?.aliasName}(${tabsList?.lj[0]?.raindataList[0]?.dayDrp})`,
-                      min: `${
-                        tabsList?.lj[[tabsList?.lj.length - 1]]?.aliasName
-                      }(${tabsList?.lj[0]?.raindataList[0]?.dayDrp})`,
+                      min: l?.raindataList[0]
+                        ? `${l?.aliasName}(${l?.raindataList[0]?.dayDrp})`
+                        : `${l?.aliasName}(0)`,
                     },
                     {
                       address: "广饶区",
                       max: `${tabsList?.gr[0]?.aliasName}(${tabsList?.gr[0]?.raindataList[0]?.dayDrp})`,
-                      min: `${
-                        tabsList?.gr[[tabsList?.gr.length - 1]]?.aliasName
-                      }(${tabsList?.gr[0]?.raindataList[0]?.dayDrp})`,
+                      min: g?.raindataList[0]
+                        ? `${g?.aliasName}(${g?.raindataList[0]?.dayDrp})`
+                        : `${g?.aliasName}(0)`,
                     },
                     {
                       address: "东营市",
                       max: `${tabsList?.all[0]?.aliasName}(${tabsList?.all[0]?.raindataList[0]?.dayDrp})`,
-                      min: `${
-                        tabsList?.all[[tabsList?.all.length - 1]]?.aliasName
-                      }(${tabsList?.all[0]?.raindataList[0]?.dayDrp})`,
+                      min: a?.raindataList[0]
+                        ? `${a?.aliasName}(${a?.raindataList[0]?.dayDrp})`
+                        : `${a?.aliasName}(0)`,
                     },
                   ]}
                 ></TableShow>
@@ -325,6 +351,11 @@ class Monitor extends React.PureComponent {
     let hkOnline = 0; //河口
     let hkLine = 0;
     let startdata = new Date().getTime();
+
+    let q = 0; //基层防汛
+    let w = 0; //其他
+    let e = 0; //气象局
+    let r = 0; //水文局
     // 1000 * 60 * 60 * 24 * 3
     rain.forEach((item) => {
       if (
@@ -332,6 +363,25 @@ class Monitor extends React.PureComponent {
         item.raindataList[0] &&
         startdata - new Date(item.raindataList[0].tm).getTime() < 259200000
       ) {
+        switch (item.siteRain[0].siteDictionariesID) {
+          case 4:
+            q = q + 1;
+            break;
+          case 2:
+            e = e + 1;
+            break;
+          case 1:
+            r = r + 1;
+            break;
+          case 6:
+            w = w + 1;
+            break;
+          case 25:
+            w = w + 1;
+            break;
+          default:
+            break;
+        }
         switch (item.region) {
           case "370502":
             dyOnline++;
@@ -373,6 +423,15 @@ class Monitor extends React.PureComponent {
         }
       }
     });
+    let typeOnline = {
+      q: q, //水文局
+      w: w, //水务局
+      e: e, //基层防汛
+      r: r, //其他
+    };
+    this.setState({
+      typeOnline: typeOnline,
+    });
     barChart(
       "rainOnline",
       ["在线", "不在线"],
@@ -382,7 +441,8 @@ class Monitor extends React.PureComponent {
   };
   componentDidUpdate(pre) {
     const { count, rain } = this.props;
-    if (count != pre.count) {
+    const { typeOnline } = this.state;
+    if (typeOnline != pre.typeOnline && count) {
       let data = [];
       let number = 0;
       count?.raincount?.list?.map((item) => {
@@ -428,7 +488,7 @@ class Monitor extends React.PureComponent {
         300,
         ["基层防汛", "其他", "气象局", "水文局"],
         {
-          text: "雨量站点\n\n来源统计图",
+          text: `雨量站点\n来源统计图`,
           left: "center",
           top: "center",
           textStyle: { color: "white", fontWeight: "200", fontSize: 14 },

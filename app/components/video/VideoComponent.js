@@ -34,10 +34,10 @@ class VideoComponent extends Component {
             style={this.props.style}
             scrolling="no"
             frameBorder="0"
-            allowFullscreen="true"
-            controls="true"
-            webkitallowfullscreen="true"
-            mozallowfullscreen="true"
+            allowFullScreen={true}
+            controls={true}
+            webkitallowfullscreen={true}
+            mozallowfullscreen={true}
           />
         ) : null}
       </div>

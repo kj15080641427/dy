@@ -98,12 +98,14 @@ export default function mapAboutReducers(state = initState, action) {
       break;
     case types.SET_FLOOD_INFO_REALTIME: //易涝点实时数据
       action.data.records.map((item) => {
-        let tm = item.tm.split(" ")[1].split(":");
-        if (tm[0] % 2 == 0 && tm[1] == "00") {
-          historyFlood.unshift(item.z * 100);
-        }
+        item.tm = item.tm.slice(5, -3);
+        // let tm = item.tm.split(" ")[1].split(":");
+        // if (tm[0] % 2 == 0 && tm[1] == "00") {
+        //   historyFlood.unshift(item.z * 100);
+        // }
       });
-      newState = { ...newState, historyFlood: historyFlood };
+      action?.data?.records?.reverse();
+      newState = { ...newState, historyFlood: action?.data?.records };
       break;
     case types.SET_FLOOD_RAIN:
       let list = [];

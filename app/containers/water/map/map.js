@@ -183,7 +183,7 @@ class Map extends React.PureComponent {
         strokeColor: "#1890ff",
         width: 1,
         fillColor: "#1890ff",
-        fontColor: "#82B2FF",
+        fontColor: "#f5222d",
         fontOffset: [0, 0],
         fontText: function (featureObj) {
           return featureObj.name + "";

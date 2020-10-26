@@ -5,7 +5,7 @@
   min-height: $minheight;
   .chart-left {
     .rain-online {
-      margin-top: 100px;
+      // margin-top: 100px;
       width: 500px;
       height: 300px;
     }
@@ -41,6 +41,27 @@
     }
     label {
       width: 50px;
+      display: flex;
+      justify-content: center;
+    }
+    .number-color {
+      color: #0099ff;
+      font-size: 34px;
+      font-weight: bold;
+    }
+  }
+  .pie-title-flex-online {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
+    div {
+      width: 100px;
+    }
+    label {
+      width: 100px;
       display: flex;
       justify-content: center;
     }

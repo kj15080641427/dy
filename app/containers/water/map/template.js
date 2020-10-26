@@ -1,7 +1,6 @@
 export function templateWater(baseData, detailData) {
   if (!baseData) return [];
   return baseData.map((item) => {
-    console.log(item.stcd, "tttttt");
     return {
       type: "Point",
       id: item.stcd + item.name,
