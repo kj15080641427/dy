@@ -120,9 +120,9 @@ module.exports = {
     }),
     new ErrorOverlayPlugin(),
     //加入cesium资源
-    new CopyWebpackPlugin({patterns:[{ from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' }]}),
-    new CopyWebpackPlugin({patterns:[{ from: path.join(cesiumSource, 'Assets'), to: 'Assets' }]}),
-    new CopyWebpackPlugin({patterns:[{ from: path.join(cesiumSource, 'Widgets'), to: 'Widgets' }]}),
+    new CopyWebpackPlugin({patterns: [{ from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' }]}),
+    new CopyWebpackPlugin({patterns: [{ from: path.join(cesiumSource, 'Assets'), to: 'Assets' }]}),
+    new CopyWebpackPlugin({patterns: [{ from: path.join(cesiumSource, 'Widgets'), to: 'Widgets' }]}),
     new webpack.DefinePlugin({
       //Cesium载入静态的资源的相对路径
       CESIUM_BASE_URL: JSON.stringify('')

@@ -9,12 +9,12 @@ import * as mapAction from "@app/redux/actions/map";
 import UbiMap from "../../monitor/map/ubimap";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
-import { templateRain, templatePonding } from "./template";
-import VideoControl from "@app/components/video/VideoControl";
+//import { templateRain, templatePonding } from "./template";
+//import VideoControl from "@app/components/video/VideoControl";
 import "./style.scss";
 // import Person from "./overlays/Person";
 // import Rain from "./overlays/Rain";
-// import Water from "./overlays/Water";
+import Water from "./overlays/Water";
 // import Ponding from "./overlays/Ponding";
 // import Video from "./overlays/Video";
 // import Gate from "./overlays/Gate";
@@ -29,24 +29,16 @@ class Map extends React.PureComponent {
       test: 1,
       overlays: {},
     };
-    // this.type = [
-    //   Person,
-    //   Rain,
-    //   Water,
-    //   Video,
-    //   Gate,
-    //   Pump,
-    //   WfsRiver,
-    //   Ponding,
-    //   Warehouse,
-    // ];
+    this.type = [
+      Water,
+    ];
+    let _this = this;
     // eslint-disable-next-line react/no-direct-mutation-state
-    // this.type.forEach((Ovl) => {
-    //   // this.state.overlays[Ovl.type] = {};
-    // });
+    this.type.forEach((Ovl) => {
+      _this.state.overlays[Ovl.type] = {};
+    });
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.onOverlayClose = this.onOverlayClose.bind(this);
-    this.videoControl = new VideoControl();
   }
   render() {
     let { overlays } = this.state;
@@ -86,11 +78,15 @@ class Map extends React.PureComponent {
     if (layerVisible !== prevProps.layerVisible) {
       this.setVisible();
     }
+
+    this.drawNodes(this.props.model.nodes);
   }
   componentDidMount() {
     this.createMap();
     this.setVisible();
     this.addEvent();
+
+    this.drawNodes(this.props.model.nodes);
   }
   componentWillUnmount() {
     this._resizeToken.remove();
@@ -163,28 +159,28 @@ class Map extends React.PureComponent {
       zIndex: 11,
       key: "link",
     });
-    this.map.addGeo({
-        url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-        params: {
-          LAYERS: "dy:Node",
-          TILED: true,
-        },
-        zIndex: 11,
-        key: "Node",
-    });
     // this.map.addGeo({
-    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-    //   params: {
-    //     LAYERS: "dy:RiverOut",
-    //     TILED: true,
-    //   },
-    //   zIndex: 11,
-    //   key: "RiverOut",
+    //     url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+    //     params: {
+    //       LAYERS: "dy:Node",
+    //       TILED: true,
+    //     },
+    //     zIndex: 11,
+    //     key: "Node",
     // });
+    this.map.addGeo({
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+      params: {
+        LAYERS: "dy:RiverOut",
+        TILED: true,
+      },
+      zIndex: 11,
+      key: "RiverOut",
+    });
 
 
     this.map.addVector({
-      key: "ponding",
+      key: "water",
       zIndex: 20,
       style: {
         src: function () {
@@ -204,8 +200,13 @@ class Map extends React.PureComponent {
       },
     });
 
-    this.map.startHighlightFeatureonLayer("fRain");
-    this.map.startHighlightFeatureonLayer("ponding");
+    this.map.startHighlightFeatureonLayer("water");
+    this.map.startSelectFeature("water", (param) => {
+      //this.addOverlay("water", {...param});
+      this.props.onFeatureClick &&
+          this.props.onFeatureClick({...param});
+    });
+    // this.map.startHighlightFeatureonLayer("ponding");
 
     // this.map.startSelectFeature("fRain", (param) => {
     //   this.addOverlay(Rain.type, { ...param });
@@ -215,6 +216,23 @@ class Map extends React.PureComponent {
     //   this.props.mapAction.changeFloodId(param);
     //   this.addOverlay(Ponding.type, { ...param });
     // });
+  }
+
+  drawNodes(nodes) {
+    let eleData = nodes.map(item=>{
+      return {
+        type: 'Point',
+        id: item.siteid,
+        lonlat: [parseFloat(item.lgtd),parseFloat(item.lttd)],
+        ...item
+      };
+    });
+
+    if (eleData && eleData[0]) {
+      this.map.addFeatures('water', eleData);
+    }
+
+
   }
 
   addOverlay(key, param) {
@@ -234,8 +252,6 @@ class Map extends React.PureComponent {
         let show = layerVisible[layerKey];
         this.map.setVisible(layerKey, show);
       });
-      // 特殊几个layer, 如洪水
-      this.flood.setVisible(layerVisible.flood);
     }
   }
   addEvent() {
@@ -259,64 +275,53 @@ class Map extends React.PureComponent {
           }
         );
     });
-    this._mapMoveFocus = emitter.addListener(
-      "map-move-focus",
-      (lonlat, duration = 20000) => {
-        this.map &&
-          this.map.animate(
-            {
-              center: lonlat,
-              duration: 250,
-            },
-            () => {
-              this.addFocusBox(lonlat, duration);
-            }
-          );
-      }
-    );
+    // this._mapMoveFocus = emitter.addListener(
+    //   "map-move-focus",
+    //   (lonlat, duration = 20000) => {
+    //     this.map &&
+    //       this.map.animate(
+    //         {
+    //           center: lonlat,
+    //           duration: 250,
+    //         },
+    //         () => {
+    //           this.addFocusBox(lonlat, duration);
+    //         }
+    //       );
+    //   }
+    // );
   }
-  addFocusBox(lonlat, duration = 2000) {
-    let div = document.createElement("div");
-    div.className = "ol-focus-container";
-    let div1 = document.createElement("div");
-    div1.className = "ol-focus-box";
-    let div2 = document.createElement("div");
-    div2.className = "ol-focus-box";
-    let div3 = document.createElement("div");
-    div3.className = "ol-focus-box";
-    let div4 = document.createElement("div");
-    div4.className = "ol-focus-box";
-    div.append(div1, div2, div3, div4);
-    this.map.removeOverlay("focus");
-    this.map.addOverlay(
-      "focus",
-      {
-        Coordinate: lonlat,
-        positioning: "center-center",
-        offset: [0, 0],
-        stopEvent: false,
-      },
-      div
-    );
-    if (this._focusToken) {
-      clearTimeout(this._focusToken);
-    }
-    this._focusToken = window.setTimeout(() => {
-      this.map.removeOverlay("focus");
-    }, duration);
-  }
-  addFloodRain() {
-    const { floodRain } = this.props;
-    if (floodRain && floodRain[0]) {
-      this.map.addFeatures("fRain", templateRain(floodRain));
-    }
-  }
-  addFlood() {
-    const { flood } = this.props;
-    if (flood && flood[0]) {
-      this.map.addFeatures("ponding", templatePonding(flood));
-    }
-  }
+  // addFocusBox(lonlat, duration = 2000) {
+  //   let div = document.createElement("div");
+  //   div.className = "ol-focus-container";
+  //   let div1 = document.createElement("div");
+  //   div1.className = "ol-focus-box";
+  //   let div2 = document.createElement("div");
+  //   div2.className = "ol-focus-box";
+  //   let div3 = document.createElement("div");
+  //   div3.className = "ol-focus-box";
+  //   let div4 = document.createElement("div");
+  //   div4.className = "ol-focus-box";
+  //   div.append(div1, div2, div3, div4);
+  //   this.map.removeOverlay("focus");
+  //   this.map.addOverlay(
+  //     "focus",
+  //     {
+  //       Coordinate: lonlat,
+  //       positioning: "center-center",
+  //       offset: [0, 0],
+  //       stopEvent: false,
+  //     },
+  //     div
+  //   );
+  //   if (this._focusToken) {
+  //     clearTimeout(this._focusToken);
+  //   }
+  //   this._focusToken = window.setTimeout(() => {
+  //     this.map.removeOverlay("focus");
+  //   }, duration);
+  // }
+
 
   onOverlayClose(id, type) {
     let { overlays } = this.state;
@@ -332,13 +337,8 @@ class Map extends React.PureComponent {
   }
 }
 function mapStateToProps(state) {
-  // console.log(state, "STATE");
   return {
-    // water: state.monitor.water,
-    // details: state.monitor.details,
-    // warehouse: state.monitor.warehouse,
-    floodRain: state.mapAboutReducers.floodRain,
-    flood: state.mapAboutReducers.flood,
+    model: state.floodModel
   };
 }
 
