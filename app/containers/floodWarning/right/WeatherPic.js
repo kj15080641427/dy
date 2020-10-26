@@ -5,7 +5,7 @@
  */
 import React from "react";
 import "./style.scss";
-import { Carousel, Tabs, Drawer } from "antd";
+import { Carousel, Tabs, Drawer, Modal } from "antd";
 import imgURL from "../../../resource/title_bg.png";
 import moment from "moment";
 import { PlayCircleOutlined } from "@ant-design/icons";
@@ -25,6 +25,7 @@ class WeatherPic extends React.PureComponent {
       timesvisible: false, //时报模态框
       cityvisible: false, //东营市模态框
       imglourl: "", //第一张卫星图src
+      wxytVisible: false, // 卫星图弹窗
       elements: [],
     };
     this.callback = this.callback.bind(this);
@@ -81,10 +82,19 @@ class WeatherPic extends React.PureComponent {
     console.log(lunboSetting);
     if (lunboSetting.autoplay) {
       lunboSetting.autoplay = false;
-      this.slider.slick.slickPause();
+      this.setState({ wxytVisible: false }, () => {
+        setTimeout(() => {
+          this.slider.slick.slickPause();
+        }, 1000);
+      });
+      
     } else {
       lunboSetting.autoplay = true;
-      this.slider.slick.slickPlay();
+      this.setState({ wxytVisible: true }, () => {
+        setTimeout(() => {
+          this.slider.slick.slickPlay();
+        }, 1000);
+      });
     }
   }
   render() {
@@ -112,7 +122,7 @@ class WeatherPic extends React.PureComponent {
     }
     const lunboSetting = {
       dots: true,
-      autoplay: false,
+      autoplay: false
     };
     return (
       <div>
@@ -134,15 +144,26 @@ class WeatherPic extends React.PureComponent {
                     className="m-pic-icon"
                     onClick={() => this.slickPlayRoPause(lunboSetting)}
                   />
-                  <Carousel
-                    rtl={true}
-                    autoplaySpeed={400}
-                    speed={1}
-                    {...lunboSetting}
-                    ref={(el) => (this.slider = el)}
+                  {elements[0]}
+                  <Modal
+                    title="卫星云图"
+                    centered
+                    width="1200px"
+                    bodyStyle={{ height: 800 }}
+                    visible={this.state.wxytVisible}
+                    footer={null}
+                    onCancel={() => this.setState({ wxytVisible: false })}
                   >
-                    {elements}
-                  </Carousel>
+                    <Carousel
+                      rtl={true}
+                      autoplaySpeed={400}
+                      speed={1}
+                      {...lunboSetting}
+                      ref={(el) => (this.slider = el)}
+                    >
+                      {elements}
+                    </Carousel>
+                  </Modal>
                 </div>
                 <Drawer
                   title="FY2G气象云图"

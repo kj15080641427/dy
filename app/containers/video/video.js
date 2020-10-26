@@ -25,7 +25,7 @@ class Monitor extends React.PureComponent {
       // showBottom: true,
       visible: false,
       dispalyLeft: "block",
-      displayRight: "block",
+      displayRight: "flex",
       // dispalyBottom: 'block',
       layerVisible: {
         tiandi: true, // 天地图底图
@@ -214,22 +214,16 @@ class Monitor extends React.PureComponent {
               </RenderBox>
             </div>
           </div>
-          <div style={{ display: displayRight }}>
-            <div className="chart-right-video">
-              <div>
-                <RenderBox hasTitle title="视频站点在线图">
-                  <div className="videoBarChart" id="videoBarChart"></div>
-                </RenderBox>
-              </div>
-              <div className="video-img-box ">
-                <RenderBox>
-                  <div className="video-ing-title">{videoInfo.name}</div>
-                  <VideoPlayer strtoken={videoInfo?.strtoken}></VideoPlayer>
-                </RenderBox>
-              </div>
-            </div>
-            <RouterList />
+          <div className="chart-right-video" style={{ display: displayRight }}>
+            <RenderBox hasTitle title="视频站点在线图" style={{ height: 'calc(100% - 15px)' }}>
+              <div className="videoBarChart" id="videoBarChart"></div>
+            </RenderBox>
+            <RenderBox className="video-img-box " style={{ height: 383 }}>
+              <div className="video-ing-title">{videoInfo.name}</div>
+              <VideoPlayer strtoken={videoInfo?.strtoken}></VideoPlayer>
+            </RenderBox>
           </div>
+          <RouterList />
         </div>
         <img
           onClick={() => {
@@ -276,7 +270,7 @@ class Monitor extends React.PureComponent {
                 onClick={() => {
                   this.setState({
                     showRight: !this.state.showRight,
-                    displayRight: this.state.showRight ? "none" : "block",
+                    displayRight: this.state.showRight ? "none" : "flex",
                   });
                 }}
                 defaultChecked
