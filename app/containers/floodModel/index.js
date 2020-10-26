@@ -18,6 +18,7 @@ class FloodModel extends Component {
         this.TableColumns = [
             {
                 title: '',
+                className: 'tableRow',
                 render: (text, record) => {
                     const {model} = this.props;
                     if (record.modelPredictionId === model.selectedPredictionId) {
@@ -32,12 +33,14 @@ class FloodModel extends Component {
                 title: '名称',
                 dataIndex: 'name',
                 key: 'name',
-                width: 140
+                width: 140,
+                className: 'tableRow'
             },
             {
                 title: '开始时间',
                 dataIndex: 'beginTime',
                 key: 'beginTime',
+                className: 'tableRow',
                 render: (text, record) => {
                     return (
                         <span>{moment(record.beginTime).format('YYYY-MM-DD HH点')}</span>
@@ -56,6 +59,7 @@ class FloodModel extends Component {
             // },
             {
                 title: ' ',
+                className: 'tableRow',
                 render: (text, record) => {
                     return (
                         <Button
