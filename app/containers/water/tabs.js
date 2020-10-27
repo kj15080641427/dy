@@ -119,7 +119,7 @@ export const TabsList = (props) => {
             filter: "aliasName",
             width: "20%",
             render: (name) => {
-              return name.length > 6 ? (
+              return name.length >= 8 ? (
                 <Popover content={name} title="站名全称">
                   {name.toString().substring(0, 7) + "..."}
                 </Popover>

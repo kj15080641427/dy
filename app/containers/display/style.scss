@@ -25,7 +25,7 @@
 }
 .display-body {
   height: 100vh;
-  min-height:1020px
+  min-height: 1020px;
 }
 .small-display {
   position: relative;
@@ -35,17 +35,20 @@
   min-height: $minheight;
 }
 .small-dis-left {
-  transform: scaleX(0.88);
+  transform: scaleX(0.8);
   position: absolute;
   display: flex;
-  left: -35px;
-  top: -35px;
+  left: -15px;
+  top: -15px;
   bottom: 0;
   padding-left: 0px;
   justify-content: stretch;
   .dis-overview {
-    transform: scale(0.8);
+    transform: scale(0.9);
     margin-left: -80px;
+    display: flex;
+    flex-wrap: revert;
+    height: 1080px;
   }
 }
 .small-dis-head {
@@ -57,7 +60,14 @@
   }
 }
 .small-dis-table {
-
+ 
+  // .row{
+  //   height: 130px !important;
+  // }
+  // .row-item{
+  //   height: 40px !important;
+  //   line-height: 40px !important;
+  // }
   .dis-tables {
     width: 600px;
     position: absolute;
@@ -76,6 +86,9 @@
         height: 245px;
         margin-bottom: 5px;
         .table-wrapper {
+          .loadingTop-loading-div {
+            top: 0px;
+          }
           height: 200px;
           .dv-scroll-board {
             height: 200px;
@@ -86,7 +99,7 @@
           .fl-table-height {
             height: 150px;
           }
-          .fl-table-height{
+          .fl-table-height {
             height: 140px;
           }
         }

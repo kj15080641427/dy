@@ -6,6 +6,7 @@ import "./style.scss";
 import Base from "./Base";
 import moment from "moment";
 import VideoComponent from "@app/components/video/VideoComponent";
+import VideoControl from "@app/components/video/VideoControl";
 import Holder from "@app/components/video/Holder";
 import { hasClassName } from "@app/utils/common.js";
 import { transform } from "ol/proj";
@@ -17,46 +18,31 @@ class Water extends Base {
   constructor(props, context) {
     super(props, context);
     const { model } = props;
-    const { videos } = model;
-    let token = videos && videos.length !== 0 ? videos[0].strtoken : "";
+    // const { videos } = model;
     this.state = {
-      token: token,
+      token: model.strtoken,
     };
     this.onClose = this.onClose.bind(this);
-    this.container = ''
+    this.container = "";
   }
   render() {
     let { model } = this.props;
-    let iswater = model.indtype === 9 || model.indtype === 11 ? true : false;
-    //let water = (model.z !== null && model.z !== undefined) ? (model.z + 'm') : '--';
-    let water =
-      model.z !== null && model.z !== undefined ? parseFloat(model.z * 1) : NaN;
-    let typewater = iswater
-      ? "水深：" + (water * 100).toFixed(1) + "cm"
-      : "水位：" + water.toFixed(2) + "m";
-    let flow = model.q !== null ? (model.q * 1).toFixed(1) + "m³/s" : "--";
-    let tm = model.ztm ? model.ztm : model.tm;
-    let udpTm = tm ? moment(tm).format("MM-DD HH:mm") : "--";
-    let warningLevel =
-      model.warning && model.warning !== 99 ? model.warning + "m" : "--";
-    let rivername = model.rvnm !== null ? model.rvnm : "--";
-    let regionName = model.stlc;
-    let videoControl = model.videoControl;
+    // let iswater = true;
+    // let water =
+    //   model.z !== null && model.z !== undefined ? parseFloat(model.z * 1) : NaN;
+    // let typewater = iswater
+    //   ? "水深：" + (water * 100).toFixed(1) + "cm"
+    //   : "水位：" + water.toFixed(2) + "m";
+    // let tm = model.ztm ? model.ztm : model.tm;
+    // let udpTm = tm ? moment(tm).format("MM-DD HH:mm") : "--";
+    // let warningLevel =
+    //   model.warning && model.warning !== 99 ? model.warning + "m" : "--";
+    // let rivername = model.rvnm !== null ? model.rvnm : "--";
+    // let regionName = model.stlc;
+    let videoControl = new VideoControl();
     let videos = model.videos;
-    //let token = videos && videos.length != 0 ? videos[0].strtoken : '';
     let type = videos && videos.length !== 0 ? videos[0].datasource : "";
-    const onChange = (e) => {
-      console.log(`radio checked:${e.target.value}`);
-      if (e.target.value === "a") {
-        this.setState({
-          waterWar: true,
-        });
-      } else {
-        this.setState({
-          waterWar: false,
-        });
-      }
-    };
+
     return (
       <div
         className="m-ovl-box m-ovl-water"
@@ -94,13 +80,13 @@ class Water extends Base {
             <div className="m-ovl-line" style={{ width: 180 }}>
               名称：{model.stnm || model.name}
             </div>
-            <div className="m-ovl-line">{typewater}</div>
-            {/* <div className="m-ovl-line">流量：{flow}</div> */}
-            <div className="m-ovl-line">警戒：{warningLevel}</div>
-            {/* <div className="m-ovl-line">来源：{model.dataSourceDesc}</div> */}
-            <div className="m-ovl-line">河流：{rivername}</div>
-            <div className="m-ovl-line">县区：{regionName}</div>
-            <div className="m-ovl-line">时间：{udpTm}</div>
+            <div className="m-ovl-line">水位{model?.z}</div>
+            <div className="m-ovl-line">警戒：{model?.warning}</div>
+            <div className="m-ovl-line">河流：{model?.rvnm}</div>
+            <div className="m-ovl-line">县区：{model?.stlc}</div>
+            <div className="m-ovl-line">
+              时间：{model?.tm ? moment(model.tm).format("MM-DD HH:mm") : "--"}
+            </div>
           </div>
         </div>
         <span className="iconfont iconcuo m-ovl-close"></span>
@@ -123,33 +109,30 @@ class Water extends Base {
     );
   }
 
-  onRotateCamera({ token, action }) {
-    let { model } = this.props;
-    let { videoControl } = model;
+  // onRotateCamera({ token, action }) {
+  //   let { model } = this.props;
+  //   let { videoControl } = model;
 
-    if (videoControl) {
-      videoControl
-        .Ptz({ token, action })
-        .then((result) => {
-          videoControl.Ptz({ token, action: "stop" });
-          console.log(result);
-        })
-        .catch((e) => message.error(e));
-    }
-  }
+  //   if (videoControl) {
+  //     videoControl
+  //       .Ptz({ token, action })
+  //       .then((result) => {
+  //         videoControl.Ptz({ token, action: "stop" });
+  //         console.log(result);
+  //       })
+  //       .catch((e) => message.error(e));
+  //   }
+  // }
 
-  componentDidCatch() {}
   componentDidMount() {
-    //super.componentDidMount();
-
     let { map, model } = this.props;
-    console.log(model);
-    let iswater = model.indtype === 9 || model.indtype === 11 ? true : false;
-    if (!map || !model) return;
+    if (!map || !model) {
+      return;
+    }
     let nowNode = this.container?.cloneNode(true);
     nowNode.style.display = "block";
     this.installEvent(nowNode);
-    let id = this.getType() + "_" + model.id;
+    let id = this.getType() + "_" + model.stcd + model.name;
     let map_center = map.getView().getCenter();
     let center = transform(map_center, "EPSG:3857", "EPSG:4326");
     map.addOverlay(id, { Coordinate: center, offset: [-325, -340] }, nowNode);
@@ -165,146 +148,146 @@ class Water extends Base {
     // category = category.reverse();
     // values = values.reverse();
 
-    let chars = echarts.init(document.getElementById("echartsDiv"));
-    let xdata = [];
-    let ydata = [];
-    console.log(model, "MAODAL");
+    // let chars = echarts.init(document.getElementById("echartsDiv"));
+    // let xdata = [];
+    // let ydata = [];
+    // console.log(model, "MAODAL");
 
-    if (model.riverwaterdataList.length === 0) {
-      const option = {
-        title: {
-          text: "暂无水位数据",
-          // left: 'center',
-        },
-        xAxis: {
-          type: "category",
-          data: [],
-          name: "时间",
-        },
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "cross",
-            crossStyle: {
-              color: "#999",
-            },
-          },
-        },
-        yAxis: {
-          type: "value",
-          name: iswater ? "水深(cm)" : "水位(m)",
-        },
-        series: [
-          {
-            data: [],
-            type: "line",
-          },
-        ],
-      };
-      chars.setOption(option);
-    } else {
-      for (var i = 1; i < model.riverwaterdataList.length; i++) {
-        xdata.push(
-          moment(model.riverwaterdataList[i].tm).format("MM-DD HH:mm")
-        );
-        if (iswater) {
-          ydata.push((model.riverwaterdataList[i].z * 100).toFixed(1));
-        } else {
-          ydata.push(model.riverwaterdataList[i].z.toFixed(2));
-        }
-      }
-      const warningnum =
-        model.warning === null || model.warning === 99 ? 0 : model.warning;
-      const option = {
-        title: {
-          text: model.riverwaterdataList[0].stnm + "24小时水位曲线",
-          // left: 'center',
-        },
-        xAxis: {
-          type: "category",
-          data: xdata,
-          name: "时间",
-        },
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "cross",
-            crossStyle: {
-              color: "#999",
-            },
-          },
-        },
-        yAxis: {
-          type: "value",
-          name: iswater ? "水深(cm)" : "水位(m)",
-          max: function (value) {
-            return (warningnum === 0
-              ? value.max * 1.2
-              : warningnum + value.max
-            ).toFixed(1);
-          },
-        },
-        // visualMap: {
-        //   show: false,
-        //   type: 'piecewise',
-        //   pieces: warningnum === 0 ? [] : [
-        //     {
-        //       gt: warningnum >= 0 ? -warningnum : warningnum,
-        //       lte: warningnum,          //这儿设置基线上下颜色区分 基线下面为绿色
-        //       color: '#03d6d6'
-        //     }, {
-        //       gt: warningnum,          //这儿设置基线上下颜色区分 基线上面为红色
-        //       color: '#e91642',
-        //       // lte: obj.warning,
-        //     },
-        //   ]
-        // },
-        series: [
-          {
-            data: ydata,
-            type: "line",
-            markPoint: {
-              data: [
-                { type: "max", name: "最大值" },
-                {
-                  type: "min",
-                  name: "最小值",
-                  itemStyle: {
-                    color: "#03d6d6",
-                  },
-                },
-              ],
-            },
-            markLine: {
-              label: {
-                position: "end",
-              },
-              lineStyle: {
-                type: "solid",
-                width: 2,
-                opacity: warningnum === 0 ? 0 : 1,
-              },
-              color: "#03d6d6",
-              data: [
-                {
-                  silent: false,
-                  label: {
-                    show: warningnum !== 0,
-                    position: "center",
-                    formatter: "警戒水位" + warningnum + "m",
-                    itemStyle: {
-                      left: "100px",
-                    },
-                  },
-                  yAxis: warningnum,
-                },
-              ],
-            },
-          },
-        ],
-      };
-      chars.setOption(option);
-    }
+    // if (model.riverwaterdataList.length === 0) {
+    //   const option = {
+    //     title: {
+    //       text: "暂无水位数据",
+    //       // left: 'center',
+    //     },
+    //     xAxis: {
+    //       type: "category",
+    //       data: [],
+    //       name: "时间",
+    //     },
+    //     tooltip: {
+    //       trigger: "axis",
+    //       axisPointer: {
+    //         type: "cross",
+    //         crossStyle: {
+    //           color: "#999",
+    //         },
+    //       },
+    //     },
+    //     yAxis: {
+    //       type: "value",
+    //       name: iswater ? "水深(cm)" : "水位(m)",
+    //     },
+    //     series: [
+    //       {
+    //         data: [],
+    //         type: "line",
+    //       },
+    //     ],
+    //   };
+    //   chars.setOption(option);
+    // } else {
+    //   for (var i = 1; i < model.riverwaterdataList.length; i++) {
+    //     xdata.push(
+    //       moment(model.riverwaterdataList[i].tm).format("MM-DD HH:mm")
+    //     );
+    //     if (iswater) {
+    //       ydata.push((model.riverwaterdataList[i].z * 100).toFixed(1));
+    //     } else {
+    //       ydata.push(model.riverwaterdataList[i].z.toFixed(2));
+    //     }
+    //   }
+    //   const warningnum =
+    //     model.warning === null || model.warning === 99 ? 0 : model.warning;
+    //   const option = {
+    //     title: {
+    //       text: model.riverwaterdataList[0].stnm + "24小时水位曲线",
+    //       // left: 'center',
+    //     },
+    //     xAxis: {
+    //       type: "category",
+    //       data: xdata,
+    //       name: "时间",
+    //     },
+    //     tooltip: {
+    //       trigger: "axis",
+    //       axisPointer: {
+    //         type: "cross",
+    //         crossStyle: {
+    //           color: "#999",
+    //         },
+    //       },
+    //     },
+    //     yAxis: {
+    //       type: "value",
+    //       name: iswater ? "水深(cm)" : "水位(m)",
+    //       max: function (value) {
+    //         return (warningnum === 0
+    //           ? value.max * 1.2
+    //           : warningnum + value.max
+    //         ).toFixed(1);
+    //       },
+    //     },
+    //     // visualMap: {
+    //     //   show: false,
+    //     //   type: 'piecewise',
+    //     //   pieces: warningnum === 0 ? [] : [
+    //     //     {
+    //     //       gt: warningnum >= 0 ? -warningnum : warningnum,
+    //     //       lte: warningnum,          //这儿设置基线上下颜色区分 基线下面为绿色
+    //     //       color: '#03d6d6'
+    //     //     }, {
+    //     //       gt: warningnum,          //这儿设置基线上下颜色区分 基线上面为红色
+    //     //       color: '#e91642',
+    //     //       // lte: obj.warning,
+    //     //     },
+    //     //   ]
+    //     // },
+    //     series: [
+    //       {
+    //         data: ydata,
+    //         type: "line",
+    //         markPoint: {
+    //           data: [
+    //             { type: "max", name: "最大值" },
+    //             {
+    //               type: "min",
+    //               name: "最小值",
+    //               itemStyle: {
+    //                 color: "#03d6d6",
+    //               },
+    //             },
+    //           ],
+    //         },
+    //         markLine: {
+    //           label: {
+    //             position: "end",
+    //           },
+    //           lineStyle: {
+    //             type: "solid",
+    //             width: 2,
+    //             opacity: warningnum === 0 ? 0 : 1,
+    //           },
+    //           color: "#03d6d6",
+    //           data: [
+    //             {
+    //               silent: false,
+    //               label: {
+    //                 show: warningnum !== 0,
+    //                 position: "center",
+    //                 formatter: "警戒水位" + warningnum + "m",
+    //                 itemStyle: {
+    //                   left: "100px",
+    //                 },
+    //               },
+    //               yAxis: warningnum,
+    //             },
+    //           ],
+    //         },
+    //       },
+    //     ],
+    //   };
+    //   chars.setOption(option);
+    // }
   }
   componentWillUnmount() {
     super.componentWillUnmount();
@@ -312,21 +295,21 @@ class Water extends Base {
   getType() {
     return Water.type;
   }
-  onCustomClick(e) {
-    if (hasClassName(e.target, "img-size-up")) {
-      this.onRotateCamera({ token: this.state.token, action: "up" });
-    } else if (hasClassName(e.target, "img-size-left")) {
-      this.onRotateCamera({ token: this.state.token, action: "left" });
-    } else if (hasClassName(e.target, "img-size-right")) {
-      this.onRotateCamera({ token: this.state.token, action: "right" });
-    } else if (hasClassName(e.target, "img-size-down")) {
-      this.onRotateCamera({ token: this.state.token, action: "down" });
-    } else if (hasClassName(e.target, "img-size-zoomin")) {
-      this.onRotateCamera({ token: this.state.token, action: "zoomin" });
-    } else if (hasClassName(e.target, "img-size-zoomout")) {
-      this.onRotateCamera({ token: this.state.token, action: "zoomout" });
-    }
-  }
+  // onCustomClick(e) {
+  //   if (hasClassName(e.target, "img-size-up")) {
+  //     this.onRotateCamera({ token: this.state.token, action: "up" });
+  //   } else if (hasClassName(e.target, "img-size-left")) {
+  //     this.onRotateCamera({ token: this.state.token, action: "left" });
+  //   } else if (hasClassName(e.target, "img-size-right")) {
+  //     this.onRotateCamera({ token: this.state.token, action: "right" });
+  //   } else if (hasClassName(e.target, "img-size-down")) {
+  //     this.onRotateCamera({ token: this.state.token, action: "down" });
+  //   } else if (hasClassName(e.target, "img-size-zoomin")) {
+  //     this.onRotateCamera({ token: this.state.token, action: "zoomin" });
+  //   } else if (hasClassName(e.target, "img-size-zoomout")) {
+  //     this.onRotateCamera({ token: this.state.token, action: "zoomout" });
+  //   }
+  // }
   onClose() {
     let { onClose, model } = this.props;
     if (onClose) {
@@ -335,22 +318,3 @@ class Water extends Base {
   }
 }
 export default Water;
-// import React, { useEffect } from "react";
-// import { Modal } from "antd";
-// import "./style.scss";
-// const Water = (props) => {
-//   useEffect(() => {
-//     console.log(props);
-//   }, []);
-//   return (
-//     <>
-//       <div
-//         className="m-ovl-box m-ovl-water"
-//         style={{ display: "none", width: 900, height: 680 }}
-//       >
-//         <Modal visible></Modal>
-//       </div>
-//     </>
-//   );
-// };
-// export default Water;

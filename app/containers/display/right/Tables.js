@@ -49,7 +49,7 @@ class Tables extends React.PureComponent {
       waterlod,
       videolod,
     } = this.state;
-    const { initFlood, floodLoading, initWater, rowNum } = this.props;
+    const { initFlood, floodLoading, initWater, rowNum,waterLoading } = this.props;
     return (
       <div className="dis-tables">
         <div className="dis-table-btns">
@@ -92,7 +92,11 @@ class Tables extends React.PureComponent {
             ></Precipitation>
           </TableWrap>
           <TableWrap title={"视频站点(" + videoCount + ")"}>
-            <Video dataSource={videoData} lod={videolod} rowNum={rowNum}></Video>
+            <Video
+              dataSource={videoData}
+              lod={videolod}
+              rowNum={rowNum}
+            ></Video>
           </TableWrap>
           <TableWrap
             title={"易涝点(" + initFlood?.length + ")"}
@@ -107,7 +111,12 @@ class Tables extends React.PureComponent {
           </TableWrap>
           {/* <TableWrap title={"水位站(" + waterCount + ")"} extra={"单位：m"}> */}
           <TableWrap title={`水位站(${initWater?.length})`} extra={"单位：m"}>
-            <Water dataSource={initWater} lod={false} dict={dict} rowNum={rowNum}></Water>
+            <Water
+              dataSource={initWater}
+              lod={waterLoading}
+              dict={dict}
+              rowNum={rowNum}
+            ></Water>
           </TableWrap>
         </div>
       </div>
@@ -195,6 +204,7 @@ function mapStateToProps(state) {
     initFlood: state.mapAboutReducers.initFlood,
     floodLoading: state.mapAboutReducers.floodLoading,
     initWater: state.mapAboutReducers.initWater,
+    waterLoading: state.mapAboutReducers.waterLoading,
   };
 }
 

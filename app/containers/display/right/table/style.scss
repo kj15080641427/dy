@@ -18,6 +18,10 @@ h2 {
 }
 
 .table-wrapper {
+  .loadingTop-loading-div {
+    position: relative;
+    top: 110px;
+  }
   .table-wrapper-flood-height {
     width: 100%;
     height: 350px;

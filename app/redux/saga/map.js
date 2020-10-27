@@ -358,7 +358,11 @@ function* getAlarmData() {
         result.data.map((st) => {
           if (item?.riverwaterdataList && item?.riverwaterdataList[0]) {
             if (item?.riverwaterdataList[0].stcd == st.stcd) {
-              list.push({ ...item, ...item.stiteWaterRadios[0], ...st });
+              list.push({
+                ...item,
+                ...{ ...(item.stiteWaterRadios && item.stiteWaterRadios[0]) },
+                ...st,
+              });
             }
           }
         });

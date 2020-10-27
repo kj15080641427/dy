@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/map";
 import Map from "../display/map/Map";
 import Head from "../display/head/Head";
-import APPIMG from "../../resource/app.png";
+import APPIMG from "../../resource/icon/appCode.png";
 import "./style.scss";
 
 const DisplaySmall = (props) => {
@@ -23,7 +23,7 @@ const DisplaySmall = (props) => {
     });
   }, []);
   return (
-    <div className='display-body'>
+    <div className="display-body">
       <div className="small-dis-head">
         <Head></Head>
       </div>
@@ -48,7 +48,7 @@ const DisplaySmall = (props) => {
         <OverView></OverView>
       </div>
       <div className="small-dis-table">
-        <Tables dict={dict} rowNum={2}></Tables>
+        <Tables dict={dict} rowNum={3}></Tables>
       </div>
     </div>
   );
@@ -59,6 +59,7 @@ function mapStateToProps(state) {
     initFlood: state.mapAboutReducers.initFlood,
     floodLoading: state.mapAboutReducers.floodLoading,
     initWater: state.mapAboutReducers.initWater,
+    waterLoading: state.mapAboutReducers.waterLoading,
     dict: state.currency.dict,
   };
 }
