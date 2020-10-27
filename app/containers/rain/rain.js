@@ -208,11 +208,18 @@ class Monitor extends React.PureComponent {
                         : `${d?.aliasName}(0)`,
                     },
                     {
-                      address: "垦利区",
-                      max: `${tabsList?.kl[0]?.aliasName}(${tabsList?.kl[0]?.raindataList[0]?.dayDrp})`,
-                      min: k?.raindataList[0]
-                        ? `${k?.aliasName}(${k?.raindataList[0]?.dayDrp})`
-                        : `${k?.aliasName}(0)`,
+                      address: "广饶县",
+                      max: `${tabsList?.gr[0]?.aliasName}(${tabsList?.gr[0]?.raindataList[0]?.dayDrp})`,
+                      min: g?.raindataList[0]
+                        ? `${g?.aliasName}(${g?.raindataList[0]?.dayDrp})`
+                        : `${g?.aliasName}(0)`,
+                    },
+                    {
+                      address: "利津县",
+                      max: `${tabsList?.lj[0]?.aliasName}(${tabsList?.lj[0]?.raindataList[0]?.dayDrp})`,
+                      min: l?.raindataList[0]
+                        ? `${l?.aliasName}(${l?.raindataList[0]?.dayDrp})`
+                        : `${l?.aliasName}(0)`,
                     },
                     {
                       address: "河口区",
@@ -222,18 +229,11 @@ class Monitor extends React.PureComponent {
                         : `${h?.aliasName}(0)`,
                     },
                     {
-                      address: "利津区",
-                      max: `${tabsList?.lj[0]?.aliasName}(${tabsList?.lj[0]?.raindataList[0]?.dayDrp})`,
-                      min: l?.raindataList[0]
-                        ? `${l?.aliasName}(${l?.raindataList[0]?.dayDrp})`
-                        : `${l?.aliasName}(0)`,
-                    },
-                    {
-                      address: "广饶区",
-                      max: `${tabsList?.gr[0]?.aliasName}(${tabsList?.gr[0]?.raindataList[0]?.dayDrp})`,
-                      min: g?.raindataList[0]
-                        ? `${g?.aliasName}(${g?.raindataList[0]?.dayDrp})`
-                        : `${g?.aliasName}(0)`,
+                      address: "垦利区",
+                      max: `${tabsList?.kl[0]?.aliasName}(${tabsList?.kl[0]?.raindataList[0]?.dayDrp})`,
+                      min: k?.raindataList[0]
+                        ? `${k?.aliasName}(${k?.raindataList[0]?.dayDrp})`
+                        : `${k?.aliasName}(0)`,
                     },
                     {
                       address: "东营市",
