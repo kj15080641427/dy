@@ -97,7 +97,7 @@ class Monitor extends React.PureComponent {
           <div className="m-left">
             <div className="chart-left">
               <WeatherChart />
-              <RenderBox hasTitle title="基本统计信息" width="514">
+              <RenderBox hasTitle title="基本统计信息" width="514" style={{ margin: 0 }}>
                 <Radio.Group
                   defaultValue={this.state.radio}
                   buttonStyle="solid"
@@ -106,8 +106,26 @@ class Monitor extends React.PureComponent {
                     this.setState({ radio: e.target.value });
                   }}
                 >
-                  <Radio.Button value="a">来源</Radio.Button>
-                  <Radio.Button value="b">区县</Radio.Button>
+                  <Radio.Button value="a"
+                    style={
+                      this.state.radio == "b"
+                        ? {
+                            background: "#003366",
+                            color: "#cdd2d2",
+                            border: "0px solid #003366",
+                          }
+                        : {}
+                    }>来源</Radio.Button>
+                  <Radio.Button value="b"
+                    style={
+                      this.state.radio == "a"
+                        ? {
+                            background: "#003366",
+                            color: "#cdd2d2",
+                            border: "0px solid #003366",
+                          }
+                        : {}
+                    }>区县</Radio.Button>
                 </Radio.Group>
                 <div
                   style={{
@@ -116,20 +134,20 @@ class Monitor extends React.PureComponent {
                 >
                   <div className="pie-title-flex-online">
                     <div>
-                      <label className="number-color">{typeOnline?.q}</label>
-                      <label>基层防汛在线</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{typeOnline?.w}</label>
-                      <label>其他来源在线</label>
-                    </div>
-                    <div>
                       <label className="number-color">{typeOnline?.e}</label>
                       <label>气象局在线</label>
                     </div>
                     <div>
                       <label className="number-color">{typeOnline?.r}</label>
                       <label>水文局在线</label>
+                    </div>
+                    <div>
+                      <label className="number-color">{typeOnline?.q}</label>
+                      <label>基层防汛在线</label>
+                    </div>
+                    <div>
+                      <label className="number-color">{typeOnline?.w}</label>
+                      <label>其他来源在线</label>
                     </div>
                   </div>
                   <div className="rain-pie-chart" id="rain-pie-chart" />
@@ -142,6 +160,10 @@ class Monitor extends React.PureComponent {
                 >
                   <div className="pie-title-flex">
                     <div>
+                      <label className="number-color">{numberList?.dy}</label>
+                      <label>东营区</label>
+                    </div>
+                    <div>
                       <label className="number-color">{numberList?.gr}</label>
                       <label>广饶县</label>
                     </div>
@@ -150,16 +172,12 @@ class Monitor extends React.PureComponent {
                       <label>利津县</label>
                     </div>
                     <div>
-                      <label className="number-color">{numberList?.kl}</label>
-                      <label>垦利县</label>
-                    </div>
-                    <div>
                       <label className="number-color">{numberList?.hk}</label>
                       <label>河口区</label>
                     </div>
                     <div>
-                      <label className="number-color">{numberList?.dy}</label>
-                      <label>东营区</label>
+                      <label className="number-color">{numberList?.kl}</label>
+                      <label>垦利县</label>
                     </div>
                   </div>
                   <div className="rain-online" id="rainOnline"></div>
@@ -486,7 +504,7 @@ class Monitor extends React.PureComponent {
         "rain-pie-chart",
         data,
         300,
-        ["基层防汛", "其他", "气象局", "水文局"],
+        ["气象局", "水文局", "基层防汛", "其他"],
         {
           text: `雨量站点\n来源统计图`,
           left: "center",
