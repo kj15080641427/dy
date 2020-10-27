@@ -9,6 +9,7 @@ import taskReducers from "../../containers/home/redux/taskReducers";
 import rainReducers from "./rain";
 import mapAboutReducers from "./map";
 import handState from "./handState";
+import floodModel from "./floodModel";
 export default combineReducers({
   monitor,
   home,
@@ -19,4 +20,5 @@ export default combineReducers({
   rainReducers,
   mapAboutReducers,
   handState,
+  floodModel
 });

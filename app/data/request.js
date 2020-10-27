@@ -371,3 +371,26 @@ export function downlWordData(data) {
 export function downloadExcel(data) {
   return fetchGet("/base/SiteBase/word", data);
 }
+
+//==============================================================洪涝模型接口================================================================================
+//查询洪涝模型的节点
+export function queryModelNodes(data) {
+  return fetchJSONData('POST', '/base/ModelNodes/query', data);
+}
+//查询洪涝模型的预报
+export function queryPrediction(data) {
+  return fetchJSONData('POST', '/base/ModelPrediction/query', data);
+}
+//查询预报结果
+export function queryPredictionResult(data) {
+  return fetchJSONData('POST', '/base/ModelPredictionresult/query', data);
+}
+
+//查询模型运行状态
+export function queryModelRunningState(data) {
+  return fetchJSONData('POST', '/base/ModelSitenoderel/queryPython', data);
+}
+//运行python
+export function startRunModel(data) {
+  return fetchJSONData('POST', '/base/ModelSitenoderel/startPython', data);
+}

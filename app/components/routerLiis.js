@@ -79,7 +79,7 @@ class RouterList extends React.PureComponent {
     {
       text: "洪涝预报",
       imgurl: forecast,
-      routerUrl: "/forecast",
+      routerUrl: "/floodModel",
     },
     {
       text: "数据管理",
