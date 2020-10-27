@@ -369,7 +369,7 @@ function* getAlarmData() {
       });
       let data = resultwater.data.map((item) => {
         if (item.stiteWaterRadios && item.stiteWaterRadios[0]) {
-          return { ...item, ...item.stiteWaterRadios[0] };
+          return { ...item.stiteWaterRadios[0], ...item };
         } else {
           return item;
         }
@@ -383,6 +383,7 @@ function* getAlarmData() {
       });
       if (list[0]) {
         list[0] = { ...list[0], name: list[0].stnm };
+        console.log(list[0], "LLLLLLLLL");
         yield put({
           type: types.CHANGE_WATER_ID,
           data: {

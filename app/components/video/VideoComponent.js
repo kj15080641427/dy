@@ -36,8 +36,8 @@ class VideoComponent extends Component {
             frameBorder="0"
             allowFullScreen={true}
             controls={true}
-            webkitallowfullscreen={true}
-            mozallowfullscreen={true}
+            webkitallowfullscreen={true.toString()}
+            mozallowfullscreen={true.toString()}
           />
         ) : null}
       </>

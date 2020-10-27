@@ -60,7 +60,7 @@ class Water extends Base {
             top: 275,
           }}
         >
-          <VideoComponent
+          {/* <VideoComponent
             videoControl={videoControl}
             token={this.state.token}
             type={type}
@@ -72,7 +72,7 @@ class Water extends Base {
               left: 30,
               top: 25,
             }}
-          />
+          /> */}
         </div>
 
         <div style={{ float: "right", overflow: "hidden", width: 200 }}>
@@ -90,10 +90,10 @@ class Water extends Base {
           </div>
         </div>
         <span className="iconfont iconcuo m-ovl-close"></span>
-        <Holder
+        {/* <Holder
           token={this.state.token}
           divStyle={{ top: 420, right: -30, transform: "scale(0.6)" }}
-        ></Holder>
+        ></Holder> */}
         <div
           style={{
             float: "left",

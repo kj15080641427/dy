@@ -27,6 +27,7 @@ import {
 import { TableShow } from "../../components/chart/table";
 import RouterList from "../../components/routerLiis";
 import WaterInfo from "./tabs";
+import WaterInfoRiver from "./tabsRiver";
 import emitter from "@app/utils/emitter.js";
 const { TabPane } = Tabs;
 const itemStyle = {
@@ -49,6 +50,7 @@ class Monitor extends React.PureComponent {
       dispalyLeft: "block",
       displayRight: "block",
       radio: "a",
+      radiotabs: "city",
       // dispalyBottom: 'block',
       layerVisible: {
         showRain: true,
@@ -255,7 +257,7 @@ class Monitor extends React.PureComponent {
     this.props.actions.getCountStation(); //来源统计
     this.props.actions.getAlarm();
     this.props.stateActions.getDsplayWater(waterId);
-    this.props.stateActions.getSiteWaterByRiver("广利河");
+    this.props.stateActions.getSiteWaterByRiver({ name: "广利河" });
   }
   componentDidUpdate(pre) {
     const { water, count, displayWater, waterId, riverSiteWater } = this.props;
@@ -283,7 +285,7 @@ class Monitor extends React.PureComponent {
       alarmData,
       water,
       waterVideoInfo,
-      riverSiteWater,
+      siteRiverTable,
     } = this.props;
     const { changeWaterId } = this.props.actions;
     const {
@@ -302,7 +304,17 @@ class Monitor extends React.PureComponent {
       lj,
       hk,
     } = this.state;
-
+    const renderRiverSite = (e) => {
+      const obj = {
+        a1: "广利河",
+        a2: "溢洪河",
+        a3: "永丰河",
+        a4: "马新河",
+        a5: "小清河",
+        a6: "草桥沟",
+      };
+      getSiteWaterByRiver({ name: obj[e], type: 1 });
+    };
     return (
       <div className="water-display">
         <Map layerVisible={layerVisible}></Map>
@@ -341,7 +353,7 @@ class Monitor extends React.PureComponent {
                     render: (e) => e.slice(0, -3),
                   },
                 ]}
-                pageSize="3"
+                pageSize="2"
                 dataSource={alarmData}
                 onRow={(record) => {
                   return {
@@ -403,8 +415,8 @@ class Monitor extends React.PureComponent {
                       this.state.radio == "b"
                         ? {
                             background: "#003366",
-                            color: "#cdd2d2",
-                            border: "0px solid #003366",
+                            color: "#3397d4",
+                            border: "1px solid #003366",
                           }
                         : {}
                     }
@@ -417,8 +429,8 @@ class Monitor extends React.PureComponent {
                       this.state.radio == "a"
                         ? {
                             background: "#003366",
-                            color: "#cdd2d2",
-                            border: "0px solid #003366",
+                            color: "#3397d4",
+                            border: "1px solid #003366",
                           }
                         : {}
                     }
@@ -429,29 +441,70 @@ class Monitor extends React.PureComponent {
               </RenderBox>
             </div>
             <div className="video-table">
+              
               <RenderBox>
-                <div className="card-container">
-                  <Tabs type="card">
-                    <TabPane tab="全部" key="1">
-                      <WaterInfo dataSource={water} />
-                    </TabPane>
-                    <TabPane tab="东营区" key="2">
-                      <WaterInfo dataSource={dy} />
-                    </TabPane>
-                    <TabPane tab="广饶县" key="3">
-                      <WaterInfo dataSource={gr} />
-                    </TabPane>
-                    <TabPane tab="利津县" key="4">
-                      <WaterInfo dataSource={lj} />
-                    </TabPane>
-                    <TabPane tab="河口区" key="5">
-                      <WaterInfo dataSource={hk} />
-                    </TabPane>
-                    <TabPane tab="垦利区" key="6">
-                      <WaterInfo dataSource={kl} />
-                    </TabPane>
-                  </Tabs>
+                <div>
+                  <Radio.Group
+                    optionType="button"
+                    buttonStyle="solid"
+                    defaultValue={this.state.radiotabs}
+                    onChange={(e) =>
+                      this.setState({
+                        radiotabs: e.target.value,
+                      })
+                    }
+                  >
+                    <Radio.Button value="city">区县</Radio.Button>
+                    <Radio.Button value="river">河流</Radio.Button>
+                  </Radio.Group>
                 </div>
+                {this.state.radiotabs == "city" ? (
+                  <div className="card-container" >
+                    <Tabs type="card">
+                      <TabPane tab="全部" key="1">
+                        <WaterInfo dataSource={water} />
+                      </TabPane>
+                      <TabPane tab="东营区" key="2">
+                        <WaterInfo dataSource={dy} />
+                      </TabPane>
+                      <TabPane tab="广饶县" key="3">
+                        <WaterInfo dataSource={gr} />
+                      </TabPane>
+                      <TabPane tab="利津县" key="4">
+                        <WaterInfo dataSource={lj} />
+                      </TabPane>
+                      <TabPane tab="河口区" key="5">
+                        <WaterInfo dataSource={hk} />
+                      </TabPane>
+                      <TabPane tab="垦利区" key="6">
+                        <WaterInfo dataSource={kl} />
+                      </TabPane>
+                    </Tabs>
+                  </div>
+                ) : (
+                  <div className="card-container">
+                    <Tabs type="card" onChange={(e) => renderRiverSite(e)}>
+                      <TabPane tab="广利河" key="a1">
+                        <WaterInfoRiver dataSource={siteRiverTable} />
+                      </TabPane>
+                      <TabPane tab="溢洪河" key="a2">
+                        <WaterInfoRiver dataSource={siteRiverTable} />
+                      </TabPane>
+                      <TabPane tab="永丰河" key="a3">
+                        <WaterInfoRiver dataSource={siteRiverTable} />
+                      </TabPane>
+                      <TabPane tab="马新河" key="a4">
+                        <WaterInfoRiver dataSource={siteRiverTable} />
+                      </TabPane>
+                      <TabPane tab="小清河" key="a5">
+                        <WaterInfoRiver dataSource={siteRiverTable} />
+                      </TabPane>
+                      <TabPane tab="草桥沟" key="a6">
+                        <WaterInfoRiver dataSource={siteRiverTable} />
+                      </TabPane>
+                    </Tabs>
+                  </div>
+                )}
               </RenderBox>
             </div>
           </div>
@@ -468,7 +521,7 @@ class Monitor extends React.PureComponent {
                 <Select
                   defaultValue="广利河"
                   onChange={(e) => {
-                    getSiteWaterByRiver(e);
+                    getSiteWaterByRiver({ name: e });
                   }}
                   className="water-right-first-box-select"
                 >
@@ -626,6 +679,7 @@ function mapStateToProps(state) {
     alarmData: state.currency.alarmData,
     waterVideoInfo: state.handState.waterVideoInfo,
     riverSiteWater: state.handState.riverSiteWater,
+    siteRiverTable: state.handState.siteRiverTable,
   };
 }
 

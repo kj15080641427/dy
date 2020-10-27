@@ -16,6 +16,7 @@ export const TabsList = (props) => {
     let xdata = [];
     let ydata = [];
     let name = data[0] ? data[0].stnm : "";
+    console.log(data);
     var myChart = echarts.init(document.getElementById(id));
     data.forEach((item) => {
       xdata.push(item.tm);
@@ -85,9 +86,8 @@ export const TabsList = (props) => {
   };
 
   useEffect(() => {
-    console.log("??????????");
     if (dayWater instanceof Array && visible) {
-      showChart(dayWater.reverse(), "dayWaterDiv");
+      showChart(dayWater.reverse(), "dayRiverWaterDiv");
     }
   }, [dayWater]);
 
@@ -166,7 +166,6 @@ export const TabsList = (props) => {
         footer={null}
         onCancel={() => changeModalVisible(false)}
         width={1300}
-        forceRender
       >
         <Tabs defaultActiveKey="1" style={{ color: "black" }}>
           <Tabs.TabPane
@@ -177,7 +176,10 @@ export const TabsList = (props) => {
           >
             <Row>
               <Col span={12}>
-                <div id="dayWaterDiv" style={{ width: 600, height: 500 }}></div>
+                <div
+                  id="dayRiverWaterDiv"
+                  style={{ width: 600, height: 500 }}
+                ></div>
               </Col>
               <Col span={12}>
                 <Table

@@ -614,7 +614,10 @@ export const showChartRiver = (data, id) => {
   let ydata = [];
   var myChart = echarts.init(document.getElementById(id));
   data.forEach((item) => {
-    item.stnm = `${item.stnm.slice(0, 2)}\n${item.stnm.slice(2, 4)}\n${item.stnm.slice(4, 33)}`;
+    item.stnm = `${item.stnm.slice(0, 2)}\n${item.stnm.slice(
+      2,
+      4
+    )}\n${item.stnm.slice(4, 33)}`;
     xdata.push(item.stnm);
     ydata.push(item.z);
   });
@@ -665,6 +668,9 @@ export const showChartRiver = (data, id) => {
         name: "站点",
         type: "line",
         data: ydata,
+        lineStyle: {
+          color: "rgb(27,184,108)", //改变折线颜色
+        },
       },
     ],
   });

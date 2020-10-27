@@ -7,6 +7,7 @@ const initState = {
   floodAlarmData: [],
   floodDayRain: [],
   riverSiteWater: [],
+  siteRiverTable: [],
 };
 export default function handState(state = initState, action) {
   let newState = Object.assign({}, state);
@@ -44,6 +45,9 @@ export default function handState(state = initState, action) {
       break;
     case types.SET_SITE_WATER_BY_RIVER:
       newState = { ...newState, riverSiteWater: action.data };
+      break;
+    case types.SET_SITE_RIVER_TABLE:
+      newState = { ...newState, siteRiverTable: action.data };
       break;
     default:
       return state;

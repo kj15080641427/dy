@@ -29,9 +29,9 @@ export default function mapAboutReducers(state = initState, action) {
         if (item.riverwaterdataList && item.riverwaterdataList[0]) {
           const items = {
             ...item,
-            ...item.riverwaterdataList[0],
             ...item.siteWaterLevels[0],
             ...(item.stiteWaterRadios ? { ...item.stiteWaterRadios[0] } : {}),
+            ...item.riverwaterdataList[0],
           };
           waterList.push(items);
           if (items.z >= item.warning) {
@@ -92,6 +92,7 @@ export default function mapAboutReducers(state = initState, action) {
       };
       break;
     case types.CHANGE_WATER_ID: //改变水位id
+      console.log(action.data.id, "AAAAAAA");
       newState = {
         ...newState,
         waterId: action.data.id,
