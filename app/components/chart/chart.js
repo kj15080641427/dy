@@ -299,6 +299,7 @@ export const rotateBarChart = (domId, data, width, height) => {
       d.reduceFlag = true;
     }
   });
+  console.log(data, "DDATA");
   let option = {
     tooltip: {
       trigger: "axis",
@@ -399,9 +400,20 @@ export const rotateBarChart = (domId, data, width, height) => {
   myChartcount.setOption(option);
 };
 
-//
-export const funnelChart = (domId, data) => {
+export const easyfloodRain = (domId, data) => {
   let myChartcount = echarts.init(document.getElementById(domId));
+  const max = Math.max(...data.map((d) => d.value));
+  const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
+  let reduceNum = Math.floor(max / 15);
+  if (reduceNum >= min) {
+    reduceNum = min - 1;
+  }
+  data.map((d) => {
+    if (d.value == 0) {
+      d.value = reduceNum;
+      d.reduceFlag = true;
+    }
+  });
   let option = {
     tooltip: {
       trigger: "axis",
@@ -409,30 +421,106 @@ export const funnelChart = (domId, data) => {
         type: "shadow",
       },
     },
-    legend: {
-      data: [
-        "0cm 无积水",
-        "0-10cm",
-        "10-20cm",
-        "20-30cm",
-        "30-40cm",
-        "40cm以上",
-      ],
-    },
     grid: {
-      left: "3%",
-      right: "4%",
-      bottom: "10%",
-      top: "15%",
+      left: "5%",
+      right: "5%",
+      bottom: "5%",
+      top: "8%",
       containLabel: true,
     },
     xAxis: {
+      show: false,
       type: "value",
       boundaryGap: [0, 0.01],
-      show: false,
     },
     yAxis: {
+      axisLabel: { color: "white", fontSize: "15" },
+      axisLine: { show: false },
+      axisTick: { show: false },
+      position: "left",
+      type: "category",
+      data: [
+        { value: "无雨(0)" },
+        {
+          value: "小雨(0-10)",
+        },
+        {
+          value: "中雨(10-25)",
+        },
+        {
+          value: "大雨(25-50)",
+        },
+        {
+          value: "暴雨(50-100)",
+        },
+        {
+          value: "大暴雨(100-250)",
+        },
+        {
+          value: "特大暴雨(>250)",
+        },
+      ],
+    },
+    series: [
+      {
+        label: {
+          show: true,
+          position: "right",
+          color: "white",
+          formatter: (params) => {
+            if (params.data.reduceFlag) {
+              return 0;
+            } else {
+              return params.value;
+            }
+          },
+        },
+        name: "积水",
+        type: "bar",
+        data: data,
+      },
+    ],
+  };
+  myChartcount.setOption(option);
+};
+export const funnelChart = (domId, data) => {
+  let myChartcount = echarts.init(document.getElementById(domId));
+  const max = Math.max(...data.map((d) => d.value));
+  const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
+  let reduceNum = Math.floor(max / 15);
+  if (reduceNum >= min) {
+    reduceNum = min - 1;
+  }
+  data.map((d) => {
+    if (d.value == 0) {
+      d.value = reduceNum;
+      d.reduceFlag = true;
+    }
+  });
+  let option = {
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow",
+      },
+    },
+    grid: {
+      left: "5%",
+      right: "5%",
+      bottom: "5%",
+      top: "10%",
+      containLabel: true,
+    },
+    xAxis: {
       show: false,
+      type: "value",
+      boundaryGap: [0, 0.01],
+    },
+    yAxis: {
+      axisLabel: { color: "white", fontSize: "15" },
+      axisLine: { show: false },
+      axisTick: { show: false },
+      position: "left",
       type: "category",
       data: [
         "0cm 无积水",
@@ -445,74 +533,21 @@ export const funnelChart = (domId, data) => {
     },
     series: [
       {
-        tooltip: { show: false },
-        name: "",
-        type: "bar",
-        stack: "总量",
-        label: {
-          show: true,
-          position: "insideRight",
-        },
-        data: [
-          {
-            value: 25,
-            label: {
-              formatter: "0cm 无积水",
-              color: "black",
-            },
-            itemStyle: { color: "rgba(255,255,255,1)" },
-          },
-          {
-            value: 25,
-            label: {
-              formatter: "0-10cm",
-              color: "black",
-            },
-            itemStyle: { color: "rgba(0,191,243,1)" },
-          },
-          {
-            value: 25,
-            label: {
-              formatter: "10-20cm",
-              color: "black",
-            },
-            itemStyle: { color: "rgba(0,255,1,1)" },
-          },
-          {
-            value: 25,
-            label: {
-              formatter: "20-30cm",
-              color: "black",
-            },
-            itemStyle: { color: "rgba(255,255,1,1)" },
-          },
-          {
-            value: 25,
-            label: {
-              formatter: "30-40cm",
-              color: "black",
-            },
-            itemStyle: { color: "rgba(143,101,35,1)" },
-          },
-          {
-            value: 25,
-            label: {
-              formatter: "40cm以上",
-              color: "black",
-            },
-            itemStyle: { color: "rgba(237,28,34,1)" },
-          },
-        ],
-      },
-      {
-        name: "数量",
-        type: "bar",
-        stack: "总量",
-        data: data,
         label: {
           show: true,
           position: "right",
+          color: "white",
+          formatter: (params) => {
+            if (params.data.reduceFlag) {
+              return 0;
+            } else {
+              return params.value;
+            }
+          },
         },
+        name: "积水",
+        type: "bar",
+        data: data,
       },
     ],
   };

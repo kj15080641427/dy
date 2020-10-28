@@ -51,6 +51,8 @@ class Monitor extends React.PureComponent {
       displayRight: "block",
       radio: "a",
       radiotabs: "city",
+      riverTabsKey: "a",
+      cityTabsKey: "1",
       // dispalyBottom: 'block',
       layerVisible: {
         showRain: true,
@@ -258,6 +260,7 @@ class Monitor extends React.PureComponent {
     this.props.actions.getAlarm();
     this.props.stateActions.getDsplayWater(waterId);
     this.props.stateActions.getSiteWaterByRiver({ name: "广利河" });
+    this.props.stateActions.getSiteWaterByRiver({ name: "广利河", type: 1 });
   }
   componentDidUpdate(pre) {
     const { water, count, displayWater, waterId, riverSiteWater } = this.props;
@@ -306,12 +309,12 @@ class Monitor extends React.PureComponent {
     } = this.state;
     const renderRiverSite = (e) => {
       const obj = {
-        a1: "广利河",
-        a2: "溢洪河",
-        a3: "永丰河",
-        a4: "马新河",
-        a5: "小清河",
-        a6: "草桥沟",
+        a: "广利河",
+        b: "溢洪河",
+        c: "永丰河",
+        d: "马新河",
+        e: "小清河",
+        f: "草桥沟",
       };
       getSiteWaterByRiver({ name: obj[e], type: 1 });
     };
@@ -416,7 +419,10 @@ class Monitor extends React.PureComponent {
                         ? {
                             background: "#003366",
                             color: "#3397d4",
-                            border: "1px solid #003366",
+                            borderTop: "1px solid rgb(0, 51, 102)",
+                            borderLeft: "1px solid rgb(0, 51, 102)",
+                            borderBottom: "1px solid rgb(0, 51, 102)",
+                            borderRight: "0px solid rgb(0, 51, 102)",
                           }
                         : {}
                     }
@@ -430,7 +436,10 @@ class Monitor extends React.PureComponent {
                         ? {
                             background: "#003366",
                             color: "#3397d4",
-                            border: "1px solid #003366",
+                            borderTop: "1px solid rgb(0, 51, 102)",
+                            borderRight: "1px solid rgb(0, 51, 102)",
+                            borderBottom: "1px solid rgb(0, 51, 102)",
+                            borderLeft: "0px solid rgb(0, 51, 102)",
                           }
                         : {}
                     }
@@ -441,7 +450,6 @@ class Monitor extends React.PureComponent {
               </RenderBox>
             </div>
             <div className="video-table">
-              
               <RenderBox>
                 <div>
                   <Radio.Group
@@ -459,8 +467,12 @@ class Monitor extends React.PureComponent {
                   </Radio.Group>
                 </div>
                 {this.state.radiotabs == "city" ? (
-                  <div className="card-container" >
-                    <Tabs type="card">
+                  <div className="card-container">
+                    <Tabs
+                      type="card"
+                      activeKey={this.state.cityTabsKey}
+                      onChange={(e) => this.setState({ cityTabsKey: e })}
+                    >
                       <TabPane tab="全部" key="1">
                         <WaterInfo dataSource={water} />
                       </TabPane>
@@ -483,25 +495,34 @@ class Monitor extends React.PureComponent {
                   </div>
                 ) : (
                   <div className="card-container">
-                    <Tabs type="card" onChange={(e) => renderRiverSite(e)}>
-                      <TabPane tab="广利河" key="a1">
+                    <Tabs
+                      type="card"
+                      onChange={(e) => {
+                        this.setState({
+                          riverTabsKey: e,
+                        });
+                        renderRiverSite(e);
+                      }}
+                      activeKey={this.state.riverTabsKey}
+                    >
+                      <Tabs.TabPane tab="广利河" key="a">
                         <WaterInfoRiver dataSource={siteRiverTable} />
-                      </TabPane>
-                      <TabPane tab="溢洪河" key="a2">
+                      </Tabs.TabPane>
+                      <Tabs.TabPane tab="溢洪河" key="b">
                         <WaterInfoRiver dataSource={siteRiverTable} />
-                      </TabPane>
-                      <TabPane tab="永丰河" key="a3">
+                      </Tabs.TabPane>
+                      <Tabs.TabPane tab="永丰河" key="c">
                         <WaterInfoRiver dataSource={siteRiverTable} />
-                      </TabPane>
-                      <TabPane tab="马新河" key="a4">
+                      </Tabs.TabPane>
+                      <Tabs.TabPane tab="马新河" key="d">
                         <WaterInfoRiver dataSource={siteRiverTable} />
-                      </TabPane>
-                      <TabPane tab="小清河" key="a5">
+                      </Tabs.TabPane>
+                      <Tabs.TabPane tab="小清河" key="e">
                         <WaterInfoRiver dataSource={siteRiverTable} />
-                      </TabPane>
-                      <TabPane tab="草桥沟" key="a6">
+                      </Tabs.TabPane>
+                      <Tabs.TabPane tab="草桥沟" key="f">
                         <WaterInfoRiver dataSource={siteRiverTable} />
-                      </TabPane>
+                      </Tabs.TabPane>
                     </Tabs>
                   </div>
                 )}

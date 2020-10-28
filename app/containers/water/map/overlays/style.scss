@@ -1,38 +1,26 @@
 .m-ovl-box {
+  // #048EF1
+  display: none;
+  width: 300px;
+  height: 350px;
   position: relative;
-  background: white;
+  background: rgba(3, 50, 102, 0.8) !important;
+  // opacity: 0.7;
   padding: 15px;
   font-size: 14px;
-  color: #666666;
-  box-shadow: 0 2px 4px 0 rgba(152, 152,152,.5);
+  color: white;
+  // box-shadow: 0 2px 4px 0 rgba(152, 152, 152, 0.5);
   border-radius: 4px;
   .m-ovl-close {
     position: absolute;
     right: 5px;
     top: 5px;
     font-size: 14px;
-    color: #999999;
+    color: white;
     cursor: pointer;
   }
 }
-.m-ovl-person {
-  .m-ovl-line {
-    span:first-child {
-      padding-right: 20px;
-    }
-    .m-ovl-video {
-      display: block;
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      line-height: 25px;
-      color: #0C63CA;
-      font-size: 20px;
-      cursor: pointer;
-    }
-  }
-}
+
 .m-ovl-video {
   width: 384px;
   .m-ovl-vc {
@@ -45,6 +33,10 @@
   }
 }
 .m-ovl-line {
+  display: flex;
+  width: 100%;
+  // justify-content: space-around;
+  color: white;
   position: relative;
   line-height: 25px;
   padding: 10px;
@@ -58,9 +50,8 @@
     overflow: auto;
     .ant-table-header {
       > table {
-        visibility: visible!important;
+        visibility: visible !important;
       }
     }
   }
-  
 }

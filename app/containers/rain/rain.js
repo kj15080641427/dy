@@ -113,7 +113,10 @@ class Monitor extends React.PureComponent {
                         ? {
                             background: "#003366",
                             color: "#3397d4",
-                            border: "1px solid #003366",
+                            borderTop: "1px solid rgb(0, 51, 102)",
+                            borderLeft: "1px solid rgb(0, 51, 102)",
+                            borderBottom: "1px solid rgb(0, 51, 102)",
+                            borderRight: "0px solid rgb(0, 51, 102)",
                           }
                         : {}
                     }
@@ -127,7 +130,10 @@ class Monitor extends React.PureComponent {
                         ? {
                             background: "#003366",
                             color: "#3397d4",
-                            border: "1px solid #003366",
+                            borderTop: "1px solid rgb(0, 51, 102)",
+                            borderRight: "1px solid rgb(0, 51, 102)",
+                            borderBottom: "1px solid rgb(0, 51, 102)",
+                            borderLeft: "0px solid rgb(0, 51, 102)",
                           }
                         : {}
                     }

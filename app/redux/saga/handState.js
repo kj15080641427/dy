@@ -117,6 +117,10 @@ function* getDisplayWater({ data }) {
         type: types.SET_DISPLAY_WATER,
         data: result.data.records,
       });
+      yield put({
+        type: types.SET_DAY_WATER,
+        data: result.data.records,
+      });
     }
   } catch (e) {
     console.log(e);

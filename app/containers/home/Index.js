@@ -51,7 +51,7 @@ class Home extends React.PureComponent {
               minHeight: 280,
             }}
           >
-            <div style={{ textAlign: "center" }}>
+            {/* <div style={{ textAlign: "center" }}>
               <a
                 style={{ fontSize: "44px" }}
                 onMouseEnter={() => console.log(11)}
@@ -61,7 +61,7 @@ class Home extends React.PureComponent {
               <div>
                 <img src={appcode} width="300px" height="300px"></img>
               </div>
-            </div>
+            </div> */}
             <ContentRouter path={match.path}></ContentRouter>
           </Content>
         </Layout>

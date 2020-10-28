@@ -1,4 +1,5 @@
 import { createHashHistory } from "history";
+import { message } from "antd";
 // const host = "http://2287ym5502.51mypc.cn";
 //const host = "http://10.1.4.187:8080/";
 // element判断是否含有className
@@ -78,6 +79,9 @@ export function fetchJSONData(method, url, data) {
 
     if (res.status == 400) {
       hashHistory.push("/");
+    }
+    if (res.status == "404") {
+      message.error("网络请求失败");
     }
     if (url === "/api/users/login") {
       return res.ok ? res : Promise.reject("接口出错");

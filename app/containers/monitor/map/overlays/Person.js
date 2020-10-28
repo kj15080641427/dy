@@ -42,7 +42,7 @@ class Person extends Base {
           <span>电话号码: {model.phone}</span>
           <span className="iconfont iconshipin m-ovl-video"></span>
         </div>
-        <div>
+        <div style={{ color: "white" }}>
           开始时间:
           <DatePicker
             format="YYYY-MM-DD HH:mm"
@@ -50,7 +50,7 @@ class Person extends Base {
             onChange={() => console.log(111)}
           ></DatePicker>
         </div>
-        <div>
+        <div style={{ color: "white" }}>
           结束时间:
           <DatePicker
             format="YYYY-MM-DD HH:mm"

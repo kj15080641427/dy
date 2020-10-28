@@ -16,7 +16,6 @@ export const TabsList = (props) => {
     let xdata = [];
     let ydata = [];
     let name = data[0] ? data[0].stnm : "";
-    console.log(data);
     var myChart = echarts.init(document.getElementById(id));
     data.forEach((item) => {
       xdata.push(item.tm);
@@ -56,7 +55,7 @@ export const TabsList = (props) => {
       },
       xAxis: {
         type: "category",
-        data: xdata.length ? xdata : [],
+        data: xdata,
         name: "时间",
       },
       yAxis: {
@@ -72,7 +71,7 @@ export const TabsList = (props) => {
       series: [
         {
           // name: '1小时降水',
-          data: ydata.length ? ydata : [],
+          data: ydata,
           type: "line",
           markPoint: {
             data: [
@@ -86,7 +85,8 @@ export const TabsList = (props) => {
   };
 
   useEffect(() => {
-    if (dayWater instanceof Array && visible) {
+    if (dayWater instanceof Array && visible && dayWater[0]) {
+      console.log(dayWater, "??");
       showChart(dayWater.reverse(), "dayRiverWaterDiv");
     }
   }, [dayWater]);
@@ -103,9 +103,9 @@ export const TabsList = (props) => {
                   id: record?.siteWaterLevels[0]?.stcd,
                   name: record.name,
                 },
-                changeWaterVideo(record)
               );
-              emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
+              changeWaterVideo(record)
+              // emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
             },
             onDoubleClick: () => {
               changeModalVisible(true);
@@ -153,7 +153,6 @@ export const TabsList = (props) => {
             width: "25%",
             render: (v) => (v ? v.slice(0, -3) : "-"),
             sorter: (a, b) => {
-              console.log(moment(a.tm));
               return moment(a.tm).unix() - moment(b.tm).unix();
             },
           },

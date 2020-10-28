@@ -14,8 +14,7 @@ import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
 import {
   funnelChart,
-  rotateBarChart,
-  lineChart,
+  easyfloodRain,
   showChart,
 } from "../../components/chart/chart";
 import VideoPlayer from "../../components/video/videoPlayer";
@@ -152,7 +151,7 @@ class Monitor extends React.PureComponent {
         { value: g, itemStyle: { color: "rgba(123,42,51)" } },
         // { value: h, itemStyle: { color: "rgba(228,41,50)" } },
       ];
-      rotateBarChart("easyfloodInfo", list, 400);
+      easyfloodRain("easyfloodInfo", list);
     }
     if (initFlood != pre.initFlood) {
       let a = 0;
@@ -245,8 +244,6 @@ class Monitor extends React.PureComponent {
     }
   }
   render() {
-    {
-    }
     let { layerVisible, displayRight, displayLeft, floodRainName } = this.state;
     const {
       initFlood,
@@ -294,7 +291,7 @@ class Monitor extends React.PureComponent {
               />
             </RenderBox>
             <div className="easyflood-left-bottom">
-              <RenderBox hasTitle title="易涝点积水情况">
+              <RenderBox hasTitle title="基本统计信息">
                 <Radio.Group
                   defaultValue={this.state.radio}
                   buttonStyle="solid"
@@ -303,8 +300,40 @@ class Monitor extends React.PureComponent {
                     this.setState({ radio: e.target.value });
                   }}
                 >
-                  <Radio.Button value="a">积水</Radio.Button>
-                  <Radio.Button value="b">雨量</Radio.Button>
+                  <Radio.Button
+                    value="a"
+                    style={
+                      this.state.radio == "b"
+                        ? {
+                            background: "#003366",
+                            color: "#3397d4",
+                            borderTop: "1px solid rgb(0, 51, 102)",
+                            borderLeft: "1px solid rgb(0, 51, 102)",
+                            borderBottom: "1px solid rgb(0, 51, 102)",
+                            borderRight: "0px solid rgb(0, 51, 102)",
+                          }
+                        : {}
+                    }
+                  >
+                    积水{" "}
+                  </Radio.Button>
+                  <Radio.Button
+                    value="b"
+                    style={
+                      this.state.radio == "a"
+                        ? {
+                            background: "#003366",
+                            color: "#3397d4",
+                            borderTop: "1px solid rgb(0, 51, 102)",
+                            borderRight: "1px solid rgb(0, 51, 102)",
+                            borderBottom: "1px solid rgb(0, 51, 102)",
+                            borderLeft: "0px solid rgb(0, 51, 102)",
+                          }
+                        : {}
+                    }
+                  >
+                    雨量
+                  </Radio.Button>
                 </Radio.Group>
                 <div
                   style={{

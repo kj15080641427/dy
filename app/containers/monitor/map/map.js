@@ -867,26 +867,15 @@ class Map extends React.PureComponent {
   loadData() {
     const { person } = this.props;
     // 加载视频数据
-    console.log(
-      person.map((item) => {
-        return {
-          ...item,
-          type: "Point",
-          id: item.name,
-          lonlat: [item.longitude, item.latitude],
-        };
-      }),
-      "iii"
-    );
+    this.map.clear("person");
     this.map.addFeatures(
       "person",
-      // templateWarePerson(person, {})
       person.map((item) => {
         return {
           ...item,
           type: "Point",
           id: item.name,
-          lonlat: [item.longitude, item.latitude],
+          lonlat: [item.lon, item.lat],
         };
       })
     );
