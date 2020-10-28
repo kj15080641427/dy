@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import RouterList from "../../components/routerLiis";
 import * as actions from '../../redux/actions/floodModel';
 import "./style.scss";
-// import Head from "./head/Head";
+import Head from "./head/Head";
 import Map from './map/map';
 import { RenderBox } from "../../components/chart/decorate";
 import {Table, DatePicker, Button, Divider, Modal, Spin, message} from 'antd';
