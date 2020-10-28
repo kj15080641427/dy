@@ -92,10 +92,11 @@ class Video extends React.PureComponent {
         <div className="table-wrapper">
           {this.props.lod ? (
             <Loading
-              style={{
-                position: "relative",
-                top: "110px",
-              }}
+              className="loadingTop-loading-div"
+              // style={{
+              //   position: "relative",
+              //   top: "110px",
+              // }}
             >
               <span style={{ color: "#fff" }}>Loading...</span>
             </Loading>

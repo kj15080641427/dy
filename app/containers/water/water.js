@@ -273,7 +273,7 @@ class Monitor extends React.PureComponent {
       showChart(displayWater, "line-chart");
     }
     if (riverSiteWater != pre.riverSiteWater) {
-      console.log(riverSiteWater, "=======");
+      // console.log(riverSiteWater, "=======");
       showChartRiver(riverSiteWater, "waterRiversite");
     }
   }
@@ -397,8 +397,34 @@ class Monitor extends React.PureComponent {
                     this.setState({ radio: e.target.value });
                   }}
                 >
-                  <Radio.Button value="a">来源</Radio.Button>
-                  <Radio.Button value="b">区县</Radio.Button>
+                  <Radio.Button
+                    value="a"
+                    style={
+                      this.state.radio == "b"
+                        ? {
+                            background: "#003366",
+                            color: "#cdd2d2",
+                            border: "0px solid #003366",
+                          }
+                        : {}
+                    }
+                  >
+                    来源
+                  </Radio.Button>
+                  <Radio.Button
+                    value="b"
+                    style={
+                      this.state.radio == "a"
+                        ? {
+                            background: "#003366",
+                            color: "#cdd2d2",
+                            border: "0px solid #003366",
+                          }
+                        : {}
+                    }
+                  >
+                    区县
+                  </Radio.Button>
                 </Radio.Group>
               </RenderBox>
             </div>
@@ -444,6 +470,7 @@ class Monitor extends React.PureComponent {
                   onChange={(e) => {
                     getSiteWaterByRiver(e);
                   }}
+                  className="water-right-first-box-select"
                 >
                   <Select.Option value="广利河">广利河</Select.Option>
                   <Select.Option value="溢洪河">溢洪河</Select.Option>

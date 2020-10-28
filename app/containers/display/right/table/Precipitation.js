@@ -74,18 +74,13 @@ class Precipitation extends React.PureComponent {
       <div>
         <div className="table-wrapper">
           {this.props.lod ? (
-            <Loading
-              style={{
-                position: "relative",
-                top: "110px",
-              }}
-            >
+            <Loading className="loadingTop-loading-div">
               <span style={{ color: "#fff" }}>Loading...</span>
             </Loading>
           ) : (
             <ScrollBoard
               config={config}
-              className='table-wrapper-table-water'
+              className="table-wrapper-table-water"
             />
           )}
 

@@ -3,6 +3,7 @@ import moment from "moment";
 const initState = {
   water: [],
   initWater: [],
+  waterLoading: true,
   waterWarning: 0,
   flood: [],
   count: {},
@@ -43,6 +44,7 @@ export default function mapAboutReducers(state = initState, action) {
       // waterList.sort((a, b) => moment(b.tm).unix() - moment(a.tm).unix());
       newState.water = waterList;
       newState.initWater = waterList;
+      newState.waterLoading = false;
       break;
     case types.SET_FLOOD:
       action.data.forEach((item) => {

@@ -154,6 +154,21 @@
 }
 
 .water-right-first-box {
+  .water-right-first-box-select {
+    .ant-select-arrow {
+      color: white;
+    }
+    .ant-select-selector {
+      background-color: #003366;
+      border: 1px solid #003366;
+      color: white;
+    }
+
+    .ant-select-item-option{
+      background-color: #003366 !important;
+      color: white !important;
+    }
+  }
   .box-head {
     width: 200px;
   }
@@ -364,4 +379,8 @@
   position: absolute;
   top: 30px;
   right: 0px;
+  // .ant-radio-button-wrapper:last-child{
+  //   color: white;
+  //   background-color: #003366;
+  // }
 }
