@@ -54,8 +54,11 @@ export function queryModelState() {
     };
 }
 
-export function runModel() {
+export function runModel(time) {
     return {
         type: types.RUN_MODEL,
+        data: {
+            runTimeString: time.format('yyyyMMDDHH00')
+        }
     };
 }
