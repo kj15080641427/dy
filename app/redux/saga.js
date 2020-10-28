@@ -48,7 +48,7 @@ function* loadCurrentRain() {
 
   try {
     let result = yield call(countMinutesRain, {
-      current: 0,
+      current: 1,
       size: -1,
       starttm: beginTime,
       endtm: endTime,

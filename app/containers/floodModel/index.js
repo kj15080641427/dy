@@ -79,6 +79,7 @@ class FloodModel extends Component {
             modalVisible: false,
             selectedSite: {},
             loading: false,
+            runModelTime: moment()
         };
     }
 
@@ -103,7 +104,8 @@ class FloodModel extends Component {
                                         <DatePicker
                                             showTime={{format: 'HH'}}
                                             format={'YYYY-MM-DD HH时'}
-                                            defaultValue={moment()}
+                                            defaultValue={this.state.runModelTime}
+                                            onChange={(time) => this.setState({runModelTime: time})}
                                             disabledDate={(selectDate) => selectDate <= curDate}/>
                                         <Button type="primary" onClick={this.onRunModel.bind(this)}>开始</Button>
                                     </div>
@@ -172,7 +174,7 @@ class FloodModel extends Component {
 
     onRunModel() {
         const {dispatch} = this.props;
-        dispatch(actions.runModel());
+        dispatch(actions.runModel(this.state.runModelTime));
     }
 
     onFeatureClick(param) {
@@ -214,7 +216,6 @@ class FloodModel extends Component {
         let option = {
             xAxis: {
                 type: 'category',
-                //data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
                 data: xData
             },
             yAxis: {

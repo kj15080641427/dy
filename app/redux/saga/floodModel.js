@@ -1,5 +1,6 @@
-import { put, call, takeEvery, all } from "redux-saga/effects";
+import { put, call, takeEvery, all, select } from "redux-saga/effects";
 import * as types from '../constants/floodModel';
+import * as actions from '../actions/floodModel';
 import {
     queryModelNodes,
     queryPrediction,
@@ -70,6 +71,13 @@ function *queryModelState() {
         let result = yield call(queryModelRunningState);
 
         if (result.code === 200) {
+            let oldRunningStatus = yield select((state) => state.modelIsRunning);
+            let newRunningStatus = result.data === 0;
+
+            if (!oldRunningStatus && newRunningStatus) {
+                yield put(actions.queryPredictions());
+            }
+
             yield put({type: types.MODEL_STATE_UPDATE, data: {status: result.data === 0}});
         }
     } catch (e) {
@@ -77,9 +85,10 @@ function *queryModelState() {
     }
 }
 
-function *runModel() {
+function *runModel(action) {
     try {
-        let result = yield call(startRunModel);
+        const {runTimeString} = action.data;
+        let result = yield call(startRunModel, {time: runTimeString});
 
         if (result.code === 200) {
             yield put({type: types.MODEL_STATE_UPDATE, data: {status: true}});

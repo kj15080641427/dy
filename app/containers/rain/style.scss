@@ -127,10 +127,17 @@
       .card-container {
         color: white;
         margin-top: 5px;
-        .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
-          margin-left: 10px;
+        .ant-tabs-nav-list {
+          width: 100%;
+          display: flex !important;
+          margin: 0 10px !important;
           .ant-tabs-tab {
-            padding: 8px 10px !important;
+            flex: 1 !important;
+            padding: 0 !important;
+            & > div {
+              display: block;
+              margin: 0 auto;
+            }
           }
         }
         .ant-table-pagination {

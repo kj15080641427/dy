@@ -1,5 +1,6 @@
 @import "@app/variable.scss";
-.dis-head {
+
+.m-head-easy {
   /*test*/
   display: flex;
   justify-content: space-between;
@@ -9,43 +10,38 @@
   right: 0;
   height: $headHeight;
   color: white;
-  background: url(("../../../resource/display/head.png")) center no-repeat;
+
+  background: url(("../../../resource/title/easyFlood.png")) center no-repeat;
   background-size: auto 100%;
-  width: 100%;
-  .dis-hd-weather {
+  .m-hd-weather {
     line-height: 47px;
     padding-left: 35px;
-    position: relative;
-    left: 385px;
-    top: 15px;
     > span {
       margin-right: 10px;
     }
   }
-  .dis-hd-weather-img {
+
+  .m-hd-weather-img {
     filter: invert(100%) sepia(100%) saturate(0%);
   }
-  .dis-hd-set-img {
+  .m-hd-set-img {
     height: 25px;
     width: 25px;
     position: relative;
     bottom: 11px;
     left: 10px;
   }
-  .dis-hd-time {
+  .m-hd-time {
     line-height: 47px;
     padding-right: 35px;
     width: 275px;
     white-space: nowrap;
-    position: relative;
-    left: -0px;
-    top: 15px;
-
     > span:first-child {
       margin-right: 10px;
     }
   }
-  .dis-hd-title {
+
+  .m-hd-title {
     font-size: 40px;
     line-height: $headHeight;
     letter-spacing: 10px;
