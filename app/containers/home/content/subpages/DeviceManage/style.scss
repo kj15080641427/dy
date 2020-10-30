@@ -1,24 +1,42 @@
 .device-manage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   &-content {
+    flex: 1;
     display: flex;
     margin-top: 16px;
     &-left {
-      width: 320px;
-      margin-right: 16px;
-      padding: 8px;
-      border: 1px solid #d9d9d9;
+      width: 40%;
+      margin-left: 16px;
+      &-title {
+        margin-bottom: 16px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 800;
+        position: relative;
+        &-sub {
+          position: absolute;
+          right: 0;
+        }
+      }
+      .site-count-chart {
+        width: 100%;
+        height: calc(100% - 92px);
+      }
     }
     &-right {
       flex: 1;
-      padding: 16px;
-      border: 1px solid #d9d9d9;
       &-title {
         margin-bottom: 16px;
-        display: flex;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 800;
+        position: relative;
         &-sub {
-          flex: 1;
-          font-size: 18px;
-          font-weight: 800;
+          position: absolute;
+          right: 0;
         }
       }
     }
@@ -31,5 +49,29 @@
     height: 100%;
     width: 100%;
     cursor: pointer;
+  }
+}
+.device-tabs {
+  height: 100%;
+  .ant-tabs-content {
+    height: 100%;
+    .ant-tabs-tabpane {
+      height: 100%;
+      width: 100%;
+      .primary-row , .primary-row:hover {
+        background: #81b8eb!important;
+        color: #fff!important;
+        transition: background .3s,color .3s;
+        a {
+          color: #fff!important;
+        }
+        td {
+          background-color: #81b8eb!important;
+        }
+      }
+      .ant-table-cell {
+        padding: 6px 0;
+      }
+    }
   }
 }

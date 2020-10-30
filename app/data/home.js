@@ -506,3 +506,8 @@ export function getRiverwaterdata(data) {
 export function getRiverwaterdatalog(data) {
   return fetchJSONData("POST", "/base/RiverwaterdataLog/history", data);
 }
+
+// 根据站点，类型和时间查询每日数据量
+export function getCountByStcd(data) {
+  return fetchJSONData("POST", "/base/SiteBase/getCountByStcd", data);
+}
