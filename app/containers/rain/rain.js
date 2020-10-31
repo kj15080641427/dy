@@ -8,24 +8,25 @@ import * as actions from "@app/redux/actions/rain";
 import * as mapActions from "@app/redux/actions/map";
 import Map from "./map/map";
 import "./style.scss";
-import Head from "./head/Head";
+import Head from "../../components/head/head";
 import WeatherChart from "./left/WeatherChart";
-import CheckBoxs from "../monitor/bottom/CheckBox";
+import CheckBoxs from "../../components/setting/setting";
 import { Drawer, Row, Divider, Checkbox, Tabs, Radio } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
 import setImg from "@app/resource/setsys.png";
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
 import { TableShow } from "../../components/chart/table";
-import emitter from "@app/utils/emitter.js";
+// import emitter from "@app/utils/emitter.js";
 import {
   rotateBarChart,
   pieChart,
   barChart,
 } from "../../components/chart/chart";
-import WeatherTable from "./left/WeatherTable";
+// import WeatherTable from "./left/WeatherTable";
 import RainSwitcher from "./right/Module/RainSwitcher";
 import RainInfo from "./tabs";
+import titleImg from "../../resource/title/rain.png";
 const { TabPane } = Tabs;
 class Monitor extends React.PureComponent {
   constructor(props, context) {
@@ -93,7 +94,7 @@ class Monitor extends React.PureComponent {
     return (
       <div className="rain-display">
         <Map layerVisible={layerVisible} />
-        <Head />
+        <Head titleImg={titleImg} />
         <div style={{ display: displayLeft }}>
           <div className="m-left">
             <div className="chart-left">

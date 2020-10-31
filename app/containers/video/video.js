@@ -4,8 +4,9 @@ import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/map";
 import Map from "./map/map";
 import "./style.scss";
-import Head from "./head/Head";
-import CheckBoxs from "../monitor/bottom/CheckBox";
+import Head from "../../components/head/head";
+import titleImg from "../../resource/title/video.png";
+import CheckBoxs from "../../components/setting/setting";
 import setImg from "@app/resource/setsys.png";
 import { Drawer, Row, Divider, Checkbox, Tabs } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
@@ -180,7 +181,7 @@ class Monitor extends React.PureComponent {
     return (
       <div className="video">
         <Map layerVisible={layerVisible}></Map>
-        <Head></Head>
+        <Head titleImg={titleImg}></Head>
         <div className="">
           <div style={{ display: displayLeft }}>
             <div className="chart-left-video">

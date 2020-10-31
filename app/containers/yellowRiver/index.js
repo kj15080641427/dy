@@ -1,7 +1,8 @@
 import React from "react";
 import RouterList from "../../components/routerLiis";
 import "./style.scss";
-import Head from "./head/Head";
+import Head from "../../components/head/head";
+import titleImg from "../../resource/title/river.png";
 import { Table, Space, Button, DatePicker } from "antd";
 import {
   getSiteWaterLevelsPage,
@@ -71,12 +72,12 @@ export default class yellowRiver extends React.PureComponent {
 
   async buildChartData() {
     const { selectedSite, tm } = this.state;
-    const tmRange = {
-      starttm: moment(Number(tm) - 7 * 24 * 60 * 60 * 1000).format(
-        "YYYY-MM-DD 00:00:00"
-      ),
-      endtm: moment(tm).format("YYYY-MM-DD 23:59:59"),
-    };
+    // const tmRange = {
+    //   starttm: moment(Number(tm) - 7 * 24 * 60 * 60 * 1000).format(
+    //     "YYYY-MM-DD 00:00:00"
+    //   ),
+    //   endtm: moment(tm).format("YYYY-MM-DD 23:59:59"),
+    // };
     const {
       data: { records: riverwaterdatalog },
     } = await getRiverwaterdatalog({
@@ -158,7 +159,7 @@ export default class yellowRiver extends React.PureComponent {
     return (
       <div className="flood-river">
         <div className="flood-noyices-top"></div>
-        <Head></Head>
+        <Head titleImg={titleImg}></Head>
         <RouterList></RouterList>
         <div className="m-left-notices">
           <div className="m-left-notices-table">

@@ -9,9 +9,9 @@ import * as stateActions from "@app/redux/actions/handState";
 import PropTypes from "prop-types";
 import Map from "./map/map";
 import "./style.scss";
-import Head from "./head/Head";
+import Head from "../../components/head/head";
 import VideoPlayer from "../../components/video/videoPlayer";
-import CheckBoxs from "../monitor/bottom/CheckBox";
+import CheckBoxs from "../../components/setting/setting";
 import setImg from "@app/resource/setsys.png";
 import { Drawer, Row, Divider, Checkbox, Tabs, Radio, Select } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
@@ -29,6 +29,7 @@ import RouterList from "../../components/routerLiis";
 import WaterInfo from "./tabs";
 import WaterInfoRiver from "./tabsRiver";
 import emitter from "@app/utils/emitter.js";
+import titleImg from "../../resource/title/water.png";
 const { TabPane } = Tabs;
 const itemStyle = {
   水文局: "rgba(141,81,152,1)",
@@ -321,7 +322,7 @@ class Monitor extends React.PureComponent {
     return (
       <div className="water-display">
         <Map layerVisible={layerVisible}></Map>
-        <Head></Head>
+        <Head titleImg={titleImg}></Head>
         <div style={{ display: displayLeft }}>
           <div className="chart-left">
             <div className="table-head-box">

@@ -5,8 +5,8 @@ import * as actions from "@app/redux/actions/map";
 import moment from "moment";
 import Map from "./map/map";
 import "./style.scss";
-import Head from "./head/Head";
-import CheckBoxs from "../monitor/bottom/CheckBox";
+import Head from "../../components/head/head";
+import CheckBoxs from "../../components/setting/setting";
 import setImg from "@app/resource/setsys.png";
 import { Drawer, Row, Divider, Checkbox, Col, Radio, Tabs } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
@@ -20,6 +20,7 @@ import {
 import VideoPlayer from "../../components/video/videoPlayer";
 import warningIcon from "@app/resource/icon/warning.svg";
 import { TableShow } from "../../components/chart/table";
+import titleImg from "../../resource/title/easyFlood.png";
 
 const floodRainId = "46020108";
 import emitter from "@app/utils/emitter.js";
@@ -256,7 +257,7 @@ class Monitor extends React.PureComponent {
     return (
       <div className="easy-flood-display">
         <Map layerVisible={layerVisible}></Map>
-        <Head></Head>
+        <Head titleImg={titleImg}></Head>
         <div style={{ display: displayLeft }}>
           <div className="easyFlood-left">
             <RenderBox>
@@ -484,7 +485,7 @@ class Monitor extends React.PureComponent {
                     )}`}</div>
                   </div>
                 </div>
-                <div className='easyflood-flex-center'>
+                <div className="easyflood-flex-center">
                   <div className="flood-rain-chart" id="floodRainChart"></div>
                 </div>
               </RenderBox>

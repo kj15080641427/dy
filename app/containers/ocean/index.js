@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import RouterList from "../../components/routerLiis";
 import { Drawer } from "antd";
 import "./style.scss";
-import Head from "./head/Head";
+import Head from "../../components/head/head";
+import titleImg from "../../resource/title/ocean.png";
 import { getOcean } from "../../data/home";
 export default () => {
   const [url, setUrl] = useState("");
@@ -29,7 +30,7 @@ export default () => {
         height="980"
         title={
           <>
-            <Head style={{ zIndex: 9999 }}></Head>
+            <Head titleImg={titleImg} style={{ zIndex: 9999 }}></Head>
           </>
         }
       >
