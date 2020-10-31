@@ -506,3 +506,7 @@ export function getRiverwaterdata(data) {
 export function getRiverwaterdatalog(data) {
   return fetchJSONData("POST", "/base/RiverwaterdataLog/history", data);
 }
+//获取海洋预报url
+export function getOcean(data) {
+  return fetchJSONData("POST", "/base/River/getOcean", data);
+}

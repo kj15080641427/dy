@@ -19,6 +19,8 @@ import ocean from "../resource/icon/ocean.svg";
 import yellowRiver from "../resource/icon/yellowRiver.svg";
 import home from "../resource/icon/home.svg";
 import forecast from "../resource/icon/forecast.svg";
+import task from "../resource/task.svg";
+import device from "../resource/icon/device.svg";
 const innerWidth = document.body.clientWidth;
 class RouterList extends React.PureComponent {
   constructor(props, context) {
@@ -31,11 +33,11 @@ class RouterList extends React.PureComponent {
   }
 
   routerList = [
-    {
-      text: "数据中心",
-      imgurl: display,
-      routerUrl: innerWidth > 3000 ? "/display" : "/displaySmall",
-    },
+    // {
+    //   text: "数据中心",
+    //   imgurl: display,
+    //   routerUrl: innerWidth > 3000 ? "/display" : "/displaySmall",
+    // },
     {
       text: "河流水情",
       imgurl: waterRouter,
@@ -55,6 +57,16 @@ class RouterList extends React.PureComponent {
       text: "视频监控",
       imgurl: video,
       routerUrl: "/video",
+    },
+    {
+      text: "任务调度",
+      imgurl: task,
+      routerUrl: "/home/taskList",
+    },
+    {
+      text: "设备管理",
+      imgurl: device,
+      routerUrl: "/device",
     },
     {
       text: "防汛资源",

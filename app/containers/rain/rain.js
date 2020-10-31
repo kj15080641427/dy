@@ -35,6 +35,7 @@ class Monitor extends React.PureComponent {
       radio: "a",
       numberList: {},
       tabsList: {
+        tableAll: [],
         all: [],
         gr: [],
         kl: [],
@@ -88,7 +89,7 @@ class Monitor extends React.PureComponent {
     let h = tabsList?.hk[[tabsList?.hk.length - 1]];
     let g = tabsList?.gr[[tabsList?.gr.length - 1]];
     let l = tabsList?.lj[[tabsList?.lj.length - 1]];
-    let a = tabsList?.all[[tabsList?.all.length - 1]];
+    let a = tabsList?.tableAll[[tabsList?.tableAll.length - 1]];
     return (
       <div className="rain-display">
         <Map layerVisible={layerVisible} />
@@ -96,112 +97,144 @@ class Monitor extends React.PureComponent {
         <div style={{ display: displayLeft }}>
           <div className="m-left">
             <div className="chart-left">
-              <WeatherChart />
-              <RenderBox
-                hasTitle
-                title="基本统计信息"
-                width="514"
-                style={{ margin: 0 }}
-              >
-                <Radio.Group
-                  defaultValue={this.state.radio}
-                  buttonStyle="solid"
-                  className="rain-chart-radio"
-                  onChange={(e) => {
-                    this.setState({ radio: e.target.value });
-                  }}
+              <div className="rain-left-head-chart">
+                <WeatherChart />
+              </div>
+              <div className="rain-left-first-box">
+                <RenderBox
+                  hasTitle
+                  title="基本统计信息"
+                  width="514"
+                  style={{ margin: 0 }}
                 >
-                  <Radio.Button
-                    value="a"
-                    style={
-                      this.state.radio == "b"
-                        ? {
-                            background: "#003366",
-                            color: "#3397d4",
-                            borderTop: "1px solid rgb(0, 51, 102)",
-                            borderLeft: "1px solid rgb(0, 51, 102)",
-                            borderBottom: "1px solid rgb(0, 51, 102)",
-                            borderRight: "0px solid rgb(0, 51, 102)",
-                          }
-                        : {}
-                    }
+                  <Radio.Group
+                    defaultValue={this.state.radio}
+                    buttonStyle="solid"
+                    className="rain-chart-radio"
+                    onChange={(e) => {
+                      this.setState({ radio: e.target.value });
+                    }}
                   >
-                    来源
-                  </Radio.Button>
-                  <Radio.Button
-                    value="b"
-                    style={
-                      this.state.radio == "a"
-                        ? {
-                            background: "#003366",
-                            color: "#3397d4",
-                            borderTop: "1px solid rgb(0, 51, 102)",
-                            borderRight: "1px solid rgb(0, 51, 102)",
-                            borderBottom: "1px solid rgb(0, 51, 102)",
-                            borderLeft: "0px solid rgb(0, 51, 102)",
-                          }
-                        : {}
-                    }
-                  >
-                    区县
-                  </Radio.Button>
-                </Radio.Group>
-                <div
-                  style={{
-                    display: this.state.radio == "a" ? "block" : "none",
-                  }}
-                >
-                  <div className="pie-title-flex-online">
-                    <div>
-                      <label className="number-color">{typeOnline?.e}</label>
-                      <label>气象局在线</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{typeOnline?.r}</label>
-                      <label>水文局在线</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{typeOnline?.q}</label>
-                      <label>基层防汛在线</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{typeOnline?.w}</label>
-                      <label>其他来源在线</label>
-                    </div>
-                  </div>
-                  <div className="rain-pie-chart" id="rain-pie-chart" />
-                </div>
+                    <Radio.Button
+                      value="a"
+                      style={
+                        this.state.radio == "b"
+                          ? {
+                              background: "#003366",
+                              color: "#3397d4",
+                              borderTop: "1px solid rgb(0, 51, 102)",
+                              borderLeft: "1px solid rgb(0, 51, 102)",
+                              borderBottom: "1px solid rgb(0, 51, 102)",
+                              borderRight: "0px solid rgb(0, 51, 102)",
+                            }
+                          : {}
+                      }
+                    >
+                      来源
+                    </Radio.Button>
+                    <Radio.Button
+                      value="b"
+                      style={
+                        this.state.radio == "a"
+                          ? {
+                              background: "#003366",
+                              color: "#3397d4",
+                              borderTop: "1px solid rgb(0, 51, 102)",
+                              borderRight: "1px solid rgb(0, 51, 102)",
+                              borderBottom: "1px solid rgb(0, 51, 102)",
+                              borderLeft: "0px solid rgb(0, 51, 102)",
+                            }
+                          : {}
+                      }
+                    >
+                      区县
+                    </Radio.Button>
+                  </Radio.Group>
 
-                <div
-                  style={{
-                    display: this.state.radio == "b" ? "block" : "none",
-                  }}
-                >
-                  <div className="pie-title-flex">
-                    <div>
-                      <label className="number-color">{numberList?.dy}</label>
-                      <label>东营区</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{numberList?.gr}</label>
-                      <label>广饶县</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{numberList?.lj}</label>
-                      <label>利津县</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{numberList?.hk}</label>
-                      <label>河口区</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{numberList?.kl}</label>
-                      <label>垦利县</label>
+                  <div
+                    style={{
+                      display: this.state.radio == "a" ? "block" : "none",
+                    }}
+                  >
+                    <div className="flex-center">
+                      <div>
+                        <div className="pie-title-flex-online">
+                          <div>
+                            <label className="number-color">
+                              {typeOnline?.e}
+                            </label>
+                            <label>气象局在线</label>
+                          </div>
+                          <div>
+                            <label className="number-color">
+                              {typeOnline?.r}
+                            </label>
+                            <label>水文局在线</label>
+                          </div>
+                          <div>
+                            <label className="number-color">
+                              {typeOnline?.q}
+                            </label>
+                            <label>基层防汛在线</label>
+                          </div>
+                          <div>
+                            <label className="number-color">
+                              {typeOnline?.w}
+                            </label>
+                            <label>其他来源在线</label>
+                          </div>
+                        </div>
+                        <div className="rain-pie-chart" id="rain-pie-chart" />
+                      </div>
                     </div>
                   </div>
-                  <div className="rain-online" id="rainOnline"></div>
-                </div>
-              </RenderBox>
+
+                  <div
+                    style={{
+                      display: this.state.radio == "b" ? "block" : "none",
+                      height: "100%",
+                    }}
+                  >
+                    <div className="flex-center">
+                      <div>
+                        <div className="pie-title-flex">
+                          <div>
+                            <label className="number-color">
+                              {numberList?.dy}
+                            </label>
+                            <label>东营区</label>
+                          </div>
+                          <div>
+                            <label className="number-color">
+                              {numberList?.gr}
+                            </label>
+                            <label>广饶县</label>
+                          </div>
+                          <div>
+                            <label className="number-color">
+                              {numberList?.lj}
+                            </label>
+                            <label>利津县</label>
+                          </div>
+                          <div>
+                            <label className="number-color">
+                              {numberList?.hk}
+                            </label>
+                            <label>河口区</label>
+                          </div>
+                          <div>
+                            <label className="number-color">
+                              {numberList?.kl}
+                            </label>
+                            <label>垦利县</label>
+                          </div>
+                        </div>
+                        <div className="rain-online" id="rainOnline"></div>
+                      </div>
+                    </div>
+                  </div>
+                </RenderBox>
+              </div>
             </div>
 
             {/* </RenderBox> */}
@@ -256,7 +289,7 @@ class Monitor extends React.PureComponent {
                     },
                     {
                       address: "东营市",
-                      max: `${tabsList?.all[0]?.aliasName}(${tabsList?.all[0]?.raindataList[0]?.dayDrp})`,
+                      max: `${tabsList?.tableAll[0]?.aliasName}(${tabsList?.tableAll[0]?.raindataList[0]?.dayDrp})`,
                       min: a?.raindataList[0]
                         ? `${a?.aliasName}(${a?.raindataList[0]?.dayDrp})`
                         : `${a?.aliasName}(0)`,
@@ -267,7 +300,9 @@ class Monitor extends React.PureComponent {
             </div>
             <div className="right-second-box">
               <RenderBox hasTitle title="24小时降雨情况">
-                <div className="rotateBarChart" id="rotateBarChart" />
+                <div className="flex-center">
+                  <div className="rotateBarChart" id="rotateBarChart" />
+                </div>
               </RenderBox>
             </div>
             <div className="rain-set-table">
@@ -606,12 +641,12 @@ class Monitor extends React.PureComponent {
             f++;
             return;
           }
-          // if (item.dayDrp > 250) {
-          //   g++;
-          //   return;
-          // }
+          if (item.dayDrp > 250) {
+            h++;
+            return;
+          }
         } else {
-          noRain++;
+          // noRain++;
           return;
         }
       });
@@ -631,7 +666,11 @@ class Monitor extends React.PureComponent {
       dylist.sort(
         (a, b) => b.raindataList[0]?.dayDrp - a.raindataList[0]?.dayDrp
       );
+      const tableAll = rain.sort(
+        (a, b) => b.raindataList[0]?.dayDrp - a.raindataList[0]?.dayDrp
+      );
       const tabsList = {
+        tableAll: tableAll,
         all: rain,
         gr: grlist,
         kl: kllist,
@@ -644,7 +683,7 @@ class Monitor extends React.PureComponent {
         tabsList: tabsList,
       });
       let list = [
-        { value: noRain, itemStyle: { color: "rgb(229,229,229)" } },
+        // { value: noRain, itemStyle: { color: "rgb(229,229,229)" } },
         { value: small, itemStyle: { color: "rgb(175,233,159)" } },
         { value: c, itemStyle: { color: "rgb(91,175,51)" } },
         { value: d, itemStyle: { color: "rgb(121,190,255)" } },

@@ -59,11 +59,6 @@ class Forecast extends React.PureComponent {
                 today: result[1].split("\r\n"),
                 tomorrow: result[2].split("\r\n")
             })
-            console.log(title)
-            console.log(todaytit)
-            console.log(today)
-            console.log(tomorrow)
-            console.log(forecaster)
         })
     }
 }

@@ -66,7 +66,6 @@ class Video extends Base {
 
   }
   onRequestFullScreen() {
-    console.log('click');
     if (this.requestFullscreen) {
       this.requestFullscreen();
     }

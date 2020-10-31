@@ -92,7 +92,6 @@ export default function mapAboutReducers(state = initState, action) {
       };
       break;
     case types.CHANGE_WATER_ID: //改变水位id
-      console.log(action.data.id, "AAAAAAA");
       newState = {
         ...newState,
         waterId: action.data.id,

@@ -399,7 +399,6 @@ class easyFlood extends React.PureComponent {
   };
   // 回调函数，切换下一页
   changePage(current) {
-    console.log(current);
     this.setState({
       current: current,
     });

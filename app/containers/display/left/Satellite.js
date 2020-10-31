@@ -20,7 +20,6 @@ class Satellite extends React.PureComponent {
     };
   }
   slickPlayRoPause(lunboSetting) {
-    console.log(lunboSetting);
     if (lunboSetting.autoplay) {
       lunboSetting.autoplay = false;
       this.slider.slick.slickPause();
@@ -30,7 +29,6 @@ class Satellite extends React.PureComponent {
     }
   }
   showRain = () => {
-    console.log("77777777777");
     this.setState({
       rainvisible: true,
     });

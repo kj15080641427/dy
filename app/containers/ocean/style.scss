@@ -1,15 +1,19 @@
 @import "@app/variable.scss";
 .ocean-drawer {
+  .ant-drawer-body {
+    background: #003366;
+  }
   .ant-drawer-header {
     height: 110px;
-    background:#003366
+    background: #003366;
   }
-  .ant-drawer-body {
-    background: #f1f1f1;
-  }
-  .ocean-drawer-body{
-    width: 1890px;
-    height: 1110px;
+  // .ant-drawer-body {
+  //   background: #f1f1f1;
+  // }
+  .ocean-drawer-body {
+    // width: 1900px;
+    height: 100%;
+    background: #003366;
     .router-item {
       // position: absolute;
       // right: 15px;
@@ -18,7 +22,7 @@
       // padding-top: 20px;
       // margin-left: 15px;
       // width: 90px;
-    
+
       // img {
       //   border-radius: 10px;
       //   margin-bottom: 17px;

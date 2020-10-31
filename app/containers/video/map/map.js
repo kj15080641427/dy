@@ -208,7 +208,7 @@ class Map extends React.PureComponent {
         fontText: function (featureObj) {
           return featureObj.name + "";
         },
-        font: "16px sans-serif",
+        font: "6px sans-serif",
       },
     });
 
@@ -221,7 +221,7 @@ class Map extends React.PureComponent {
         this.props.onFeatureClick(param);
       } else {
         this.props.handStateActions.setVideoInfo(param);
-        // this.addOverlay(Video.type, { ...param });
+        this.addOverlay(Video.type, { ...param });
       }
     });
     this.map.on("moveend", () => {

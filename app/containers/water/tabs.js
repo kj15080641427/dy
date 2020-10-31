@@ -88,7 +88,7 @@ export const TabsList = (props) => {
     if (dayWater instanceof Array && visible) {
       showChart(dayWater.reverse(), "dayWaterDiv");
     }
-  }, [dayWater, visible]);
+  }, [dayWater]);
 
   return (
     <>
@@ -102,14 +102,10 @@ export const TabsList = (props) => {
                 name: record.name,
               });
               changeWaterVideo(record);
-              // emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
+              emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
             },
             onDoubleClick: () => {
               changeModalVisible(true);
-              // changeWaterId({
-              //   id: record?.siteWaterLevels[0]?.stcd,
-              //   name: record.name,
-              // });
               getDayWater(record.siteWaterLevels[0]?.stcd);
             },
           };
@@ -121,9 +117,9 @@ export const TabsList = (props) => {
             filter: "aliasName",
             width: "20%",
             render: (name) => {
-              return name.length >= 8 ? (
+              return name.length >= 7 ? (
                 <Popover content={name} title="站名全称">
-                  {name.toString().substring(0, 7) + "..."}
+                  {name.toString().substring(0, 6) + "..."}
                 </Popover>
               ) : (
                 name
@@ -133,16 +129,16 @@ export const TabsList = (props) => {
           {
             name: "河流",
             dataIndex: "siteWaterLevels",
-            width: "20%",
+            width: "18%",
             // sorter: (a, b) => (a & a[0] ? a[0].rvnm - b[0].rvnm : 1),
             render: (v) => {
               return v && v[0] ? v[0].rvnm : "-";
             },
           },
           {
-            name: "实时水位",
+            name: "实时水位(m)",
             dataIndex: "z",
-            width: "15%",
+            width: "17%",
             render: (v) => {
               return v ? v : "-";
             },
@@ -166,7 +162,7 @@ export const TabsList = (props) => {
         footer={null}
         onCancel={() => changeModalVisible(false)}
         width={1300}
-        forceRender
+        // forceRender
         destroyOnClose
       >
         <Tabs defaultActiveKey="1" style={{ color: "black" }}>

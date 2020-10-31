@@ -11,7 +11,7 @@ import Head from "./head/Head";
 import WeatherPic from "./right/WeatherPic";
 import CheckBoxs from "../monitor/bottom/CheckBox";
 import setImg from "@app/resource/setsys.png";
-import Satellite from '../display/left/SatelliteFlood'
+import Satellite from "../display/left/SatelliteFlood";
 import {
   Drawer,
   Row,
@@ -71,7 +71,7 @@ class Monitor extends React.PureComponent {
   };
 
   componentDidUpdate(pre) {
-    const { floodRanks } = this.props;
+    const { floodRanks, expertCount } = this.props;
     if (floodRanks !== pre.floodRanks) {
       let list = [];
       floodRanks.forEach((item) => {
@@ -81,7 +81,12 @@ class Monitor extends React.PureComponent {
           textStyle: { fontSize: "24px" },
         });
       });
-      pieChart("floodWaringPie", list);
+      pieChart("floodWaringPie", list, 450, [], {
+        text: `共${expertCount}人`,
+        left: "center",
+        top: "center",
+        textStyle: { color: "white", fontWeight: "200", fontSize: 14 },
+      });
     }
   }
   componentDidMount() {
@@ -102,9 +107,8 @@ class Monitor extends React.PureComponent {
           <div className="flood-warning-left">
             <div className="first-box">
               <RenderBox hasTitle title="东营市防汛人员">
-                <div style={{ height: "20px" }}></div>
+                <div className='floodwarning-flex'>
                 <div className="floodWaringPie" id="floodWaringPie"></div>
-                <div className="flood-text">{`共${expertCount}人`}</div>
                 <div className="card-container">
                   <Tabs
                     type="card"
@@ -161,6 +165,7 @@ class Monitor extends React.PureComponent {
                     ))}
                   </Tabs>
                 </div>
+              </div>
               </RenderBox>
             </div>
             {/* <br /> */}
@@ -229,6 +234,7 @@ class Monitor extends React.PureComponent {
         <div style={{ display: displayRight }}>
           <div className="flood-warning-right">
             <RenderBox hasTitle title="防汛专家">
+            <div className='floodwarning-flex'>
               <div className="pie-title-flex">
                 <div>
                   <label
@@ -353,9 +359,10 @@ class Monitor extends React.PureComponent {
                   </TabPane>
                 </Tabs>
               </div>
+              </div>
             </RenderBox>
             <div className="flood-warning-chart">
-              <div style={{ height: "20px" }}></div>
+              {/* <div style={{ height: "20px" }}></div> */}
               <WeatherPic></WeatherPic>
               {/* <Satellite type={2}></Satellite> */}
             </div>

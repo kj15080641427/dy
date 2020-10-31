@@ -14,8 +14,8 @@ const DisplaySmall = (props) => {
   const { dict } = props;
   const [showCode, setShowCode] = useState(false);
   useEffect(() => {
-    getWaterType();
-    getFloodType();
+    // getWaterType();
+    // getFloodType();
     getDict({
       current: 1,
       size: -1,

@@ -278,10 +278,10 @@ class Monitor extends React.PureComponent {
       showChart(displayWater, "line-chart");
     }
     if (riverSiteWater != pre.riverSiteWater) {
-      // console.log(riverSiteWater, "=======");
       showChartRiver(riverSiteWater, "waterRiversite");
     }
   }
+
   render() {
     const {
       waterName,
@@ -324,65 +324,67 @@ class Monitor extends React.PureComponent {
         <Head></Head>
         <div style={{ display: displayLeft }}>
           <div className="chart-left">
-            <BoxHead />
-            <div className="table-backgrpund">
-              <div className="table-title-text">
-                <img src={warningIcon}></img> 超警戒水位
-                <span>{alarmData?.length}</span>站
+            <div className="table-head-box">
+              <BoxHead />
+              <div className="table-backgrpund">
+                <div className="table-title-text">
+                  <img src={warningIcon}></img> 超警戒水位
+                  <span>{alarmData?.length}</span>站
+                </div>
+                <TableShow
+                  locale={{
+                    emptyText: (
+                      <div style={{ color: "white" }}>无超警戒水位站</div>
+                    ),
+                  }}
+                  columns={[
+                    { name: "站点名称", dataIndex: "stnm", width: "38%" },
+                    {
+                      name: "警戒水位(m)",
+                      dataIndex: "baselevel",
+                      width: "19%",
+                    },
+                    {
+                      name: "水位(m)",
+                      dataIndex: "actuallevel",
+                      width: "14%",
+                      render: (e) => <div style={{ color: "red" }}>{e}</div>,
+                    },
+                    {
+                      name: "更新时间",
+                      dataIndex: "alarmtime",
+                      width: "28%",
+                      render: (e) => e.slice(0, -3),
+                    },
+                  ]}
+                  pageSize="2"
+                  dataSource={alarmData}
+                  onRow={(record) => {
+                    return {
+                      onClick: () => {
+                        changeWaterId(
+                          {
+                            id: record?.stcd,
+                            name: record.stnm,
+                          },
+                          changeWaterVideo(record)
+                        );
+                        emitter.emit(
+                          "map-move-focus",
+                          [record.lon, record.lat],
+                          3000
+                        );
+                      },
+                      onDoubleClick: () => {
+                        changeModalVisible(true);
+                        getDayWater(record?.stcd);
+                      },
+                    };
+                  }}
+                />
               </div>
-              <TableShow
-                locale={{
-                  emptyText: (
-                    <div style={{ color: "white" }}>无超警戒水位站</div>
-                  ),
-                }}
-                columns={[
-                  { name: "站点名称", dataIndex: "stnm", width: "38%" },
-                  {
-                    name: "警戒水位(m)",
-                    dataIndex: "baselevel",
-                    width: "19%",
-                  },
-                  {
-                    name: "水位(m)",
-                    dataIndex: "actuallevel",
-                    width: "14%",
-                    render: (e) => <div style={{ color: "red" }}>{e}</div>,
-                  },
-                  {
-                    name: "更新时间",
-                    dataIndex: "alarmtime",
-                    width: "28%",
-                    render: (e) => e.slice(0, -3),
-                  },
-                ]}
-                pageSize="2"
-                dataSource={alarmData}
-                onRow={(record) => {
-                  return {
-                    onClick: () => {
-                      changeWaterId(
-                        {
-                          id: record?.stcd,
-                          name: record.stnm,
-                        },
-                        changeWaterVideo(record)
-                      );
-                      emitter.emit(
-                        "map-move-focus",
-                        [record.lon, record.lat],
-                        3000
-                      );
-                    },
-                    onDoubleClick: () => {
-                      changeModalVisible(true);
-                      getDayWater(record?.stcd);
-                    },
-                  };
-                }}
-              />
             </div>
-            <div className="water-right-second-box ">
+            <div className="water-right-second-box">
               <RenderBox title={"基本统计信息"} hasTitle>
                 <div
                   className="bar-chart"
@@ -558,7 +560,7 @@ class Monitor extends React.PureComponent {
                 </div>
               </RenderBox>
             </div>
-            <div className="water-left-first-box">
+            <div className="water-right-last-box">
               {/* 来源图 */}
               <RenderBox title={"水位站点"} hasTitle>
                 <div className="water-select">
@@ -579,11 +581,13 @@ class Monitor extends React.PureComponent {
                   <VideoPlayer
                     style={{
                       width: "620px",
-                      height: "350px",
+                      minHeight: "300px",
+                      height: "32vh",
                       transform: "scale(0.85)",
                       position: "absolute",
                       left: "-51px",
                       top: "260px",
+                      paddingTop: "2vh",
                     }}
                     strtoken={waterVideoInfo?.strtoken}
                   ></VideoPlayer>

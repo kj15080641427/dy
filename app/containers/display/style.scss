@@ -73,10 +73,13 @@
     position: absolute;
     bottom: 0px;
     right: 0;
+    display: flex;
+    justify-content:flex-start;
     .dis-table-btns {
       top: 50px;
       right: 80px;
       z-index: 999;
+      display: block;
     }
     .dis-table-con {
       margin-top: 70px;

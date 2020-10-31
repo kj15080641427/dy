@@ -74,7 +74,6 @@ export default function monitor(state = defaultState, action) {
             list.push(item);
           }
         });
-        console.log(list, "?????");
         newState.video = list;
       }
       break;

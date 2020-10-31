@@ -1,6 +1,6 @@
 .m-ovl-box {
   position: relative;
-  background: white;
+  background: #048EF1;
   padding: 15px;
   font-size: 14px;
   color: #666666;
@@ -8,10 +8,10 @@
   border-radius: 4px;
   .m-ovl-close {
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 16px;
+    top: 18px;
     font-size: 14px;
-    color: #999999;
+    color: #ffffff;
     cursor: pointer;
   }
 }
@@ -63,4 +63,32 @@
     }
   }
   
+}
+.luo-ovl-rain {
+  padding: 0!important;
+  background: rgba(3, 50, 102, .8)!important;
+  border: 1px solid #048EF1;
+  .m-ovl-line {
+    font-size: 14px!important;
+    line-height: 24px!important;
+    margin: 8px 0;
+    color: #ffffff;
+    padding: 0 16px;
+  }
+  .luo-ovl-title {
+    margin-top: 0;
+    background: #048EF1;
+    color: #ffffff;
+    padding: 8px 16px;
+  }
+  label {
+    display: inline-block;
+    width: 110px;
+    text-align: right;
+  }
+  .m-ovl-close {
+    right: 8px!important;
+    top: 8px!important;
+    color: #ffffff!important;
+  }
 }

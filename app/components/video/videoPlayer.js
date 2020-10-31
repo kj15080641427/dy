@@ -5,7 +5,7 @@ import Holder from "./Holder";
 import "./style.scss";
 const VideoPlayer = (props) => {
   const videoControl = new VideoControl();
-  const { strtoken, style } = props;
+  const { strtoken, style, holderStyle } = props;
   return (
     <div className="video-player">
       <VideoComponent
@@ -23,7 +23,7 @@ const VideoPlayer = (props) => {
         type={0}
       ></VideoComponent>
       {/* <div className="video-control"> */}
-        <Holder token={strtoken}></Holder>
+      <Holder token={strtoken}></Holder>
       {/* </div> */}
     </div>
   );

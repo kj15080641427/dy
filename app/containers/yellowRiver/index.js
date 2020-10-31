@@ -2,12 +2,7 @@ import React from "react";
 import RouterList from "../../components/routerLiis";
 import "./style.scss";
 import Head from "./head/Head";
-import {
-  Table,
-  Space,
-  Button,
-  DatePicker,
-} from "antd";
+import { Table, Space, Button, DatePicker } from "antd";
 import {
   getSiteWaterLevelsPage,
   getRiverwaterdata,
@@ -96,12 +91,10 @@ export default class yellowRiver extends React.PureComponent {
     const sortData = riverwaterdatalog.sort(
       (a, b) => Date.parse(a.tm) - Date.parse(b.tm)
     );
-    const xData = sortData.map((rwdl) =>
-      moment(rwdl.tm).format("YYYY-MM-DD HH")
-    );
+    const xData = sortData.map((rwdl) => moment(rwdl.tm).format("YYYY-MM-DD"));
     const titleDesc = `${moment(Number(tm) - 7 * 24 * 60 * 60 * 1000).format(
-      "YYYY-MM-DD 00:00"
-    )} ~ ${moment(tm).format("YYYY-MM-DD 23:59")}`;
+      "YYYY-MM-DD"
+    )} ~ ${moment(tm).format("YYYY-MM-DD")}`;
     this.initLineChart(
       "siteWater",
       xData,
@@ -188,49 +181,51 @@ export default class yellowRiver extends React.PureComponent {
                 </Button>
               </Space>
             </div>
-            <Table
-              bordered
-              dataSource={this.state.tableData}
-              pagination={false}
-              columns={[
-                {
-                  align: "center",
-                  title: "河名",
-                  dataIndex: "rvnm",
-                },
-                {
-                  align: "center",
-                  title: "站名",
-                  dataIndex: "name",
-                  render: (text, row) => (
-                    <a
-                      onClick={() =>
-                        this.setState({ selectedSite: row }, () =>
-                          this.buildChartData()
-                        )
-                      }
-                    >
-                      {text}
-                    </a>
-                  ),
-                },
-                {
-                  align: "center",
-                  title: "水位(m)",
-                  dataIndex: "sw",
-                },
-                {
-                  align: "center",
-                  title: "流量(m³/s)",
-                  dataIndex: "ll",
-                },
-              ]}
-              rowClassName={(record) => {
-                return this.state.selectedSite.name === record.name
-                  ? "primary-row"
-                  : "";
-              }}
-            />
+            <div>
+              <Table
+                bordered
+                dataSource={this.state.tableData}
+                pagination={false}
+                columns={[
+                  // {
+                  //   align: "center",
+                  //   title: "河名",
+                  //   dataIndex: "rvnm",
+                  // },
+                  {
+                    align: "center",
+                    title: "站名",
+                    dataIndex: "name",
+                    render: (text, row) => (
+                      <a
+                        onClick={() =>
+                          this.setState({ selectedSite: row }, () =>
+                            this.buildChartData()
+                          )
+                        }
+                      >
+                        {text}
+                      </a>
+                    ),
+                  },
+                  {
+                    align: "center",
+                    title: "水位(m)",
+                    dataIndex: "sw",
+                  },
+                  {
+                    align: "center",
+                    title: "流量(m³/s)",
+                    dataIndex: "ll",
+                  },
+                ]}
+                rowClassName={(record) => {
+                  return this.state.selectedSite.name === record.name
+                    ? "primary-row"
+                    : "";
+                }}
+              />
+            </div>
           </div>
           <div className="m-left-notices-chart">
             <div className="rain-online" id="siteWater"></div>
