@@ -93,54 +93,6 @@ class DeviceManageFlood extends Component {
       this.buildSiteCountChart();
     });
   }
-  //TODO
-  async getDeviceData7777() {
-    this.setState({ showLoading: true });
-    try {
-      const { device } = this.props;
-      const { currentSite, deviceTablePage, waterName } = this.state;
-      const siteDevices = await AllApi.getSiteWaterLevelsPage({
-        relTypeCode: device.type,
-        relTypeId: currentSite.key,
-        size: -1,
-        current: deviceTablePage,
-        name: waterName,
-      });
-      const treeData = [
-        { title: "东营区", key: "370502" },
-        { title: "河口区", key: "370503" },
-        { title: "垦利区", key: "370521" },
-        { title: "利津县", key: "370522" },
-        { title: "广饶县", key: "370523" },
-      ];
-      const treeDefaultStatus = {};
-      let first;
-      treeData.map((td) => {
-        td.selectable = false;
-        td.children = [];
-        siteDevices.data.records
-          .filter((d) => (d.region || d.addvcd) === td.key)
-          .map((d) => {
-            const child = Object.assign({}, d, {
-              key: d[`site${device.typeName}ID`],
-              title: d.name,
-            });
-            // if (!first) {
-            //   first = child;
-            //   treeDefaultStatus.expand = td.key;
-            //   treeDefaultStatus.selected = child.key;
-            // }
-            td.children.push(child);
-          });
-      });
-      this.setState({
-        treeData: treeData,
-      });
-    } catch (e) {
-      console.error(e);
-    }
-    this.setState({ showLoading: false });
-  }
   async getDeviceData() {
     this.setState({ showLoading: true });
     try {
@@ -211,24 +163,40 @@ class DeviceManageFlood extends Component {
           type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
         },
       },
-      toolbox: {
-        show: true,
-        feature: {
-          // dataView: { show: true, readOnly: true },
-          magicType: { show: true, type: ["line", "bar"] },
-          restore: { show: true },
-          saveAsImage: { show: true },
-        },
-      },
+      // toolbox: {
+      //   show: true,
+      //   feature: {
+      //     // dataView: { show: true, readOnly: true },
+      //     magicType: { show: true, type: ["line", "bar"] },
+      //     restore: { show: true },
+      //     saveAsImage: { show: true },
+      //   },
+      // },
       xAxis: {
         type: "category",
         data: xdata,
-        name: "时间"
+        name: "时间",
+        nameTextStyle: {
+          color: "white",
+          fontSize: "18",
+        },
+        axisLabel: {
+          color: "white",
+          fontSize: "15",
+        },
       },
       yAxis: {
         min: 0,
         type: "value",
-        name: "数量"
+        name: "数量",
+        nameTextStyle: {
+          color: "white",
+          fontSize: "18",
+        },
+        axisLabel: {
+          color: "white",
+          fontSize: "15",
+        },
       },
       // grid: {
       //   right: "0%",
@@ -430,14 +398,6 @@ class DeviceManageFlood extends Component {
     return (
       <Spin spinning={showLoading}>
         <div className="device-manage">
-          <Search
-            placeholder="请输入搜索内容"
-            onSearch={(value) => {
-              this.setState({ waterName: value, deviceTablePage: 1 }, () => {
-                this.getDeviceData7777();
-              });
-            }}
-          />
           <div className="device-manage-content">
             <div className="device-manage-content-right">
               <div className="device-manage-content-right-title">
@@ -446,10 +406,10 @@ class DeviceManageFlood extends Component {
                   <Button
                     onClick={() => this.setState({ addFormVisible: true })}
                   >
-                    新增
+                    新增设备
                   </Button>
                   <Button>
-                    导入
+                    导入数据
                     <input
                       type="file"
                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
@@ -458,7 +418,7 @@ class DeviceManageFlood extends Component {
                     />
                   </Button>
                   <Button onClick={() => this.handleExportDevice()}>
-                    导出
+                    导出数据
                   </Button>
                 </Space>
               </div>
@@ -544,7 +504,7 @@ class DeviceManageFlood extends Component {
               <div className="device-manage-content-right-title">
                 维修记录
                 <Button className="device-manage-content-right-title-sub" onClick={() => this.handleExportDeviceRepair()}>
-                  导出
+                  导出数据
                 </Button>
               </div>
               <Table
@@ -592,10 +552,10 @@ class DeviceManageFlood extends Component {
             </div>
             <div className="device-manage-content-left">
               {treeData ? (
-                <Tabs className="device-tabs">
+                <Tabs className="device-tabs" type="card">
                   {treeData.map(node => (
                     <TabPane tab={node.title} key={node.key}>
-                      <Table
+                      <Table scroll={{ y: 300 }}
                         bordered
                         dataSource={node.children}
                         pagination={false}
