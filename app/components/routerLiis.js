@@ -61,7 +61,7 @@ class RouterList extends React.PureComponent {
     {
       text: "任务调度",
       imgurl: task,
-      routerUrl: "/home/taskList",
+      routerUrl: "/taskInfo",
     },
     {
       text: "设备管理",

@@ -165,6 +165,7 @@
 
 .water-right-first-box {
   .water-right-first-box-select {
+    margin-left: 15px;
     .ant-select-arrow {
       color: white;
     }
@@ -389,7 +390,7 @@
 .water-chart-radio {
   position: absolute;
   top: 30px;
-  right: 0px;
+  right: 5px;
   .ant-radio-button {
     border: 1px solid #0099ff;
   }
