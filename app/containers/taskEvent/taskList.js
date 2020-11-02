@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import * as action from "../../redux/actions/taskEvent";
 import { bindActionCreators } from "redux";
@@ -29,6 +29,7 @@ const TaskList = (props) => {
     changeTaskInput,
     setTaskInfo,
   } = props.actions;
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     getTaskList({
@@ -134,16 +135,16 @@ const TaskList = (props) => {
         ></DYForm>
       </Modal>
       <Pagination
-        defaultCurrent={1}
+        current={page}
         // hideOnSinglePage
         total={taskList?.total}
         onChange={(page, size) => {
+          setPage(page);
           getTaskList({
             current: page,
             name: taskInput,
             size: size,
           });
-          console.log(page, size);
         }}
       ></Pagination>
       <div>
