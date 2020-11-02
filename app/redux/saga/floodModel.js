@@ -88,7 +88,7 @@ function *queryModelState() {
 function *runModel(action) {
     try {
         const {runTimeString} = action.data;
-        let result = yield call(startRunModel, {time: runTimeString});
+        let result = yield call(startRunModel, {tm: runTimeString});
 
         if (result.code === 200) {
             yield put({type: types.MODEL_STATE_UPDATE, data: {status: true}});

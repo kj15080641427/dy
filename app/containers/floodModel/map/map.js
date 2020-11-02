@@ -9,19 +9,10 @@ import * as mapAction from "@app/redux/actions/map";
 import UbiMap from "../../monitor/map/ubimap";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
-//import { templateRain, templatePonding } from "./template";
-//import VideoControl from "@app/components/video/VideoControl";
 import "./style.scss";
-// import Person from "./overlays/Person";
-// import Rain from "./overlays/Rain";
+
 import Water from "./overlays/Water";
-// import Ponding from "./overlays/Ponding";
-// import Video from "./overlays/Video";
-// import Gate from "./overlays/Gate";
-// import Pump from "./overlays/Pump";
-// import WfsRiver from "./overlays/WfsRiver";
-// import Warehouse from "./overlays/Warehouse";
-// import { message } from "antd";
+
 class Map extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -132,33 +123,33 @@ class Map extends React.PureComponent {
       key: "river",
     });
 
+    this.map.addGeo({
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+      params: {
+        LAYERS: "dy:河流40",
+        TILED: true,
+      },
+      zIndex: 10,
+      key: "river2",
+    });
     // this.map.addGeo({
     //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
     //   params: {
-    //     LAYERS: "dy:河流40",
+    //     LAYERS: "dy:Cluster",
     //     TILED: true,
     //   },
-    //   zIndex: 10,
-    //   key: "river2",
+    //   zIndex: 11,
+    //   key: "Cluster",
     // });
-    this.map.addGeo({
-      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-      params: {
-        LAYERS: "dy:Cluster",
-        TILED: true,
-      },
-      zIndex: 11,
-      key: "Cluster",
-    });
-    this.map.addGeo({
-      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-      params: {
-        LAYERS: "dy:Link",
-        TILED: true,
-      },
-      zIndex: 11,
-      key: "link",
-    });
+    // this.map.addGeo({
+    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+    //   params: {
+    //     LAYERS: "dy:Link",
+    //     TILED: true,
+    //   },
+    //   zIndex: 11,
+    //   key: "link",
+    // });
     // this.map.addGeo({
     //     url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
     //     params: {
@@ -168,15 +159,15 @@ class Map extends React.PureComponent {
     //     zIndex: 11,
     //     key: "Node",
     // });
-    this.map.addGeo({
-      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-      params: {
-        LAYERS: "dy:RiverOut",
-        TILED: true,
-      },
-      zIndex: 11,
-      key: "RiverOut",
-    });
+    // this.map.addGeo({
+    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+    //   params: {
+    //     LAYERS: "dy:RiverOut",
+    //     TILED: true,
+    //   },
+    //   zIndex: 11,
+    //   key: "RiverOut",
+    // });
 
 
     this.map.addVector({
