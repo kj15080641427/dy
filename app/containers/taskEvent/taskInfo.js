@@ -8,6 +8,7 @@ import { createHashHistory } from "history";
 import { Link } from "react-router-dom";
 import taskTimelineSvg from "../../resource/icon/taskTimeline.png";
 import trackQuery from "../../resource/icon/trackQuery.svg";
+import TaskTimeLine from './taskTimeLine'
 import {
   MailOutlined,
   UserOutlined,
@@ -111,6 +112,9 @@ const TaskInfo = (props) => {
     <div style={{ height: "100%" }}>
       <div className="track-query-body">
         <Search onSearch={onSearch} suffix={trackQuery}></Search>
+      </div>
+      <div className='task-info-timeline'>
+      <TaskTimeLine></TaskTimeLine>
       </div>
       <Map layerVisible={{}} person={person}></Map>
       <TaskUpdate formRef={formRef}></TaskUpdate>

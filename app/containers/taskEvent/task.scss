@@ -184,16 +184,27 @@
     padding: 0px 0px;
   }
 }
-// .task-timeline-div {
-//   margin: auto;
-//   width: 640px;
-//   .task-timeline-card {
-//     width: 300px;
-//   }
-//   .task-timeline-arrow {
-//     display: flex;
-//   }
-// }
+.task-info-timeline{
+  background:white;
+  position: absolute;
+  width: 450px;
+  height: 900px;
+  top: 150px;
+  overflow-y: scroll;
+  right: 100px;
+  z-index: 9;
+}
+.task-timeline-div {
+  padding-top: 10px;
+  margin: auto;
+  width: 90%;
+  .task-timeline-card {
+    width: 90%;
+  }
+  .task-timeline-arrow {
+    display: flex;
+  }
+}
 .chart-group-flex{
   display: flex;
   .chart-group-left{
@@ -216,7 +227,7 @@
 .track-query-body{
   position: absolute;
   top: 200px;
-  right: 100px;
+  right: 550px;
   z-index: 99;
   .track-query-icon{
     width: 30px;

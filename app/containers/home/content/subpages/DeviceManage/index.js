@@ -4,8 +4,9 @@
  */
 import React, { Component } from "react";
 import Flood from "./Flood1";
+import "./style.scss";
 const AllApi = require("@app/data/home");
-import { Tabs } from "antd";
+import { Tabs, Input, Button } from "antd";
 const { TabPane } = Tabs;
 
 const deviceTypeMap = [{
@@ -22,7 +23,8 @@ class deviceManage extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      deviceTypeMap: []
+      deviceTypeMap: [],
+      device: null
     }
   }
 
@@ -36,18 +38,37 @@ class deviceManage extends Component {
       });
       deviceType.siteData = data;
     }
-    this.setState({ deviceTypeMap })
+    this.setState({ deviceTypeMap, device: deviceTypeMap[0] })
+  }
+
+  //TODO
+  async getDeviceData7777() {
   }
   
   render () {
     return (
-      <Tabs>
-        {this.state.deviceTypeMap.map(device => (
-          <TabPane tab={`${device.name}(${device.siteData.records.length}个)`} key={device.typeName}>
-            <Flood device={device} />
-          </TabPane>
-        ))}
-      </Tabs>
+      <div className="device-manager">
+        <Tabs tabBarExtraContent={{
+          right: <div style={{ display: 'flex' }}>
+            <Input
+              onChange={(value) => {
+                this.setState({ waterName: value, deviceTablePage: 1 }, () => {
+                  this.getDeviceData7777();
+                });
+              }}
+            />
+            <Button type="primary" style={{ marginLeft: '8px' }}>
+              查询
+            </Button>
+          </div>
+        }}>
+          {this.state.deviceTypeMap.map(device => (
+            <TabPane tab={`${device.name}(${device.siteData.records.length}个)`} key={device.typeName}>
+            </TabPane>
+          ))}
+        </Tabs>
+        {this.state.device ? <Flood device={this.state.device} />: ''}
+      </div>
     )
   }
 };
