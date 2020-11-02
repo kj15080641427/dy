@@ -4,6 +4,11 @@
   position: relative;
   min-height: $minheight;
   height: $mapDisplayHeight;
+  .easyflood-flex-center{
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
   .flood-chart-radio {
     position: absolute;
     top: 10px;
@@ -96,7 +101,9 @@
     left: 15px;
     .radar-box {
       width: 500px;
-      height: 280px;
+      // min-height: 280px;
+      height: 31vh;
+      // height: calc(100%+10px);
       .box-head {
         width: 170px;
       }
@@ -104,8 +111,8 @@
     .easyflood-left-bottom {
       .radar-box {
         width: 500px;
-        height: 53vh;
-        min-height: 550px;
+        height: 56.5vh;
+        // min-height: 550px;
       }
     }
     .funnel-chart {
@@ -228,7 +235,8 @@
     .flood-first-box {
       .radar-box {
         width: 445px;
-        height: 290px;
+        min-height: 290px;
+        height: 32vh;
         .box-head {
           width: 180px;
         }
@@ -242,7 +250,7 @@
     .second-box {
       .radar-box {
         width: 445px;
-        height: 540px;
+        height: 55vh;
         margin-top: 10px;
         min-height: 500px;
         .box-head {

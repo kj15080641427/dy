@@ -3,6 +3,12 @@
   position: relative;
   height: $mapDisplayHeight;
   min-height: $minheight;
+  .video-flex-center {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+  }
   .ant-tabs-tab {
     color: white;
     // margin-left: 10px;
@@ -29,7 +35,7 @@
   }
   .card-container > .ant-tabs-card .ant-tabs-content {
     height: 100%;
-    margin-top: -16px;
+    margin-top: -26px;
   }
   .card-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
     // background: #fff;
@@ -102,10 +108,12 @@
     .videoFunnelChart {
       width: 500px;
       height: calc(100% - 25px);
+      display: flex;
+      align-items: center;
     }
     .radar-box {
       margin-top: 0;
-      height: calc(100% - 8px)!important;
+      height: calc(100% - 8px) !important;
     }
   }
   .chart-right-video {
@@ -136,6 +144,8 @@
       height: 280px;
     }
     .videoBarChart {
+      display: flex;
+      align-items: center;
       width: 530px;
       height: calc(100% - 25px);
     }
@@ -213,9 +223,6 @@
       font-size: 14px;
       padding: 10px 0;
     }
-    .radar-box {
-      height: 329px;
-    }
     .bar-chart {
       width: 535px;
       height: 280px;
@@ -223,6 +230,16 @@
     .videoLinechart {
       width: 450px;
       height: 280px;
+    }
+    .radar-box {
+      background: rgba(0, 51, 102, 0.7);
+      margin-top: 15px;
+      // opacity: 0.7;
+      position: relative;
+      border: 2px solid rgb(0, 153, 255);
+      width: 535px;
+      height: 329px;
+      z-index: 9;
     }
   }
 }

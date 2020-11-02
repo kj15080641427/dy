@@ -5,8 +5,8 @@ import * as actions from "@app/redux/actions/map";
 import moment from "moment";
 import Map from "./map/map";
 import "./style.scss";
-import Head from "./head/Head";
-import CheckBoxs from "../monitor/bottom/CheckBox";
+import Head from "../../components/head/head";
+import CheckBoxs from "../../components/setting/setting";
 import setImg from "@app/resource/setsys.png";
 import { Drawer, Row, Divider, Checkbox, Col, Radio, Tabs } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
@@ -20,6 +20,7 @@ import {
 import VideoPlayer from "../../components/video/videoPlayer";
 import warningIcon from "@app/resource/icon/warning.svg";
 import { TableShow } from "../../components/chart/table";
+import titleImg from "../../resource/title/easyFlood.png";
 
 const floodRainId = "46020108";
 import emitter from "@app/utils/emitter.js";
@@ -98,7 +99,7 @@ class Monitor extends React.PureComponent {
       );
     }
     if (historyFlood != pre.historyFlood) {
-      showChart(historyFlood, "easyfloodLine");
+      showChart(historyFlood, "easyfloodLine", "z", "积水(cm)");
 
       // lineChart("easyfloodLine", historyFlood, 380, floodWarning || -0.1);
     }
@@ -205,32 +206,32 @@ class Monitor extends React.PureComponent {
         {
           value: a,
           name: "0cm 无积水",
-          itemStyle: { color: "rgba(255,255,255,1)" },
+          itemStyle: { color: "rgba(229,229,229)" },
         },
         {
           value: b,
           name: "0-10cm",
-          itemStyle: { color: "rgba(0,191,243,1)" },
+          itemStyle: { color: "rgba(175,233,159)" },
         },
         {
           value: c,
           name: "10-20cm",
-          itemStyle: { color: "rgba(0,255,1,1)" },
+          itemStyle: { color: "rgba(91,175,51)" },
         },
         {
           value: d,
           name: "20-30cm",
-          itemStyle: { color: "rgba(255,255,1,1)" },
+          itemStyle: { color: "rgba(121,190,255)" },
         },
         {
           value: e,
           name: "30-40cm",
-          itemStyle: { color: "rgba(143,101,35,1)" },
+          itemStyle: { color: "rgba(57,53,255)" },
         },
         {
           value: f,
           name: "40cm以上",
-          itemStyle: { color: "rgba(237,28,34,1)" },
+          itemStyle: { color: "rgba(228,41,255)" },
         },
       ];
       this.setState({
@@ -240,7 +241,7 @@ class Monitor extends React.PureComponent {
       funnelChart("funnel-chart", data);
     }
     if (floodDayRain != pre.floodDayRain) {
-      showChart(floodDayRain, "floodRainChart", "avgDrp");
+      showChart(floodDayRain, "floodRainChart", "avgDrp", "水位(mm)");
     }
   }
   render() {
@@ -256,7 +257,7 @@ class Monitor extends React.PureComponent {
     return (
       <div className="easy-flood-display">
         <Map layerVisible={layerVisible}></Map>
-        <Head></Head>
+        <Head titleImg={titleImg}></Head>
         <div style={{ display: displayLeft }}>
           <div className="easyFlood-left">
             <RenderBox>
@@ -484,7 +485,9 @@ class Monitor extends React.PureComponent {
                     )}`}</div>
                   </div>
                 </div>
-                <div className="flood-rain-chart" id="floodRainChart"></div>
+                <div className="easyflood-flex-center">
+                  <div className="flood-rain-chart" id="floodRainChart"></div>
+                </div>
               </RenderBox>
             </div>
             <div className="second-box">

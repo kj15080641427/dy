@@ -86,7 +86,6 @@ export const TabsList = (props) => {
 
   useEffect(() => {
     if (dayWater instanceof Array && visible && dayWater[0]) {
-      console.log(dayWater, "??");
       showChart(dayWater.reverse(), "dayRiverWaterDiv");
     }
   }, [dayWater]);
@@ -98,14 +97,12 @@ export const TabsList = (props) => {
         onRow={(record) => {
           return {
             onClick: () => {
-              changeWaterId(
-                {
-                  id: record?.siteWaterLevels[0]?.stcd,
-                  name: record.name,
-                },
-              );
-              changeWaterVideo(record)
-              // emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
+              changeWaterId({
+                id: record?.siteWaterLevels[0]?.stcd,
+                name: record.name,
+              });
+              changeWaterVideo(record);
+              emitter.emit("map-move-focus", [record.lgtd, record.lttd], 3000);
             },
             onDoubleClick: () => {
               changeModalVisible(true);
@@ -120,9 +117,9 @@ export const TabsList = (props) => {
             filter: "aliasName",
             width: "20%",
             render: (name) => {
-              return name.length >= 8 ? (
+              return name.length >= 7 ? (
                 <Popover content={name} title="站名全称">
-                  {name.toString().substring(0, 7) + "..."}
+                  {name.toString().substring(0, 6) + "..."}
                 </Popover>
               ) : (
                 name

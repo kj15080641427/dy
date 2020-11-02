@@ -56,7 +56,7 @@ class WeatherChart extends React.PureComponent {
           cityData: Number(c.prd).toFixed(2),
         });
         for (var i = result.data.length - 1; i >= 0; i--) {
-          setData.unshift((result.data[i].prd * 1).toFixed(1));
+          setData.unshift((result.data[i].prd * 1).toFixed(2));
         }
         myChart.setOption({
           series: [
@@ -142,6 +142,8 @@ class WeatherChart extends React.PureComponent {
         break;
       case "自定义":
         break;
+      default:
+        break;
     }
     let dataSource;
     if (params) {
@@ -199,6 +201,8 @@ class WeatherChart extends React.PureComponent {
         },
       },
       yAxis: {
+        // min: "dataMin",
+        // boundaryGap: ["10%", "10%"],
         type: "value",
         axisLabel: {
           textStyle: {
@@ -232,7 +236,7 @@ class WeatherChart extends React.PureComponent {
               { offset: 1, color: "rgba(156, 79, 245, 0.1)" },
             ]),
           },
-          data: dataSource ? dataSource.map((ds) => ds.value) : [],
+          data: dataSource ? dataSource.map((ds) => ds.value.toFixed(2)) : [],
         },
       ],
     });

@@ -20,7 +20,6 @@ class Satellite extends React.PureComponent {
     };
   }
   slickPlayRoPause(lunboSetting) {
-    console.log(lunboSetting);
     if (lunboSetting.autoplay) {
       lunboSetting.autoplay = false;
       this.slider.slick.slickPause();
@@ -86,7 +85,6 @@ class Satellite extends React.PureComponent {
       }
     }
     const { type } = this.props;
-    console.log(type, "TTT");
     return (
       <div className="dis-satellite">
         <div className="div-precipitation1" onClick={this.showRain}></div>

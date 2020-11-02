@@ -4,8 +4,9 @@ import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/map";
 import Map from "./map/map";
 import "./style.scss";
-import Head from "./head/Head";
-import CheckBoxs from "../monitor/bottom/CheckBox";
+import Head from "../../components/head/head";
+import titleImg from "../../resource/title/video.png";
+import CheckBoxs from "../../components/setting/setting";
 import setImg from "@app/resource/setsys.png";
 import { Drawer, Row, Divider, Checkbox, Tabs } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
@@ -102,7 +103,8 @@ class Monitor extends React.PureComponent {
             default:
               break;
           }
-        } else if (item.isOnline == "1") {
+        } else {
+          // console.log(item);
           switch (item.region) {
             case "370502":
               dyLine++;
@@ -146,16 +148,17 @@ class Monitor extends React.PureComponent {
     }
 
     if (count != pre.count) {
+      console.log("???");
       let data = [];
       count?.vodeocount?.list?.forEach((item) => {
         data.push({
           name:
-            item.dataSourceDesc == "积水点水位站(易捞点)"
-              ? "易捞点"
-              : item.dataSourceDesc == "河口区水利局"
+            item.dataSourceDesc == "河口区水利局"
               ? "水利局"
               : item.dataSourceDesc == "天鹅湖蓄滞洪区"
               ? "天鹅湖"
+              : item.dataSourceDesc == "农村基层防汛监测预警平台"
+              ? "基层防汛"
               : item.dataSourceDesc || "暂无数据",
           value: item.number,
         });
@@ -178,7 +181,7 @@ class Monitor extends React.PureComponent {
     return (
       <div className="video">
         <Map layerVisible={layerVisible}></Map>
-        <Head></Head>
+        <Head titleImg={titleImg}></Head>
         <div className="">
           <div style={{ display: displayLeft }}>
             <div className="chart-left-video">
@@ -215,7 +218,11 @@ class Monitor extends React.PureComponent {
             </div>
           </div>
           <div className="chart-right-video" style={{ display: displayRight }}>
-            <RenderBox hasTitle title="视频站点在线图" style={{ height: 'calc(100% - 15px)' }}>
+            <RenderBox
+              hasTitle
+              title="视频站点在线图"
+              style={{ height: "calc(100% - 15px)" }}
+            >
               <div className="videoBarChart" id="videoBarChart"></div>
             </RenderBox>
             <RenderBox className="video-img-box " style={{ height: 383 }}>
@@ -301,7 +308,7 @@ class Monitor extends React.PureComponent {
 }
 
 function mapStateToProps(state) {
-  console.log( state.monitor.video)
+  // console.log(state.monitor.video, "///");
   return {
     count: state.mapAboutReducers.count,
     video: state.monitor.video,

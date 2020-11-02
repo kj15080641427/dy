@@ -4,7 +4,8 @@
 import React from "react";
 import { downlWordData, downloadExcel } from "@app/data/request";
 import "./style.scss";
-import Head from "./head/Head";
+import Head from "../../components/head/head";
+import titleImg from "../../resource/title/noties.png";
 import FloodSituation from "./components/floodSituation/FloodSituation";
 import PannelBtn from "./right/PannelBtn";
 import moment from "moment";
@@ -39,7 +40,7 @@ class notices extends React.PureComponent {
     return (
       <div className="flood-notices">
         <div className="flood-noyices-top"></div>
-        <Head></Head>
+        <Head titleImg={titleImg}></Head>
         <div className="m-left-notices">
           <FloodSituation
             pointdata={pointdata}

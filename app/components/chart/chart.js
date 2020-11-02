@@ -53,7 +53,7 @@ export const barChart = (domId, legend, online, line) => {
         },
         axisLabel: {
           color: "white",
-          fontSize: 16,
+          fontSize: 18,
         },
       },
     ],
@@ -192,7 +192,7 @@ export const pieChart = (domId, data, width, legend, title) => {
           },
         },
         label: {
-          fontSize: "12",
+          fontSize: "16",
           width: "30px",
           color: "white",
           formatter: "{b}: {@2012}",
@@ -204,7 +204,6 @@ export const pieChart = (domId, data, width, legend, title) => {
 };
 export const lineChart = (domId, data, width, warningline) => {
   let myChartcount = echarts.init(document.getElementById(domId));
-  console.log(data, "DD");
   const time = [
     "00:00",
     "02:00",
@@ -293,13 +292,15 @@ export const rotateBarChart = (domId, data, width, height) => {
   if (reduceNum >= min) {
     reduceNum = min - 1;
   }
+  if (reduceNum == 0) {
+    reduceNum = max / 10;
+  }
   data.map((d) => {
     if (d.value == 0) {
       d.value = reduceNum;
       d.reduceFlag = true;
     }
   });
-  console.log(data, "DDATA");
   let option = {
     tooltip: {
       trigger: "axis",
@@ -344,7 +345,7 @@ export const rotateBarChart = (domId, data, width, height) => {
       show: true,
       type: "category",
       data: [
-        { value: "无雨(0)", textStyle: { color: "white", fontSize: fontSize } },
+        // { value: "无雨(0)", textStyle: { color: "white", fontSize: fontSize } },
         {
           value: "小雨(0-10)",
           textStyle: { color: "white", fontSize: fontSize },
@@ -554,7 +555,7 @@ export const funnelChart = (domId, data) => {
   myChartcount.setOption(option);
 };
 //24小时折线图
-export const showChart = (data, id, yd) => {
+export const showChart = (data, id, yd, yname) => {
   let xdata = [];
   let ydata = [];
   var myChart = echarts.init(document.getElementById(id));
@@ -582,7 +583,7 @@ export const showChart = (data, id, yd) => {
     xAxis: {
       type: "category",
       data: xdata.length ? xdata : [],
-      name: "时间",
+      name: "",
       axisLabel: {
         color: "white",
         fontSize: 16,
@@ -596,7 +597,7 @@ export const showChart = (data, id, yd) => {
     yAxis: {
       min: 1,
       type: "value",
-      name: "水位（m）",
+      name: yname ? yname : "水位（m）",
       axisLabel: {
         color: "white",
         fontSize: 16,
@@ -629,11 +630,6 @@ export const showChart = (data, id, yd) => {
               name: "最高",
               label: { show: true, formatter: "{b}{c}" },
             },
-            {
-              type: "min",
-              name: "最低",
-              label: { show: true, formatter: "{b}{c}" },
-            },
           ],
         },
         lineStyle: {
@@ -649,10 +645,10 @@ export const showChartRiver = (data, id) => {
   let ydata = [];
   var myChart = echarts.init(document.getElementById(id));
   data.forEach((item) => {
-    item.stnm = `${item.stnm.slice(0, 2)}\n${item.stnm.slice(
-      2,
-      4
-    )}\n${item.stnm.slice(4, 33)}`;
+    // item.stnm = `${item.stnm.slice(0, 2)}\n${item.stnm.slice(
+    //   2,
+    //   4
+    // )}\n${item.stnm.slice(4, 33)}`;
     xdata.push(item.stnm);
     ydata.push(item.z);
   });
@@ -683,6 +679,9 @@ export const showChartRiver = (data, id) => {
           lineStyle: {
             color: "white",
           },
+        },
+        axisLabel: {
+          rotate: 50,
         },
       },
     ],

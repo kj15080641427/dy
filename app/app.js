@@ -20,7 +20,14 @@ import AsyncNotices from "@app/containers/notices/notices";
 import Ocean from "@app/containers/ocean";
 import YellowRiver from "@app/containers/yellowRiver";
 import DisplaySmall from "@app/containers/display/DisplaySmall";
-import FloodModel from '@app/containers/floodModel';
+import FloodModel from "@app/containers/floodModel";
+import TaskList from "@app/containers/taskEvent/taskList";
+import TaskInfo from "@app/containers/taskEvent/taskInfo";
+import TaskInfoMessage from "@app/containers/taskEvent/taskInfoMessage";
+import ExpertDispatch from "@app/containers/taskEvent/expertDispatch";
+import UserDispatch from "@app/containers/taskEvent/userDispatch";
+import MaterialDispatch from "@app/containers/taskEvent/materialDispatch";
+import TaskTimeLine from "@app/containers/taskEvent/taskTimeLine";
 import "./style.scss";
 // const AsyncHome = AsyncComp(() => import(/*webpackChunkName:'Index'*/"@app/containers/home/Index").then((res) => { removeLoading(); return res; }));
 // const AsyncLogin = AsyncComp(() => import(/*webpackChunkName:'Login'*/"@app/containers/home/Login").then((res) => { removeLoading(); return res; }));
@@ -102,6 +109,14 @@ export class App extends React.Component {
               <Route path={`/yellowRiver`} component={YellowRiver} />
               <Route path={`/displaySmall`} component={DisplaySmall} />
               <Route path={`/floodModel`} component={FloodModel} />
+
+              <Route path={`/taskList`} component={TaskList} />
+              <Route path={`/taskInfo`} component={TaskInfo} />
+              <Route path={`/taskInfoMessage`} component={TaskInfoMessage} />
+              <Route path={`/expertDispatch`} component={ExpertDispatch} />
+              <Route path={`/userDispatch`} component={UserDispatch} />
+              <Route path={`/materialDispatch`} component={MaterialDispatch} />
+              <Route path={`/taskTimeLine`} component={TaskTimeLine} />
             </>
           )}
           {/* <Route component={AsyncLogin} /> */}

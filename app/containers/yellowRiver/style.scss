@@ -52,14 +52,24 @@
     background: rgb(0, 51, 102);
   }
   .primary-row , .primary-row:hover {
-    background: #81b8eb!important;
-    color: #fff!important;
-    transition: background .3s,color .3s;
+    // background: #81b8eb!important;
+    color: #f5222d;
+    // transition: background .3s,color .3s;
     a {
-      color: #fff!important;
+      color: #f5222d!important;
     }
-    td {
-      background-color: #81b8eb!important;
-    }
+    // td {
+    //   background-color: #81b8eb!important;
+    // }
+  }
+  .ant-table-row{
+    height: 6.8vh;
+  }
+  .m-left-notices-table{
+    width: 200px;
+    display: flex;
+    flex-flow: column;
+    // align-items: center;
+    justify-content: space-between;
   }
 }

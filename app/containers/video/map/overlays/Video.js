@@ -1,64 +1,59 @@
 /**
- * Video 2020-05-14
+ * Rain 2020-05-14
  */
 import React from "react";
 import "./style.scss";
 import Base from "./Base";
-import { transform } from "ol/proj.js";
-import VideoComponent from "@app/components/video/VideoComponent";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "@app/redux/actions/rain";
 class Video extends Base {
   static type = "video";
-  static single = true; // 仅能弹出最近一个,其他关闭
   constructor(props, context) {
     super(props, context);
-    // this.state = {
-    //   videoControl: props.videoControl ? props.videoControl : null,
-    // };
+    this.state = {};
     this.onClose = this.onClose.bind(this);
   }
   render() {
     let { model } = this.props;
-    let { videoControl } = model;
-    let token = model.strtoken;
-    let type = model.dataSource;
+    const { dict } = model;
+    console.log(model, "MODEL");
+
+    let tmDesc = model.tm ? model.tm : "--";
     return (
       <div
-        className="m-ovl-box m-ovl-video"
-        style={{ display: "none", width: 620, height: 420 }}
+        className="m-ovl-box m-ovl-rain luo-ovl-rain"
+        style={{ display: "none" }}
         ref={(node) => {
           this.container = node;
         }}
       >
+        <div className="m-ovl-line luo-ovl-title">视频站点：{model.name}</div>
+        <div className="m-ovl-line">
+          <label>站点编号：</label>
+          {model.stcd}
+        </div>
+        <div className="m-ovl-line">
+          <label>数据来源：</label>视频
+        </div>
+        <div className="m-ovl-line">
+          <label>站点地址：</label>
+          {model.address}
+        </div>
+        {/* <div className="m-ovl-line"><label>5分钟降水量：</label>{drpLevel}</div>
+        <div className="m-ovl-line"><label>1小时降水量：</label>{hourRain}</div>
+        <div className="m-ovl-line"><label>24小时降水量：</label>{dayRain}</div> */}
+        <div className="m-ovl-line">
+          <label>更新时间：</label>
+          {tmDesc}
+        </div>
         <span className="iconfont iconcuo m-ovl-close"></span>
-        <div
-          className="m-ovl-line"
-          onClick={this.onRequestFullScreen.bind(this)}
-        >
-          <span>视频站点: {model.sitename}</span>
-        </div>
-        <div className="m-ovl-vc">
-          <VideoComponent
-            videoControl={videoControl}
-            token={token}
-            type={type}
-            style={{ width: 590, height: 380, borderWidth: 0 }}
-          />
-        </div>
       </div>
     );
   }
   componentDidCatch() {}
   componentDidMount() {
-    //super.componentDidMount();
-    let { map, model } = this.props;
-    if (!map || !model) return;
-    let nowNode = this.container.cloneNode(true);
-    nowNode.style.display = "block";
-    this.installEvent(nowNode);
-    let id = this.getType() + "_" + model.id;
-    let map_center = map.getView().getCenter();
-    let center = transform(map_center, "EPSG:3857", "EPSG:4326");
-    map.addOverlay(id, { Coordinate: center, offset: [-290, -140] }, nowNode);
+    super.componentDidMount();
   }
   componentWillUnmount() {
     super.componentWillUnmount();
@@ -67,13 +62,6 @@ class Video extends Base {
     return Video.type;
   }
   onCustomClick(e) {}
-  onRequestFullScreen() {
-    console.log("click");
-    if (this.requestFullscreen) {
-      this.requestFullscreen();
-    }
-  }
-
   onClose() {
     let { onClose, model } = this.props;
     if (onClose) {
@@ -81,4 +69,5 @@ class Video extends Base {
     }
   }
 }
+
 export default Video;

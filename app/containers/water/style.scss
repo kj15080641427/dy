@@ -4,23 +4,27 @@
   height: $mapDisplayHeight;
   min-height: $minheight;
   .pie-chart {
-    width: 530px;
+    width: 500px;
     height: 300px;
   }
   .water-river-site-div {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 210px;
+    min-height: 250px;
     height: 26vh;
   }
   .water-river-site {
     width: 480px;
-    min-height: 210px;
-    height: 20vh;
+    min-height: 250px;
+    height: 26vh;
     text-align: center;
   }
-  .water-left-first-box {
+  .water-right-last-box {
+    .radar-box{
+      min-height: 555px;
+      height: 57vh;
+    }
     margin-top: -15px;
     .water-select {
       color: white;
@@ -38,22 +42,27 @@
     .box-head {
       width: 140px;
     }
-    .radar-box {
-      height: 570px;
-    }
-    // img {
-    //   width: 100%;
-    //   height: 280px;
-    // }
+
   }
   .water-right-second-box {
     margin-top: -5px;
+    width: 500px;
+    .radar-box {
+      background: rgba(0, 51, 102, 0.7);
+      margin-top: 15px;
+      // opacity: 0.7;
+      position: relative;
+      border: 2px solid rgb(0, 153, 255);
+      width: 500px;
+      min-height: 298px;
+      height: 32vh;
+      z-index: 9;
+    }
     .box-head {
       width: 200px;
     }
     .bar-chart {
-      // margin-top: 50px;
-      width: 535px;
+      width: 490px;
       height: 280px;
     }
     .pie-lauout-text {
@@ -76,7 +85,7 @@
 .water-video-div {
   .set-rotate-radio {
     background: none;
-    top: 330px;
+    top: 310px;
     right: -80px;
   }
 }
@@ -149,12 +158,14 @@
   // opacity: 0.7;
   position: relative;
   border: 2px solid rgb(0, 153, 255);
-  width: 535px;
-  height: 210px;
+  width: 500px;
+  min-height: 180px;
+  height: 23vh;
 }
 
 .water-right-first-box {
   .water-right-first-box-select {
+    margin-left: 15px;
     .ant-select-arrow {
       color: white;
     }
@@ -165,23 +176,16 @@
     }
 
     .ant-select-item-option {
-      background-color: #003366 ;
-      color: white ;
+      background-color: #003366;
+      color: white;
     }
   }
   .box-head {
     width: 200px;
   }
-  .radar-box {
-    width: 496px;
-    min-height: 250px;
-    height: 30vh;
-    // height: "100%", marginTop: "10px"
-    .ant-select {
-      position: absolute;
-      top: 5px;
-      left: 5px;
-    }
+  .radar-box{
+    min-height: 300px;
+    height: 31vh;
   }
 }
 .box-head {
@@ -207,15 +211,15 @@
 .radar-box {
   background: rgba(0, 51, 102, 0.7);
   margin-top: 15px;
-  // opacity: 0.7;
   position: relative;
   border: 2px solid rgb(0, 153, 255);
-  width: 535px;
+  width: 500px;
   height: 298px;
   z-index: 9;
 }
 .chart-left {
-  transform: scaleX(1);
+  transform: scale(1);
+  width: 500px;
   display: flex;
   flex-wrap: wrap;
   .card-container {
@@ -300,7 +304,7 @@
     // margin-left: 10px;
   }
   // background:rgba(255, 255, 255, 0.6)!important;
-  width: 540px;
+  // width: 540px;
   position: absolute;
   left: 15px;
   top: 15px;
@@ -341,9 +345,9 @@
   //   height: 230px;
   // }
 
-  .radar-box {
-    width: 500px;
-  }
+  // .radar-box {
+  //   width: 500px;
+  // }
 }
 
 .flex-layout {
@@ -359,7 +363,15 @@
 .video-table {
   margin-top: -5px;
   .radar-box {
-    height: 315px;
+    background: rgba(0, 51, 102, 0.7);
+    margin-top: 15px;
+    // opacity: 0.7;
+    position: relative;
+    border: 2px solid rgb(0, 153, 255);
+    width: 500px;
+    min-height: 315px;
+    height: 32vh;
+    z-index: 9;
   }
   .ant-table table {
     table-layout: fixed;
@@ -378,11 +390,11 @@
 .water-chart-radio {
   position: absolute;
   top: 30px;
-  right: 0px;
+  right: 5px;
   .ant-radio-button {
     border: 1px solid #0099ff;
   }
-  .ant-radio-button-wrapper:not(:first-child)::before{
+  .ant-radio-button-wrapper:not(:first-child)::before {
     display: none;
   }
 }

@@ -7,25 +7,21 @@ import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/map";
 import Map from "./map/map";
 import "./style.scss";
-import Head from "./head/Head";
+import Head from "../../components/head/head";
+import titleImg from "../../resource/title/floodWarning.png";
 import WeatherPic from "./right/WeatherPic";
-import CheckBoxs from "../monitor/bottom/CheckBox";
+import CheckBoxs from "../../components/setting/setting";
 import setImg from "@app/resource/setsys.png";
-import Satellite from '../display/left/SatelliteFlood'
+// import Satellite from "../display/left/SatelliteFlood";
 import {
   Drawer,
   Row,
   Divider,
   Checkbox,
   Tabs,
-  Input,
-  Space,
-  Button,
   Popover,
 } from "antd";
-import Highlighter from "react-highlight-words";
 import SetTitle from "@app/components/setting/SetTitle";
-import { SearchOutlined } from "@ant-design/icons";
 import RouterList from "../../components/routerLiis";
 import { RenderBox } from "../../components/chart/decorate";
 import { pieChart } from "../../components/chart/chart";
@@ -71,7 +67,7 @@ class Monitor extends React.PureComponent {
   };
 
   componentDidUpdate(pre) {
-    const { floodRanks } = this.props;
+    const { floodRanks, expertCount } = this.props;
     if (floodRanks !== pre.floodRanks) {
       let list = [];
       floodRanks.forEach((item) => {
@@ -81,7 +77,12 @@ class Monitor extends React.PureComponent {
           textStyle: { fontSize: "24px" },
         });
       });
-      pieChart("floodWaringPie", list);
+      pieChart("floodWaringPie", list, 450, [], {
+        text: `共${expertCount}人`,
+        left: "center",
+        top: "center",
+        textStyle: { color: "white", fontWeight: "200", fontSize: 14 },
+      });
     }
   }
   componentDidMount() {
@@ -97,69 +98,69 @@ class Monitor extends React.PureComponent {
     return (
       <div className="flood-warning-display">
         <Map layerVisible={layerVisible}></Map>
-        <Head></Head>
+        <Head titleImg={titleImg}></Head>
         <div style={{ display: displayLeft }}>
           <div className="flood-warning-left">
             <div className="first-box">
               <RenderBox hasTitle title="东营市防汛人员">
-                <div style={{ height: "20px" }}></div>
-                <div className="floodWaringPie" id="floodWaringPie"></div>
-                <div className="flood-text">{`共${expertCount}人`}</div>
-                <div className="card-container">
-                  <Tabs
-                    type="card"
-                    defaultActiveKey="1"
-                    onChange={(e) => this.setState({ tabsKey: e })}
-                  >
-                    {floodRanks?.map((item, index) => (
-                      <TabPane key={index} tab={item.name.split("防汛")[0]}>
-                        <TableShow
-                          columns={[
-                            {
-                              name: "姓名",
-                              dataIndex: "name",
-                              filter: "name",
-                              width: "25%",
-                              // filter: "name",
-                              // ...this.getColumnSearchProps("name"),
-                            },
-                            {
-                              name: "单位",
-                              dataIndex: "unit",
-                              width: "25%",
-                              render: (name) => (
-                                <Popover content={name}>
-                                  {name?.length > 6
-                                    ? name.toString().substring(0, 6) + "..."
-                                    : name}
-                                </Popover>
-                              ),
-                            },
-                            {
-                              name: "联系电话",
-                              dataIndex: "phone",
-                              width: "25%",
-                            },
-                            {
-                              name: "备注",
-                              dataIndex: "remark",
-                              width: "25%",
-                              render: (name) => (
-                                <Popover content={name}>
-                                  {name?.length > 6
-                                    ? name.toString().substring(0, 6) + "..."
-                                    : name}
-                                </Popover>
-                              ),
-                            },
-                          ]}
-                          dataSource={
-                            floodRanks && floodRanks[tabsKey].userList
-                          }
-                        ></TableShow>
-                      </TabPane>
-                    ))}
-                  </Tabs>
+                <div className="floodwarning-flex">
+                  <div className="floodWaringPie" id="floodWaringPie"></div>
+                  <div className="card-container">
+                    <Tabs
+                      type="card"
+                      defaultActiveKey="1"
+                      onChange={(e) => this.setState({ tabsKey: e })}
+                    >
+                      {floodRanks?.map((item, index) => (
+                        <TabPane key={index} tab={item.name.split("防汛")[0]}>
+                          <TableShow
+                            columns={[
+                              {
+                                name: "姓名",
+                                dataIndex: "name",
+                                filter: "name",
+                                width: "25%",
+                                // filter: "name",
+                                // ...this.getColumnSearchProps("name"),
+                              },
+                              {
+                                name: "单位",
+                                dataIndex: "unit",
+                                width: "25%",
+                                render: (name) => (
+                                  <Popover content={name}>
+                                    {name?.length > 6
+                                      ? name.toString().substring(0, 6) + "..."
+                                      : name}
+                                  </Popover>
+                                ),
+                              },
+                              {
+                                name: "联系电话",
+                                dataIndex: "phone",
+                                width: "25%",
+                              },
+                              {
+                                name: "备注",
+                                dataIndex: "remark",
+                                width: "25%",
+                                render: (name) => (
+                                  <Popover content={name}>
+                                    {name?.length > 6
+                                      ? name.toString().substring(0, 6) + "..."
+                                      : name}
+                                  </Popover>
+                                ),
+                              },
+                            ]}
+                            dataSource={
+                              floodRanks && floodRanks[tabsKey].userList
+                            }
+                          ></TableShow>
+                        </TabPane>
+                      ))}
+                    </Tabs>
+                  </div>
                 </div>
               </RenderBox>
             </div>
@@ -229,133 +230,135 @@ class Monitor extends React.PureComponent {
         <div style={{ display: displayRight }}>
           <div className="flood-warning-right">
             <RenderBox hasTitle title="防汛专家">
-              <div className="pie-title-flex">
-                <div>
-                  <label
-                    className="number-color"
-                    style={{ marginLeft: "20px" }}
+              <div className="floodwarning-flex">
+                <div className="pie-title-flex">
+                  <div>
+                    <label
+                      className="number-color"
+                      style={{ marginLeft: "20px" }}
+                    >
+                      {expert?.city?.length}
+                    </label>
+                    <label style={{ marginLeft: "20px" }}>市级专家</label>
+                  </div>
+                  <div>
+                    <label className="number-color">
+                      {expert?.county?.length}
+                    </label>
+                    <label>县级专家</label>
+                  </div>
+                  <div>
+                    <label
+                      className="number-color"
+                      style={{ marginRight: "20px" }}
+                    >
+                      {expert?.town?.length}
+                    </label>
+                    <label style={{ marginRight: "20px" }}>乡镇专家</label>
+                  </div>
+                </div>
+                <div className="card-container">
+                  <Tabs
+                    defaultActiveKey="1"
+                    onChange={(e) => console.log(e)}
+                    type="card"
                   >
-                    {expert?.city?.length}
-                  </label>
-                  <label style={{ marginLeft: "20px" }}>市级专家</label>
+                    <TabPane key="1" tab="市级专家">
+                      <TableShow
+                        columns={[
+                          {
+                            name: "姓名",
+                            dataIndex: "name",
+                            width: "33%",
+                            filter: "name",
+                          },
+                          {
+                            name: "工作单位",
+                            dataIndex: "unit",
+                            width: "34%",
+                            render: (name) => (
+                              <Popover content={name}>
+                                {name?.length > 8
+                                  ? name.toString().substring(0, 8) + "..."
+                                  : name}
+                              </Popover>
+                            ),
+                          },
+                          {
+                            name: "专家电话",
+                            dataIndex: "phone",
+                            width: "33%",
+                          },
+                        ]}
+                        dataSource={expert?.city}
+                      />
+                    </TabPane>
+                    <TabPane key="2" tab="县级专家">
+                      <TableShow
+                        columns={[
+                          {
+                            name: "姓名",
+                            dataIndex: "name",
+                            width: "33%",
+                            filter: "name",
+                          },
+                          {
+                            name: "工作单位",
+                            dataIndex: "unit",
+                            width: "34%",
+                            render: (name) => (
+                              <Popover content={name}>
+                                {name?.length > 8
+                                  ? name.toString().substring(0, 8) + "..."
+                                  : name}
+                              </Popover>
+                            ),
+                          },
+                          {
+                            name: "专家电话",
+                            dataIndex: "phone",
+                            width: "33%",
+                          },
+                        ]}
+                        dataSource={expert?.county}
+                      />
+                    </TabPane>
+                    <TabPane key="3" tab="乡镇专家">
+                      <TableShow
+                        columns={[
+                          {
+                            name: "姓名",
+                            dataIndex: "name",
+                            width: "33%",
+                            filter: "name",
+                          },
+                          {
+                            name: "工作单位",
+                            dataIndex: "unit",
+                            width: "34%",
+                            render: (name) => (
+                              <Popover content={name}>
+                                {name?.length > 8
+                                  ? name.toString().substring(0, 8) + "..."
+                                  : name}
+                              </Popover>
+                            ),
+                          },
+                          {
+                            name: "专家电话",
+                            dataIndex: "phone",
+                            width: "33%",
+                          },
+                        ]}
+                        dataSource={expert?.town}
+                      />
+                    </TabPane>
+                  </Tabs>
                 </div>
-                <div>
-                  <label className="number-color">
-                    {expert?.county?.length}
-                  </label>
-                  <label>县级专家</label>
-                </div>
-                <div>
-                  <label
-                    className="number-color"
-                    style={{ marginRight: "20px" }}
-                  >
-                    {expert?.town?.length}
-                  </label>
-                  <label style={{ marginRight: "20px" }}>乡镇专家</label>
-                </div>
-              </div>
-              <div className="card-container">
-                <Tabs
-                  defaultActiveKey="1"
-                  onChange={(e) => console.log(e)}
-                  type="card"
-                >
-                  <TabPane key="1" tab="市级专家">
-                    <TableShow
-                      columns={[
-                        {
-                          name: "姓名",
-                          dataIndex: "name",
-                          width: "33%",
-                          filter: "name",
-                        },
-                        {
-                          name: "工作单位",
-                          dataIndex: "unit",
-                          width: "34%",
-                          render: (name) => (
-                            <Popover content={name}>
-                              {name?.length > 8
-                                ? name.toString().substring(0, 8) + "..."
-                                : name}
-                            </Popover>
-                          ),
-                        },
-                        {
-                          name: "专家电话",
-                          dataIndex: "phone",
-                          width: "33%",
-                        },
-                      ]}
-                      dataSource={expert?.city}
-                    />
-                  </TabPane>
-                  <TabPane key="2" tab="县级专家">
-                    <TableShow
-                      columns={[
-                        {
-                          name: "姓名",
-                          dataIndex: "name",
-                          width: "33%",
-                          filter: "name",
-                        },
-                        {
-                          name: "工作单位",
-                          dataIndex: "unit",
-                          width: "34%",
-                          render: (name) => (
-                            <Popover content={name}>
-                              {name?.length > 8
-                                ? name.toString().substring(0, 8) + "..."
-                                : name}
-                            </Popover>
-                          ),
-                        },
-                        {
-                          name: "专家电话",
-                          dataIndex: "phone",
-                          width: "33%",
-                        },
-                      ]}
-                      dataSource={expert?.county}
-                    />
-                  </TabPane>
-                  <TabPane key="3" tab="乡镇专家">
-                    <TableShow
-                      columns={[
-                        {
-                          name: "姓名",
-                          dataIndex: "name",
-                          width: "33%",
-                          filter: "name",
-                        },
-                        {
-                          name: "工作单位",
-                          dataIndex: "unit",
-                          width: "34%",
-                          render: (name) => (
-                            <Popover content={name}>
-                              {name?.length > 8
-                                ? name.toString().substring(0, 8) + "..."
-                                : name}
-                            </Popover>
-                          ),
-                        },
-                        {
-                          name: "专家电话",
-                          dataIndex: "phone",
-                          width: "33%",
-                        },
-                      ]}
-                      dataSource={expert?.town}
-                    />
-                  </TabPane>
-                </Tabs>
               </div>
             </RenderBox>
             <div className="flood-warning-chart">
-              <div style={{ height: "20px" }}></div>
+              {/* <div style={{ height: "20px" }}></div> */}
               <WeatherPic></WeatherPic>
               {/* <Satellite type={2}></Satellite> */}
             </div>

@@ -43,7 +43,7 @@ class Rain extends Base {
         <div className="m-ovl-line luo-ovl-title">雨量站点：{model.name}</div>
         <div className="m-ovl-line"><label>站点编号：</label>{model.stcd}</div>
         <div className="m-ovl-line">
-        <label>数据来源：</label>{dict ? dict[model.siteDictionariesID] : "--"}
+        <label>数据来源：</label>雨量
         </div>
         <div className="m-ovl-line"><label>站点地址：</label>{model.address}</div>
         <div className="m-ovl-line"><label>5分钟降水量：</label>{drpLevel}</div>

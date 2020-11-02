@@ -15,7 +15,7 @@ import { getWfsRiver } from "@app/data/request";
 import VideoControl from "@app/components/video/VideoControl";
 import "./style.scss";
 import Person from "./overlays/Person";
-import Rain from "./overlays/Rain";
+import Rain from "../../rain/map/overlays/Rain";
 import Water from "./overlays/Water";
 import Ponding from "./overlays/Ponding";
 import Video from "./overlays/Video";
@@ -60,6 +60,7 @@ class Map extends React.PureComponent {
           if (this.type[i].type === type) {
             Comp = this.type[i];
             let comps = Object.keys(overlays[type]).map((key) => {
+              //TODO
               return (
                 <Comp
                   key={key}
@@ -115,8 +116,8 @@ class Map extends React.PureComponent {
   createMap() {
     this.map = new UbiMap({
       target: "map",
-      center: [118.58, 37.45],
-      zoom: 10.7,
+      center: [118.62, 37.45],
+      zoom: 11.8,
       minZoom: 3,
       maxZoom: 18,
       mouseControl: false,
@@ -263,12 +264,13 @@ class Map extends React.PureComponent {
     this.map.startHighlightFeatureonLayer("ponding");
 
     this.map.startSelectFeature("fRain", (param) => {
-      this.addOverlay(Rain.type, { ...param });
+      param = { ...param, dict: this.props.dict };
+      this.addOverlay(Rain.type, param);
     });
     this.map.startSelectFeature("ponding", (param) => {
       //TODO
       this.props.mapAction.changeFloodId(param);
-      this.addOverlay(Ponding.type, { ...param });
+      this.addOverlay(Ponding.type, param);
     });
   }
   onWfsRiverClick(props) {
@@ -315,9 +317,9 @@ class Map extends React.PureComponent {
       return false;
     });
     // if (isSingle) {
-      overlays[key] = {
-        [id]: param,
-      };
+    overlays[key] = {
+      [id]: param,
+    };
     // } else {
     //   // elements[id] = param;
     // }
@@ -451,7 +453,7 @@ function mapStateToProps(state) {
   return {
     // water: state.monitor.water,
     // details: state.monitor.details,
-    // warehouse: state.monitor.warehouse,
+    dict: state.currency.dict,
     floodRain: state.mapAboutReducers.floodRain,
     flood: state.mapAboutReducers.flood,
   };
