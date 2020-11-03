@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import * as action from "../../redux/actions/taskEvent";
 import { bindActionCreators } from "redux";
-import Map from "../monitor/map/map";
+import Map from "./map/map";
 import { Card, Col, Row, Button, Modal, Input } from "antd";
 import { createHashHistory } from "history";
 import { Link } from "react-router-dom";
