@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 import * as action from "../../redux/actions/taskEvent";
 import * as mapAction from "../../redux/actions/map";
 import { bindActionCreators } from "redux";
-import Map from "../monitor/map/map";
-import { Input } from "antd";
+
+import Map from "./map/map";
+import { Card, Col, Row, Button, Modal, Input } from "antd";
 import { createHashHistory } from "history";
 import trackQuery from "../../resource/icon/trackQuery.svg";
 import TaskTimeLine from "./taskTimeLine";
-
 import TaskUpdate from "./taskUpdate";
 import Head from "../../components/head/head";
 import titleImg from "../../resource/title/water.png";
@@ -28,9 +28,6 @@ const TaskInfo = (props) => {
     getFloodAddress,
     getAllFloodUser,
     setMapUserPosition, //设置人员定位
-    getTaskCountSource,
-    getTaskCountGrade,
-    getTaskCountState,
   } = props.actions;
   const { getFloodRankUser, getFloodExpert } = props.mapActions;
 
@@ -44,12 +41,10 @@ const TaskInfo = (props) => {
     getAllFloodUser(); //防汛人员
     getFloodRankUser(); //防汛队伍
     getFloodExpert(); //防汛专家
-    getTaskCountSource();
-    getTaskCountGrade();
-    getTaskCountState();
   }, []);
   let init = [...floodUser, ...expert?.all];
   // let init = [];
+
   useEffect(() => {
     // if (floodUser && floodAddress) {
     //   floodUser?.map((item) => {

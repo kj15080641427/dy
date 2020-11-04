@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import * as action from "../../../redux/actions/taskEvent";
 import { bindActionCreators } from "redux";
@@ -7,17 +7,56 @@ import { Card, Col, Row, Button, Modal } from "antd";
 import taskListIcon from "../../../resource/事件中心.svg";
 import DYForm from "@app/components/home/form";
 import { offTaskForm } from "../cconfig";
-import { pieChart } from "../../../components/chart/chart";
+import { taskChart } from "../../../components/chart/chart";
 import "../task.scss";
 
 const gutter = [1, 20];
 
+const grade = ["一级", "二级", "三级"];
+const source = ["新增事件", "险情上报", "预警告警"];
 const TaskInfoCard = (props) => {
   const [title, setTitle] = useState("");
 
-  const { taskInfo, feedTaskModalVisible } = props;
-  const { setFeedTaskModal, endTask } = props.actions;
+  const {
+    taskInfo,
+    feedTaskModalVisible,
+    taskCountSource,
+    taskCountGrade,
+    taskCountState,
+  } = props;
+  const {
+    setFeedTaskModal,
+    endTask,
+    getTaskCountSource,
+    getTaskCountGrade,
+    getTaskCountState,
+  } = props.actions;
 
+  useEffect(() => {
+    getTaskCountSource();
+    getTaskCountGrade();
+    getTaskCountState();
+  }, []);
+
+  useEffect(() => {
+    let sourceList = taskCountSource.map((item) => ({
+      name: item.taskName,
+      value: item.number,
+    }));
+    taskChart("sourceChart", sourceList);
+
+    let gradeList = taskCountGrade.map((item) => ({
+      name: item.taskName,
+      value: item.number,
+    }));
+    taskChart("gradeChart", gradeList);
+
+    let stateList = taskCountState.map((item) => ({
+      name: item.taskName,
+      value: item.number,
+    }));
+    taskChart("stateChart", stateList);
+  }, [taskCountSource]);
   // const {
   //   name,
   //   happenTime,
@@ -38,23 +77,36 @@ const TaskInfoCard = (props) => {
         <Card>
           <div className="task-event-chart">
             <Link to="/taskList" className="task-event-flex">
-              <img src={taskListIcon}></img>
+              <img src={taskListIcon} width="110px" height="110px"></img>
               <div>事件中心</div>
             </Link>
-            <div className="task-event-card-head" id='statuChart'>事件状态统计</div>
-            <div>事件等级统计</div>
-            <div>事件来源统计</div>
+            <div className="task-event-flex">
+              <div className="task-event-card-head" id="stateChart"></div>
+              <div>事件状态统计</div>
+            </div>
+            <div className="task-event-flex">
+              <div className="task-event-card-head" id="gradeChart"></div>
+              <div> 事件等级统计</div>
+            </div>
+            <div className="task-event-flex">
+              <div className="task-event-card-head" id="sourceChart"></div>
+              <div> 事件来源统计</div>
+            </div>
           </div>
         </Card>
         <br />
-        <Card title="事件信息">
-          <Row gutter={gutter}>
-            <Col span={5}>事件名称:</Col>
-            <Col span={19}>{taskInfo?.name}</Col>
-          </Row>
+        <Card title={taskInfo?.name}>
           <Row gutter={gutter}>
             <Col span={5}>发生时间:</Col>
             <Col span={19}>{taskInfo?.happenTime}</Col>
+          </Row>
+          <Row gutter={gutter}>
+            <Col span={5}>事件等级:</Col>
+            <Col span={19}>{grade[taskInfo?.grade - 1]}</Col>
+          </Row>
+          <Row gutter={gutter}>
+            <Col span={5}>事件来源:</Col>
+            <Col span={19}>{source[taskInfo?.dataSource]}</Col>
           </Row>
           <Row gutter={gutter}>
             <Col span={5}>区域位置:</Col>
@@ -62,13 +114,13 @@ const TaskInfoCard = (props) => {
           </Row>
           <Row gutter={gutter}>
             <Col span={16}>
-              上报人及电话:{taskInfo?.reportPersonName}&nbsp;
+              联系人及电话:{taskInfo?.reportPersonName}&nbsp;
               {taskInfo?.reportPersonPhone}
             </Col>
             <Col span={8}></Col>
           </Row>
           <Row gutter={gutter}>
-            <Col span={5}>事件描述:</Col>
+            <Col span={5}>事件详情:</Col>
             <Col span={19}> {taskInfo?.remark}</Col>
           </Row>
           <Row>
@@ -112,9 +164,13 @@ const TaskInfoCard = (props) => {
   );
 };
 const mapStateToProps = (state) => {
+  // console.log(state.taskReducers.taskInfo);
   return {
     feedTaskModalVisible: state.taskReducers.feedTaskModalVisible,
     taskInfo: state.taskReducers.taskInfo,
+    taskCountSource: state.taskReducers.taskCountSource,
+    taskCountGrade: state.taskReducers.taskCountGrade,
+    taskCountState: state.taskReducers.taskCountState,
   };
 };
 const mapDispatchToProps = (dispatch) => {

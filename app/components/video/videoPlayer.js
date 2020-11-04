@@ -21,9 +21,9 @@ const VideoPlayer = (props) => {
         videoControl={videoControl}
         token={strtoken}
         type={0}
-      ></VideoComponent>
+      />
       {/* <div className="video-control"> */}
-      <Holder token={strtoken}></Holder>
+      {/*<Holder token={strtoken}></Holder>*/}
       {/* </div> */}
     </div>
   );

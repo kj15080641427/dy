@@ -179,7 +179,7 @@ export const pieChart = (domId, data, width, legend, title) => {
       {
         clockwise: false,
         startAngle: 140,
-        name: "访问来源",
+        name: "",
         type: "pie",
         radius: ["50%", "65%"],
         data: data,
@@ -195,6 +195,52 @@ export const pieChart = (domId, data, width, legend, title) => {
           fontSize: "16",
           width: "30px",
           color: "white",
+          formatter: "{b}: {@2012}",
+        },
+      },
+    ],
+  };
+  myChartcount.setOption(option);
+};
+export const taskChart = (domId, data, width, legend, title) => {
+  let myChartcount = echarts.init(document.getElementById(domId));
+  let option = {
+    title,
+    tooltip: {
+      formatter: "{a} <br/>{b} : {c} ({d}%)",
+    },
+    legend: {
+      data: legend ? legend : [],
+      bottom: 10,
+      textStyle: {
+        color: "white",
+      },
+    },
+    grid: {
+      left: "center",
+    },
+    series: [
+      {
+        clockwise: false,
+        startAngle: 140,
+        name: "",
+        type: "pie",
+        radius: ["50%", "65%"],
+        data: data,
+        left: "center",
+        width: width || 400,
+        labelLine: {
+          // show: false,
+          lineStyle: {
+            color: "white",
+          },
+        },
+        label: {
+          fontSize: "16",
+          width: "30px",
+          color: "white",
+          show: false,
+          // position: "inside",
           formatter: "{b}: {@2012}",
         },
       },

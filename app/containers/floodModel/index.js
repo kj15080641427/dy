@@ -97,7 +97,7 @@ class FloodModel extends Component {
                     <Spin spinning={this.props.model.loading}>
                         <RenderBox hasTitle title="洪涝预报" style={{height: 420}}>
                             <div className={'m-left-div'}>
-                                <Spin spinning={this.props.model.modelIsRunning} tip={'处理中...'} size={'small'}>
+                                <Spin spinning={this.props.model.modelIsRunning} tip={'预报模型计算中...'} size={'small'}>
                                     <div style={{paddingBottom: 20}}>
                                         <Divider style={{color: 'gray'}}>实时预报</Divider>
                                         <span>时间选择：</span>

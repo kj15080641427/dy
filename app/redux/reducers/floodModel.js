@@ -33,7 +33,10 @@ export default function floodModel(state = initState, action) {
             newState.nodesMap = nodesMap;
             break;
         case types.PREDICTIONS_UPDATE:
-            newState.predictions = [...data];
+            let pres = [...data];
+            //倒序排列
+            pres = pres.reverse();
+            newState.predictions = pres;
             break;
         case types.PREDICTION_RESULT_UPDATE:
             newState.result = {};

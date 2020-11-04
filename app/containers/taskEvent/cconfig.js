@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, DatePicker, Popover } from "antd";
+import { Input, DatePicker, Popover, Select } from "antd";
 const { TextArea } = Input;
 export const expertForm = [
   {
@@ -26,6 +26,18 @@ export const taskListform = [
     label: "发生时间",
     name: "happenTime",
     ele: <DatePicker showTime />,
+  },
+  {
+    label: "事件等级",
+    name: "happenTime",
+    rules: [{ required: true }],
+    ele: (
+      <Select>
+        <Select.Option value={1}>一级</Select.Option>
+        <Select.Option value={2}>二级</Select.Option>
+        <Select.Option value={3}>三级</Select.Option>
+      </Select>
+    ),
   },
   {
     label: "区域位置",
