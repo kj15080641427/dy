@@ -143,7 +143,7 @@ class Map extends React.PureComponent {
       visible: true,
       opacity: 1,
       key: "tiandi",
-      className: "ol-layer-tiandi",
+      // className: "ol-layer-tiandi",
       projection: true,
     });
     this.map.addTile({
@@ -151,18 +151,18 @@ class Map extends React.PureComponent {
       visible: true,
       opacity: 1,
       key: "tiandi2",
-      className: "ol-layer-tiandi",
+      // className: "ol-layer-tiandi",
       projection: true,
     });
-    this.map.addGeo({
-      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-      params: {
-        LAYERS: "dy:DYWater",
-        TILED: true,
-      },
-      zIndex: 10,
-      key: "river",
-    });
+    // this.map.addGeo({
+    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+    //   params: {
+    //     LAYERS: "dy:DYWater",
+    //     TILED: true,
+    //   },
+    //   zIndex: 10,
+    //   key: "river",
+    // });
     this.map.addImageTile({
       url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
       params: {
