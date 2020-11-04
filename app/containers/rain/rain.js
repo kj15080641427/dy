@@ -1,5 +1,5 @@
 /**
- * Monitor 2020-05-12
+ * RainMonitor 2020-05-12
  */
 import React from "react";
 import { connect } from "react-redux";
@@ -28,7 +28,7 @@ import RainSwitcher from "./right/Module/RainSwitcher";
 import RainInfo from "./tabs";
 import titleImg from "../../resource/title/rain.png";
 const { TabPane } = Tabs;
-class Monitor extends React.PureComponent {
+class RainMonitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -90,6 +90,7 @@ class Monitor extends React.PureComponent {
     let h = tabsList?.hk[[tabsList?.hk.length - 1]];
     let g = tabsList?.gr[[tabsList?.gr.length - 1]];
     let l = tabsList?.lj[[tabsList?.lj.length - 1]];
+
     let a = tabsList?.tableAll[[tabsList?.tableAll.length - 1]];
     return (
       <div className="rain-display">
@@ -248,55 +249,135 @@ class Monitor extends React.PureComponent {
                 <TableShow
                   pageSize={6}
                   columns={[
-                    { name: "区县", dataIndex: "address", width: "14%" },
-                    { name: "最大降雨(mm)", dataIndex: "max", width: "43%" },
-                    { name: "最小降雨(mm)", dataIndex: "min", width: "43%" },
+                    {
+                      name: "区县",
+                      dataIndex: "address",
+                      key: 'address',
+                      width: "14%"
+                    },
+                    {
+                      name: "最大降雨(mm)",
+                      dataIndex: "max",
+                      key: 'max',
+                      width: "43%",
+                      render: (text, record) => {
+                        const {max} = record;
+                        let value = null;
+
+                        if (max) {
+                          value = max.raindataList[0]?.dayDrp;
+
+                          if (value && value !== 0) {
+                            return <span>{`${max.aliasName}(${value})`}</span>;
+                          }
+                        }
+
+                        return <span>{`--`}</span>;
+                      }
+                    },
+                    {
+                      name: "最小降雨(mm)",
+                      dataIndex: "min",
+                      key: 'min',
+                      width: "43%",
+                      render: (text, record) => {
+                        const {max, min} = record;
+
+                        if (max) {
+                          let maxValue = max.raindataList[0]?.dayDrp;
+
+                          if (maxValue && maxValue !== 0) {
+                            let minValue = min?.raindataList[0]?.dayDrp;
+
+                            if (!minValue) {
+                              minValue = 0;
+                            }
+
+                            return <span>{`${min?.aliasName}(${minValue})`}</span>;
+                          }
+                        }
+
+                        return <span>{'--'}</span>;
+                      }
+                    },
                   ]}
                   dataSource={[
                     {
                       address: "东营区",
-                      max: `${tabsList?.dy[0]?.aliasName}(${tabsList?.dy[0]?.raindataList[0]?.dayDrp})`,
-                      min: d?.raindataList[0]
-                        ? `${d?.aliasName}(${d?.raindataList[0]?.dayDrp})`
-                        : `${d?.aliasName}(0)`,
+                      max: tabsList?.dy[0],
+                      min: d
                     },
                     {
                       address: "广饶县",
-                      max: `${tabsList?.gr[0]?.aliasName}(${tabsList?.gr[0]?.raindataList[0]?.dayDrp})`,
-                      min: g?.raindataList[0]
-                        ? `${g?.aliasName}(${g?.raindataList[0]?.dayDrp})`
-                        : `${g?.aliasName}(0)`,
+                      max: tabsList?.gr[0],
+                      min: g
                     },
                     {
                       address: "利津县",
-                      max: `${tabsList?.lj[0]?.aliasName}(${tabsList?.lj[0]?.raindataList[0]?.dayDrp})`,
-                      min: l?.raindataList[0]
-                        ? `${l?.aliasName}(${l?.raindataList[0]?.dayDrp})`
-                        : `${l?.aliasName}(0)`,
+                      max: tabsList?.lj[0],
+                      min: l
                     },
                     {
                       address: "河口区",
-                      max: `${tabsList?.hk[0]?.aliasName}(${tabsList?.hk[0]?.raindataList[0]?.dayDrp})`,
-                      min: h?.raindataList[0]
-                        ? `${h?.aliasName}(${h?.raindataList[0]?.dayDrp})`
-                        : `${h?.aliasName}(0)`,
+                      max: tabsList?.hk[0],
+                      min: h
                     },
                     {
                       address: "垦利区",
-                      max: `${tabsList?.kl[0]?.aliasName}(${tabsList?.kl[0]?.raindataList[0]?.dayDrp})`,
-                      min: k?.raindataList[0]
-                        ? `${k?.aliasName}(${k?.raindataList[0]?.dayDrp})`
-                        : `${k?.aliasName}(0)`,
+                      max: tabsList?.kl[0],
+                      min: k,
                     },
                     {
                       address: "东营市",
-                      max: `${tabsList?.tableAll[0]?.aliasName}(${tabsList?.tableAll[0]?.raindataList[0]?.dayDrp})`,
-                      min: a?.raindataList[0]
-                        ? `${a?.aliasName}(${a?.raindataList[0]?.dayDrp})`
-                        : `${a?.aliasName}(0)`,
+                      max: tabsList?.tableAll[0],
+                      min: a,
                     },
                   ]}
-                ></TableShow>
+                  // dataSource={[
+                  //   {
+                  //     address: "东营区",
+                  //     max: `${tabsList?.dy[0]?.aliasName}(${tabsList?.dy[0]?.raindataList[0]?.dayDrp})`,
+                  //     min: d?.raindataList[0]
+                  //       ? `${d?.aliasName}(${d?.raindataList[0]?.dayDrp})`
+                  //       : `${d?.aliasName}(0)`,
+                  //   },
+                  //   {
+                  //     address: "广饶县",
+                  //     max: `${tabsList?.gr[0]?.aliasName}(${tabsList?.gr[0]?.raindataList[0]?.dayDrp})`,
+                  //     min: g?.raindataList[0]
+                  //         ? `${g?.aliasName}(${g?.raindataList[0]?.dayDrp})`
+                  //         : `${g?.aliasName}(0)`,
+                  //   },
+                  //   {
+                  //     address: "利津县",
+                  //     max: `${tabsList?.lj[0]?.aliasName}(${tabsList?.lj[0]?.raindataList[0]?.dayDrp})`,
+                  //     min: l?.raindataList[0]
+                  //       ? `${l?.aliasName}(${l?.raindataList[0]?.dayDrp})`
+                  //       : `${l?.aliasName}(0)`,
+                  //   },
+                  //   {
+                  //     address: "河口区",
+                  //     max: `${tabsList?.hk[0]?.aliasName}(${tabsList?.hk[0]?.raindataList[0]?.dayDrp})`,
+                  //     min: h?.raindataList[0]
+                  //       ? `${h?.aliasName}(${h?.raindataList[0]?.dayDrp})`
+                  //       : `${h?.aliasName}(0)`,
+                  //   },
+                  //   {
+                  //     address: "垦利区",
+                  //     max: `${tabsList?.kl[0]?.aliasName}(${tabsList?.kl[0]?.raindataList[0]?.dayDrp})`,
+                  //     min: k?.raindataList[0]
+                  //       ? `${k?.aliasName}(${k?.raindataList[0]?.dayDrp})`
+                  //       : `${k?.aliasName}(0)`,
+                  //   },
+                  //   {
+                  //     address: "东营市",
+                  //     max: `${tabsList?.tableAll[0]?.aliasName}(${tabsList?.tableAll[0]?.raindataList[0]?.dayDrp})`,
+                  //     min: a?.raindataList[0]
+                  //       ? `${a?.aliasName}(${a?.raindataList[0]?.dayDrp})`
+                  //       : `${a?.aliasName}(0)`,
+                  //   },
+                  // ]}
+                />
               </RenderBox>
             </div>
             <div className="right-second-box">
@@ -359,7 +440,7 @@ class Monitor extends React.PureComponent {
           }}
           className="m-set-img"
           src={setImg}
-        ></img>
+        />
         <Drawer
           title={<SetTitle></SetTitle>}
           placement="right"
@@ -515,19 +596,19 @@ class Monitor extends React.PureComponent {
   componentDidUpdate(pre) {
     const { count, rain } = this.props;
     const { typeOnline } = this.state;
-    if (typeOnline != pre.typeOnline && count) {
+    if (typeOnline !== pre.typeOnline && count) {
       let data = [];
       let number = 0;
       count?.raincount?.list?.map((item) => {
         const desc = item.dataSourceDesc;
-        if (desc == "河口区水利局" || desc == "经开区") {
+        if (desc === "河口区水利局" || desc === "经开区") {
           number = number + Number(item.number);
         } else {
           data.push({
             name:
-              item.dataSourceDesc == "农村基层防汛监测预警平台"
+              item.dataSourceDesc === "农村基层防汛监测预警平台"
                 ? "基层防汛"
-                : item.dataSourceDesc == "河口区水利局"
+                : item.dataSourceDesc === "河口区水利局"
                 ? "河口区"
                 : item.dataSourceDesc || "暂无数据",
             value: item.number,
@@ -568,7 +649,7 @@ class Monitor extends React.PureComponent {
         }
       );
     }
-    if (rain != pre.rain) {
+    if (rain !== pre.rain) {
       this.onlineChart();
       let noRain = 0;
       let small = 0;
@@ -618,7 +699,7 @@ class Monitor extends React.PureComponent {
         if (item.raindataList && item.raindataList[0]) {
           item = { ...item, ...item.raindataList[0] };
 
-          if (item.dayDrp == 0) {
+          if (item.dayDrp === 0) {
             noRain++;
             return;
           }
@@ -759,4 +840,4 @@ function mapDispatchToProps(dispatch) {
     mapActions: bindActionCreators(mapActions, dispatch),
   };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Monitor);
+export default connect(mapStateToProps, mapDispatchToProps)(RainMonitor);
