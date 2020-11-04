@@ -61,9 +61,9 @@ const mapStateToProps = (state) => {
   // console.log(state, "SSSTATA");
   return {
     floodRanks: state.mapAboutReducers.floodRanks,
-    listRender: state.management.listRender,
-    taskInfo: state.management.taskInfo,
-    expertVisible: state.management.expertVisible,
+    listRender: state.taskReducers.listRender,
+    taskInfo: state.taskReducers.taskInfo,
+    expertVisible: state.taskReducers.expertVisible,
   };
 };
 const mapDispatchToProps = (dispatch) => {

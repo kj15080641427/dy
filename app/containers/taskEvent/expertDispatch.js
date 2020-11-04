@@ -38,7 +38,7 @@ const ExpertDispatch = (props) => {
 
   useEffect(() => {
     if (!taskInfo) {
-      hashHistory.push("/home/taskList");
+      hashHistory.push("/taskList");
     } else {
       changeTaskRadioType("all");
       getFloodExpert();
@@ -87,10 +87,10 @@ const ExpertDispatch = (props) => {
 const mapStateToProps = (state) => {
   return {
     expert: state.mapAboutReducers.expert,
-    taskInfo: state.management.taskInfo,
-    listRender: state.management.listRender,
-    expertVisible: state.management.expertVisible,
-    dispatchExpert: state.management.dispatchExpert,
+    taskInfo: state.taskReducers.taskInfo,
+    listRender: state.taskReducers.listRender,
+    expertVisible: state.taskReducers.expertVisible,
+    dispatchExpert: state.taskReducers.dispatchExpert,
   };
 };
 const mapDispatchToProps = (dispatch) => {

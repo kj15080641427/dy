@@ -136,7 +136,7 @@ export const materiaTab2lColumns = [
 ];
 export const offTaskForm = [
   {
-    label: "",
+    label: "描述",
     name: "endRemark",
     rules: [{ required: true }],
     ele: <TextArea />,

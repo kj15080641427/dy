@@ -25,7 +25,7 @@ import {
   showChartRiver,
 } from "../../components/chart/chart";
 import { TableShow } from "../../components/chart/table";
-import RouterList from "../../components/routerLiis";
+import RouterList from "../../components/routerlist";
 import WaterInfo from "./tabs";
 import WaterInfoRiver from "./tabsRiver";
 import emitter from "@app/utils/emitter.js";

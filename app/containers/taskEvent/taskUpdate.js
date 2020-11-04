@@ -53,6 +53,7 @@ const TaskUpDate = (props) => {
   return (
     <>
       <Modal visible={taskUpdateMidal} footer={null} forceRender={true}>
+        <br />
         <DYForm
           showDelete
           deleteClick={() => {
@@ -73,7 +74,7 @@ const TaskUpDate = (props) => {
 const mapStateToProps = (state) => {
   return {
     taskUpdateMidal: state.taskReducers.taskUpdateMidal,
-    taskInfo: state.management.taskInfo,
+    taskInfo: state.taskReducers.taskInfo,
   };
 };
 const mapDisPatchToProps = (dispatch) => {

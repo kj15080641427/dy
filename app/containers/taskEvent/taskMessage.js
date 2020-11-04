@@ -222,7 +222,7 @@ const mapStateToProps = (state) => {
     expert: state.mapAboutReducers.expert,
     floodRanks: state.mapAboutReducers.floodRanks,
     rankSelect: state.mapAboutReducers.rankSelect,
-    messageList: state.management.messageList,
+    messageList: state.taskReducers.messageList,
   };
 };
 const mapDispatchToProps = (dispatch) => {

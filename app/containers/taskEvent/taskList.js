@@ -37,6 +37,7 @@ const TaskList = (props) => {
       name: taskInput,
       size: 10,
     });
+    console.log("??tt");
   }, []);
 
   const onFinish = (form) => {
@@ -155,10 +156,11 @@ const TaskList = (props) => {
   );
 };
 const mapStateToProps = (state) => {
+  console.log(state, "SS");
   return {
-    taskList: state.management.taskList,
-    taskModalVisible: state.management.taskModalVisible,
-    taskInput: state.management.taskInput,
+    taskList: state.taskReducers.taskList,
+    taskModalVisible: state.taskReducers.taskModalVisible,
+    taskInput: state.taskReducers.taskInput,
   };
 };
 const mapDispatchToProps = (dispatch) => {

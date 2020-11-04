@@ -35,12 +35,13 @@ const MaterialDispatch = (props) => {
       getWarehouse();
       changeTaskRadioType("c6153f34ba574fd693977e4aa265ef05");
     } else {
-      hashHistory.push("/home/taskList");
+      hashHistory.push("/taskList");
     }
     return () => {
       changeTaskRenderList([]);
     };
   }, []);
+  console.log(wareHouseTask, "wareHouseTask");
   const radioList = wareHouse?.map((item) => {
     return {
       label: item.name.split("防汛")[0],
@@ -48,7 +49,7 @@ const MaterialDispatch = (props) => {
     };
   });
   const onFinish = (data) => {
-    // console.log(formUser, "formUser");
+    console.log(data, "formUser");
     let formData = {
       flooduserList: formUser.map((item) => item.split("|")[1]),
       ...data,
@@ -100,12 +101,12 @@ const MaterialDispatch = (props) => {
 const mapStateToProps = (state) => {
   // console.log(state);
   return {
-    formUser: state.management.formUser,
+    formUser: state.taskReducers.formUser,
     wareHouse: state.mapAboutReducers.wareHouse,
     wareHouseTask: state.mapAboutReducers.wareHouseTask,
-    taskInfo: state.management.taskInfo,
-    listRender: state.management.listRender,
-    dispatchMaterial: state.management.dispatchMaterial,
+    taskInfo: state.taskReducers.taskInfo,
+    listRender: state.taskReducers.listRender,
+    dispatchMaterial: state.taskReducers.dispatchMaterial,
   };
 };
 const mapDispatchToProps = (dispatch) => {

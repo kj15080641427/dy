@@ -29,7 +29,7 @@ const UserDispatch = (props) => {
       getFloodRankUser();
       changeTaskRadioType("city");
     } else {
-      hashHistory.push("/home/taskList");
+      hashHistory.push("/taskList");
     }
     return () => {
       changeTaskRenderList([]);
@@ -79,9 +79,9 @@ const mapStateToProps = (state) => {
   console.log(state);
   return {
     floodRanksUser: state.mapAboutReducers.floodRanksUser,
-    taskInfo: state.management.taskInfo,
-    listRender: state.management.listRender,
-    dispatchUser: state.management.dispatchUser,
+    taskInfo: state.taskReducers.taskInfo,
+    listRender: state.taskReducers.listRender,
+    dispatchUser: state.taskReducers.dispatchUser,
   };
 };
 const mapDispatchToProps = (dispatch) => {

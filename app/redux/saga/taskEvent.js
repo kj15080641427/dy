@@ -44,6 +44,7 @@ function* getTaskList({ data }) {
         type: types.SET_TASKEVENT_LIST,
         data: result.data,
       });
+      console.log("saga");
     }
   } catch (e) {
     console.error(e);
@@ -265,12 +266,17 @@ function* deleteTaskInfo({ data }) {
   }
 }
 //取消事件
-function* recallTask({ data }) {
+function* endTask({ data }) {
+  const { param, eventType } = data;
+  let reqType = eventType == "终止事件" ? req.offTask : req.completeTask;
   try {
-    const result = yield call(req.offTask, data);
+    const result = yield call(reqType, param);
     if (result.code == successCode) {
-      yield put({});
-      message.info("取消成功");
+      yield put({
+        type: types.FEED_TASK_MODAL,
+        data: false,
+      });
+      message.info(`${eventType}成功`);
     } else {
       message.success(result.msg);
     }
@@ -297,9 +303,51 @@ function* getTaskTimeLine({ data }) {
     if (result.code == successCode) {
       yield put({
         type: types.SET_TASK_TIMELINE,
+        data: result.data.taskDynamicResultDos,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+//事件来源统计
+function* getTaskCountSource({ data }) {
+  try {
+    const result = yield call(req.getTaskCountDataSource, data);
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_TASK_COUNT_SOURCE,
         data: result.data,
       });
-      message.info("成功");
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+//事件等级统计
+function* getTaskCountGrade({ data }) {
+  try {
+    const result = yield call(req.getTaskCountGrade, data);
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_TASK_COUNT_GRADE,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+//事件状态统计
+function* getTaskCountState({ data }) {
+  try {
+    const result = yield call(req.getTaskCountState, data);
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_TASK_COUNT_STATE,
+        data: result.data,
+      });
     }
   } catch (e) {
     console.error(e);
@@ -320,10 +368,14 @@ export default function* management() {
     takeEvery(types.ADD_MATERIAL_DISPATCH, addMaterialDispatch),
     takeEvery(types.UPDATE_TASK_INFO, updateTaskInfo),
     takeEvery(types.DELETE_TASK_INFO, deleteTaskInfo),
-    takeEvery(types.RECALL_TASK, recallTask),
+    takeEvery(types.END_TASK, endTask),
     takeEvery(types.COMPLETE_TASK, completeTask),
     takeEvery(types.GET_TASK_TIMELINE, getTaskTimeLine),
 
     takeEvery("GET_TASK_THEN_UPDATE", getTaskInfoThenUpdate),
+
+    takeEvery(types.GET_TASK_COUNT_SOURCE, getTaskCountSource),
+    takeEvery(types.GET_TASK_COUNT_GRADE, getTaskCountGrade),
+    takeEvery(types.GET_TASK_COUNT_STATE, getTaskCountState),
   ]);
 }

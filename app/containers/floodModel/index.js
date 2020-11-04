@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from 'react-redux';
-import RouterList from "../../components/routerLiis";
+import RouterList from "../../components/routerlist";
 import * as actions from '../../redux/actions/floodModel';
 import "./style.scss";
 import Head from "./head/Head";

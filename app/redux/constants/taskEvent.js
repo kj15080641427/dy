@@ -1,4 +1,3 @@
-
 export const GET_FLOOD_EXPERT = "GET_FLOOD_EXPERT"; //防汛专家
 export const GET_FLOOD_RANK_USER = "GET_FLOOD_RANK_USER"; //防汛队伍
 export const SET_TASK_INFO = "SET_TASK_INFO"; //事件详情
@@ -48,7 +47,7 @@ export const DELETE_TASK_INFO = "DELETDE_TASK_INFO";
 //
 // export const ROUTER_BACK
 //取消事件
-export const RECALL_TASK = "RECALL_TASK";
+export const END_TASK = "END_TASK";
 //完成事件
 export const COMPLETE_TASK = "COMPLETE_TASK";
 //查询事件流程
@@ -58,3 +57,15 @@ export const SET_TASK_TIMELINE = "SET_TASK_TIMELINE";
 export const FEED_TASK = "FEED_TASK";
 //事件反馈modal
 export const FEED_TASK_MODAL = "FEED_TASK_MODAL";
+//人员定位
+export const SET_MAP_USER_POSITION = "SET_MAP_USER_POSITION";
+
+//事件来源统计
+export const GET_TASK_COUNT_SOURCE = "GETTASK_COUNT_SOURCE";
+export const SET_TASK_COUNT_SOURCE = "SETTASK_COUNT_SOURCE";
+//事件等级统计
+export const GET_TASK_COUNT_GRADE = "GET_TASK_COUNT_GRADE";
+export const SET_TASK_COUNT_GRADE = "SET_TASK_COUNT_GRADE";
+//事件状态统计
+export const GET_TASK_COUNT_STATE = "GET_TASK_COUNT_STATE";
+export const SET_TASK_COUNT_STATE = "SET_TASK_COUNT_STATE";

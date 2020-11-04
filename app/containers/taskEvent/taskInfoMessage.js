@@ -105,7 +105,7 @@ const TaskInfoMessage = (props) => {
       getFloodRankUser();
       getMessage();
     } else {
-      hashHistory.push("/home/taskList");
+      hashHistory.push("/taskList");
     }
   }, []);
   return (
@@ -232,8 +232,8 @@ const mapStateToProps = (state) => {
     expert: state.mapAboutReducers.expert,
     floodRanks: state.mapAboutReducers.floodRanks,
     rankSelect: state.mapAboutReducers.rankSelect,
-    messageList: state.management.messageList,
-    taskInfo: state.management.taskInfo,
+    messageList: state.taskReducers.messageList,
+    taskInfo: state.taskReducers.taskInfo,
   };
 };
 const mapDispatchToProps = (dispatch) => {

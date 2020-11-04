@@ -75,8 +75,8 @@ const TrackQuery = (props) => {
 const mapStateToProps = (state) => {
   return {
     feedTaskModalVisible: state.taskReducers.feedTaskModalVisible,
-    floodAddress: state.management.floodAddress,
-    taskInfo: state.management.taskInfo,
+    floodAddress: state.taskReducers.floodAddress,
+    taskInfo: state.taskReducers.taskInfo,
     floodUser: state.mapAboutReducers.floodUser,
   };
 };

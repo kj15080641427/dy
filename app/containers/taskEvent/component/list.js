@@ -43,7 +43,7 @@ const ListRender = (props) => {
             </div>
           );
         })}
-        {listRender[0] && (
+        {listRender && listRender[0] && (
           <div className="expert-right-button">
             <Button onClick={() => setExpertModal(true)} type="primary">
               {buttonText}
@@ -56,7 +56,7 @@ const ListRender = (props) => {
 };
 const mapStateToProps = (state) => {
   return {
-    listRender: state.management.listRender,
+    listRender: state.taskReducers.listRender,
   };
 };
 const mapDispatchToProps = (dispatch) => {

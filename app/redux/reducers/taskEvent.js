@@ -6,6 +6,12 @@ const initState = {
   taskUpdateMidal: false,
   taskTimeLine: [],
   feedTaskModalVisible: false,
+  dispatchMaterial: [],
+  listRender: [],
+  userPosition: [],
+  taskCountSource: [],
+  taskCountGrade: [],
+  taskCountState: [],
 };
 let selected = [];
 
@@ -35,6 +41,60 @@ export default function taskReducers(state = initState, action) {
       break;
     case types.FEED_TASK_MODAL:
       newState = { ...newState, feedTaskModalVisible: action.data };
+      break;
+    case types.SET_TASKEVENT_LIST:
+      console.log("reduer", action.data, "asdasd");
+      newState = { ...newState, taskList: action.data };
+      break;
+    case types.SET_MODAL_VISIBLE:
+      newState = { ...newState, taskModalVisible: action.data };
+      break;
+    case types.CHANGE_TASK_INPUT:
+      newState = { ...newState, taskInput: action.data };
+      break;
+    case types.SET_MESSAGE:
+      newState = { ...newState, messageList: action.data };
+      break;
+    case types.SET_TASK_INFO:
+      newState = { ...newState, taskInfo: action.data };
+      break;
+    case types.SET_EXPERT_MODAL:
+      newState = { ...newState, expertVisible: action.data };
+      break;
+    case types.SET_FLOOD_ADDRESS:
+      newState = { ...newState, floodAddress: action.data };
+      break;
+    case types.SET_TASK_DISPATCH_EXPERT:
+      newState = { ...newState, dispatchExpert: action.data };
+      break;
+    case types.CHANGE_TASK_RENDER_LIST:
+      newState = { ...newState, listRender: action.data };
+      break;
+    case types.CHANGE_TASK_RADIO:
+      newState = { ...newState, taskRadioType: action.data };
+      break;
+    case types.SET_USER_DISPATCH:
+      newState = { ...newState, dispatchUser: action.data };
+      break;
+    case types.SET_MATERIAL_DISPATCH:
+      newState = { ...newState, dispatchMaterial: action.data };
+      break;
+    case types.SET_FORM_USER:
+      let b = [];
+      b.push(...action.data);
+      newState = { ...newState, formUser: b };
+      break;
+    case types.SET_MAP_USER_POSITION:
+      newState = { ...newState, userPosition: action.data };
+      break;
+    case types.SET_TASK_COUNT_SOURCE: //来源统计
+      newState = { ...newState, taskCountSource: action.data };
+      break;
+    case types.SET_TASK_COUNT_GRADE: //等级统计
+      newState = { ...newState, taskCountGrade: action.data };
+      break;
+    case types.SET_TASK_COUNT_STATE: //状态统计
+      newState = { ...newState, taskCountState: action.data };
       break;
     default:
       break;

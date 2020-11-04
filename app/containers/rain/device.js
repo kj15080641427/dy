@@ -5,7 +5,7 @@ import React from "react";
 import "./style-device.scss";
 import Head from "../../components/head/head";
 import titleImg from "../../resource/title/rain.png";
-import RouterList from "../../components/routerLiis";
+import RouterList from "../../components/routerlist";
 import DeviceManager from "../home/content/subpages/DeviceManage/index.js";
 class Monitor extends React.PureComponent {
   constructor(props, context) {

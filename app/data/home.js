@@ -387,7 +387,7 @@ export function deleteTaskEvent(data) {
 }
 //查询事件动态
 export function getTaskTimeLine(data) {
-  return fetchJSONData("POST", "/base/TasKrel/dynamic", data);
+  return fetchJSONData("POST", "/base/TasKrel/dynamic2", data);
 }
 //取消事件
 export function offTask(data) {
@@ -514,4 +514,18 @@ export function getOcean(data) {
 // 根据站点，类型和时间查询每日数据量
 export function getCountByStcd(data) {
   return fetchJSONData("POST", "/base/SiteBase/getCountByStcd", data);
+}
+
+
+//事件来源统计
+export function getTaskCountDataSource(data) {
+  return fetchJSONData("POST", "/base/TaskEvents/countDataSource", data);
+}
+//事件等级统计
+export function getTaskCountGrade(data) {
+  return fetchJSONData("POST", "/base/TaskEvents/countGrade", data);
+}
+//事件状态统计
+export function getTaskCountState(data) {
+  return fetchJSONData("POST", "/base/TaskEvents/countState", data);
 }

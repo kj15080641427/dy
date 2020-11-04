@@ -28,6 +28,7 @@ import ExpertDispatch from "@app/containers/taskEvent/expertDispatch";
 import UserDispatch from "@app/containers/taskEvent/userDispatch";
 import MaterialDispatch from "@app/containers/taskEvent/materialDispatch";
 import TaskTimeLine from "@app/containers/taskEvent/taskTimeLine";
+import DeviceManager from "@app/containers/rain/device";
 import "./style.scss";
 // const AsyncHome = AsyncComp(() => import(/*webpackChunkName:'Index'*/"@app/containers/home/Index").then((res) => { removeLoading(); return res; }));
 // const AsyncLogin = AsyncComp(() => import(/*webpackChunkName:'Login'*/"@app/containers/home/Login").then((res) => { removeLoading(); return res; }));
@@ -117,6 +118,7 @@ export class App extends React.Component {
               <Route path={`/userDispatch`} component={UserDispatch} />
               <Route path={`/materialDispatch`} component={MaterialDispatch} />
               <Route path={`/taskTimeLine`} component={TaskTimeLine} />
+              <Route path={`/device`} component={DeviceManager} />
             </>
           )}
           {/* <Route component={AsyncLogin} /> */}
