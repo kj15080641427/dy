@@ -10,7 +10,7 @@ import FloodSituation from "./components/floodSituation/FloodSituation";
 import PannelBtn from "./right/PannelBtn";
 import moment from "moment";
 import { message } from "antd";
-import RouterList from "../../components/routerLiis";
+import RouterList from "../../components/routerlist";
 class notices extends React.PureComponent {
   constructor(props, context) {
     super(props, context);

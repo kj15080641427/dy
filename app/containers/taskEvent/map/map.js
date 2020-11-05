@@ -8,13 +8,10 @@ import * as actions from "@app/redux/actions/monitor";
 import UbiMap from "../../monitor/map/ubimap";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
-//import moment from "moment";
+import { getWarehouse, getWarehouseMt } from "@app/data/request";
 
 import "./style.scss";
 
-import {
-  getWarehouseMt,
-} from "@app/data/request";
 import VideoControl from "@app/components/video/VideoControl";
 
 import Person from "./Person";
@@ -48,7 +45,7 @@ class Map extends React.PureComponent {
     let _this = this;
     this.type.forEach((Ovl) => {
       _this.state.overlays[Ovl.type] = {};
-    })
+    });
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this._windowCloseFlag = true; // window关闭事件是否开启
     this.onOverlayClose = this.onOverlayClose.bind(this);
@@ -88,16 +85,19 @@ class Map extends React.PureComponent {
     );
   }
   componentDidUpdate(prevProps) {
-    let { layerVisible, person } = this.props;
+    let { layerVisible, person, floodRanks } = this.props;
     if (person !== prevProps.person) {
       this.loadData();
+    }
+    if (floodRanks) {
+      this.addFloodRank();
     }
     if (layerVisible !== prevProps.layerVisible) {
       this.setVisible();
     }
     if (
-        layerVisible.water !== prevProps.layerVisible.water ||
-        layerVisible.rain !== prevProps.layerVisible.rain
+      layerVisible.water !== prevProps.layerVisible.water ||
+      layerVisible.rain !== prevProps.layerVisible.rain
     ) {
       this._zoom = null;
       this.toggleTagByMapZoom();
@@ -107,6 +107,7 @@ class Map extends React.PureComponent {
     this.createMap();
     this.setVisible();
     this.addEvent();
+    this.getWarehouseData();
     // this.loadData();
     // this.videoControl.login();
   }
@@ -192,7 +193,7 @@ class Map extends React.PureComponent {
           return featureObj.heading;
         },
         src: function () {
-          return require("../../../resource/icon/person.svg")["default"];
+          return require("@app/resource/人员定位.svg")["default"];
         },
         anchor: [0.5, 1],
         strokeColor: "#1890ff",
@@ -218,7 +219,7 @@ class Map extends React.PureComponent {
         fontColor: "#82B2FF",
         fontOffset: [20, 0],
         src: function (featureObj) {
-          return require("../../../resource/icon/warehouse.svg")["default"];
+          return require("@app/resource/icon/warehouse.svg")["default"];
         },
         fontText: function (featureObj) {
           return featureObj.name + "";
@@ -226,26 +227,46 @@ class Map extends React.PureComponent {
         font: "16px sans-serif",
       },
     });
-
+    this.map.addVector({
+      key: "rank",
+      zIndex: 30,
+      style: {
+        anchor: [0.5, 0.5],
+        strokeColor: "#ff0000",
+        width: 1,
+        fillColor: "#1890ff",
+        fontColor: "#82B2FF",
+        fontOffset: [20, 0],
+        src: function (featureObj) {
+          return require("@app/resource/抢险队伍.svg")["default"];
+        },
+        fontText: function (featureObj) {
+          return featureObj.name + "";
+        },
+        font: "16px sans-serif",
+      },
+    });
     this.map.startHighlightFeatureonLayer("person");
+    this.map.startHighlightFeatureonLayer("rank");
     this.map.startHighlightFeatureonLayer("warehouse");
+    // this.map.startSelectFeature("person", (param) => {
+    //   this.addOverlay(Person.type, param);
+    //   // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
+    //   //   onVideoClick: () => {
+    //   //     console.log(param.id);
+    //   //   },
+    //   //   onClose: () => {
+    //   //     this.map.removeOverlay(param.id);
+    //   //   }
+    //   // }));
+    // });
+
     this.map.startSelectFeature("person", (param) => {
       this.addOverlay(Person.type, param);
-      // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
-      //   onVideoClick: () => {
-      //     console.log(param.id);
-      //   },
-      //   onClose: () => {
-      //     this.map.removeOverlay(param.id);
-      //   }
-      // }));
     });
-
-
-    this.map.startSelectFeature("person", (param) => {
-      this.addOverlay(Person.type, param);
+    this.map.startSelectFeature("rank", (param) => {
+      // this.addOverlay(Person.type, param);
     });
-
     this.map.startSelectFeature("warehouse", (param) => {
       let { details } = this.props;
       //console.log(1);
@@ -255,32 +276,32 @@ class Map extends React.PureComponent {
           ...details.warehouse[param.id],
         });
       } else {
-        getWarehouseMt({ materialWarehouseId: param.id })
-          .then((res) => {
-            if (res.code === 200) {
-              let record = res.data || [];
-              this.props.actions.setDetailData({
-                key: "warehouse",
-                value: { materials: record, id: param.id },
-                idKey: "id",
-              });
-              this.addOverlay(
-                Warehouse.type,
-                record ? { ...param, materials: record, id: param.id } : param
-              );
-            } else {
-              return Promise.reject(res.msg || "未知错误");
-            }
-          })
-          .catch((e) => {
-            message.error("获取仓库详情失败");
-          });
+        // getWarehouseMt({ materialWarehouseId: param.id })
+        //   .then((res) => {
+        //     if (res.code === 200) {
+        //       let record = res.data || [];
+        //       this.props.actions.setDetailData({
+        //         key: "warehouse",
+        //         value: { materials: record, id: param.id },
+        //         idKey: "id",
+        //       });
+        //       this.addOverlay(
+        //         Warehouse.type,
+        //         record ? { ...param, materials: record, id: param.id } : param
+        //       );
+        //     } else {
+        //       return Promise.reject(res.msg || "未知错误");
+        //     }
+        //   })
+        //   .catch((e) => {
+        //     message.error("获取仓库详情失败");
+        //   });
       }
     });
     // this.map.activeMeasure();
     this.map.on("moveend", () => {
       let a = this.map.getView().calculateExtent();
-      console.log(a);
+      // console.log(a);
     });
     this.map.onFeatureClicked((feature) => {
       // console.log("featureclick", feature);
@@ -412,6 +433,29 @@ class Map extends React.PureComponent {
       this._windowCloseFlag = true;
     }, 0);
   }
+  getWarehouseData() {
+    getWarehouse({})
+      .then((res) => {
+        if (res.code === 200) {
+          this.props.actions.addWarehouse(res.data);
+          this.map.addFeatures(
+            "warehouse",
+            res.data.map((item) => {
+              return {
+                type: "Point",
+                id: item.materialWarehouseId,
+                lonlat: [item.lon, item.lat],
+                ...item,
+              };
+            })
+            //  templateWareHouse(res.data)
+          );
+        }
+      })
+      .catch(() => {
+        console.log(e);
+      });
+  }
   loadData() {
     const { person } = this.props;
     // 加载视频数据
@@ -429,6 +473,28 @@ class Map extends React.PureComponent {
     );
   }
 
+  addFloodRank() {
+    const { floodRanks } = this.props;
+    this.map.addFeatures(
+      "rank",
+      floodRanks.map((item) => {
+        return {
+          ...item,
+          type: "Point",
+          id: item.name,
+          lonlat: [item.longitude, item.latitude],
+        };
+      })
+    );
+    // floodRanks.map((item) => {
+    //   return {
+    //     ...item,
+    //     type: "Point",
+    //     id: item.name,
+    //     lonlat: [item.longitude, item.latitude],
+    //   };
+    // });
+  }
   onOverlayClose(id, type) {
     let { overlays } = this.state;
     let obj = overlays[type];
@@ -477,6 +543,7 @@ function mapStateToProps(state) {
     details: state.monitor.details,
     warehouse: state.monitor.warehouse,
     floodUser: state.mapAboutReducers.floodUser,
+    floodRanks: state.mapAboutReducers.floodRanks,
   };
 }
 

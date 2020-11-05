@@ -151,7 +151,9 @@ function* getDayRainBySite({ data }) {
 //获取河流下的水位站点
 function* getSiteWaterByRiver({ data }) {
   try {
-    const result = yield call(req.getWfsRiverByName, { name: data.name });
+    const result = yield call(req.getWfsRiverByName, {
+      name: data.name,
+    });
     if (result.code == code) {
       const stcd = result.data[0].siteBaseDo.siteWaterLevels.map(
         (item) => item.stcd
@@ -159,24 +161,30 @@ function* getSiteWaterByRiver({ data }) {
       const waterResult = yield call(req.getWaterRealTime, {
         current: 1,
         size: -1,
+        isOrder: 1,
         stcd: stcd.toString(),
       });
       if (waterResult.code == code) {
-        console.log(data, "TTT");
+        // console.log(data, "TTT");
         if (data.type) {
           yield put({
             type: types.SET_SITE_RIVER_TABLE,
             data: waterResult.data.records.map((item) => ({
               ...item,
-              name: item.stnm,
-              aliasName: item.stnm,
+              name: item.aliasName,
+              aliasName: item.aliasName,
               siteWaterLevels: [{ stcd: item.stcd }],
             })),
           });
         } else {
           yield put({
             type: types.SET_SITE_WATER_BY_RIVER,
-            data: waterResult.data.records,
+            data: waterResult.data.records.map((item) => ({
+              ...item,
+              name: item.aliasName,
+              aliasName: item.aliasName,
+              siteWaterLevels: [{ stcd: item.stcd }],
+            })),
           });
         }
       }

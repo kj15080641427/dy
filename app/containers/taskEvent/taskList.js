@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import * as action from "../../redux/actions/taskEvent";
 import { bindActionCreators } from "redux";
 import { createHashHistory } from "history";
+import { Link } from "react-router-dom";
 import {
   Modal,
   Button,
@@ -29,6 +30,7 @@ const TaskList = (props) => {
     changeTaskInput,
     setTaskInfo,
   } = props.actions;
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     getTaskList({
@@ -44,7 +46,6 @@ const TaskList = (props) => {
       happenTime: moment(form.happenTime).format("YYYY-MM-DD HH:mm:ss"),
     };
     addTaskEvent(form);
-    console.log(form);
   };
 
   return (
@@ -109,14 +110,18 @@ const TaskList = (props) => {
                     </div>
                   </div>
                   <div className="task-list-card-footer">
-                    <a
+                    <Link
                       onClick={() => {
                         setTaskInfo(item);
-                        hashHistory.push("/taskInfo");
+                        // hashHistory.push({
+                        //   pathname: "/taskInfo",
+                        //   params: { info: item },
+                        // });
                       }}
+                      to={{ pathname: "/taskInfo", query: { info: item } }}
                     >
                       进入事件
-                    </a>
+                    </Link>
                   </div>
                 </Card>
               </Col>
@@ -134,16 +139,16 @@ const TaskList = (props) => {
         ></DYForm>
       </Modal>
       <Pagination
-        defaultCurrent={1}
+        current={page}
         // hideOnSinglePage
         total={taskList?.total}
         onChange={(page, size) => {
+          setPage(page);
           getTaskList({
             current: page,
             name: taskInput,
             size: size,
           });
-          console.log(page, size);
         }}
       ></Pagination>
       <div>
@@ -155,9 +160,9 @@ const TaskList = (props) => {
 };
 const mapStateToProps = (state) => {
   return {
-    taskList: state.management.taskList,
-    taskModalVisible: state.management.taskModalVisible,
-    taskInput: state.management.taskInput,
+    taskList: state.taskReducers.taskList,
+    taskModalVisible: state.taskReducers.taskModalVisible,
+    taskInput: state.taskReducers.taskInput,
   };
 };
 const mapDispatchToProps = (dispatch) => {

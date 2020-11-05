@@ -4,7 +4,7 @@ import * as action from "../../../redux/actions";
 import { bindActionCreators } from "redux";
 import Map from "../../../../monitor/map/map";
 import { Input, TreeSelect } from "antd";
-import trackQuery from "../../../../../resource/icon/trackQuery.svg";
+import trackQuery from "@app/resource/icon/trackQuery.svg";
 // import trackQuery2 from "../../../../../resource/icon/trackQuery2.svg";
 // import trackTime from "../../../../../resource/icon/trackTime.svg";
 import emitter from "@app/utils/emitter.js";
@@ -75,8 +75,8 @@ const TrackQuery = (props) => {
 const mapStateToProps = (state) => {
   return {
     feedTaskModalVisible: state.taskReducers.feedTaskModalVisible,
-    floodAddress: state.management.floodAddress,
-    taskInfo: state.management.taskInfo,
+    floodAddress: state.taskReducers.floodAddress,
+    taskInfo: state.taskReducers.taskInfo,
     floodUser: state.mapAboutReducers.floodUser,
   };
 };

@@ -15,7 +15,9 @@ const initState = {
   historyWater: [],
   floodRain: [],
   initFlood: [],
+  floodUser: [],
   floodLoading: true,
+  expert: { all: [] },
 };
 export default function mapAboutReducers(state = initState, action) {
   let newState = Object.assign({}, state);
@@ -113,7 +115,7 @@ export default function mapAboutReducers(state = initState, action) {
       let list = [];
       action.data.forEach((item) => {
         // console.log((item.raindataList && item.raindataList[0]));
-        if (item.raindataList && item.raindataList[0]) {
+        if (item.raindataList) {
           list.push({
             ...item,
             ...item.raindataList[0],

@@ -18,6 +18,10 @@ import DYForm from "@app/components/home/form";
 import * as actions from "../../redux/actions/taskEvent";
 import TreeSelected from "./component/tree";
 import { createHashHistory } from "history";
+import PageHeader from "./component/pageHeader";
+import Head from "../../components/head/head";
+import titleImg from "@app/resource/title/rwdd.png";
+import RouterList from "../../components/routerlist";
 import "./task.scss";
 const { TabPane } = Tabs;
 const { TextArea } = Input;
@@ -105,124 +109,130 @@ const TaskInfoMessage = (props) => {
       getFloodRankUser();
       getMessage();
     } else {
-      hashHistory.push("/home/taskList");
+      hashHistory.push("/taskList");
     }
   }, []);
   return (
     <div>
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="发送消息" key="1">
-          <div className="task-display">
-            <div className="task-display-left">
-              <Card>
-                <Descriptions bordered title="通知联系人">
-                  <Descriptions.Item
-                    label={<div style={{ width: "90px" }}>人员组别</div>}
-                    span={3}
-                  >
-                    <div style={{ width: "100%" }}>人员</div>
-                  </Descriptions.Item>
-                  {/* 防汛 */}
-                  <Descriptions.Item span={3} label={"防汛专家"}>
-                    <div className="task-voerflow">
-                      <TreeSelected
-                        placeholderInfo="点击选择防汛专家"
-                        onChange={(value) => setSelectExpert(value)}
-                        treeData={[
-                          {
-                            title: "市级专家",
-                            value: "city",
-                            children: city,
-                          },
-                          {
-                            title: "县级专家",
-                            value: "county",
-                            children: county,
-                          },
-                          {
-                            title: "乡镇专家",
-                            value: "town",
-                            children: town,
-                          },
-                        ]}
-                      ></TreeSelected>
-                    </div>
-                  </Descriptions.Item>
-                  <Descriptions.Item span={3} label={"防汛人员"}>
-                    <div className="task-voerflow">
-                      <TreeSelected
-                        placeholderInfo="点击选择防汛人员"
-                        onChange={(value) => setSelectFloodUser(value)}
-                        treeData={floodRanks?.map((item) => {
-                          return {
-                            title: item.name,
-                            value: item.name,
-                            children: item?.userList?.map((t) => {
-                              return {
-                                title: t.name,
-                                value: `${t.name}|${t.floodId}`,
-                              };
-                            }),
-                          };
-                        })}
-                      ></TreeSelected>
-                    </div>
-                  </Descriptions.Item>
-                </Descriptions>
-              </Card>
+      <div style={{ height: "90px", background: "#003366" }}></div>
+      <Head titleImg={titleImg} />
+      <RouterList />
+      <PageHeader></PageHeader>
+      <div className="task-dispatch-body">
+        <Tabs defaultActiveKey="1">
+          <TabPane tab="发送消息" key="1">
+            <div className="task-display">
+              <div className="task-display-left">
+                <Card>
+                  <Descriptions bordered title="通知联系人">
+                    <Descriptions.Item
+                      label={<div style={{ width: "90px" }}>人员组别</div>}
+                      span={3}
+                    >
+                      <div style={{ width: "100%" }}>人员</div>
+                    </Descriptions.Item>
+                    {/* 防汛 */}
+                    <Descriptions.Item span={3} label={"防汛专家"}>
+                      <div className="task-voerflow">
+                        <TreeSelected
+                          placeholderInfo="点击选择防汛专家"
+                          onChange={(value) => setSelectExpert(value)}
+                          treeData={[
+                            {
+                              title: "市级专家",
+                              value: "city",
+                              children: city,
+                            },
+                            {
+                              title: "县级专家",
+                              value: "county",
+                              children: county,
+                            },
+                            {
+                              title: "乡镇专家",
+                              value: "town",
+                              children: town,
+                            },
+                          ]}
+                        ></TreeSelected>
+                      </div>
+                    </Descriptions.Item>
+                    <Descriptions.Item span={3} label={"防汛人员"}>
+                      <div className="task-voerflow">
+                        <TreeSelected
+                          placeholderInfo="点击选择防汛人员"
+                          onChange={(value) => setSelectFloodUser(value)}
+                          treeData={floodRanks?.map((item) => {
+                            return {
+                              title: item.name,
+                              value: item.name,
+                              children: item?.userList?.map((t) => {
+                                return {
+                                  title: t.name,
+                                  value: `${t.name}|${t.floodId}`,
+                                };
+                              }),
+                            };
+                          })}
+                        ></TreeSelected>
+                      </div>
+                    </Descriptions.Item>
+                  </Descriptions>
+                </Card>
+              </div>
+              <div className="task-display-right">
+                <Card title="发送内容">
+                  <DYForm
+                    id={"task"}
+                    formItem={[
+                      {
+                        label: "事件标题",
+                        name: "name",
+                        rules: [{ required: true }],
+                        ele: <Input></Input>,
+                      },
+                      {
+                        label: "内容",
+                        name: "content",
+                        rules: [{ required: true }],
+                        ele: (
+                          <TextArea
+                            autoSize={{ minRows: 3, maxRows: 8 }}
+                          ></TextArea>
+                        ),
+                      },
+                      {
+                        label: "发送方式",
+                        name: "typeCode",
+                        rules: [{ required: true }],
+                        ele: (
+                          <Checkbox.Group>
+                            <Checkbox value={1} onChange={() => 1}>
+                              短信
+                            </Checkbox>
+                            <Checkbox value={2} onChange={() => 2}>
+                              APP
+                            </Checkbox>
+                          </Checkbox.Group>
+                        ),
+                      },
+                    ]}
+                    onFinish={onFinish}
+                  ></DYForm>
+                </Card>
+              </div>
             </div>
-            <div className="task-display-right">
-              <Card title="发送内容">
-                <DYForm
-                  id={"task"}
-                  formItem={[
-                    {
-                      label: "事件标题",
-                      name: "name",
-                      rules: [{ required: true }],
-                      ele: <Input></Input>,
-                    },
-                    {
-                      label: "内容",
-                      name: "content",
-                      rules: [{ required: true }],
-                      ele: (
-                        <TextArea
-                          autoSize={{ minRows: 3, maxRows: 8 }}
-                        ></TextArea>
-                      ),
-                    },
-                    {
-                      label: "发送方式",
-                      name: "typeCode",
-                      rules: [{ required: true }],
-                      ele: (
-                        <Checkbox.Group>
-                          <Checkbox value={1} onChange={() => 1}>
-                            短信
-                          </Checkbox>
-                          <Checkbox value={2} onChange={() => 2}>
-                            APP
-                          </Checkbox>
-                        </Checkbox.Group>
-                      ),
-                    },
-                  ]}
-                  onFinish={onFinish}
-                ></DYForm>
-              </Card>
-            </div>
-          </div>
-        </TabPane>
-        <TabPane tab="已发送消息记录" key="2">
-          <Table
-            columns={tableColumns}
-            dataSource={messageList}
-            showEdit={false}
-            // rowkey={(row) =>row.createTime}
-          ></Table>
-        </TabPane>
-      </Tabs>
+          </TabPane>
+          <TabPane tab="已发送消息记录" key="2">
+            <Table
+              columns={tableColumns}
+              dataSource={messageList}
+              showEdit={false}
+              // rowkey={(row) =>row.createTime}
+            ></Table>
+          </TabPane>
+        </Tabs>
+      </div>
     </div>
   );
 };
@@ -232,8 +242,8 @@ const mapStateToProps = (state) => {
     expert: state.mapAboutReducers.expert,
     floodRanks: state.mapAboutReducers.floodRanks,
     rankSelect: state.mapAboutReducers.rankSelect,
-    messageList: state.management.messageList,
-    taskInfo: state.management.taskInfo,
+    messageList: state.taskReducers.messageList,
+    taskInfo: state.taskReducers.taskInfo,
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -290,7 +290,7 @@ class Map extends React.PureComponent {
         },
         src: function (featureObj) {
           //
-          return require("../../../resource/icon/person.svg")["default"];
+          return require("../../../resource/人员定位.svg")["default"];
         },
         anchor: [0.5, 1],
         strokeColor: "#1890ff",
@@ -775,21 +775,21 @@ class Map extends React.PureComponent {
     let id = param.id;
     let { overlays } = this.state;
     let elements = overlays[key];
-    if (elements[id]) return;
-    // 查询该key是否只能显示一个overlay
-    let isSingle = this.type.some((Overlay) => {
-      if (Overlay.type === key) {
-        return Overlay.single;
-      }
-      return false;
-    });
-    if (isSingle) {
+    // if (elements[id]) return;
+    // // 查询该key是否只能显示一个overlay
+    // let isSingle = this.type.some((Overlay) => {
+    //   if (Overlay.type === key) {
+    //     return Overlay.single;
+    //   }
+    //   return false;
+    // });
+    // if (isSingle) {
       overlays[key] = {
         [id]: param,
       };
-    } else {
-      elements[id] = param;
-    }
+    // } else {
+    //   elements[id] = param;
+    // }
     this.setState({
       overlays: { ...overlays },
     });

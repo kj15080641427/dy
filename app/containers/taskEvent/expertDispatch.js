@@ -8,6 +8,9 @@ import ListRender from "./component/list";
 import ModalForm from "./component/modalForm";
 import TaskRadio from "./component/radio";
 import { expertRadioList, expertColumns } from "./cconfig";
+import Head from "../../components/head/head";
+import titleImg from "@app/resource/title/rwdd.png";
+import RouterList from "../../components/routerlist";
 import PageHeader from "./component/pageHeader";
 const { TabPane } = Tabs;
 const hashHistory = createHashHistory();
@@ -38,7 +41,7 @@ const ExpertDispatch = (props) => {
 
   useEffect(() => {
     if (!taskInfo) {
-      hashHistory.push("/home/taskList");
+      hashHistory.push("/taskList");
     } else {
       changeTaskRadioType("all");
       getFloodExpert();
@@ -51,46 +54,51 @@ const ExpertDispatch = (props) => {
 
   return (
     <React.Fragment>
-       <PageHeader></PageHeader>
-      <Tabs defaultActiveKey="1">
-        <TabPane key="1" tab="专家调度">
-          {/* 发送消息 */}
-          <ModalForm onFinish={onFinish} />
-          <div className="expert-dispatch">
-            <TaskRadio
-              columns={expertColumns}
-              radioText={"专家级别"}
-              radioList={expertRadioList}
-              dataSource={expert}
-              defaultRadio="all"
-            ></TaskRadio>
-            <ListRender listItemText={'major'}></ListRender>
-          </div>
-        </TabPane>
-        <TabPane key="2" tab="已调派专家">
-          <Table
-            columns={[
-              expertColumns[0],
-              expertColumns[1],
-              expertColumns[3],
-              expertColumns[4],
-              expertColumns[5],
-            ]}
-            dataSource={dispatchExpert}
-            rowKey={(row) => row.floodControlExpertId}
-          ></Table>
-        </TabPane>
-      </Tabs>
+      <div style={{ height: "90px", background: "#003366" }}></div>
+      <PageHeader></PageHeader>
+      <Head titleImg={titleImg} />
+      <RouterList />
+      <div className="task-dispatch-body">
+        <Tabs defaultActiveKey="1">
+          <TabPane key="1" tab="专家调度">
+            {/* 发送消息 */}
+            <ModalForm onFinish={onFinish} />
+            <div className="expert-dispatch">
+              <TaskRadio
+                columns={expertColumns}
+                radioText={"专家级别"}
+                radioList={expertRadioList}
+                dataSource={expert}
+                defaultRadio="all"
+              ></TaskRadio>
+              <ListRender listItemText={"major"}></ListRender>
+            </div>
+          </TabPane>
+          <TabPane key="2" tab="已调派专家">
+            <Table
+              columns={[
+                expertColumns[0],
+                expertColumns[1],
+                expertColumns[3],
+                expertColumns[4],
+                expertColumns[5],
+              ]}
+              dataSource={dispatchExpert}
+              rowKey={(row) => row.floodControlExpertId}
+            ></Table>
+          </TabPane>
+        </Tabs>
+      </div>
     </React.Fragment>
   );
 };
 const mapStateToProps = (state) => {
   return {
     expert: state.mapAboutReducers.expert,
-    taskInfo: state.management.taskInfo,
-    listRender: state.management.listRender,
-    expertVisible: state.management.expertVisible,
-    dispatchExpert: state.management.dispatchExpert,
+    taskInfo: state.taskReducers.taskInfo,
+    listRender: state.taskReducers.listRender,
+    expertVisible: state.taskReducers.expertVisible,
+    dispatchExpert: state.taskReducers.dispatchExpert,
   };
 };
 const mapDispatchToProps = (dispatch) => {

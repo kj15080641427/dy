@@ -1,5 +1,5 @@
 import React from "react";
-import RouterList from "../../components/routerLiis";
+import RouterList from "../../components/routerlist";
 import "./style.scss";
 import Head from "../../components/head/head";
 import titleImg from "../../resource/title/river.png";

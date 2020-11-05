@@ -3,7 +3,7 @@ import DYForm from "@app/components/home/form";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as action from "../../redux/actions/taskEvent";
-import { Input, Modal, DatePicker } from "antd";
+import { Input, Modal, DatePicker, Select } from "antd";
 import moment from "moment";
 const formItem = [
   {
@@ -15,6 +15,17 @@ const formItem = [
     label: "发生时间",
     name: "happenTime",
     ele: <DatePicker showTime />,
+  },
+  {
+    label: "事件等级",
+    name: "grade",
+    ele: (
+      <Select>
+        <Select.Option value={1}>一级</Select.Option>
+        <Select.Option value={2}>二级</Select.Option>
+        <Select.Option value={3}>三级</Select.Option>
+      </Select>
+    ),
   },
   {
     label: "区域位置",
@@ -52,7 +63,15 @@ const TaskUpDate = (props) => {
 
   return (
     <>
-      <Modal visible={taskUpdateMidal} footer={null} forceRender={true}>
+      <Modal
+        visible={taskUpdateMidal}
+        footer={null}
+        forceRender={true}
+        onCancel={() => {
+          setTaskUpdateModal(false);
+        }}
+      >
+        <br />
         <DYForm
           showDelete
           deleteClick={() => {
@@ -73,7 +92,7 @@ const TaskUpDate = (props) => {
 const mapStateToProps = (state) => {
   return {
     taskUpdateMidal: state.taskReducers.taskUpdateMidal,
-    taskInfo: state.management.taskInfo,
+    taskInfo: state.taskReducers.taskInfo,
   };
 };
 const mapDisPatchToProps = (dispatch) => {

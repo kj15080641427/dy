@@ -10,7 +10,7 @@ import CheckBoxs from "../../components/setting/setting";
 import setImg from "@app/resource/setsys.png";
 import { Drawer, Row, Divider, Checkbox, Col, Radio, Tabs } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
-import RouterList from "../../components/routerLiis";
+import RouterList from "../../components/routerlist";
 import { RenderBox } from "../../components/chart/decorate";
 import {
   funnelChart,
@@ -393,7 +393,7 @@ class Monitor extends React.PureComponent {
                         columns={[
                           {
                             name: "易涝点名称",
-                            dataIndex: "name",
+                            dataIndex: "aliasName",
                             filter: "name",
                             width: "45%",
                           },
@@ -421,6 +421,7 @@ class Monitor extends React.PureComponent {
                       />
                     </Tabs.TabPane>
                     <Tabs.TabPane key="rain" tab="雨量站">
+                      {console.log(floodRain, "floodRain")}
                       <>
                         <TableShow
                           onRow={(record) => {
@@ -435,7 +436,7 @@ class Monitor extends React.PureComponent {
                           columns={[
                             {
                               name: "雨量站名称",
-                              dataIndex: "name",
+                              dataIndex: "aliasName",
                               filter: "name",
                               width: "45%",
                             },
@@ -443,14 +444,14 @@ class Monitor extends React.PureComponent {
                               name: "雨量",
                               dataIndex: "raindataList",
                               width: "15%",
-                              render: (v) => v[0].dayDrp,
+                              render: (v) => (v && v[0] ? v[0].dayDrp : "-"),
                             },
                             {
                               name: "更新时间",
                               dataIndex: "tm",
                               width: "40%",
                               render: (v) => {
-                                return v?.slice(0, -3);
+                                return v?.slice(0, -3) || "--";
                               },
                               sorter: (a, b) => {
                                 return (

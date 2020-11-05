@@ -127,8 +127,8 @@ const TaskRadio = (props) => {
 };
 const mapStateToProps = (state) => {
   return {
-    taskRadioType: state.management.taskRadioType,
-    listRender: state.management.listRender,
+    taskRadioType: state.taskReducers.taskRadioType,
+    listRender: state.taskReducers.listRender,
     tasMaterialkUser: state.taskReducers.tasMaterialkUser,
     tableNumber: state.taskReducers.tableNumber, //物资数量
   };

@@ -25,7 +25,7 @@ import {
   showChartRiver,
 } from "../../components/chart/chart";
 import { TableShow } from "../../components/chart/table";
-import RouterList from "../../components/routerLiis";
+import RouterList from "../../components/routerlist";
 import WaterInfo from "./tabs";
 import WaterInfoRiver from "./tabsRiver";
 import emitter from "@app/utils/emitter.js";
@@ -538,7 +538,7 @@ class Monitor extends React.PureComponent {
           <div className="chart-right">
             <div className="water-right-first-box">
               <RenderBox
-                title={"水位站点在线统计图"}
+                title={"河流全程水位走势图"}
                 containerStyle={{ height: "30.05%" }}
                 hasTitle
               >

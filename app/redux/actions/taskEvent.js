@@ -186,9 +186,9 @@ export const deleteTaskInfo = (data) => {
   };
 };
 //取消事件
-export const recallTask = (data) => {
+export const endTask = (data) => {
   return {
-    type: types.RECALL_TASK,
+    type: types.END_TASK,
     data,
   };
 };
@@ -210,6 +210,35 @@ export const getTaskTimeLine = (data) => {
 export const setFeedTaskModal = (data) => {
   return {
     type: types.FEED_TASK_MODAL,
+    data,
+  };
+};
+//人员定位
+export const setMapUserPosition = (data) => {
+  return {
+    type: types.SET_MAP_USER_POSITION,
+    data,
+  };
+};
+
+//事件来源统计
+export const getTaskCountSource = (data) => {
+  return {
+    type: types.GET_TASK_COUNT_SOURCE,
+    data,
+  };
+};
+//事件等级统计
+export const getTaskCountGrade = (data) => {
+  return {
+    type: types.GET_TASK_COUNT_GRADE,
+    data,
+  };
+};
+//事件状态统计
+export const getTaskCountState = (data) => {
+  return {
+    type: types.GET_TASK_COUNT_STATE,
     data,
   };
 };

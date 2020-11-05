@@ -14,7 +14,7 @@ import CheckBoxs from "../../components/setting/setting";
 import { Drawer, Row, Divider, Checkbox, Tabs, Radio } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
 import setImg from "@app/resource/setsys.png";
-import RouterList from "../../components/routerLiis";
+import RouterList from "../../components/routerlist";
 import { RenderBox } from "../../components/chart/decorate";
 import { TableShow } from "../../components/chart/table";
 // import emitter from "@app/utils/emitter.js";

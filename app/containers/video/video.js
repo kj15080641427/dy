@@ -11,7 +11,7 @@ import setImg from "@app/resource/setsys.png";
 import { Drawer, Row, Divider, Checkbox, Tabs } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
 import VideoPlayer from "../../components/video/videoPlayer";
-import RouterList from "../../components/routerLiis";
+import RouterList from "../../components/routerlist";
 import { RenderBox } from "../../components/chart/decorate";
 import { pieChart, barChart } from "../../components/chart/chart";
 import VideoInfo from "./tabs";
