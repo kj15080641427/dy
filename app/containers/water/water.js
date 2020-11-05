@@ -571,7 +571,7 @@ class Monitor extends React.PureComponent {
                     </div>
                     <div className="water-select-flex">{`${moment(
                       new Date().getTime() - 24 * 60 * 60 * 1000
-                    ).format("YYYY-MM-DD HH:mm")}  —— ${moment(
+                    ).format("YYYY-MM-DD HH:mm")}  至 ${moment(
                       new Date()
                     ).format("MM-DD HH:mm")}`}</div>
                   </div>
