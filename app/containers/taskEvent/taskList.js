@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import * as action from "../../redux/actions/taskEvent";
 import { bindActionCreators } from "redux";
 import { createHashHistory } from "history";
+import { Link } from "react-router-dom";
 import {
   Modal,
   Button,
@@ -37,7 +38,6 @@ const TaskList = (props) => {
       name: taskInput,
       size: 10,
     });
-    console.log("??tt");
   }, []);
 
   const onFinish = (form) => {
@@ -46,7 +46,6 @@ const TaskList = (props) => {
       happenTime: moment(form.happenTime).format("YYYY-MM-DD HH:mm:ss"),
     };
     addTaskEvent(form);
-    console.log(form);
   };
 
   return (
@@ -111,14 +110,18 @@ const TaskList = (props) => {
                     </div>
                   </div>
                   <div className="task-list-card-footer">
-                    <a
+                    <Link
                       onClick={() => {
                         setTaskInfo(item);
-                        hashHistory.push("/taskInfo");
+                        // hashHistory.push({
+                        //   pathname: "/taskInfo",
+                        //   params: { info: item },
+                        // });
                       }}
+                      to={{ pathname: "/taskInfo", query: { info: item } }}
                     >
                       进入事件
-                    </a>
+                    </Link>
                   </div>
                 </Card>
               </Col>
@@ -156,7 +159,6 @@ const TaskList = (props) => {
   );
 };
 const mapStateToProps = (state) => {
-  console.log(state, "SS");
   return {
     taskList: state.taskReducers.taskList,
     taskModalVisible: state.taskReducers.taskModalVisible,

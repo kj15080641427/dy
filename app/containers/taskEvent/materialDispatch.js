@@ -9,6 +9,9 @@ import TaskRadio from "./component/radio";
 import { materialColumns, materiaTab2lColumns } from "./cconfig";
 import { createHashHistory } from "history";
 import PageHeader from "./component/pageHeader";
+import Head from "../../components/head/head";
+import titleImg from "@app/resource/title/rwdd.png";
+import RouterList from "../../components/routerlist";
 const hashHistory = createHashHistory();
 const { TabPane } = Tabs;
 
@@ -70,31 +73,36 @@ const MaterialDispatch = (props) => {
   };
   return (
     <React.Fragment>
+      <div style={{ height: "90px", background: "#003366" }}></div>
+      <Head titleImg={titleImg} />
+      <RouterList />
       <PageHeader></PageHeader>
-      <Tabs defaultActiveKey="1">
-        <TabPane key="1" tab="物资调派">
-          <ModalForm onFinish={onFinish} showTree={true}></ModalForm>
-          <div className="expert-dispatch">
-            <TaskRadio
-              addAll={false}
-              isMaterial
-              rowKey="materialId"
-              columns={materialColumns}
-              dataSource={wareHouseTask}
-              radioList={radioList}
-              radioText="仓库"
-              defaultRadio="c6153f34ba574fd693977e4aa265ef05"
-            ></TaskRadio>
-            <ListRender buttonText="物资调派"></ListRender>
-          </div>
-        </TabPane>
-        <TabPane key="2" tab="已调派物资">
-          <Table
-            columns={materiaTab2lColumns}
-            dataSource={dispatchMaterial}
-          ></Table>
-        </TabPane>
-      </Tabs>
+      <div className="task-dispatch-body">
+        <Tabs defaultActiveKey="1">
+          <TabPane key="1" tab="物资调派">
+            <ModalForm onFinish={onFinish} showTree={true}></ModalForm>
+            <div className="expert-dispatch">
+              <TaskRadio
+                addAll={false}
+                isMaterial
+                rowKey="materialId"
+                columns={materialColumns}
+                dataSource={wareHouseTask}
+                radioList={radioList}
+                radioText="仓库"
+                defaultRadio="c6153f34ba574fd693977e4aa265ef05"
+              ></TaskRadio>
+              <ListRender buttonText="物资调派"></ListRender>
+            </div>
+          </TabPane>
+          <TabPane key="2" tab="已调派物资">
+            <Table
+              columns={materiaTab2lColumns}
+              dataSource={dispatchMaterial}
+            ></Table>
+          </TabPane>
+        </Tabs>
+      </div>
     </React.Fragment>
   );
 };

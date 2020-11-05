@@ -54,8 +54,10 @@
   // align-items: center;
   justify-content: space-between;
   color: red;
+  // height: 1000px;
   .task-display-left {
     width: 50vw;
+    height: 100%;
     .ant-card-bordered {
       height: 100%;
       margin-right: 30px;
@@ -113,7 +115,7 @@
     cursor: pointer;
   }
   .task-info-fotter-text {
-    color: white;
+    color: black;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -181,7 +183,7 @@
 .task-page-head {
   position: absolute;
   z-index: 99;
-  right: 40px;
+  right: 135px;
   .ant-page-header {
     padding: 0px 0px;
   }
@@ -258,9 +260,15 @@
   height: 80vh;
 }
 .track-query-body {
+  img {
+    width: 50px;
+    height: 50px;
+  }
+  display: flex;
+  align-items: center;
   position: absolute;
-  top: 200px;
-  right: 560px;
+  top: 100px;
+  right: 500px;
   z-index: 99;
   .track-query-icon {
     width: 30px;
@@ -294,7 +302,7 @@
 
   .task-event-flex {
     color: white;
-    width: 100px;
+    width: 110px;
     text-align: center;
   }
 }
@@ -302,10 +310,10 @@
 .task-info-checkbox {
   .ranSwitch {
     position: absolute;
-    right: 557px;
-    top: 700px;
+    right: 500px;
+    top: 600px;
     background: rgba(15, 50, 70, 0.5);
-    height: 100px;
+    height: 350px;
     width: 120px;
     display: flex;
     justify-content: center;
@@ -370,4 +378,13 @@
   height: 110px;
   // background: red;
   // border-radius: 50%;
+}
+.task-info-map {
+  // margin-top: 90px;
+  // width: 100%;
+  // height: 100%;
+}
+.task-dispatch-body {
+  padding: 34px;
+  margin-right: 95px;
 }

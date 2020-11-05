@@ -5,8 +5,8 @@ import { bindActionCreators } from "redux";
 import { Card, Timeline, Popover } from "antd";
 import { createHashHistory } from "history";
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
-import taskTimelineIcon from "../../resource/过程.svg";
-import taskTimelineHeaderIcon from "../../resource/事件动态.svg";
+import taskTimelineIcon from "@app/resource/过程.svg";
+import taskTimelineHeaderIcon from "@app/resource/事件动态.svg";
 import "./task.scss";
 const hashHistory = createHashHistory();
 const typeList = ["事件新增", "消息发送", "人员调度", "专家调度", "物资调度"];
@@ -16,12 +16,8 @@ const TaskTimeLine = (props) => {
   const { taskInfo, taskTimeLine } = props;
 
   useEffect(() => {
-    if (taskInfo) {
-      getTaskTimeLine({ taskEventsID: taskInfo?.taskEventsID });
-    } else {
-      hashHistory.push("/taskList");
-    }
-  }, []);
+    getTaskTimeLine({ taskEventsID: taskInfo?.taskEventsID });
+  }, [taskInfo]);
 
   const renderTimeLine = (item) => {
     return (

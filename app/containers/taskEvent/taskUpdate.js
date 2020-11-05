@@ -63,7 +63,14 @@ const TaskUpDate = (props) => {
 
   return (
     <>
-      <Modal visible={taskUpdateMidal} footer={null} forceRender={true}>
+      <Modal
+        visible={taskUpdateMidal}
+        footer={null}
+        forceRender={true}
+        onCancel={() => {
+          setTaskUpdateModal(false);
+        }}
+      >
         <br />
         <DYForm
           showDelete

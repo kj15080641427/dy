@@ -44,7 +44,7 @@ function* getTaskList({ data }) {
         type: types.SET_TASKEVENT_LIST,
         data: result.data,
       });
-      console.log("saga");
+      // console.log("saga");
     }
   } catch (e) {
     console.error(e);

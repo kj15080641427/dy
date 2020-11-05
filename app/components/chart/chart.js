@@ -695,7 +695,7 @@ export const showChartRiver = (data, id) => {
     //   2,
     //   4
     // )}\n${item.stnm.slice(4, 33)}`;
-    xdata.push(item.stnm);
+    xdata.push(item.name);
     ydata.push(item.z);
   });
   myChart.setOption({

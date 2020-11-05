@@ -393,7 +393,7 @@ class Monitor extends React.PureComponent {
                         columns={[
                           {
                             name: "易涝点名称",
-                            dataIndex: "name",
+                            dataIndex: "aliasName",
                             filter: "name",
                             width: "45%",
                           },
@@ -436,7 +436,7 @@ class Monitor extends React.PureComponent {
                           columns={[
                             {
                               name: "雨量站名称",
-                              dataIndex: "name",
+                              dataIndex: "aliasName",
                               filter: "name",
                               width: "45%",
                             },

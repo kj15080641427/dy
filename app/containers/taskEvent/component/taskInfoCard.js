@@ -4,16 +4,22 @@ import * as action from "../../../redux/actions/taskEvent";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import { Card, Col, Row, Button, Modal } from "antd";
-import taskListIcon from "../../../resource/事件中心.svg";
+import taskListIcon from "@app/resource/事件中心.svg";
 import DYForm from "@app/components/home/form";
 import { offTaskForm } from "../cconfig";
 import { taskChart } from "../../../components/chart/chart";
+import state1 from "@app/resource/未处理.svg";
+import state2 from "@app/resource/处理中.svg";
+import state3 from "@app/resource/已处理.svg";
+import state4 from "@app/resource/已终止.svg";
+
 import "../task.scss";
 
 const gutter = [1, 20];
 
 const grade = ["一级", "二级", "三级"];
 const source = ["新增事件", "险情上报", "预警告警"];
+const state = [state1, state2, state3, state4];
 const TaskInfoCard = (props) => {
   const [title, setTitle] = useState("");
 
@@ -43,28 +49,20 @@ const TaskInfoCard = (props) => {
       name: item.taskName,
       value: item.number,
     }));
-    taskChart("sourceChart", sourceList);
 
     let gradeList = taskCountGrade.map((item) => ({
       name: item.taskName,
       value: item.number,
     }));
-    taskChart("gradeChart", gradeList);
 
     let stateList = taskCountState.map((item) => ({
       name: item.taskName,
       value: item.number,
     }));
     taskChart("stateChart", stateList);
-  }, [taskCountSource]);
-  // const {
-  //   name,
-  //   happenTime,
-  //   address,
-  //   reportPersonName,
-  //   reportPersonPhone,
-  //   remark,
-  // } = taskInfo;
+    taskChart("sourceChart", sourceList);
+    taskChart("gradeChart", gradeList);
+  }, [taskCountSource, taskCountGrade, taskCountState]);
 
   const onOffFinish = (data) => {
     data = { ...data, taskEventsID: taskInfo?.taskEventsID };
@@ -96,6 +94,16 @@ const TaskInfoCard = (props) => {
         </Card>
         <br />
         <Card title={taskInfo?.name}>
+          <img
+            src={state[taskInfo?.state]}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "10px",
+              width: "200px",
+              height: "200px",
+            }}
+          ></img>
           <Row gutter={gutter}>
             <Col span={5}>发生时间:</Col>
             <Col span={19}>{taskInfo?.happenTime}</Col>
@@ -123,28 +131,28 @@ const TaskInfoCard = (props) => {
             <Col span={5}>事件详情:</Col>
             <Col span={19}> {taskInfo?.remark}</Col>
           </Row>
-          <Row>
-            <Col span={12}>
-              <Button
-                onClick={() => {
-                  setTitle("终止事件");
-                  setFeedTaskModal(true);
-                }}
-              >
-                终止事件
-              </Button>
-            </Col>
-            <Col span={12}>
-              <Button
-                onClick={() => {
-                  setTitle("完成事件");
-                  setFeedTaskModal(true);
-                }}
-              >
-                事件已处置
-              </Button>
-            </Col>
-          </Row>
+          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+            {/* <Col span={12}> */}
+            <Button
+              onClick={() => {
+                setTitle("终止事件");
+                setFeedTaskModal(true);
+              }}
+            >
+              终止事件
+            </Button>
+            {/* </Col> */}
+            {/* <Col span={12}> */}
+            <Button
+              onClick={() => {
+                setTitle("完成事件");
+                setFeedTaskModal(true);
+              }}
+            >
+              事件已处置
+            </Button>
+            {/* </Col> */}
+          </div>
           <Modal
             visible={feedTaskModalVisible}
             title={title}

@@ -22,7 +22,7 @@
     color: white;
   }
 }
-.m-left-div{
+.m-left-div {
   margin: 20px;
   //border: solid 1px black;
 }
@@ -70,10 +70,20 @@
   color: gray;
 }
 .tableRow {
-    color: white;
-    background: #003366 !important;
-    border: none;
+  color: white;
+  background: #003366 !important;
+  border: none;
 }
 
-
-
+.flood-model-right {
+  width: 460px;
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 90px;
+  right: 140px;
+  bottom: 0px;
+  .radar-box{
+    height: 95%;
+  }
+}

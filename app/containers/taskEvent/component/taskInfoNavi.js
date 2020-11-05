@@ -6,7 +6,7 @@ import {
   BuildOutlined,
   SnippetsOutlined,
 } from "@ant-design/icons";
-import taskTimelineSvg from "../../../resource/icon/taskTimeline.png";
+// import taskTimelineSvg from "@app/resource/icon/taskTimeline.png";
 import { connect } from "react-redux";
 import * as action from "../../../redux/actions/taskEvent";
 import { bindActionCreators } from "redux";
