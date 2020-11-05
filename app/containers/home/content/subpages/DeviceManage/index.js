@@ -36,7 +36,7 @@ class deviceManage extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      deviceTypeMap: [{}],
+      deviceTypeMap: [],
       device: null,
     };
   }
@@ -79,14 +79,16 @@ class deviceManage extends Component {
             </div>
           }
         >
-          {this.state.deviceTypeMap.map((device) => (
+          {this.state.deviceTypeMap.map((device, index) => (
             <TabPane
               tab={`${device?.name}(${device?.siteData?.records?.length}个)`}
-              key={device.typeName}
-            ></TabPane>
+              key={index}
+            >
+              <Flood device={device} />
+            </TabPane>
           ))}
         </Tabs>
-        {this.state.device ? <Flood device={this.state.device} /> : ""}
+        {/* {this.state.device ? <Flood device={this.state.device} /> : ""} */}
       </div>
     );
   }
