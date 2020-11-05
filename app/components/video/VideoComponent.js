@@ -3,13 +3,15 @@ import React, {Component } from "react";
 import {H5sPlayerWS} from './h5splayer';
 import Holder from "./Holder";
 import * as ReactDOM from "react-dom";
+import VideoControlPanel from "./VideoControlPanel";
 
 const styles = {
   videoStyle: {
     width: '100%',
     height: '100%',
     border: '1px solid black',
-    backgroundColor: '#000000'
+    backgroundColor: '#000000',
+    position: 'static'
   },
   fullScreen: {
     position: 'absolute',
@@ -96,19 +98,23 @@ class VideoComponent extends Component {
     if (newStyle !== null) {
       newStyle.width = window.innerWidth;
       newStyle.height = window.innerHeight;
+    } else {
+      newStyle = this.props.style ? {...this.props.style} : null;
     }
 
-    let ele = <>
+    let ele =
       <div style={newStyle}>
         <video
-            style={styles.videoStyle}
-            id="h5sVideo1"
-            muted
-            autoPlay
-            webkit-playsinline
-            playsinline
-            onDoubleClick={this.onMouseDblClick.bind(this)} />
-      </div>
+          style={styles.videoStyle}
+          id="h5sVideo1"
+          muted
+          autoPlay
+          webkit-playsinline
+          playsinline
+          onDoubleClick={this.onMouseDblClick.bind(this)} />
+        {/*<Holder token={this.props.token}/>*/}
+        <VideoControlPanel videoControl={this.props.videoControl} token={this.props.token} />
+      </div>;
       {/*{this.state.session !== null ? (*/}
       {/*  <iframe*/}
       {/*    src={`http://218.56.180.250:9110/video/index.html?sessionId=${this.state.session}&token=${this.props.token}&type=${this.state.type}`}*/}
@@ -131,8 +137,6 @@ class VideoComponent extends Component {
       {/*  //       mozallowfullscreen={true.toString()}*/}
       {/*  //   />*/}
       {/*) : null}*/}
-      <Holder token={this.props.token}/>
-    </>;
 
 
     if (this.state.fullScreen) {

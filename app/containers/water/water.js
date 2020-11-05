@@ -321,15 +321,15 @@ class Monitor extends React.PureComponent {
     };
     return (
       <div className="water-display">
-        <Map layerVisible={layerVisible}></Map>
-        <Head titleImg={titleImg}></Head>
+        <Map layerVisible={layerVisible}/>
+        <Head titleImg={titleImg}/>
         <div style={{ display: displayLeft }}>
           <div className="chart-left">
             <div className="table-head-box">
               <BoxHead />
               <div className="table-backgrpund">
                 <div className="table-title-text">
-                  <img src={warningIcon}></img> 超警戒水位
+                  <img src={warningIcon}/> 超警戒水位
                   <span>{alarmData?.length}</span>站
                 </div>
                 <TableShow
@@ -386,21 +386,21 @@ class Monitor extends React.PureComponent {
               </div>
             </div>
             <div className="water-right-second-box">
-              <RenderBox title={"基本统计信息"} hasTitle>
+              <RenderBox title={"基本统计信息"} hasTitle >
                 <div
                   className="bar-chart"
                   id="bar-chart"
                   style={{
-                    display: this.state.radio == "b" ? "block" : "none",
+                    display: this.state.radio === "b" ? "block" : "none",
                   }}
-                ></div>
+                />
                 <div
                   style={{
-                    display: this.state.radio == "a" ? "block" : "none",
+                    display: this.state.radio === "a" ? "block" : "none",
                   }}
                 >
                   <div className="pie-flex-layout">
-                    <div className="pie-chart" id="pie-chart"></div>
+                    <div className="pie-chart" id="pie-chart"/>
                   </div>
                   {/* <div className="pie-lauout-text">
                     <div>水位站点</div>
@@ -418,7 +418,7 @@ class Monitor extends React.PureComponent {
                   <Radio.Button
                     value="a"
                     style={
-                      this.state.radio == "b"
+                      this.state.radio === "b"
                         ? {
                             background: "#003366",
                             color: "#3397d4",
@@ -576,22 +576,13 @@ class Monitor extends React.PureComponent {
                     ).format("MM-DD HH:mm")}`}</div>
                   </div>
                 </div>
-                <div className="line-chart" id="line-chart"></div>
+                <div className="line-chart" id="line-chart"/>
                 {/* 视频 */}
                 <div className="water-video-div">
                   <VideoPlayer
-                    style={{
-                      width: "620px",
-                      minHeight: "300px",
-                      height: "32vh",
-                      transform: "scale(0.85)",
-                      position: "absolute",
-                      left: "-51px",
-                      top: "260px",
-                      paddingTop: "2vh",
-                    }}
+                      style={{width: 490, height: 230}}
                     strtoken={waterVideoInfo?.strtoken}
-                  ></VideoPlayer>
+                  />
                 </div>
               </RenderBox>
             </div>
