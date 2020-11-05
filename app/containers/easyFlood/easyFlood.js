@@ -143,7 +143,7 @@ class Monitor extends React.PureComponent {
         }
       });
       let list = [
-        { value: noRain, itemStyle: { color: "rgba(229,229,229)" } },
+        // { value: noRain, itemStyle: { color: "rgba(229,229,229)" } },
         { value: small, itemStyle: { color: "rgba(175,233,159)" } },
         { value: c, itemStyle: { color: "rgba(91,175,51)" } },
         { value: d, itemStyle: { color: "rgba(121,190,255)" } },
@@ -154,9 +154,12 @@ class Monitor extends React.PureComponent {
       ];
       easyfloodRain("easyfloodInfo", list);
     }
-    if (initFlood != pre.initFlood) {
+    if (initFlood !== pre.initFlood) {
+      //无积水
       let a = 0;
+      //10厘米以下
       let b = 0;
+      //10~20厘米
       let c = 0;
       let d = 0;
       let e = 0;
@@ -173,7 +176,7 @@ class Monitor extends React.PureComponent {
           } else {
             line++;
           }
-          if (itemList.z == 0) {
+          if (itemList.z === 0) {
             a++;
             return;
           }
@@ -203,11 +206,11 @@ class Monitor extends React.PureComponent {
         }
       });
       const data = [
-        {
-          value: a,
-          name: "0cm 无积水",
-          itemStyle: { color: "rgba(229,229,229)" },
-        },
+        // {
+        //   value: a,
+        //   name: "0cm 无积水",
+        //   itemStyle: {color: "rgba(229,229,229)"},
+        // },
         {
           value: b,
           name: "0-10cm",
@@ -262,7 +265,7 @@ class Monitor extends React.PureComponent {
           <div className="easyFlood-left">
             <RenderBox>
               <div className="table-title-text">
-                <img src={warningIcon}></img> 积水水深报警
+                <img src={warningIcon}></img> 城市积水报警
                 <span>{floodAlarmData.length}</span>站
               </div>
               <TableShow
@@ -272,12 +275,12 @@ class Monitor extends React.PureComponent {
                   ),
                 }}
                 columns={[
-                  { name: "站点名称", dataIndex: "stnm", width: "35%" },
-                  { name: "警戒水位", dataIndex: "baselevel", width: "15%" },
+                  { name: "易涝点", dataIndex: "stnm", width: "35%" },
+                  // { name: "警戒水位", dataIndex: "baselevel", width: "15%" },
                   {
-                    name: "水位",
+                    name: "积水深(cm)",
                     dataIndex: "actuallevel",
-                    width: "15%",
+                    width: "30%",
                     render: (e) => <div style={{ color: "red" }}>{e}</div>,
                   },
                   {
@@ -319,19 +322,19 @@ class Monitor extends React.PureComponent {
                     积水{" "}
                   </Radio.Button>
                   <Radio.Button
-                    value="b"
-                    style={
-                      this.state.radio == "a"
-                        ? {
-                            background: "#003366",
-                            color: "#3397d4",
-                            borderTop: "1px solid rgb(0, 51, 102)",
-                            borderRight: "1px solid rgb(0, 51, 102)",
-                            borderBottom: "1px solid rgb(0, 51, 102)",
-                            borderLeft: "0px solid rgb(0, 51, 102)",
-                          }
-                        : {}
-                    }
+                      value="b"
+                      style={
+                        this.state.radio == "a"
+                            ? {
+                              background: "#003366",
+                              color: "#3397d4",
+                              borderTop: "1px solid rgb(0, 51, 102)",
+                              borderRight: "1px solid rgb(0, 51, 102)",
+                              borderBottom: "1px solid rgb(0, 51, 102)",
+                              borderLeft: "0px solid rgb(0, 51, 102)",
+                            }
+                            : {}
+                      }
                   >
                     雨量
                   </Radio.Button>
@@ -398,7 +401,7 @@ class Monitor extends React.PureComponent {
                             width: "45%",
                           },
                           {
-                            name: "积水水深(cm)",
+                            name: "积水深(cm)",
                             dataIndex: "riverwaterdataList",
                             width: "25%",
                             render: (value) =>
@@ -460,7 +463,7 @@ class Monitor extends React.PureComponent {
                               },
                             },
                           ]}
-                        ></TableShow>
+                        />
                       </>
                     </Tabs.TabPane>
                   </Tabs>
@@ -481,7 +484,7 @@ class Monitor extends React.PureComponent {
                     </div>
                     <div className="water-select-flex">{`${moment(
                       new Date().getTime() - 24 * 60 * 60 * 1000
-                    ).format("MM-DD HH:mm")}  —— ${moment(new Date()).format(
+                    ).format("MM-DD HH:mm")} 至 ${moment(new Date()).format(
                       "MM-DD HH:mm"
                     )}`}</div>
                   </div>
@@ -492,7 +495,7 @@ class Monitor extends React.PureComponent {
               </RenderBox>
             </div>
             <div className="second-box">
-              <RenderBox hasTitle title="易涝点24小时信息">
+              <RenderBox hasTitle title="易涝点24小时信息" style={{position: 'relative'}}>
                 <div className="water-select">
                   <div className="water-select-flex">
                     <div className="water-select-flex">{floodName}</div>
@@ -505,17 +508,11 @@ class Monitor extends React.PureComponent {
                 </div>
                 <div className="easyfloodLine" id="easyfloodLine"></div>
                 {/* 视频 */}
-                <VideoPlayer
-                  style={{
-                    width: "620px",
-                    height: "350px",
-                    transform: "scale(0.73)",
-                    position: "absolute",
-                    left: "-85px",
-                    top: "225px",
-                  }}
-                  strtoken={floodId?.strtoken}
-                ></VideoPlayer>
+                <div className='videoBox'>
+                  <VideoPlayer
+                      strtoken={floodId?.strtoken}
+                  />
+                </div>
                 {/* <img src={video} width="430px" height="200px"></img> */}
               </RenderBox>
             </div>

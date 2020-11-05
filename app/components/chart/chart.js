@@ -449,18 +449,18 @@ export const rotateBarChart = (domId, data, width, height) => {
 
 export const easyfloodRain = (domId, data) => {
   let myChartcount = echarts.init(document.getElementById(domId));
-  const max = Math.max(...data.map((d) => d.value));
-  const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
-  let reduceNum = Math.floor(max / 15);
-  if (reduceNum >= min) {
-    reduceNum = min - 1;
-  }
-  data.map((d) => {
-    if (d.value == 0) {
-      d.value = reduceNum;
-      d.reduceFlag = true;
-    }
-  });
+  // const max = Math.max(...data.map((d) => d.value));
+  // const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
+  // let reduceNum = Math.floor(max / 15);
+  // if (reduceNum >= min) {
+  //   reduceNum = min - 1;
+  // }
+  // data.map((d) => {
+  //   if (d.value == 0) {
+  //     d.value = reduceNum;
+  //     d.reduceFlag = true;
+  //   }
+  // });
   let option = {
     tooltip: {
       trigger: "axis",
@@ -487,7 +487,7 @@ export const easyfloodRain = (domId, data) => {
       position: "left",
       type: "category",
       data: [
-        { value: "无雨(0)" },
+        // { value: "无雨(0)" },
         {
           value: "小雨(0-10)",
         },
@@ -514,16 +514,17 @@ export const easyfloodRain = (domId, data) => {
           show: true,
           position: "right",
           color: "white",
-          formatter: (params) => {
-            if (params.data.reduceFlag) {
-              return 0;
-            } else {
-              return params.value;
-            }
-          },
+          // formatter: (params) => {
+          //   if (params.data.reduceFlag) {
+          //     return 0;
+          //   } else {
+          //     return params.value;
+          //   }
+          // },
         },
         name: "积水",
         type: "bar",
+        barMinHeight: 4,
         data: data,
       },
     ],
@@ -532,18 +533,19 @@ export const easyfloodRain = (domId, data) => {
 };
 export const funnelChart = (domId, data) => {
   let myChartcount = echarts.init(document.getElementById(domId));
-  const max = Math.max(...data.map((d) => d.value));
-  const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
-  let reduceNum = Math.floor(max / 15);
-  if (reduceNum >= min) {
-    reduceNum = min - 1;
-  }
-  data.map((d) => {
-    if (d.value == 0) {
-      d.value = reduceNum;
-      d.reduceFlag = true;
-    }
-  });
+  // const max = Math.max(...data.map((d) => d.value));
+  // const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
+  // let reduceNum = Math.floor(max / 15);
+  // if (reduceNum >= min) {
+  //   reduceNum = min - 1;
+  // }
+  // data.map((d) => {
+  //   if (d.value === 0) {
+  //     //d.value = reduceNum;
+  //     d.value = 2;
+  //     d.reduceFlag = true;
+  //   }
+  // });
   let option = {
     tooltip: {
       trigger: "axis",
@@ -570,7 +572,7 @@ export const funnelChart = (domId, data) => {
       position: "left",
       type: "category",
       data: [
-        "0cm 无积水",
+        // "0cm 无积水",
         "0-10cm",
         "10-20cm",
         "20-30cm",
@@ -584,14 +586,15 @@ export const funnelChart = (domId, data) => {
           show: true,
           position: "right",
           color: "white",
-          formatter: (params) => {
-            if (params.data.reduceFlag) {
-              return 0;
-            } else {
-              return params.value;
-            }
-          },
+          // formatter: (params) => {
+          //   if (params.data.reduceFlag) {
+          //     return 0;
+          //   } else {
+          //     return params.value;
+          //   }
+          // },
         },
+        barMinHeight: 4,
         name: "积水",
         type: "bar",
         data: data,
