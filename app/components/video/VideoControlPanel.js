@@ -29,7 +29,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         justifyItems: 'center',
-        backgroundColor: '#555555'
+        //backgroundColor: '#555555'
     },
     iconStyle: {
         fontSize: 22,
@@ -56,54 +56,49 @@ class VideoControlPanel extends Component {
                     <Button
                         icon={<PlusSquareFilled style={styles.iconStyle} />}
                         size={'small'}
-                        onClick={this.setVideo.bind(this, 'zoomin')}
-                        onMouseDown={this.setTimeVideo.bind(this, 'zoomin')}
-                        onMouseUp={this.setStopVideo.bind(this)}
+                        onMouseDown={() => this.setTimeVideo('zoomin')}
+                        onMouseUp={() => this.setStopVideo()}
                     />
                 </div>
                 <div>
                     <Button
                         icon={<MinusSquareFilled style={styles.iconStyle} />}
                         size={'small'}
-                        onClick={this.setVideo.bind(this, 'zoomout')}
-                        onMouseDown={this.setTimeVideo.bind(this, 'zoomout')}
-                        onMouseUp={this.setStopVideo.bind(this)}
+                        onMouseDown={() => this.setTimeVideo('zoomout')}
+                        onMouseUp={() => this.setStopVideo()}
                     />
                 </div>
                 <div>
                     <Button
                         icon={<UpSquareFilled style={styles.iconStyle}/>}
                         size={'small'}
-                        onClick={this.setVideo.bind(this, 'up')}
-                        onMouseDown={this.setTimeVideo.bind(this, 'up')}
-                        onMouseUp={this.setStopVideo.bind(this)}
+                        //onClick={() => this.setVideo('up')}
+                        onMouseDown={() => this.setTimeVideo('up')}
+                        onMouseUp={() => this.setStopVideo()}
                     />
                 </div>
                 <div>
                     <Button
                         icon={<DownSquareFilled style={styles.iconStyle}/>}
                         size={'small'}
-                        onClick={this.setVideo.bind(this, 'down')}
-                        onMouseDown={this.setTimeVideo.bind(this, 'down')}
-                        onMouseUp={this.setStopVideo.bind(this)}
+                        onMouseDown={() => this.setTimeVideo('down')}
+                        onMouseUp={() => this.setStopVideo()}
                     />
                 </div>
                 <div>
                     <Button
                         icon={<LeftSquareFilled style={styles.iconStyle}/>}
                         size={'small'}
-                        onClick={this.setVideo.bind(this, 'left')}
-                        onMouseDown={this.setTimeVideo.bind(this, 'left')}
-                        onMouseUp={this.setStopVideo.bind(this)}
+                        onMouseDown={() => this.setTimeVideo('left')}
+                        onMouseUp={() => this.setStopVideo()}
                     />
                 </div>
                 <div>
                     <Button
                         icon={<RightSquareFilled style={styles.iconStyle} />}
                         size={'small'}
-                        onClick={this.setVideo.bind(this, 'right')}
-                        onMouseDown={this.setTimeVideo.bind(this, 'right')}
-                        onMouseUp={this.setStopVideo.bind(this)}
+                        onMouseDown={() => this.setTimeVideo('right')}
+                        onMouseUp={() => this.setStopVideo()}
                     />
                 </div>
             </div>
