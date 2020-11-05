@@ -142,15 +142,16 @@ class DeviceManageFlood extends Component {
 
   async buildSiteCountChart (range = []) {
     console.log(range)
+    const [startTime, endTime] = range
     const { data } = await AllApi.getCountByStcd({
       type: this.props.device.type,
       stcd: this.state.currentSite.stcd,
-      startTime: "2020-10-07 00:00:00",
-      endTime: "2020-10-17 00:00:00"
+      startTime: moment(startTime || this.state.chartStartTM).format("YYYY-MM-DD HH:mm"),
+      endTime: moment(endTime || this.state.chartEndTM).format("YYYY-MM-DD HH:mm")
     });
     let xdata = [];
     let ydata = [];
-    var myChart = echarts.init(document.getElementById('site-count-chart'));
+    var myChart = echarts.init(document.getElementById(`site-count-chart-${this.props.device.type}`));
     data.reverse().forEach((item) => {
       xdata.push(item.tm);
       ydata.push(Number(item.number));
@@ -496,7 +497,7 @@ class DeviceManageFlood extends Component {
                   onChange={(range) => this.buildSiteCountChart(range)}
                 />
               </div>
-              <div className="site-count-chart" id="site-count-chart"></div>
+              <div className="site-count-chart" id={`site-count-chart-${this.props.device.type}`}></div>
             </div>
           </div>
           <div className="device-manage-content">
