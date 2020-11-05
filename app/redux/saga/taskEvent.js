@@ -68,7 +68,7 @@ function* addTaskEvent({ data }) {
         data: {
           current: 1,
           name: "",
-          size: 10,
+          size: 6,
         },
       });
       message.success("新增成功");
