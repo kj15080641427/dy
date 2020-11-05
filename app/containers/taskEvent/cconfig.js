@@ -29,7 +29,7 @@ export const taskListform = [
   },
   {
     label: "事件等级",
-    name: "happenTime",
+    name: "grade",
     rules: [{ required: true }],
     ele: (
       <Select>

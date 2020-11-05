@@ -16,6 +16,7 @@ import RouterList from "../../components/routerlist";
 import TaskInfoNavi from "./component/taskInfoNavi";
 import TaskInfoCard from "./component/taskInfoCard";
 import TaskInfoCheck from "./component/taskInfoCheck";
+import checkImg from "@app/resource/图层.svg";
 import "./task.scss";
 const hashHistory = createHashHistory();
 const { Search } = Input;
@@ -41,6 +42,8 @@ const TaskInfo = (props) => {
 
   const [text, setText] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+  const [showCheck, setShowCheck] = useState(false);
+
   useEffect(() => {
     getTaskList({
       current: 1,
@@ -108,17 +111,20 @@ const TaskInfo = (props) => {
       <Map layerVisible={{}} person={userPosition}></Map>
       <Head titleImg={titleImg} />
       <RouterList />
-      <div className="track-query-body">
+      <div
+        className="track-query-body"
+        onMouseOver={() => setShowSearch(true)}
+        onMouseLeave={() => {
+          setShowSearch(false);
+        }}
+      >
         {showSearch ? (
           <Search
-            onMouseEnter={() => setShowSearch(true)}
             placeholder="请输入查询人名称"
             onSearch={onSearch}
             onChange={(e) => setText(e.target.value)}
             suffix={
               <img
-                width="30px"
-                height="30px"
                 style={{ cursor: "pointer" }}
                 src={trackQuery}
                 onClick={() => {
@@ -128,19 +134,16 @@ const TaskInfo = (props) => {
             }
           ></Search>
         ) : null}
-        <img
-          src={trackQuery}
-          onMouseEnter={() => setShowSearch(true)}
-          onMouseOut={() => {
-            setShowSearch(false);
-          }}
-        ></img>
+        {showSearch ? null : <img src={trackQuery}></img>}
+      </div>
+      <div className="task-checkbox-img">
+        <img src={checkImg} onClick={() => setShowCheck(!showCheck)}></img>
       </div>
       <TaskTimeLine></TaskTimeLine>
       <TaskUpdate formRef={formRef}></TaskUpdate>
       <TaskInfoNavi formRef={formRef} />
       <TaskInfoCard />
-      <TaskInfoCheck />
+      {showCheck ? <TaskInfoCheck /> : null}
     </div>
   );
 };
