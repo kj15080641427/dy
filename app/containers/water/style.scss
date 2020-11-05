@@ -83,10 +83,17 @@
   }
 }
 .water-video-div {
+  width: 490px;
+  height: 230px;
+  overflow: hidden;
+  position: relative;
   .set-rotate-radio {
     background: none;
+    height: 300px;
+    width: 500px;
     top: 310px;
     right: -80px;
+
   }
 }
 .router-list {
