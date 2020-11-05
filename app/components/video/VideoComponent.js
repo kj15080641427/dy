@@ -11,7 +11,11 @@ const styles = {
     height: '100%',
     border: '1px solid black',
     backgroundColor: '#000000',
-    position: 'static'
+    position: 'relative',
+    //display: '-webkit-box',
+    objectFit: 'fill',
+    objectPosition: 'center'
+
   },
   fullScreen: {
     position: 'absolute',
@@ -60,6 +64,13 @@ class VideoComponent extends Component {
     if (this.video) {
       this.video.disconnect();
     }
+
+    this.container &&
+        this.container.removeEventListener('resize', this.onVideoSizeChange);
+  }
+
+  onVideoSizeChange() {
+    this.updateVideo(this.props.token, this.state.session);
   }
 
   updateVideo(token, session) {
@@ -93,63 +104,27 @@ class VideoComponent extends Component {
   }
 
   render() {
-    let newStyle = this.state.fullScreen ? {...styles.fullScreen} : null;
-
-    if (newStyle !== null) {
-      newStyle.width = window.innerWidth;
-      newStyle.height = window.innerHeight;
-    } else {
-      newStyle = this.props.style ? {...this.props.style} : null;
-    }
-
-    let ele =
-      <div style={newStyle}>
+    return (
+      <div id={'videoDiv'} ref={(obj) => this.container = obj} onresize={() => this.onVideoSizeChange()}>
         <video
           style={styles.videoStyle}
           id="h5sVideo1"
           muted
           autoPlay
-          webkit-playsinline
-          playsinline
           onDoubleClick={this.onMouseDblClick.bind(this)} />
-        {/*<Holder token={this.props.token}/>*/}
         <VideoControlPanel videoControl={this.props.videoControl} token={this.props.token} />
-      </div>;
-      {/*{this.state.session !== null ? (*/}
-      {/*  <iframe*/}
-      {/*    src={`http://218.56.180.250:9110/video/index.html?sessionId=${this.state.session}&token=${this.props.token}&type=${this.state.type}`}*/}
-      {/*    style={this.props.style}*/}
-      {/*    scrolling="no"*/}
-      {/*    frameBorder="0"*/}
-      {/*    allowFullScreen={true}*/}
-      {/*    controls={true}*/}
-      {/*    webkitallowfullscreen={true.toString()}*/}
-      {/*    mozallowfullscreen={true.toString()}*/}
-      {/*  />*/}
-      {/*  //   <iframe*/}
-      {/*  //       src={`http://218.56.180.250:9108/ws.html?session=${this.state.session}&token=${this.props.token}&type=${this.state.type}`}*/}
-      {/*  //       style={this.props.style}*/}
-      {/*  //       scrolling="no"*/}
-      {/*  //       frameBorder="0"*/}
-      {/*  //       allowFullScreen={true}*/}
-      {/*  //       controls={true}*/}
-      {/*  //       webkitallowfullscreen={true.toString()}*/}
-      {/*  //       mozallowfullscreen={true.toString()}*/}
-      {/*  //   />*/}
-      {/*) : null}*/}
-
-
-    if (this.state.fullScreen) {
-      this.fullScreenComponment = ele;
-      return ReactDOM.createPortal(ele, document.body);
-    } else {
-      return ele;
-    }
+      </div>);
   }
 
   onMouseDblClick() {
     this.setState({fullScreen: !this.state.fullScreen}, () => {
       this.updateVideo(this.props.token, this.state.session);
+
+      if (this.state.fullScreen) {
+        this.container && this.container.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
     });
   }
 }
