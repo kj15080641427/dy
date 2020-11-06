@@ -96,8 +96,8 @@ const TaskInfo = (props) => {
     }
   };
   return (
-    <div style={{ height: "100%" }}>
-      <div style={{ height: "90px", background: "#003366" }}></div>
+    <div style={{ height: "100%", marginTop: "-90px" }}>
+      <div style={{ height: "90px", background: "#003366", zIndex: 99 }}></div>
       <div
         style={{
           height: "100%",

@@ -69,3 +69,13 @@ export const SET_TASK_COUNT_GRADE = "SET_TASK_COUNT_GRADE";
 //事件状态统计
 export const GET_TASK_COUNT_STATE = "GET_TASK_COUNT_STATE";
 export const SET_TASK_COUNT_STATE = "SET_TASK_COUNT_STATE";
+//险情上报
+export const GET_TASK_DANGER = "GET_TASK_DANGER";
+export const SET_TASK_DANGER = "SET_TASK_DANGER";
+
+//险情modal
+export const SET_TASK_DANGER_MODAL = "SET_TASK_DANGER_MODAL";
+
+//超警戒信息
+export const GET_TASK_WARNING = "GET_TASK_WARNING";
+export const SET_TASK_WARNING = "SET_TASK_WARNING";

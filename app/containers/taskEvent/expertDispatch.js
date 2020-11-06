@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import * as action from "../../redux/actions/taskEvent";
 import { bindActionCreators } from "redux";
-import { Tabs, Table } from "antd";
+import { Tabs, Table, Modal, Card } from "antd";
 import { createHashHistory } from "history";
 import ListRender from "./component/list";
 import ModalForm from "./component/modalForm";
@@ -24,7 +24,8 @@ const ExpertDispatch = (props) => {
     changeTaskRenderList,
     changeTaskRadioType,
   } = props.actions;
-
+  const [showInfo, setShowInfo] = useState(false);
+  const [info, setInfo] = useState({});
   const onFinish = (data) => {
     let formData = listRender.map((item) => {
       console.log(item);
@@ -55,6 +56,7 @@ const ExpertDispatch = (props) => {
   return (
     <React.Fragment>
       <div style={{ height: "90px", background: "#003366" }}></div>
+      <div className="right-background"></div>
       <PageHeader></PageHeader>
       <Head titleImg={titleImg} />
       <RouterList />
@@ -82,6 +84,20 @@ const ExpertDispatch = (props) => {
                 expertColumns[3],
                 expertColumns[4],
                 expertColumns[5],
+                {
+                  title: "操作",
+                  dataIndex: "",
+                  render: (row) => (
+                    <a
+                      onClick={() => {
+                        setInfo(row);
+                        setShowInfo(true);
+                      }}
+                    >
+                      详情
+                    </a>
+                  ),
+                },
               ]}
               dataSource={dispatchExpert}
               rowKey={(row) => row.floodControlExpertId}
@@ -89,6 +105,48 @@ const ExpertDispatch = (props) => {
           </TabPane>
         </Tabs>
       </div>
+      <Modal
+        // width="1200px"
+        visible={showInfo}
+        footer={null}
+        closable={false}
+        onCancel={() => {
+          setShowInfo(false);
+        }}
+      >
+        <Card title="专家调度">
+          <div className="task-list-card-text-margin">
+            <div className="task-list-card-text-span"></div>
+            <div>调度时间：{info.createTime?.substring(0, 16)}</div>
+          </div>
+          <div className="task-list-card-text-margin">
+            <div className="task-list-card-text-span"></div>
+            <div>操作人：{info.name}</div>
+          </div>
+          <div className="task-list-card-text-margin">
+            <div>
+              <div className="task-list-card-text-margin">
+                <div className="task-list-card-text-span"></div>
+                <div>任务内容：</div>
+              </div>
+              <div className="task-list-card-remark">
+                &nbsp;&nbsp; &nbsp;&nbsp; {info.resultCount}
+              </div>
+            </div>
+          </div>
+          <div className="task-list-card-text-margin">
+            <div>
+              <div className="task-list-card-text-margin">
+                <div className="task-list-card-text-span"></div>
+                <div>调度人员：</div>
+              </div>
+              <div className="task-list-card-remark">
+                &nbsp;&nbsp; &nbsp;&nbsp; {info.resultCount}
+              </div>
+            </div>
+          </div>
+        </Card>
+      </Modal>
     </React.Fragment>
   );
 };

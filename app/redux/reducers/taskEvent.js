@@ -12,6 +12,9 @@ const initState = {
   taskCountSource: [],
   taskCountGrade: [],
   taskCountState: [],
+  taskDanger: [],
+  taskdangerModalVisible: false,
+  taskWarning: [],
 };
 let selected = [];
 
@@ -95,6 +98,15 @@ export default function taskReducers(state = initState, action) {
       break;
     case types.SET_TASK_COUNT_STATE: //状态统计
       newState = { ...newState, taskCountState: action.data };
+      break;
+    case types.SET_TASK_DANGER: //状态统计
+      newState = { ...newState, taskDanger: action.data };
+      break;
+    case types.SET_TASK_DANGER_MODAL: //
+      newState = { ...newState, taskdangerModalVisible: action.data };
+      break;
+    case types.SET_TASK_WARNING: //
+      newState = { ...newState, taskWarning: action.data };
       break;
     default:
       break;

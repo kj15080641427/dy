@@ -74,6 +74,7 @@ const MaterialDispatch = (props) => {
   return (
     <React.Fragment>
       <div style={{ height: "90px", background: "#003366" }}></div>
+      <div className="right-background"></div>
       <Head titleImg={titleImg} />
       <RouterList />
       <PageHeader></PageHeader>

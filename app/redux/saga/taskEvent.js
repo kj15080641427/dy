@@ -259,7 +259,7 @@ function* deleteTaskInfo({ data }) {
         type: types.SET_TASKUPDATE_MODAL,
         data: false,
       });
-      hashHistory.push("/home/taskList");
+      hashHistory.push("/taskList");
     }
   } catch (e) {
     console.error(e);
@@ -353,6 +353,35 @@ function* getTaskCountState({ data }) {
     console.error(e);
   }
 }
+//查询险情上报
+function* getTaskDanger({ data }) {
+  try {
+    const result = yield call(req.getTaskDanger, data);
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_TASK_DANGER,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+//超警戒
+function* getTaskWarning({ data }) {
+  try {
+    const result = yield call(req.getAlarmWarning, data);
+    if (result.code == successCode) {
+      yield put({
+        type: types.SET_TASK_WARNING,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 export default function* management() {
   yield all([
     takeEvery(types.SEND_MESSAGE, sendMessage),
@@ -377,5 +406,7 @@ export default function* management() {
     takeEvery(types.GET_TASK_COUNT_SOURCE, getTaskCountSource),
     takeEvery(types.GET_TASK_COUNT_GRADE, getTaskCountGrade),
     takeEvery(types.GET_TASK_COUNT_STATE, getTaskCountState),
+    takeEvery(types.GET_TASK_DANGER, getTaskDanger),
+    takeEvery(types.GET_TASK_WARNING, getTaskWarning),
   ]);
 }
