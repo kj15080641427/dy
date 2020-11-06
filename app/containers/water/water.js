@@ -266,19 +266,19 @@ class Monitor extends React.PureComponent {
   componentDidUpdate(pre) {
     const { water, count, displayWater, waterId, riverSiteWater } = this.props;
     const { typeOnline } = this.state;
-    if (waterId != pre.waterId) {
+    if (waterId !== pre.waterId) {
       this.props.stateActions.getDsplayWater(waterId);
     }
-    if (typeOnline != pre.typeOnline && count) {
+    if (typeOnline !== pre.typeOnline && count) {
       this.sourceChart();
     }
-    if (water != pre.water) {
+    if (water !== pre.water) {
       this.onlineChart();
     }
-    if (displayWater != pre.displayWater) {
+    if (displayWater !== pre.displayWater) {
       showChart(displayWater, "line-chart");
     }
-    if (riverSiteWater != pre.riverSiteWater) {
+    if (riverSiteWater !== pre.riverSiteWater) {
       showChartRiver(riverSiteWater, "waterRiversite");
     }
   }
@@ -589,7 +589,7 @@ class Monitor extends React.PureComponent {
           </div>
           {/* 路由 */}
           <div className="router-list">
-            <RouterList></RouterList>
+            <RouterList/>
           </div>
         </div>
 
@@ -602,7 +602,7 @@ class Monitor extends React.PureComponent {
           }}
           className="m-set-img"
           src={setImg}
-        ></img>
+        />
         <Drawer
           title={<SetTitle></SetTitle>}
           placement="right"
@@ -661,7 +661,7 @@ class Monitor extends React.PureComponent {
           <CheckBoxs
             layerVisible={layerVisible}
             onChecked={this.onChecked}
-          ></CheckBoxs>
+          />
         </Drawer>
       </div>
     );
