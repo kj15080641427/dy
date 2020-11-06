@@ -188,11 +188,6 @@ export default class yellowRiver extends React.PureComponent {
                 dataSource={this.state.tableData}
                 pagination={false}
                 columns={[
-                  // {
-                  //   align: "center",
-                  //   title: "河名",
-                  //   dataIndex: "rvnm",
-                  // },
                   {
                     align: "center",
                     title: "站名",
@@ -213,6 +208,11 @@ export default class yellowRiver extends React.PureComponent {
                     align: "center",
                     title: "水位(m)",
                     dataIndex: "sw",
+                  },
+                  {
+                    align: "center",
+                    title: "警戒水位",
+                    dataIndex: "warning",
                   },
                   {
                     align: "center",

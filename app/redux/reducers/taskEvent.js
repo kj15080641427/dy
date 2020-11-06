@@ -105,6 +105,9 @@ export default function taskReducers(state = initState, action) {
     case types.SET_TASK_DANGER_MODAL: //
       newState = { ...newState, taskdangerModalVisible: action.data };
       break;
+    case types.SET_TASK_WARNING_MODAL: //
+      newState = { ...newState, taskWarningModalVisible: action.data };
+      break;
     case types.SET_TASK_WARNING: //
       newState = { ...newState, taskWarning: action.data };
       break;

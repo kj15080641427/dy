@@ -75,7 +75,8 @@ export const SET_TASK_DANGER = "SET_TASK_DANGER";
 
 //险情modal
 export const SET_TASK_DANGER_MODAL = "SET_TASK_DANGER_MODAL";
-
+//超警戒modal
+export const SET_TASK_WARNING_MODAL = "SET_TASK_WARNING_MODAL";
 //超警戒信息
 export const GET_TASK_WARNING = "GET_TASK_WARNING";
 export const SET_TASK_WARNING = "SET_TASK_WARNING";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button, Radio, Table, InputNumber, message } from "antd";
+import { Card, Button, Radio, Table, InputNumber, message, Input } from "antd";
 import { connect } from "react-redux";
 import * as action from "../../../redux/actions/taskEvent";
 import { bindActionCreators } from "redux";
@@ -17,12 +17,16 @@ const TaskRadio = (props) => {
     isMaterial = false,
     addAll = true,
     tableNumber,
+    showSearch = false,
+    onSearch,
   } = props;
   const {
     changeTaskRenderList,
     changeTaskRadioType,
     setMaterialTableInput, //table选择数量
   } = props.actions;
+  const [inputValue, setInputValue] = useState("");
+
   const filterSelect = (data) => {
     return listRender.filter((item) => item.materialId == data.materialId);
   };
@@ -74,9 +78,7 @@ const TaskRadio = (props) => {
     render: (row) => (
       <a
         onClick={() => {
-          baseFilter(row)[0]
-            ? ""
-            : changeTaskRenderList([...listRender, row]);
+          baseFilter(row)[0] ? "" : changeTaskRenderList([...listRender, row]);
         }}
       >
         添加
@@ -86,6 +88,18 @@ const TaskRadio = (props) => {
   return (
     <React.Fragment>
       <Card className="expert-dispatch-left">
+        {showSearch ? (
+          <div className="task-dispatch-search">
+            名称:
+            <Input
+              className="search-input"
+              onChange={(e) => setInputValue(e.target.value)}
+            ></Input>
+            <Button type="primary" onClick={() => onSearch(inputValue)}>
+              搜索
+            </Button>
+          </div>
+        ) : null}
         <div className="expert-select">
           <div>
             {radioText}:&ensp; &ensp;&ensp;&ensp;

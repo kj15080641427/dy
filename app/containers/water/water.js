@@ -581,7 +581,7 @@ class Monitor extends React.PureComponent {
                 <div className="water-video-div">
                   <VideoPlayer
                       style={{width: 490, height: 230}}
-                    strtoken={waterVideoInfo?.strtoken}
+                    strtoken={waterVideoInfo.strtoken}
                   />
                 </div>
               </RenderBox>

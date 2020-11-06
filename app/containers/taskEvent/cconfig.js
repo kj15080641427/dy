@@ -40,12 +40,6 @@ export const taskListform = [
     ),
   },
   {
-    label: "事件来源",
-    name: "happenTime",
-    ele: <text>新建事件</text>,
-  },
-
-  {
     label: "发生区域",
     name: "address",
     // rules: [{ required: true }],
@@ -81,7 +75,7 @@ export const taskListform = [
 
 const expertType = ["市级专家", "县级专家", "乡镇专家"];
 export const expertColumns = [
-  { title: "姓名", dataIndex: "name" },
+  { title: "姓名", dataIndex: "name", width: "80px" },
   { title: "专家级别", dataIndex: "type", render: (e) => expertType[e - 1] },
   { title: "工作单位", dataIndex: "unit" },
   {
@@ -111,7 +105,6 @@ export const userTab2Columns = [
   { title: "工作单位", dataIndex: "unit" },
   { title: "备注", dataIndex: "remark" },
   { title: "电话", dataIndex: "phone" },
- 
 ];
 export const expertRadioList = [
   { label: "全部", value: "all" },
@@ -159,5 +152,24 @@ export const offTaskForm = [
     name: "endRemark",
     rules: [{ required: true }],
     ele: <TextArea />,
+  },
+];
+export const tableColumns = [
+  { title: "发送时间", dataIndex: "time", width: "20%" },
+  { title: "操作人", dataIndex: "operatorName", width: "15%" },
+  {
+    title: "发送人数",
+    dataIndex: "personList",
+    width: "15%",
+    render: (e) => e.length,
+  },
+  {
+    title: "信息内容",
+    dataIndex: "content",
+    render: (name) => (
+      <Popover content={name}>
+        {name?.length > 34 ? name.toString().substring(0, 34) + "..." : name}
+      </Popover>
+    ),
   },
 ];

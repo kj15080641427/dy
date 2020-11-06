@@ -327,7 +327,7 @@ export function sendMessage(data) {
 }
 //查询消息
 export function getMessage(data) {
-  return fetchJSONData("POST", "/base/TaskMessage/query", data);
+  return fetchJSONData("POST", "/base/TasKrel/dynamic2", data);
 }
 //查询事件
 export function getTaskList(data) {
@@ -352,7 +352,7 @@ export function getfloodUser(data) {
 
 // 根据事件查询已调度专家
 export function getTaskDispatchExpert(data) {
-  return fetchJSONData("POST", "/base/TaskFloodcontrolexpert/query", data);
+  return fetchJSONData("POST", "/base/TasKrel/dynamic2", data);
 }
 // 新增专家调度
 export function addExpertDispatch(data) {
@@ -361,7 +361,7 @@ export function addExpertDispatch(data) {
 
 // 根据事件查询已调度人员
 export function getUserDispatch(data) {
-  return fetchJSONData("POST", "/base/TaskFlooduser/query", data);
+  return fetchJSONData("POST", "/base/TasKrel/dynamic2", data);
 }
 // 新增人员调度
 export function addUserDispatch(data) {

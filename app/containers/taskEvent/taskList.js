@@ -44,6 +44,7 @@ const TaskList = (props) => {
     taskInput,
     taskDanger,
     taskdangerModalVisible,
+    taskWarningModalVisible,
     taskWarning,
   } = props;
   const {
@@ -55,12 +56,14 @@ const TaskList = (props) => {
     getTaskDanger,
     setTaskDangerModal,
     getTaskWarning,
+    setTaskWarningModal,
   } = props.actions;
   const formRef = useRef(null);
   const [page, setPage] = useState(1);
   const [danger, setDanger] = useState({});
   const [showDanger, setShowDanger] = useState(false);
   const [showButton, setShowButton] = useState(true);
+  const [source, setSource] = useState(0);
 
   useEffect(() => {
     getTaskWarning({});
@@ -76,14 +79,17 @@ const TaskList = (props) => {
     form = {
       ...form,
       happenTime: moment(form.happenTime).format("YYYY-MM-DD HH:mm:ss"),
-      dataSource: 0,
+      dataSource: source,
     };
     addTaskEvent(form);
     setTaskDangerModal(false);
   };
 
   return (
-    <div style={{ background: "#003366" }} className="task-list-body">
+    <div
+      style={{ background: "#003366", height: "100%" }}
+      className="task-list-body"
+    >
       <div className="top-bacground"></div>
       <div className="right-background"></div>
       <Head titleImg={titleImg} />
@@ -120,6 +126,7 @@ const TaskList = (props) => {
                 <Button
                   type="primary"
                   onClick={() => {
+                    setSource(0);
                     setModalVislble(true);
                   }}
                 >
@@ -181,7 +188,7 @@ const TaskList = (props) => {
                             <div>事件描述：</div>
                           </div>
                           <div className="task-list-card-remark">
-                            &nbsp;&nbsp; &nbsp;&nbsp;{" "}
+                            &nbsp;&nbsp; &nbsp;&nbsp;
                             <Popover content={item.remark}>
                               {item.remark}
                             </Popover>
@@ -204,7 +211,14 @@ const TaskList = (props) => {
             </div>
             <Modal visible={taskModalVisible} footer={null} closable={false}>
               <DYForm
-                formItem={taskListform}
+                formItem={[
+                  {
+                    label: "事件来源",
+                    name: "happenTime",
+                    ele: <text>新建事件</text>,
+                  },
+                  ...taskListform,
+                ]}
                 onFinish={onFinish}
                 showCancel
                 cancelClick={() => setModalVislble(false)}
@@ -356,6 +370,7 @@ const TaskList = (props) => {
                   {showButton ? (
                     <Button
                       onClick={() => {
+                        setSource(1);
                         setShowButton(false);
                         formRef.current.setFieldsValue({
                           ...danger,
@@ -389,7 +404,14 @@ const TaskList = (props) => {
                   >
                     <DYForm
                       formRef={formRef}
-                      formItem={taskListform}
+                      formItem={[
+                        {
+                          label: "事件来源",
+                          name: "happenTime",
+                          ele: <text>险情上报</text>,
+                        },
+                        ...taskListform,
+                      ]}
                       onFinish={onFinish}
                       showCancel
                       cancelClick={() => setModalVislble(false)}
@@ -431,11 +453,61 @@ const TaskList = (props) => {
                   title: "操作",
                   dataIndex: "",
                   key: "x",
-                  render: () => <a>处理</a>,
+                  render: (row) => (
+                    <a
+                      onClick={() => {
+                        setTaskWarningModal(true);
+                      }}
+                    >
+                      处理
+                    </a>
+                  ),
                 },
               ]}
-              dataSource={[]}
+              dataSource={taskWarning}
             ></Table>
+
+            <Modal
+              width="1200px"
+              visible={taskWarningModalVisible}
+              footer={null}
+              closable={false}
+              onCancel={() => {
+                // setTaskDangerModal(false);
+                // setShowButton(true);
+                // setShowDanger(false);
+              }}
+              className="task-danger-body"
+              forceRender
+            >
+              <div className="task-danger-modal">
+                <div style={{ width: "300px" }}>
+                  <Card
+                    title="新增事件"
+                    style={{
+                      height: "700px",
+                      width: "400px",
+                      display: showDanger ? "block" : "none",
+                    }}
+                  >
+                    <DYForm
+                      formRef={formRef}
+                      formItem={[
+                        {
+                          label: "事件来源",
+                          name: "happenTime",
+                          ele: <text>超预警</text>,
+                        },
+                        ...taskListform,
+                      ]}
+                      onFinish={onFinish}
+                      showCancel
+                      cancelClick={() => setModalVislble(false)}
+                    ></DYForm>
+                  </Card>
+                </div>
+              </div>
+            </Modal>
           </Tabs.TabPane>
         </Tabs>
       </div>
@@ -454,6 +526,7 @@ const mapStateToProps = (state) => {
     taskDanger: state.taskReducers.taskDanger,
     taskdangerModalVisible: state.taskReducers.taskdangerModalVisible,
     taskWarning: state.taskReducers.taskWarning,
+    taskWarningModalVisible: state.taskReducers.taskWarningModalVisible,
   };
 };
 const mapDispatchToProps = (dispatch) => {

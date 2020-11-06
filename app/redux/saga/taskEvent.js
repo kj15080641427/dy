@@ -14,6 +14,7 @@ function* sendMessage({ data }) {
     if (result.code == successCode) {
       yield put({
         type: types.GET_MESSAGE,
+        data: { taskEventsID: data[0].taskEventsID, type: 101 },
       });
       message.success("发送成功");
     }
@@ -22,13 +23,13 @@ function* sendMessage({ data }) {
   }
 }
 //查询消息
-function* getMessage() {
+function* getMessage({ data }) {
   try {
-    let result = yield call(req.getMessage, {});
+    let result = yield call(req.getMessage, data);
     if (result.code == successCode) {
       yield put({
         type: types.SET_MESSAGE,
-        data: result.data,
+        data: result.data.taskDynamicResultDos,
       });
     }
   } catch (e) {
@@ -98,13 +99,11 @@ function* getFloodAddress() {
 //根据事件查询已调度专家
 function* getTaskDispatchExpert({ data }) {
   try {
-    const result = yield call(req.getTaskDispatchExpert, {
-      taskEventsID: data,
-    });
+    const result = yield call(req.getTaskDispatchExpert, data);
     if (result.code == successCode) {
       yield put({
         type: types.SET_TASK_DISPATCH_EXPERT,
-        data: result.data,
+        data: result.data.taskDynamicResultDos,
       });
     } else {
       message.error(result.msg);
@@ -125,7 +124,7 @@ function* addExpertDispatch({ data }) {
       });
       yield put({
         type: types.GET_TASK_DISPATCH_EXPERT,
-        data: data[0].taskEventsID,
+        data: { taskEventsID: data[0].taskEventsID, type: 103 },
       });
     } else {
       message.error(result.msg);
@@ -137,13 +136,11 @@ function* addExpertDispatch({ data }) {
 //根据事件查询已调度人员
 function* getUserDispatch({ data }) {
   try {
-    const result = yield call(req.getUserDispatch, {
-      taskEventsID: data,
-    });
+    const result = yield call(req.getUserDispatch, data);
     if (result.code == successCode) {
       yield put({
         type: types.SET_USER_DISPATCH,
-        data: result.data,
+        data: result.data.taskDynamicResultDos,
       });
     }
   } catch (e) {
@@ -162,7 +159,7 @@ function* addUserDispatch({ data }) {
       });
       yield put({
         type: types.GET_USER_DISPATCH,
-        data: data[0].taskEventsID,
+        data: { taskEventsID: data[0].taskEventsID, type: 102 },
       });
     }
   } catch (e) {

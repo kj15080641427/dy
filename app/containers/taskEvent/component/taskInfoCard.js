@@ -75,13 +75,15 @@ const TaskInfoCard = (props) => {
         <Card>
           <div className="task-event-chart">
             <Link to="/taskList" className="task-event-flex">
-              <img src={taskListIcon} width="110px" height="110px"></img>
+              <img src={taskListIcon} width="150px" height="150px"></img>
               <div>事件中心</div>
             </Link>
             <div className="task-event-flex">
               <div className="task-event-card-head" id="stateChart"></div>
               <div>事件状态统计</div>
             </div>
+          </div>
+          <div className="task-event-chart">
             <div className="task-event-flex">
               <div className="task-event-card-head" id="gradeChart"></div>
               <div> 事件等级统计</div>
@@ -93,7 +95,7 @@ const TaskInfoCard = (props) => {
           </div>
         </Card>
         <br />
-        <Card title={taskInfo?.name}>
+        <Card title={taskInfo?.name} className='task-left-card'>
           <img
             src={state[taskInfo?.state]}
             style={{
@@ -129,15 +131,21 @@ const TaskInfoCard = (props) => {
           </Row>
           <Row gutter={gutter}>
             <Col span={5}>事件详情:</Col>
-            <Col span={19}> {taskInfo?.remark}</Col>
+            <Col span={19} className='task-card-srcoll'> {taskInfo?.remark}</Col>
           </Row>
-          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+            }}
+          >
             {/* <Col span={12}> */}
             <Button
               onClick={() => {
                 setTitle("终止事件");
                 setFeedTaskModal(true);
               }}
+              type="primary"
             >
               终止事件
             </Button>
@@ -148,6 +156,7 @@ const TaskInfoCard = (props) => {
                 setTitle("完成事件");
                 setFeedTaskModal(true);
               }}
+              type="primary"
             >
               事件已处置
             </Button>

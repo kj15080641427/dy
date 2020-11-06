@@ -136,14 +136,20 @@ const TaskInfo = (props) => {
         ) : null}
         {showSearch ? null : <img src={trackQuery}></img>}
       </div>
-      <div className="task-checkbox-img">
-        <img src={checkImg} onClick={() => setShowCheck(!showCheck)}></img>
+      <div
+        className="task-checkbox-img"
+        onMouseOver={() => setShowCheck(true)}
+        onMouseLeave={() => {
+          setShowCheck(false);
+        }}
+      >
+        <img src={checkImg}></img>
+        {showCheck ? <TaskInfoCheck /> : null}
       </div>
       <TaskTimeLine></TaskTimeLine>
       <TaskUpdate formRef={formRef}></TaskUpdate>
       <TaskInfoNavi formRef={formRef} />
       <TaskInfoCard />
-      {showCheck ? <TaskInfoCheck /> : null}
     </div>
   );
 };

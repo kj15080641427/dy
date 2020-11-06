@@ -3,7 +3,7 @@ const initState = {
   visible: false,
   hourRain: "",
   videoInfo: {},
-  waterVideoInfo: { strtoken: "ea7e--3c87ed62d2a7444187a93c190f9be4e9" },
+  waterVideoInfo: { strtoken: "" },
   floodAlarmData: [],
   floodDayRain: [],
   riverSiteWater: [],

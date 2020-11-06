@@ -257,6 +257,13 @@ export const setTaskDangerModal = (data) => {
     data,
   };
 };
+//超警戒modal
+export const setTaskWarningModal = (data) => {
+  return {
+    type: types.SET_TASK_WARNING_MODAL,
+    data,
+  };
+};
 //超警戒
 export const getTaskWarning = (data) => {
   return {

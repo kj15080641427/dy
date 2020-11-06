@@ -87,7 +87,6 @@ class WeatherPic extends React.PureComponent {
           this.slider.slick.slickPause();
         }, 1000);
       });
-      
     } else {
       lunboSetting.autoplay = true;
       this.setState({ wxytVisible: true }, () => {
@@ -122,7 +121,7 @@ class WeatherPic extends React.PureComponent {
     }
     const lunboSetting = {
       dots: true,
-      autoplay: false
+      autoplay: false,
     };
     return (
       <div>
@@ -139,6 +138,18 @@ class WeatherPic extends React.PureComponent {
               onTabClick={this.callback}
             >
               <TabPane tab="卫星云图" key="1">
+                <div
+                  style={{
+                    width: "500px",
+                    height: "300px",
+                    position: "absolute",
+                    zIndex: 99,
+                  }}
+                  onClick={() => {
+                    this.slickPlayRoPause(lunboSetting);
+                    this.setState({ wxytVisible: true });
+                  }}
+                ></div>
                 <div className="m-pic-div-img">
                   <PlayCircleOutlined
                     className="m-pic-icon"
@@ -201,6 +212,17 @@ class WeatherPic extends React.PureComponent {
                 </Drawer>
               </TabPane>
               <TabPane tab="气象雷达" key="2">
+                <div
+                  style={{
+                    width: "500px",
+                    height: "300px",
+                    position: "absolute",
+                    zIndex: 99,
+                  }}
+                  onClick={() => {
+                    this.setState({ radarvisible: true });
+                  }}
+                ></div>
                 <div className="m-pic-div-img">
                   <iframe
                     src="http://58.59.29.51:14003/Radar"
@@ -212,28 +234,54 @@ class WeatherPic extends React.PureComponent {
                     className="radar-chart"
                   ></iframe>
                 </div>
-                <Drawer
-                  title="华东地区气象雷达图"
-                  placement="right"
-                  closable={false}
-                  onClose={this.onClose}
+                <Modal
+                  title="气象雷达"
+                  onCancel={() => this.setState({ radarvisible: false })}
                   visible={this.state.radarvisible}
-                  width={1378}
+                  width={"50%"}
+                  footer={null}
+                  centered={true}
+                  className="county-rain-chart"
                 >
-                  <div style={{ height: "753px", width: "950px" }}>
+                  <div
+                    style={{
+                      "overflow-y": "hidden",
+                      padding: "8px 0",
+                      position: "relative",
+                      overflow: "hidden",
+                      height: "940px",
+                      // width: "1000px",
+                      margin: "0 auto",
+                    }}
+                  >
                     <iframe
                       src="http://58.59.29.51:14003/Radar"
-                      width="1330px"
-                      height="1280px"
+                      width="753px"
+                      height="1010px"
                       frameBorder="0"
                       scrolling="no"
-                      // style={{ position: "relative", top: "-300px" }}
-                      className="radar-chart"
+                      style={{
+                        position: "relative",
+                        left: 80,
+                        top: "-170px",
+                        transform: "scale(1.0)",
+                      }}
                     ></iframe>
                   </div>
-                </Drawer>
+                </Modal>
               </TabPane>
               <TabPane tab="台风路径" key="3">
+                <div
+                  style={{
+                    width: "500px",
+                    height: "300px",
+                    position: "absolute",
+                    zIndex: 99,
+                  }}
+                  onClick={() => {
+                    this.setState({ typhoonvisible: true });
+                  }}
+                ></div>
                 <div className="m-pic-div-img">
                   <iframe
                     src="http://typhoon.zjwater.gov.cn/wap.htm"
@@ -245,31 +293,47 @@ class WeatherPic extends React.PureComponent {
                     className="radar-chart"
                   ></iframe>
                 </div>
-                <Drawer
-                  title="台风路径图"
-                  placement="right"
-                  closable={false}
-                  onClose={this.onClose}
+                <Modal
+                  title="台风路径"
+                  onCancel={() => this.setState({ typhoonvisible: false })}
                   visible={this.state.typhoonvisible}
-                  width={1378}
+                  width={"50%"}
+                  footer={null}
+                  centered={true}
+                  className="county-rain-chart"
                 >
-                  <div style={{ height: "950px", width: "1060px" }}>
+                  <div
+                    style={{
+                      "overflow-y": "hidden",
+                      padding: "8px 0",
+                      position: "relative",
+                      overflow: "hidden",
+                      height: "940px",
+                      // width: "1000px",
+                      margin: "0 auto",
+                    }}
+                  >
                     <iframe
                       src="http://typhoon.zjwater.gov.cn/wap.htm"
-                      width="1330px"
-                      height="1280px"
+                      width="753px"
+                      height="1010px"
                       frameBorder="0"
                       scrolling="no"
-                      style={{ position: "relative", top: "-300px" }}
+                      style={{
+                        position: "relative",
+                        left: 80,
+                        top: "-170px",
+                        transform: "scale(1.0)",
+                      }}
                     ></iframe>
                   </div>
-                </Drawer>
+                </Modal>
               </TabPane>
               <TabPane tab="全国预报" key="4">
                 <div className="m-pic-div-img">
                   <Satellite />
                 </div>
-                <Drawer
+                {/* <Drawer
                   title="全国降雨量预报图"
                   placement="right"
                   closable={false}
@@ -298,7 +362,7 @@ class WeatherPic extends React.PureComponent {
                       }}
                     ></iframe>
                   </div>
-                </Drawer>
+                </Drawer> */}
               </TabPane>
               {/* <TabPane tab="区县预报" key="6">
               <Forecast></Forecast> */}

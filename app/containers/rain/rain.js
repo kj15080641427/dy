@@ -252,16 +252,16 @@ class RainMonitor extends React.PureComponent {
                     {
                       name: "区县",
                       dataIndex: "address",
-                      key: 'address',
-                      width: "14%"
+                      key: "address",
+                      width: "14%",
                     },
                     {
                       name: "最大降雨(mm)",
                       dataIndex: "max",
-                      key: 'max',
+                      key: "max",
                       width: "43%",
                       render: (text, record) => {
-                        const {max} = record;
+                        const { max } = record;
                         let value = null;
 
                         if (max) {
@@ -273,15 +273,15 @@ class RainMonitor extends React.PureComponent {
                         }
 
                         return <span>{`--`}</span>;
-                      }
+                      },
                     },
                     {
                       name: "最小降雨(mm)",
                       dataIndex: "min",
-                      key: 'min',
+                      key: "min",
                       width: "43%",
                       render: (text, record) => {
-                        const {max, min} = record;
+                        const { max, min } = record;
 
                         if (max) {
                           let maxValue = max.raindataList[0]?.dayDrp;
@@ -293,34 +293,36 @@ class RainMonitor extends React.PureComponent {
                               minValue = 0;
                             }
 
-                            return <span>{`${min?.aliasName}(${minValue})`}</span>;
+                            return (
+                              <span>{`${min?.aliasName}(${minValue})`}</span>
+                            );
                           }
                         }
 
-                        return <span>{'--'}</span>;
-                      }
+                        return <span>{"--"}</span>;
+                      },
                     },
                   ]}
                   dataSource={[
                     {
                       address: "东营区",
                       max: tabsList?.dy[0],
-                      min: d
+                      min: d,
                     },
                     {
                       address: "广饶县",
                       max: tabsList?.gr[0],
-                      min: g
+                      min: g,
                     },
                     {
                       address: "利津县",
                       max: tabsList?.lj[0],
-                      min: l
+                      min: l,
                     },
                     {
                       address: "河口区",
                       max: tabsList?.hk[0],
-                      min: h
+                      min: h,
                     },
                     {
                       address: "垦利区",
@@ -698,7 +700,7 @@ class RainMonitor extends React.PureComponent {
         }
         if (item.raindataList && item.raindataList[0]) {
           item = { ...item, ...item.raindataList[0] };
-
+          console.log(item.dayDrp, "item.dayDrp");
           if (item.dayDrp === 0) {
             noRain++;
             return;
@@ -774,6 +776,7 @@ class RainMonitor extends React.PureComponent {
         // { value: g, itemStyle: { color: "rgb(123,42,51)" } },
         { value: h, itemStyle: { color: "rgb(228,41,50)" } },
       ];
+      // console.log(list, "LIST");
       rotateBarChart("rotateBarChart", list, 400);
     }
   }

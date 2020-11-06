@@ -281,9 +281,9 @@ function* getFloodRankUser() {
   }
 }
 //获取防汛专家
-function* getFloodExpert() {
+function* getFloodExpert({ data }) {
   try {
-    const result = yield call(req.getFloodControlExpertAll, {});
+    const result = yield call(req.getFloodControlExpertAll, data || {});
     if ((result.code = code)) {
       let city = [];
       let county = [];
@@ -417,6 +417,13 @@ function* getAlarmData() {
         yield put({
           type: types.SET_ALARM_DATA,
           data: result.data,
+        });
+        yield put({
+          type: types.CHANGE_WATER_VIDEO,
+          data: {
+            ...result.data[0],
+            strtoken: "ea7e--3c87ed62d2a7444187a93c190f9be4e9",
+          },
         });
       }
     }
