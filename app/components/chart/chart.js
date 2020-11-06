@@ -67,7 +67,6 @@ export const barChart = (domId, legend, online, line) => {
       {
         name: "在线",
         type: "bar",
-        stack: "广告",
         data: online,
         barWidth: 25,
         label: {
@@ -81,7 +80,6 @@ export const barChart = (domId, legend, online, line) => {
       {
         name: "不在线",
         type: "bar",
-        stack: "广告",
         data: line,
         barWidth: 25,
         label: {
@@ -184,7 +182,7 @@ export const pieChart = (domId, data, width, legend, title) => {
         radius: ["50%", "65%"],
         data: data,
         left: "center",
-        width: width || 400,
+        // width: width || 400,
         labelLine: {
           // show: false,
           lineStyle: {
