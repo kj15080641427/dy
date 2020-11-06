@@ -12,31 +12,37 @@ import * as action from "../../../redux/actions/taskEvent";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import messageImg from "@app/resource/信息.svg";
+import expertImg from "@app/resource/专家.svg";
+import userImg from "@app/resource/人员调度.svg";
+import metrialImg from "@app/resource/物资调度.svg";
+import updateImg from "@app/resource/事件调整.svg";
 import "../task.scss";
 
 const iconStyle = {
   fontSize: "50px",
   width: "50px",
   height: "50px",
+  background: "#003366",
 };
 const navi = [
   {
-    icon: <MailOutlined style={iconStyle} />,
+    icon: <img src={messageImg} style={iconStyle} />,
     text: "发消息",
     url: "/taskInfoMessage",
   },
   {
-    icon: <UserOutlined style={iconStyle} />,
+    icon: <img src={expertImg} style={iconStyle} />,
     text: "专家调度",
     url: "/expertDispatch",
   },
   {
-    icon: <TeamOutlined style={iconStyle} />,
+    icon: <img src={userImg} style={iconStyle} />,
     text: "防汛人员调度",
     url: "/userDispatch",
   },
   {
-    icon: <BuildOutlined style={iconStyle} />,
+    icon: <img src={metrialImg} style={iconStyle} />,
     text: "物资调度",
     url: "/materialDispatch",
   },
@@ -74,7 +80,7 @@ const TaskInfoNavi = (props) => {
             }}
           >
             <div className="task-info-fotter-message">
-              <SnippetsOutlined style={iconStyle} />
+              <img src={updateImg} style={iconStyle} />
             </div>
             <div className="task-info-fotter-text">事件调整</div>
           </div>

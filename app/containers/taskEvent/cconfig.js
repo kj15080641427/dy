@@ -22,11 +22,11 @@ export const taskListform = [
     rules: [{ required: true }],
     ele: <Input />,
   },
-  {
-    label: "发生时间",
-    name: "happenTime",
-    ele: <DatePicker showTime />,
-  },
+  // {
+  //   label: "发生时间",
+  //   name: "happenTime",
+  //   ele: <DatePicker showTime />,
+  // },
   {
     label: "事件等级",
     name: "grade",
@@ -40,13 +40,19 @@ export const taskListform = [
     ),
   },
   {
-    label: "区域位置",
+    label: "事件来源",
+    name: "happenTime",
+    ele: <text>新建事件</text>,
+  },
+
+  {
+    label: "发生区域",
     name: "address",
     // rules: [{ required: true }],
     ele: <Input />,
   },
   {
-    label: "上报人",
+    label: "联系人",
     name: "reportPersonName",
     ele: <Input />,
   },
@@ -55,16 +61,16 @@ export const taskListform = [
     name: "reportPersonPhone",
     ele: <Input />,
   },
-  {
-    label: "经度",
-    name: "lon",
-    ele: <Input />,
-  },
-  {
-    label: "纬度",
-    name: "lat",
-    ele: <Input />,
-  },
+  // {
+  //   label: "经度",
+  //   name: "lon",
+  //   ele: <Input />,
+  // },
+  // {
+  //   label: "纬度",
+  //   name: "lat",
+  //   ele: <Input />,
+  // },
   {
     label: "事件描述",
     name: "remark",
@@ -105,6 +111,7 @@ export const userTab2Columns = [
   { title: "工作单位", dataIndex: "unit" },
   { title: "备注", dataIndex: "remark" },
   { title: "电话", dataIndex: "phone" },
+ 
 ];
 export const expertRadioList = [
   { label: "全部", value: "all" },

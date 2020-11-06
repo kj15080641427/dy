@@ -242,3 +242,25 @@ export const getTaskCountState = (data) => {
     data,
   };
 };
+
+//查询险情上报
+export const getTaskDanger = (data) => {
+  return {
+    type: types.GET_TASK_DANGER,
+    data,
+  };
+};
+//险情上报modal
+export const setTaskDangerModal = (data) => {
+  return {
+    type: types.SET_TASK_DANGER_MODAL,
+    data,
+  };
+};
+//超警戒
+export const getTaskWarning = (data) => {
+  return {
+    type: types.GET_TASK_WARNING,
+    data,
+  };
+};

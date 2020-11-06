@@ -4,7 +4,7 @@ import {
   Tabs,
   Descriptions,
   Checkbox,
-  Col,
+  Modal,
   Row,
   Card,
   Input,
@@ -46,6 +46,9 @@ const TaskInfoMessage = (props) => {
   } = props.actions;
   const [selectExpert, setSelectExpert] = useState([]);
   const [selectFloodUser, setSelectFloodUser] = useState([]);
+  const [showInfo, setShowInfo] = useState(false);
+  const [info, setInfo] = useState({});
+
   const tableColumns = [
     { title: "发送时间", dataIndex: "createTime", width: "20%" },
     {
@@ -115,6 +118,7 @@ const TaskInfoMessage = (props) => {
   return (
     <div>
       <div style={{ height: "90px", background: "#003366" }}></div>
+      <div className="right-background"></div>
       <Head titleImg={titleImg} />
       <RouterList />
       <PageHeader></PageHeader>
@@ -225,13 +229,71 @@ const TaskInfoMessage = (props) => {
           </TabPane>
           <TabPane tab="已发送消息记录" key="2">
             <Table
-              columns={tableColumns}
+              columns={[
+                ...tableColumns,
+                {
+                  title: "操作",
+                  dataIndex: "",
+                  render: (row) => (
+                    <a
+                      onClick={() => {
+                        setInfo(row);
+                        setShowInfo(true);
+                      }}
+                    >
+                      详情
+                    </a>
+                  ),
+                }
+              ]}
               dataSource={messageList}
               showEdit={false}
               // rowkey={(row) =>row.createTime}
             ></Table>
           </TabPane>
         </Tabs>
+        <Modal
+          // width="1200px"
+          visible={showInfo}
+          footer={null}
+          closable={false}
+          onCancel={() => {
+            setShowInfo(false);
+          }}
+        >
+          <Card title="发送消息">
+            <div className="task-list-card-text-margin">
+              <div className="task-list-card-text-span"></div>
+              <div>发送时间：{info.createTime?.substring(0, 16)}</div>
+            </div>
+            <div className="task-list-card-text-margin">
+              <div className="task-list-card-text-span"></div>
+              <div>操作人：{info.name}</div>
+            </div>
+            <div className="task-list-card-text-margin">
+              <div>
+                <div className="task-list-card-text-margin">
+                  <div className="task-list-card-text-span"></div>
+                  <div>信息内容：</div>
+                </div>
+                <div className="task-list-card-remark">
+                  &nbsp;&nbsp; &nbsp;&nbsp; {info.content}
+                </div>
+              </div>
+            </div>
+            <div className="task-list-card-text-margin">
+              <div>
+                <div className="task-list-card-text-margin">
+                  <div className="task-list-card-text-span"></div>
+                  <div>调度人员：</div>
+                </div>
+                <div className="task-list-card-remark">
+                  &nbsp;&nbsp; &nbsp;&nbsp; {info.resultCount}
+                </div>
+              </div>
+            </div>
+          </Card>
+        </Modal>
       </div>
     </div>
   );

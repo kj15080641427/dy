@@ -6,7 +6,10 @@ export const getSiteWaterData = (data) =>
 // 添加站点水位
 export const addSiteWaterData = (data) =>
   fetchJSONData("POST", "/base/SiteWaterLevels/save", data);
-
+// 获取最新水位预警数据
+export function getAlarmWarning(data) {
+  return fetchJSONData("POST", "/base/Alarm/getWarning", data);
+}
 // 删除站点水位
 export const deleteSiteWaterData = (data) =>
   fetchJSONData("POST", "/base/SiteWaterLevels/delete", data);
@@ -516,7 +519,6 @@ export function getCountByStcd(data) {
   return fetchJSONData("POST", "/base/SiteBase/getCountByStcd", data);
 }
 
-
 //事件来源统计
 export function getTaskCountDataSource(data) {
   return fetchJSONData("POST", "/base/TaskEvents/countDataSource", data);
@@ -528,4 +530,8 @@ export function getTaskCountGrade(data) {
 //事件状态统计
 export function getTaskCountState(data) {
   return fetchJSONData("POST", "/base/TaskEvents/countState", data);
+}
+//险情上报
+export function getTaskDanger(data) {
+  return fetchJSONData("POST", "/base/TaskDanger/getAll", data);
 }
