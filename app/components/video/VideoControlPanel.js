@@ -29,7 +29,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         justifyItems: 'center',
-        //backgroundColor: '#555555'
+        backgroundColor: '#000000.7'
     },
     iconStyle: {
         fontSize: 22,
