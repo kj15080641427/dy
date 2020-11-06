@@ -163,7 +163,7 @@ class Monitor extends React.PureComponent {
           value: item.number,
         });
       });
-      pieChart("videoFunnelChart", data, 500);
+      pieChart("videoFunnelChart", data);
     }
   }
   render() {
@@ -180,15 +180,21 @@ class Monitor extends React.PureComponent {
     const { video, videoInfo } = this.props;
     return (
       <div className="video">
-        <Map layerVisible={layerVisible}></Map>
-        <Head titleImg={titleImg}></Head>
+        <Map layerVisible={layerVisible}/>
+        <Head titleImg={titleImg}/>
         <div className="">
           <div style={{ display: displayLeft }}>
             <div className="chart-left-video">
-              <RenderBox hasTitle title="视频站点来源图">
-                <div className="videoFunnelChart" id="videoFunnelChart"></div>
+              <RenderBox hasTitle title="视频站点来源图" style={{height: '100%', alignItem: 'center'}}>
+                <div className="videoFunnelChart" id="videoFunnelChart"/>
               </RenderBox>
-              <RenderBox style={{ height: "400px" }}>
+              <RenderBox
+                  // hasTitle
+                  style={{height: '100%'}}
+                  title="视频站点在线图">
+                <div className="videoBarChart" id="videoBarChart" style={{height: '100%'}}/>
+              </RenderBox>
+              <RenderBox>
                 {/* <div className="video-table"> */}
                 <div className="card-container">
                   <Tabs type="card" style={{ color: "white" }}>
@@ -218,16 +224,9 @@ class Monitor extends React.PureComponent {
             </div>
           </div>
           <div className="chart-right-video" style={{ display: displayRight }}>
-            <RenderBox
-              hasTitle
-              title="视频站点在线图"
-              style={{ height: "calc(100% - 15px)" }}
-            >
-              <div className="videoBarChart" id="videoBarChart"></div>
-            </RenderBox>
-            <RenderBox className="video-img-box " style={{ height: 383 }}>
+            <RenderBox className="video-img-box" style={{overflow: 'hidden'}}>
               <div className="video-ing-title">{videoInfo.name}</div>
-              <VideoPlayer strtoken={videoInfo?.strtoken}></VideoPlayer>
+              <VideoPlayer strtoken={videoInfo.stiteWaterRadios?.[0].strtoken}/>
             </RenderBox>
           </div>
           <RouterList />
@@ -240,7 +239,7 @@ class Monitor extends React.PureComponent {
           }}
           className="m-set-img"
           src={setImg}
-        ></img>
+        />
         <Drawer
           title={<SetTitle></SetTitle>}
           placement="right"

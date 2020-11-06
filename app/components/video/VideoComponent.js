@@ -1,8 +1,6 @@
 import React, {Component } from "react";
 
 import {H5sPlayerWS} from './h5splayer';
-import Holder from "./Holder";
-import * as ReactDOM from "react-dom";
 import VideoControlPanel from "./VideoControlPanel";
 
 const styles = {
@@ -12,7 +10,6 @@ const styles = {
     border: '1px solid black',
     backgroundColor: '#000000',
     position: 'relative',
-    //display: '-webkit-box',
     objectFit: 'fill',
     objectPosition: 'center'
 
@@ -49,7 +46,9 @@ class VideoComponent extends Component {
       videoControl
         .login(null, null)
         .then((sessionId) => {
-           this.setState({ session: sessionId });
+           this.setState({ session: sessionId }, () => {
+             this.updateVideo(this.props.token, sessionId);
+           });
         });
     }
   }

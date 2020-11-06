@@ -259,7 +259,7 @@ class Monitor extends React.PureComponent {
     const { getDayRainBySite } = this.props.actions;
     return (
       <div className="easy-flood-display">
-        <Map layerVisible={layerVisible}></Map>
+        <Map layerVisible={layerVisible} onFeatureClick={(param)=>{}}/>
         <Head titleImg={titleImg}></Head>
         <div style={{ display: displayLeft }}>
           <div className="easyFlood-left">
@@ -510,7 +510,7 @@ class Monitor extends React.PureComponent {
                 {/* 视频 */}
                 <div className='videoBox'>
                   <VideoPlayer
-                      strtoken={floodId?.strtoken}
+                      strtoken={floodId?.stiteWaterRadios?.[0]?.strtoken}
                   />
                 </div>
                 {/* <img src={video} width="430px" height="200px"></img> */}
@@ -565,7 +565,7 @@ class Monitor extends React.PureComponent {
           <RouterList />
         </div>
 
-        <div className="m-bottom"></div>
+        <div className="m-bottom"/>
         <img
           onClick={() => {
             this.setState({
@@ -574,7 +574,7 @@ class Monitor extends React.PureComponent {
           }}
           className="m-set-img"
           src={setImg}
-        ></img>
+        />
         <Drawer
           title={<SetTitle></SetTitle>}
           placement="right"

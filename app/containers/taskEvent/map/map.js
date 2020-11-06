@@ -155,14 +155,23 @@ class Map extends React.PureComponent {
       // className: "ol-layer-tiandi",
       projection: true,
     });
+    this.map.addGeo({
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+      params: {
+        LAYERS: "dy:市界线",
+        TILED: true,
+      },
+      zIndex: 10,
+      key: "city",
+    });
     // this.map.addGeo({
     //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
     //   params: {
-    //     LAYERS: "dy:DYWater",
+    //     LAYERS: "dy:区县",
     //     TILED: true,
     //   },
     //   zIndex: 10,
-    //   key: "river",
+    //   key: "city",
     // });
     this.map.addImageTile({
       url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
@@ -174,16 +183,16 @@ class Map extends React.PureComponent {
       key: "river40",
     });
 
-    // 加入交通实况图;
-    this.map.addGeo({
-      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-      params: {
-        LAYERS: "dy:traffic",
-        TILED: true,
-      },
-      zIndex: 11,
-      key: "traffic",
-    });
+    // // 加入交通实况图;
+    // this.map.addGeo({
+    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+    //   params: {
+    //     LAYERS: "dy:traffic",
+    //     TILED: true,
+    //   },
+    //   zIndex: 11,
+    //   key: "traffic",
+    // });
 
     this.map.addVector({
       key: "person",

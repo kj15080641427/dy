@@ -181,23 +181,17 @@ class Map extends React.PureComponent {
       key: "river40",
     });
 
-    //加入交通实况图
-    this.map.addGeo({
-      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-      params: {
-        LAYERS: "dy:traffic",
-        TILED: true,
-      },
-      zIndex: 11,
-      key: "traffic",
-    });
 
     this.map.addVector({
       key: "video",
       zIndex: 20,
       style: {
-        src: function () {
-          return require("../../../resource/icon/camera.svg")["default"];
+        src: function (feature) {
+          const {stiteWaterRadios} = feature;
+          let online = stiteWaterRadios?.[0]?.isOnline;
+          online = online ? online !== '1' : false;
+          let iconName = online === true ? 'camera.svg' : 'cameraGray.svg';
+          return require(`../../../resource/icon/${iconName}`)["default"];
         },
         anchor: [0.5, 0.5],
         strokeColor: "#1890ff",
@@ -208,7 +202,7 @@ class Map extends React.PureComponent {
         fontText: function (featureObj) {
           return featureObj.name + "";
         },
-        font: "6px sans-serif",
+        font: "16px sans-serif",
       },
     });
 

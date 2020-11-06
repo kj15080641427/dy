@@ -397,212 +397,214 @@ class DeviceManageFlood extends Component {
     } = this.state;
 
     return (
-      <Spin spinning={showLoading}>
-        <div className="device-manage">
-          <div className="device-manage-content">
-            <div className="device-manage-content-right">
-              <div className="device-manage-content-right-title">
-                设备列表
-                <Space size="middle" className="device-manage-content-right-title-sub">
-                  <Button
-                    onClick={() => this.setState({ addFormVisible: true })}
-                  >
-                    新增设备
-                  </Button>
-                  <Button>
-                    导入数据
-                    <input
-                      type="file"
-                      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
-                      className="upload"
-                      onChange={(e) => this.handleImportDevice(e.target)}
-                    />
-                  </Button>
-                  <Button onClick={() => this.handleExportDevice()}>
-                    导出数据
-                  </Button>
-                </Space>
+        <Spin spinning={showLoading}>
+          <div className="device-manage">
+            <div className="device-manage-content">
+              <div className="device-manage-content-left">
+                {treeData ? (
+                    <Tabs className="device-tabs" type="card">
+                      {treeData.map(node => (
+                          <TabPane tab={node.title} key={node.key}>
+                            <Table scroll={{y: 300}}
+                                   bordered
+                                   dataSource={node.children}
+                                   pagination={false}
+                                   columns={[
+                                     {
+                                       align: "center",
+                                       title: "站点名称",
+                                       dataIndex: "title",
+                                       render: (text, row) => (
+                                           <a
+                                               onClick={() =>
+                                                   this.handleTreeSelect({node: row})
+                                               }
+                                           >
+                                             {text}
+                                           </a>
+                                       )
+                                     }, {
+                                       align: "center",
+                                       title: "维护时间",
+                                       dataIndex: "repairTime",
+                                       width: 170,
+                                       render: (text, row) => (
+                                           <>
+                                             {text || '-'}
+                                           </>
+                                       )
+                                     }
+                                   ]}
+                                   rowClassName={(record) => {
+                                     return this.state.currentSite.title === record.title
+                                         ? "primary-row"
+                                         : "";
+                                   }}
+                            />
+                          </TabPane>
+                      ))}
+                    </Tabs>
+                ) : (
+                    "加载中......"
+                )}
               </div>
-              <Table
-                bordered
-                dataSource={deviceList}
-                pagination={{
-                  current: deviceTablePage,
-                  total: deviceTableTotal,
-                  showSizeChanger: false,
-                  pageSize,
-                  onChange: (page) => {
-                    this.setState({ deviceTablePage: page }, () => {
-                      this.getDeviceData();
-                    });
-                  },
-                }}
-                columns={[
-                  {
-                    align: "center",
-                    title: "设备名称",
-                    dataIndex: "name",
-                  },
-                  {
-                    align: "center",
-                    title: "设备编号",
-                    dataIndex: "no",
-                  },
-                  {
-                    align: "center",
-                    title: "厂家",
-                    dataIndex: "factory",
-                  },
-                  {
-                    align: "center",
-                    title: "型号",
-                    dataIndex: "specs",
-                  },
-                  {
-                    align: "center",
-                    title: "生产日期",
-                    dataIndex: "produceTime",
-                  },
-                  {
-                    align: "center",
-                    title: "安装时间",
-                    dataIndex: "createTime",
-                  },
-                  {
-                    align: "center",
-                    title: "操作",
-                    dataIndex: "g",
-                    render: (text, record) => (
-                      <Space>
-                        <a onClick={() => this.handleRepair(record)}>维修</a>
-                        <a onClick={() => this.handleChange(record)}>更换</a>
-                        <a onClick={() => this.handleRemove(record)}>拆除</a>
-                      </Space>
-                    ),
-                  },
-                ]}
-              />
-            </div>
-            <div className="device-manage-content-left">
-              <div className="device-manage-content-left-title">
-                {this.state.currentSite.title}站数据走势图
-              </div>
-              <div className="device-manage-content-left-title">
-                <RangePicker
-                  format="YYYY-MM-DD"
-                  defaultValue={[
-                    this.state.chartStartTM,
-                    this.state.chartEndTM
-                  ]}
-                  onChange={(range) => this.buildSiteCountChart(range)}
+
+              <div className="device-manage-content-right">
+                <div className="device-manage-content-right-title">
+                  设备列表
+                  <Space size="middle" className="device-manage-content-right-title-sub">
+                    <Button
+                        onClick={() => this.setState({addFormVisible: true})}
+                    >
+                      新增设备
+                    </Button>
+                    <Button>
+                      导入数据
+                      <input
+                          type="file"
+                          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                          className="upload"
+                          onChange={(e) => this.handleImportDevice(e.target)}
+                      />
+                    </Button>
+                    <Button onClick={() => this.handleExportDevice()}>
+                      导出数据
+                    </Button>
+                  </Space>
+                </div>
+                <Table
+                    bordered
+                    dataSource={deviceList}
+                    pagination={{
+                      current: deviceTablePage,
+                      total: deviceTableTotal,
+                      showSizeChanger: false,
+                      pageSize,
+                      onChange: (page) => {
+                        this.setState({deviceTablePage: page}, () => {
+                          this.getDeviceData();
+                        });
+                      },
+                    }}
+                    columns={[
+                      {
+                        align: "center",
+                        title: "设备名称",
+                        dataIndex: "name",
+                      },
+                      {
+                        align: "center",
+                        title: "设备编号",
+                        dataIndex: "no",
+                      },
+                      {
+                        align: "center",
+                        title: "厂家",
+                        dataIndex: "factory",
+                      },
+                      {
+                        align: "center",
+                        title: "型号",
+                        dataIndex: "specs",
+                      },
+                      {
+                        align: "center",
+                        title: "生产日期",
+                        dataIndex: "produceTime",
+                      },
+                      {
+                        align: "center",
+                        title: "安装时间",
+                        dataIndex: "createTime",
+                      },
+                      {
+                        align: "center",
+                        title: "操作",
+                        dataIndex: "g",
+                        render: (text, record) => (
+                            <Space>
+                              <a onClick={() => this.handleRepair(record)}>维修</a>
+                              <a onClick={() => this.handleChange(record)}>更换</a>
+                              <a onClick={() => this.handleRemove(record)}>拆除</a>
+                            </Space>
+                        ),
+                      },
+                    ]}
                 />
               </div>
-              <div className="site-count-chart" id={`site-count-chart-${this.props.device.type}`}></div>
+
             </div>
-          </div>
-          <div className="device-manage-content">
-            <div className="device-manage-content-right">
-              <div className="device-manage-content-right-title">
-                维修记录
-                <Button className="device-manage-content-right-title-sub" onClick={() => this.handleExportDeviceRepair()}>
-                  导出数据
-                </Button>
+            <div className="device-manage-content">
+              <div className="device-manage-content-left">
+                <div className="device-manage-content-left-title">
+                  {this.state.currentSite.title}站数据走势图
+                </div>
+                <div className="device-manage-content-left-title">
+                  <RangePicker
+                      format="YYYY-MM-DD"
+                      defaultValue={[
+                        this.state.chartStartTM,
+                        this.state.chartEndTM
+                      ]}
+                      onChange={(range) => this.buildSiteCountChart(range)}
+                  />
+                </div>
+                <div className="site-count-chart" id={`site-count-chart-${this.props.device.type}`}></div>
               </div>
-              <Table
-                bordered
-                dataSource={repairList}
-                pagination={{
-                  current: repairTablePage,
-                  total: repairTableTotal,
-                  showSizeChanger: false,
-                  pageSize,
-                  onChange: (page) => {
-                    this.setState({ repairTablePage: page }, () => {
-                      this.getDeviceRepairData();
-                    });
-                  },
-                }}
-                columns={[
-                  {
-                    align: "center",
-                    title: "设备名称",
-                    dataIndex: "deviceName",
-                  },
-                  {
-                    align: "center",
-                    title: "设备编号",
-                    dataIndex: "deviceNo",
-                  },
-                  {
-                    align: "center",
-                    title: "说明",
-                    dataIndex: "remarks",
-                  },
-                  {
-                    align: "center",
-                    title: "维护人",
-                    dataIndex: "repairUserName",
-                  },
-                  {
-                    align: "center",
-                    title: "维护时间",
-                    dataIndex: "repairTime",
-                  },
-                ]}
-              />
-            </div>
-            <div className="device-manage-content-left">
-              {treeData ? (
-                <Tabs className="device-tabs" type="card">
-                  {treeData.map(node => (
-                    <TabPane tab={node.title} key={node.key}>
-                      <Table scroll={{ y: 300 }}
-                        bordered
-                        dataSource={node.children}
-                        pagination={false}
-                        columns={[
-                          {
-                            align: "center",
-                            title: "站点名称",
-                            dataIndex: "title",
-                            render: (text, row) => (
-                              <a
-                                onClick={() =>
-                                  this.handleTreeSelect({ node: row })
-                                }
-                              >
-                                {text}
-                              </a>
-                            )
-                          }, {
-                            align: "center",
-                            title: "维护时间",
-                            dataIndex: "repairTime",
-                            width: 170,
-                            render: (text, row) => (
-                              <>
-                                {text || '-'}
-                              </>
-                            )
-                          }
-                        ]}
-                        rowClassName={(record) => {
-                          return this.state.currentSite.title === record.title
-                            ? "primary-row"
-                            : "";
-                        }}
-                      />
-                    </TabPane>
-                  ))}
-                </Tabs>
-              ) : (
-                "加载中......"
-              )}
+              <div className="device-manage-content-right">
+                <div className="device-manage-content-right-title">
+                  维修记录
+                  <Button className="device-manage-content-right-title-sub" onClick={() => this.handleExportDeviceRepair()}>
+                    导出数据
+                  </Button>
+                </div>
+                <Table
+                    bordered
+                    dataSource={repairList}
+                    pagination={{
+                      current: repairTablePage,
+                      total: repairTableTotal,
+                      showSizeChanger: false,
+                      pageSize,
+                      onChange: (page) => {
+                        this.setState({repairTablePage: page}, () => {
+                          this.getDeviceRepairData();
+                        });
+                      },
+                    }}
+                    columns={[
+                      {
+                        align: "center",
+                        title: "设备名称",
+                        dataIndex: "deviceName",
+                      },
+                      {
+                        align: "center",
+                        title: "设备编号",
+                        dataIndex: "deviceNo",
+                      },
+                      {
+                        align: "center",
+                        title: "说明",
+                        dataIndex: "remarks",
+                      },
+                      {
+                        align: "center",
+                        title: "维护人",
+                        dataIndex: "repairUserName",
+                      },
+                      {
+                        align: "center",
+                        title: "维护时间",
+                        dataIndex: "repairTime",
+                      },
+                    ]}
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <Modal
-          centered
+          <Modal
+              centered
           forceRender
           title="设备信息"
           visible={addFormVisible}

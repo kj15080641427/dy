@@ -7,7 +7,7 @@ const initState = {
   waterWarning: 0,
   flood: [],
   count: {},
-  floodId: { id: "46010128", stcd: "46010128", strtoken: "device1--18" },
+  floodId: { },
   floodName: "沂河路（玉苑小区）",
   waterId: "41800264", //stcd
   waterName: "明海（闸前）",
@@ -61,6 +61,8 @@ export default function mapAboutReducers(state = initState, action) {
       });
       newState.flood = floodList;
       newState.initFlood = floodList;
+      newState.floodId = floodList?.[0];
+      newState.floodName = newState.floodId?.aliasName;
       newState.floodLoading = false;
       break;
     case types.SET_COUNT_STATION:

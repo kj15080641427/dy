@@ -16,37 +16,42 @@ class Video extends Base {
   }
   render() {
     let { model } = this.props;
-    const { dict } = model;
-    console.log(model, "MODEL");
+    let {stiteWaterRadios} = model;
+    let name = stiteWaterRadios?.[0]?.name;
+    let aliasName = stiteWaterRadios?.[0]?.aliasName;
 
-    let tmDesc = model.tm ? model.tm : "--";
     return (
       <div
         className="m-ovl-box m-ovl-rain luo-ovl-rain"
-        style={{ display: "none" }}
+        style={{ display: "none", width: 400, overflow: 'hidden'}}
         ref={(node) => {
           this.container = node;
         }}
       >
         <div className="m-ovl-line luo-ovl-title">视频站点：{model.name}</div>
         <div className="m-ovl-line">
-          <label>站点编号：</label>
-          {model.stcd}
+          <label>名称：</label>
+          {name}
         </div>
         <div className="m-ovl-line">
-          <label>数据来源：</label>视频
+          <label>别名：</label>
+          {aliasName}
         </div>
         <div className="m-ovl-line">
-          <label>站点地址：</label>
+          <label>地址：</label>
           {model.address}
+        </div>
+        <div className="m-ovl-line">
+          <label>地区：</label>
+          {stiteWaterRadios?.[0]?.regionName}
         </div>
         {/* <div className="m-ovl-line"><label>5分钟降水量：</label>{drpLevel}</div>
         <div className="m-ovl-line"><label>1小时降水量：</label>{hourRain}</div>
         <div className="m-ovl-line"><label>24小时降水量：</label>{dayRain}</div> */}
-        <div className="m-ovl-line">
-          <label>更新时间：</label>
-          {tmDesc}
-        </div>
+        {/*<div className="m-ovl-line">*/}
+        {/*  <label>更新时间：</label>*/}
+        {/*  {tmDesc}*/}
+        {/*</div>*/}
         <span className="iconfont iconcuo m-ovl-close"></span>
       </div>
     );

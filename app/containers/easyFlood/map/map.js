@@ -140,6 +140,7 @@ class Map extends React.PureComponent {
       className: "ol-layer-tiandi",
       projection: true,
     });
+
     this.map.addGeo({
       url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
       params: {
@@ -299,7 +300,7 @@ class Map extends React.PureComponent {
             return Promise.reject(res.msg || "未知错误");
           }
         })
-        .catch((e) => {
+        ["catch"]((e) => {
           message.error("获取河流详情失败");
         });
     }
@@ -418,7 +419,7 @@ class Map extends React.PureComponent {
     }
   }
   transformData(data) {
-    if (!data || !data.length) return {};
+    if (!data || !data.length) {return {};}
     let obj = {
       rain: [],
       water: [],
@@ -438,7 +439,7 @@ class Map extends React.PureComponent {
   onOverlayClose(id, type) {
     let { overlays } = this.state;
     let obj = overlays[type];
-    if (!obj || !obj[id]) return;
+    if (!obj || !obj[id]) {return;}
     delete obj[id];
     this.setState({
       overlays: { ...overlays },
