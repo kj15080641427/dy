@@ -23,7 +23,7 @@ class Video extends Base {
     return (
       <div
         className="m-ovl-box m-ovl-rain luo-ovl-rain"
-        style={{ display: "none" }}
+        style={{ display: "none", width: 400, overflow: 'hidden'}}
         ref={(node) => {
           this.container = node;
         }}

@@ -89,7 +89,7 @@
     width: 180px;
   }
   .chart-left-video {
-    width: 550px;
+    width: 500px;
     position: absolute;
     left: 10px;
     top: 0;
@@ -101,19 +101,27 @@
     & > div:first-child {
       flex: 1;
     }
+    & > div:nth-child(2) {
+      margin-top: 8px;
+      flex: 1
+    }
     & > div:last-child {
       margin-top: 8px;
-      height: 380px;
+      //height: 380px;
+      flex: 2
     }
     .videoFunnelChart {
-      width: 500px;
-      height: calc(100% - 25px);
+      width: 100%;
+      height: 100%;
+      //height: calc(100% - 25px);
+
       display: flex;
       align-items: center;
     }
     .radar-box {
       margin-top: 0;
-      height: calc(100% - 8px) !important;
+      //height: calc(100% - 8px) !important;
+      height: 400px;
     }
   }
   .chart-right-video {
@@ -144,10 +152,11 @@
       height: 280px;
     }
     .videoBarChart {
-      display: flex;
-      align-items: center;
+      //display: flex;
+      //align-items: center;
       width: 530px;
-      height: calc(100% - 25px);
+      height: 100%;
+      //height: calc(100% - 25px);
     }
     .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
       color: white;
@@ -212,8 +221,10 @@
         top: 90px;
       }
       .radar-box {
-        height: 400px;
-      }
+        //height: 400px;
+        position: relative;
+        overflow: hidden;
+       }
     }
     .video-ing-title {
       color: white;
