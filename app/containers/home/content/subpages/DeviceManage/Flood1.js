@@ -152,7 +152,7 @@ class DeviceManageFlood extends Component {
     let xdata = [];
     let ydata = [];
     var myChart = echarts.init(document.getElementById(`site-count-chart-${this.props.device.type}`));
-    data.reverse().forEach((item) => {
+    data.forEach((item) => {
       xdata.push(item.tm);
       ydata.push(Number(item.number));
     });
@@ -222,6 +222,7 @@ class DeviceManageFlood extends Component {
   }
 
   async handleImportDevice(tg) {
+    if (tg.files.length === 0) return
     this.setState({ showLoading: true });
     const formData = new FormData();
     formData.append("uploadFile", tg.files[0]);
@@ -239,8 +240,9 @@ class DeviceManageFlood extends Component {
     if (rs.code === 200) {
       message.success(rs.data);
     } else {
-      message.error(rs.data);
+      message.error(rs.msg);
     }
+    tg.value = null
     this.setState({ showLoading: false, deviceTablePage: 1 });
     this.getDeviceData();
   }
