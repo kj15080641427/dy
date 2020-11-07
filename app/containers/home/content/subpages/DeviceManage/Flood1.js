@@ -4,6 +4,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import DYForm from "@app/components/home/form";
+import { URL as URLDefine } from '@app/utils/common.js'
 import echarts from "echarts/lib/echarts";
 import {
   DatePicker,
@@ -227,7 +228,7 @@ class DeviceManageFlood extends Component {
     const formData = new FormData();
     formData.append("uploadFile", tg.files[0]);
     const rs = await fetch(
-      `/api/base/SiteDevice/import?relTypeCode=${this.props.device.type}&relTypeId=${this.state.currentSite.key}&relTypeNmae=${this.props.device.name}`,
+      `${URLDefine}/base/SiteDevice/import?relTypeCode=${this.props.device.type}&relTypeId=${this.state.currentSite.key}&relTypeNmae=${this.props.device.name}`,
       {
         method: "post",
         credentials: "include",
@@ -249,7 +250,7 @@ class DeviceManageFlood extends Component {
 
   handleExportDevice() {
     this.downloadFile(
-      "/api/v2/base/SiteDevice/export",
+      "/base/SiteDevice/export",
       {
         relTypeCode: this.props.device.type,
         relTypeId: this.state.currentSite.key,
@@ -262,7 +263,7 @@ class DeviceManageFlood extends Component {
   }
   handleExportDeviceRepair() {
     this.downloadFile(
-      "/api/v2/base/SiteDevice/export",
+      "/base/SiteDevice/export",
       {
         relTypeCode: this.props.device.type,
         relTypeId: this.state.currentSite.key,
@@ -273,12 +274,12 @@ class DeviceManageFlood extends Component {
     );
   }
   downloadFile(url, params, filename) {
-    fetch(url, {
+    fetch(`${URLDefine}${url}`, {
       method: "post",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        token: localStorage.getItem("token"),
+        TOKEN: localStorage.getItem("token"),
       },
       body: JSON.stringify(params),
     })
