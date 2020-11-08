@@ -6,8 +6,20 @@ import "./style.scss";
 import Head from "./head/Head";
 import Map from "./map/map";
 import { RenderBox } from "../../components/chart/decorate";
-import { Table, DatePicker, Button, Divider, Modal, Spin, message } from "antd";
+import { modelChart } from "../../components/chart/chart";
+import {
+  Table,
+  DatePicker,
+  Button,
+  Divider,
+  Modal,
+  Spin,
+  message,
+  Tabs,
+  Popover,
+} from "antd";
 import ReactEcharts from "echarts-for-react";
+import { TableShow } from "../../components/chart/table";
 
 import moment from "moment";
 
@@ -65,10 +77,15 @@ class FloodModel extends Component {
             <Button
               type={"link"}
               size={"small"}
-              onClick={this.onViewPrediction.bind(
-                this,
-                record.modelPredictionId
-              )}
+              onClick={() => {
+                this.onViewPrediction(record.modelPredictionId);
+                this.props.dispatch(actions.setDefaultPred(record));
+                // this.setState({ titleTime: record.beginTime });
+              }}
+              // onClick={this.onViewPrediction.bind(
+              //   this,
+              //   record.modelPredictionId
+              // )}
             >
               {"选择"}
             </Button>
@@ -82,13 +99,24 @@ class FloodModel extends Component {
       selectedSite: {},
       loading: false,
       runModelTime: moment(),
+      predictionId: "",
+      waterName: "",
+      floodName: "",
     };
   }
 
   render() {
     let curDate = new moment();
     let dataSource = [...this.props.model.predictions];
-
+    const {
+      water,
+      initFlood,
+      dispatch,
+      defaultPred,
+      defaultWater,
+      defaultFlood,
+    } = this.props;
+    const { predictionId } = this.state;
     return (
       <div className="flood-model-display">
         <Map
@@ -100,6 +128,13 @@ class FloodModel extends Component {
         <RouterList />
         <div className="m-left">
           <Spin spinning={this.props.model.loading}>
+            <RenderBox
+              hasTitle
+              title="降水预报走势图"
+              style={{ height: "200px" }}
+            >
+              <div className="flood-head-rain" id="floodHeadRain"></div>
+            </RenderBox>
             <RenderBox hasTitle title="洪涝预报" style={{ height: 420 }}>
               <div className={"m-left-div"}>
                 <Spin
@@ -109,16 +144,24 @@ class FloodModel extends Component {
                 >
                   <div style={{ paddingBottom: 20 }}>
                     <Divider style={{ color: "gray" }}>实时预报</Divider>
-                    <span>时间选择：</span>
+                    <span>开始预报时间:</span>
                     <DatePicker
+                      style={{ width: "200px", margin: "0 20px" }}
                       showTime={{ format: "HH" }}
                       format={"YYYY-MM-DD HH时"}
                       defaultValue={this.state.runModelTime}
                       onChange={(time) => this.setState({ runModelTime: time })}
                       disabledDate={(selectDate) => selectDate <= curDate}
                     />
-                    <Button type="primary" onClick={this.onRunModel.bind(this)}>
-                      开始
+                    <Button
+                      type="primary"
+                      onClick={this.onRunModel.bind(this)}
+                      style={{
+                        background: "rgb(0,128,128)",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      演算
                     </Button>
                   </div>
                 </Spin>
@@ -127,6 +170,7 @@ class FloodModel extends Component {
                 <Divider style={{ color: "gray" }}>预报列表</Divider>
                 <div>
                   <Table
+                    style={{ color: "white" }}
                     columns={this.TableColumns}
                     dataSource={dataSource}
                     size={"small"}
@@ -135,10 +179,149 @@ class FloodModel extends Component {
                 </div>
               </div>
             </RenderBox>
+
+            <RenderBox className="flood-model-left-box">
+              <div className="task-card-container">
+                <Tabs type="card">
+                  <Tabs.TabPane key="1" tab="水位站">
+                    <TableShow
+                      number={5}
+                      onRow={(record) => {
+                        return {
+                          onClick: () => {
+                            if (predictionId) {
+                              this.setState({
+                                waterName: record.aliasName,
+                              });
+                              dispatch(
+                                actions.getModelResult({
+                                  startTime: defaultPred?.beginTime,
+                                  endTime: moment(defaultPred?.beginTime)
+                                    .add(1, "days")
+                                    .format("YYYY-MM-DD HH:mm:ss"),
+                                  predictid: predictionId,
+                                  siteNodeId: record.siteNodeId,
+                                })
+                              );
+                            } else {
+                              message.warning("请选择预报");
+                            }
+                          },
+                        };
+                      }}
+                      columns={[
+                        {
+                          name: "站点名称",
+                          dataIndex: "aliasName",
+                          width: "30%",
+                        },
+                        {
+                          name: "所属河流",
+                          dataIndex: "rvnm",
+                          width: "20%",
+                        },
+                        {
+                          name: "来源",
+                          dataIndex: "datasourceName",
+                          width: "30%",
+                          // render: (e) => source[e],
+                        },
+                      ]}
+                      dataSource={water}
+                    ></TableShow>
+                  </Tabs.TabPane>
+                  <Tabs.TabPane key="2" tab="积水点">
+                    <TableShow
+                      number={5}
+                      onRow={(record) => {
+                        return {
+                          onClick: () => {
+                            if (predictionId) {
+                              this.setState({
+                                floodName: record.aliasName,
+                              });
+                              dispatch(
+                                actions.getModelFloodResult({
+                                  startTime: defaultPred?.beginTime,
+                                  endTime: moment(defaultPred?.beginTime)
+                                    .add(1, "days")
+                                    .format("YYYY-MM-DD HH:mm:ss"),
+                                  predictid: predictionId,
+                                  siteNodeId: record.siteNodeId,
+                                })
+                              );
+                            } else {
+                              message.warning("请选择预报");
+                            }
+                          },
+                        };
+                      }}
+                      columns={[
+                        {
+                          name: "站点名称",
+                          dataIndex: "aliasName",
+                          width: "30%",
+                          render: (name) => {
+                            return name.length >= 10 ? (
+                              <Popover content={name} title="站名全称">
+                                {name.toString().substring(0, 10) + "..."}
+                              </Popover>
+                            ) : (
+                              name
+                            );
+                          },
+                        },
+                        {
+                          name: "所属区域",
+                          dataIndex: "regionName",
+                          width: "20%",
+                        },
+                        {
+                          name: "地址",
+                          dataIndex: "stlc",
+                          width: "30%",
+                          render: (name) => {
+                            return name.length >= 10 ? (
+                              <Popover content={name} title="地址全称">
+                                {name.toString().substring(0, 10) + "..."}
+                              </Popover>
+                            ) : (
+                              name
+                            );
+                          },
+                        },
+                      ]}
+                      dataSource={initFlood}
+                    ></TableShow>
+                  </Tabs.TabPane>
+                </Tabs>
+              </div>
+            </RenderBox>
           </Spin>
         </div>
-        <div className='flood-model-right'>
-            <RenderBox hasTitle title='洪涝预报'></RenderBox>
+        <div className="flood-model-right">
+          <RenderBox hasTitle title="洪涝预报">
+            <div>
+              {defaultPred?.beginTime?.slice(0, -3)}至
+              {moment(defaultPred?.beginTime)
+                .add(1, "days")
+                .format("YYYY-MM-DD HH:mm")}
+              {/* {titleTime?.slice(0, -3)}至
+              {moment(titleTime).add(1, "days").format("YYYY-MM-DD HH:mm")} */}
+            </div>
+            <div className="flood-model-water-border">
+              <div>{defaultWater.name}站24小时水位预测曲线图</div>
+              {/* <div className="flood-model-water-border"> */}
+              <div className="flood-model-water" id="floodModelWater"></div>
+              {/* </div> */}
+            </div>
+            <div className="flood-model-water-border">
+              <div>{defaultFlood.name}站24小时积水预测曲线图</div>
+              {/* <div className="flood-model-water-border"> */}
+              <div className="flood-model-water" id="floodModelFlood"></div>
+              {/* </div> */}
+            </div>
+          </RenderBox>
         </div>
         <Modal
           visible={this.state.modalVisible}
@@ -175,14 +358,83 @@ class FloodModel extends Component {
     const { dispatch } = this.props;
     dispatch(actions.queryModelNodesAction());
     dispatch(actions.queryPredictions());
-
+    dispatch(
+      actions.getRainPred({
+        endtm: moment(new Date()).add(1, "days").format("YYYY-MM-DD HH:mm:ss"),
+        starttm: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+      })
+    );
     this.timer = setInterval(() => {
       dispatch(actions.queryModelState());
     }, 30000);
 
     dispatch(actions.queryModelState());
+    dispatch(actions.getModelWaterType());
+    dispatch(actions.getModelFloodType());
   }
+  componentDidUpdate(pre) {
+    const {
+      dispatch,
+      modelResult,
+      modelFloodResult,
+      defaultPred,
+      defaultWater,
+      defaultFlood,
+      rainPred,
+    } = this.props;
+    if (rainPred !== pre.rainPred) {
+      modelChart(
+        rainPred,
+        "floodHeadRain",
+        "降雨",
+        "predictionTime",
+        "predictionValue"
+      );
+    }
+    if (modelResult !== pre.modelResult) {
+      modelChart(
+        modelResult,
+        "floodModelWater",
+        "水位(m)",
+        "endTime",
+        "predValue"
+      );
+    }
+    if (modelFloodResult !== pre.modelFloodResult) {
+      modelChart(
+        modelFloodResult,
+        "floodModelFlood",
+        "积水(cm)",
+        "endTime",
+        "predValue"
+      );
+    }
+    if (defaultWater != pre.defaultWater && defaultPred.modelPredictionId) {
+      dispatch(
+        actions.getModelResult({
+          startTime: defaultPred?.beginTime,
+          endTime: moment(defaultPred?.beginTime)
+            .add(1, "days")
+            .format("YYYY-MM-DD HH:mm:ss"),
+          predictid: defaultPred?.modelPredictionId,
+          siteNodeId: defaultWater?.siteNodeId,
+        })
+      );
+    }
 
+    if (defaultFlood != pre.defaultFlood && defaultPred.modelPredictionId) {
+      dispatch(
+        actions.getModelFloodResult({
+          startTime: defaultPred?.beginTime,
+          endTime: moment(defaultPred?.beginTime)
+            .add(1, "days")
+            .format("YYYY-MM-DD HH:mm:ss"),
+          predictid: defaultPred?.modelPredictionId,
+          siteNodeId: defaultFlood?.siteNodeId,
+        })
+      );
+    }
+  }
   componentWillUnmount() {
     if (this.timer) {
       clearInterval(this.timer);
@@ -192,7 +444,7 @@ class FloodModel extends Component {
   onViewPrediction(predictionId) {
     const { dispatch } = this.props;
     dispatch(actions.selectPrediction(predictionId));
-    this.setState({ loading: true });
+    this.setState({ loading: true, predictionId: predictionId });
   }
 
   onRunModel() {
@@ -209,7 +461,7 @@ class FloodModel extends Component {
     }
 
     this.setState({ modalVisible: true, selectedSite: param });
-    console.log(param);
+    // console.log(param);
   }
 
   getSiteDescription(name) {
@@ -261,6 +513,14 @@ class FloodModel extends Component {
 function mapStateToProps(state) {
   return {
     model: state.floodModel,
+    water: state.floodModel.modelWater,
+    initFlood: state.floodModel.modelFlood,
+    modelResult: state.floodModel.modelResult,
+    modelFloodResult: state.floodModel.modelFloodResult,
+    defaultPred: state.floodModel.defaultPred,
+    defaultWater: state.floodModel.defaultWater,
+    defaultFlood: state.floodModel.defaultFlood,
+    rainPred: state.floodModel.rainPred,
   };
 }
 

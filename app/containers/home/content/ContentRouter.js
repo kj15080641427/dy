@@ -21,7 +21,7 @@ import Home from "./subpages/Home/Home";
 import VideoBasic from "./subpages/BasicData/VideoBasic/VideoBasic";
 import BaseStation from "./subpages/BasicData/StationBasic/baseSite";
 import VideoStation from "./subpages/BasicData/VideoandStation/VideoStation";
-// import RiverAnnunciate from "./subpages/DataMonitoring/RiverAnnunciate";
+import RiverAnnunciate from "./subpages/dataMonitoring/RiverAnnunciate";
 import WaterAnnunciate from "./subpages/DataMonitoring/WaterAnnunciate";
 import RainrAnnunciate from "./subpages/DataMonitoring/RainrAnnunciate";
 import SiteWater from "./subpages/site/siteWater";
@@ -41,7 +41,7 @@ import UserDispatch from "./subpages/taskEvent/userDispatch";
 import MaterialDispatch from "./subpages/taskEvent/materialDispatch";
 import TaskTimeLine from "./subpages/taskEvent/taskTimeLine";
 import TaskInfoMessage from "./subpages/taskEvent/taskInfoMessage";
-import ChartGroup from './subpages/taskEvent/chartGroup'
+import ChartGroup from "./subpages/taskEvent/chartGroup";
 import TrackQuery from "./subpages/taskEvent/trackQuery";
 const NoMatch = () => <div>没有找到该路由</div>;
 
@@ -84,10 +84,10 @@ class ContentRouter extends React.PureComponent {
                 <Route path={path + "/videoBasic"} component={VideoBasic} />
                 <Route path={path + "/stationBasic"} component={BaseStation} />
                 <Route path={path + "/videoStation"} component={VideoStation} />
-                {/* <Route
+                <Route
                   path={path + "/riverAnnunciate"}
                   component={RiverAnnunciate}
-                /> */}
+                />
                 {/* <Route
                   path={path + "/waterAnnunciate"}
                   component={WaterAnnunciate}
@@ -126,7 +126,10 @@ class ContentRouter extends React.PureComponent {
                   component={MaterialDispatch}
                 />
                 <Route path={path + "/taskTimeLine"} component={TaskTimeLine} />
-                <Route path={path + "/taskInfoMessage"} component={TaskInfoMessage} />
+                <Route
+                  path={path + "/taskInfoMessage"}
+                  component={TaskInfoMessage}
+                />
                 <Route path={path + "/chartGroup"} component={ChartGroup} />
                 <Route path={path + "/trackQuery"} component={TrackQuery} />
               </>

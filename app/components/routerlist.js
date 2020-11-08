@@ -94,7 +94,12 @@ class RouterList extends React.PureComponent {
       routerUrl: "/floodModel",
     },
     {
-      text: "数据管理",
+      text: "数据中心",
+      imgurl: home,
+      routerUrl: "/dataCenter",
+    },
+    {
+      text: "系统管理",
       imgurl: home,
       routerUrl: "/home",
     },
@@ -115,7 +120,7 @@ class RouterList extends React.PureComponent {
                   window.location.href.split("#")[1] == item.routerUrl
                     ? { background: "rgb(227,152,62)", color: "white" }
                     : {
-                        background: "rgb(46, 49, 146)",
+                        background: "#0099ff",
                         // color: "rgb(132,135,192)",
                         color: "white",
                       }

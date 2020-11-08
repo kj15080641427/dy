@@ -687,6 +687,91 @@ export const showChart = (data, id, yd, yname) => {
   });
 };
 
+//模型
+export const modelChart = (data, id, yname, xvalue, yvalue) => {
+  let xdata = [];
+  let ydata = [];
+  var myChart = echarts.init(document.getElementById(id));
+  data.forEach((item) => {
+    xdata.push(item[xvalue].split(" ")[1].slice(0, -3));
+    ydata.push(item[yvalue]);
+  });
+  myChart.setOption({
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        // 坐标轴指示器，坐标轴触发有效
+        type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+      },
+    },
+    toolbox: {
+      show: true,
+      feature: {
+        // dataView: { show: true, readOnly: true },
+        magicType: { show: true, type: ["line", "bar"] },
+        restore: { show: true },
+        saveAsImage: { show: true },
+      },
+    },
+    xAxis: {
+      type: "category",
+      data: xdata.length ? xdata : [],
+      name: "",
+      axisLabel: {
+        color: "white",
+        fontSize: 16,
+      },
+      axisLine: {
+        lineStyle: {
+          color: "white",
+        },
+      },
+    },
+    yAxis: {
+      min: 1,
+      type: "value",
+      name: yname ? yname : "水位（m）",
+      axisLabel: {
+        color: "white",
+        fontSize: 16,
+      },
+      axisLine: {
+        lineStyle: {
+          color: "white",
+        },
+      },
+    },
+    legend: {
+      right: "center",
+      x: "0px",
+      y: "0px",
+      data: ["1小时降水", "24小时降水"],
+    },
+    // grid: {
+    //   width: 250,
+    //   height: 250,
+    // },
+    series: [
+      {
+        // name: '1小时降水',
+        data: ydata.length ? ydata : [],
+        type: "line",
+        markPoint: {
+          data: [
+            {
+              type: "max",
+              name: "最高",
+              label: { show: true, formatter: "{b}\n{c}" },
+            },
+          ],
+        },
+        lineStyle: {
+          color: "rgb(27,184,108)", //改变折线颜色
+        },
+      },
+    ],
+  });
+};
 export const showChartRiver = (data, id) => {
   let xdata = [];
   let ydata = [];

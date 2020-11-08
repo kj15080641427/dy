@@ -101,7 +101,26 @@ export function updateSIteRainData(data) {
 export function addSIteRainData(data) {
   return fetchJSONData("POST", "/base/SiteRain/save", data);
 }
-
+//  获取泵站
+export function getPump(data) {
+  return fetchJSONData("POST", "/base/Pump/getAll", data);
+}
+//  获取河流
+export function getWfsRiver(data) {
+  return fetchJSONData("POST", "/base/River/getAll", data);
+}
+//  获取水库
+export function getReservoir(data) {
+  return fetchJSONData("POST", "/base/Reservoir/getAll", data);
+}
+//  获取堤防工程
+export function getDike(data) {
+  return fetchJSONData("POST", "/base/Dike/getAll", data);
+}
+//  获取水闸
+export function getGate(data) {
+  return fetchJSONData("POST", "/base/Gate/getAll", data);
+}
 // 添加河流信息
 export function addSiteRiver(data) {
   return fetchJSONData("POST", "/base/River/save", data);

@@ -2,7 +2,6 @@ import {
   fetchJSONData,
   fetchOutData,
   fetchGet,
-  testLogin,
 } from "@app/utils/common";
 //  获取所有基础数据
 export function getAll(data = {}) {
@@ -375,22 +374,35 @@ export function downloadExcel(data) {
 //==============================================================洪涝模型接口================================================================================
 //查询洪涝模型的节点
 export function queryModelNodes(data) {
-  return fetchJSONData('POST', '/base/ModelNodes/query', data);
+  return fetchJSONData("POST", "/base/ModelNodes/query", data);
 }
 //查询洪涝模型的预报
 export function queryPrediction(data) {
-  return fetchJSONData('POST', '/base/ModelPrediction/query', data);
+  return fetchJSONData("POST", "/base/ModelPrediction/query", data);
 }
 //查询预报结果
 export function queryPredictionResult(data) {
-  return fetchJSONData('POST', '/base/ModelPredictionresult/query', data);
+  return fetchJSONData("POST", "/base/ModelPredictionresult/query", data);
 }
 
 //查询模型运行状态
 export function queryModelRunningState(data) {
-  return fetchJSONData('POST', '/base/ModelSitenoderel/queryPython', data);
+  return fetchJSONData("POST", "/base/ModelSitenoderel/queryPython", data);
 }
 //运行python
 export function startRunModel(data) {
-  return fetchJSONData('POST', '/base/ModelSitenoderel/startPython', data);
+  return fetchJSONData("POST", "/base/ModelSitenoderel/startPython", data);
+}
+
+export function getModelWater(data) {
+  return fetchJSONData("POST", "/base/ModelNodes/getWater", data);
+}
+export function getModelFlood(data) {
+  return fetchJSONData("POST", "/base/ModelNodes/getPoint", data);
+}
+export function getModelResult(data) {
+  return fetchJSONData("POST", "/base/ModelPredictionresult/query", data);
+}
+export function getRainPred(data) {
+  return fetchJSONData("POST", "/base/RainPrediction/query", data);
 }

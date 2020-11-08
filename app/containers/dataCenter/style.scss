@@ -1,0 +1,71 @@
+.data-center-modal {
+  .ant-modal-content {
+    .ant-modal-body {
+      padding: 0px;
+      border: 1px solid rgb(0, 160, 234);
+    }
+  }
+}
+.data-center-card {
+  .ant-card-head {
+    background: rgb(0, 160, 234);
+    color: white;
+  }
+  .ant-card-body {
+    height: 400px;
+    background: #003366;
+  }
+  .ant-card-bordered{
+    border: 1px solid rgb(0, 160, 234);
+  }
+  .ant-card {
+    color: white;
+  }
+}
+.data-center-body {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  padding-right: 100px;
+  background: #003366;
+
+  .data-center-search {
+    display: flex;
+    .input {
+      width: 100px;
+      margin-right: 10px;
+    }
+    .query {
+      margin-right: 10px;
+    }
+    // .reset {
+    //   margin-right: 10px;
+    // }
+    // margin-right: 10px;
+  }
+  .task-card-container {
+    .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
+      border: 1px solid #003366;
+    }
+    .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab {
+      border-radius: 2px 20px 0 0;
+      border: 0px;
+      color: white;
+      // background: #1890ff;
+      background: #003366;
+      border: 1px solid #1890ff;
+    }
+    .task-card-container
+      .ant-tabs-card.ant-tabs-top
+      > .ant-tabs-nav
+      .ant-tabs-tab {
+      color: white;
+    }
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: white;
+    }
+    .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active {
+      background: #1890ff;
+    }
+  }
+}
