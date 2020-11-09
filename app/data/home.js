@@ -554,3 +554,8 @@ export function getTaskCountState(data) {
 export function getTaskDanger(data) {
   return fetchJSONData("POST", "/base/TaskDanger/getAll", data);
 }
+
+//查询菜单
+export function getUserMenu(data) {
+  return fetchJSONData("POST", "/base/Users/getMenu", data);
+}

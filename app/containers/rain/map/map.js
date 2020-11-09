@@ -444,6 +444,7 @@ class Map extends React.PureComponent {
       if (this.props.onFeatureClick) {
         this.props.onFeatureClick(param);
       } else {
+        param = { ...param, dict: this.props.dict };
         this.addOverlay(Rain.type, param);
       }
 

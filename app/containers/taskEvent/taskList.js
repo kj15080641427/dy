@@ -187,7 +187,17 @@ const TaskList = (props) => {
                             <div className="task-list-card-text-span"></div>
                             <div>事件描述：</div>
                           </div>
-                          <div className="task-list-card-remark">
+                          <div
+                            className="task-list-card-remark"
+                            style={{
+                              color:
+                                item.grade == "1"
+                                  ? "red"
+                                  : item.grade == "2"
+                                  ? "green"
+                                  : "blue",
+                            }}
+                          >
                             &nbsp;&nbsp; &nbsp;&nbsp;
                             <Popover content={item.remark}>
                               {item.remark}

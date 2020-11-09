@@ -12,11 +12,13 @@ function* sendMessage({ data }) {
   try {
     let result = yield call(req.sendMessage, data);
     if (result.code == successCode) {
+      message.success("发送成功");
       yield put({
         type: types.GET_MESSAGE,
-        data: { taskEventsID: data[0].taskEventsID, type: 101 },
+        data: { taskEventsID: data.taskEventsID, type: 101 },
       });
-      message.success("发送成功");
+    } else {
+      message.error(result.msg);
     }
   } catch (e) {
     console.error(e);

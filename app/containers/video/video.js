@@ -56,6 +56,7 @@ class Monitor extends React.PureComponent {
     });
   };
   componentDidMount() {
+    this.props.actions.getDict();
     this.props.actions.getCountStation();
   }
   componentDidUpdate(pre) {

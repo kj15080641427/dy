@@ -131,8 +131,12 @@ class FloodModel extends Component {
             <RenderBox
               hasTitle
               title="降水预报走势图"
-              style={{ height: "200px" }}
+              style={{ height: "230px" }}
             >
+              <div className='flood-head-rain-text'>
+                {moment(new Date()).format("YYYY-MM-DD HH:mm")}至
+                {moment(new Date()).add(1, "days").format("YYYY-MM-DD HH:mm")}
+              </div>
               <div className="flood-head-rain" id="floodHeadRain"></div>
             </RenderBox>
             <RenderBox hasTitle title="洪涝预报" style={{ height: 420 }}>

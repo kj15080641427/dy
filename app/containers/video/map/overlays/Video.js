@@ -16,14 +16,14 @@ class Video extends Base {
   }
   render() {
     let { model } = this.props;
-    let {stiteWaterRadios} = model;
+    let { stiteWaterRadios } = model;
     let name = stiteWaterRadios?.[0]?.name;
     let aliasName = stiteWaterRadios?.[0]?.aliasName;
-
+    console.log(model);
     return (
       <div
         className="m-ovl-box m-ovl-rain luo-ovl-rain"
-        style={{ display: "none", width: 400, overflow: 'hidden'}}
+        style={{ display: "none", width: 400, overflow: "hidden" }}
         ref={(node) => {
           this.container = node;
         }}
@@ -34,8 +34,8 @@ class Video extends Base {
           {name}
         </div>
         <div className="m-ovl-line">
-          <label>别名：</label>
-          {aliasName}
+          <label>来源：</label>
+          {model.dict[model.stiteWaterRadios[0].siteDictionariesID]}
         </div>
         <div className="m-ovl-line">
           <label>地址：</label>

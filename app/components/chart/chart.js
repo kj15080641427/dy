@@ -200,10 +200,15 @@ export const pieChart = (domId, data, width, legend, title) => {
   };
   myChartcount.setOption(option);
 };
-export const taskChart = (domId, data, width, legend, title) => {
+export const taskChart = (domId, data, title, width, legend) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let option = {
-    title,
+    title: {
+      text: title,
+      left: "center",
+      top: "center",
+      textStyle: { color: "white", fontWeight: "200", fontSize: 14 },
+    },
     tooltip: {
       formatter: "{a} <br/>{b} : {c} ({d}%)",
     },
@@ -767,6 +772,91 @@ export const modelChart = (data, id, yname, xvalue, yvalue) => {
         },
         lineStyle: {
           color: "rgb(27,184,108)", //改变折线颜色
+        },
+      },
+    ],
+  });
+};
+export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
+  let xdata = [];
+  let ydata = [];
+  let myChartcount = echarts.init(document.getElementById(id));
+
+  data.forEach((item) => {
+    xdata.push(item[xvalue].split(" ")[1].slice(0, -3));
+    ydata.push(item[yvalue]);
+  });
+  myChartcount.setOption({
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        // 坐标轴指示器，坐标轴触发有效
+        type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+        shadowStyle: {
+          color: "rgba(0, 51, 102, 0.5)",
+        },
+      },
+    },
+    legend: {
+      data: [],
+      left: "center",
+      top: "10",
+      textStyle: {
+        color: "white",
+      },
+    },
+    toolbox: {
+      show: false,
+      feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: false },
+        magicType: {
+          show: true,
+          type: ["pie", "funnel"],
+        },
+        restore: { show: true },
+        saveAsImage: { show: true },
+      },
+    },
+    // grid: {
+    //   left: "center",
+    // },
+    xAxis: [
+      {
+        type: "category",
+        data: xdata,
+        splitNumber: 0,
+        maxInterval: 0,
+        axisLine: {
+          show: false,
+        },
+        axisTick: {
+          show: false,
+        },
+        axisLabel: {
+          color: "white",
+          fontSize: 18,
+        },
+      },
+    ],
+    yAxis: [
+      {
+        type: "value",
+        show: false,
+      },
+    ],
+    series: [
+      {
+        name: "",
+        type: "bar",
+        data: ydata,
+        barWidth: 25,
+        label: {
+          show: true,
+          position: "inside",
+        },
+        itemStyle: {
+          color: "rgba(33,115,111,1)",
         },
       },
     ],

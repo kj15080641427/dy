@@ -181,16 +181,15 @@ class Map extends React.PureComponent {
       key: "river40",
     });
 
-
     this.map.addVector({
       key: "video",
       zIndex: 20,
       style: {
         src: function (feature) {
-          const {stiteWaterRadios} = feature;
+          const { stiteWaterRadios } = feature;
           let online = stiteWaterRadios?.[0]?.isOnline;
-          online = online ? online !== '1' : false;
-          let iconName = online === true ? 'camera.svg' : 'cameraGray.svg';
+          online = online ? online !== "1" : false;
+          let iconName = online === true ? "camera.svg" : "cameraGray.svg";
           return require(`../../../resource/icon/${iconName}`)["default"];
         },
         anchor: [0.5, 0.5],
@@ -214,6 +213,7 @@ class Map extends React.PureComponent {
       if (this.props.onFeatureClick) {
         this.props.onFeatureClick(param);
       } else {
+        param = { ...param, dict: this.props.dict };
         this.props.handStateActions.setVideoInfo(param);
         this.addOverlay(Video.type, { ...param });
       }
@@ -456,6 +456,7 @@ function mapStateToProps(state) {
   return {
     alarmData: state.currency.alarmData,
     water: state.mapAboutReducers.water,
+    dict: state.currency.dict,
   };
 }
 

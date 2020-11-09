@@ -501,6 +501,21 @@ function* getFloodAlarmData() {
     console.log(e);
   }
 }
+
+//获取菜单
+function* getUserMenuList({ data }) {
+  try {
+    const result = yield call(req.getUserMenu, data);
+    if ((result.code = code)) {
+      yield put({
+        type: types.SET_USER_MENU,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
 export default function* mapAbout() {
   yield all([
     takeEvery(types.GET_WATER, getWater),
@@ -518,5 +533,7 @@ export default function* mapAbout() {
     takeEvery(types.GET_FLOOD_RANK_USER, getFloodRankUser),
     takeEvery(types.GET_ALARM_DATA, getAlarmData),
     takeEvery(types.GET_FLOOD_ALARM_DATA, getFloodAlarmData),
+
+    takeEvery(types.GET_USER_MENU, getUserMenuList),
   ]);
 }

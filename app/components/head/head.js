@@ -15,12 +15,13 @@ class Head extends React.PureComponent {
   }
   render() {
     const { weatherData } = this.state;
-    const { titleImg } = this.props;
+    const { titleImg, groundColor } = this.props;
     return (
       <div
         className="m-head-water"
         style={{
           background: `url(${titleImg}) center no-repeat`,
+          backgroundColor: groundColor,
         }}
       >
         <div className="m-hd-weather">

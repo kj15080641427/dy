@@ -4,6 +4,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import DYForm from "@app/components/home/form";
+import { URL as URLDefine } from '@app/utils/common.js'
 import echarts from "echarts/lib/echarts";
 import {
   DatePicker,
@@ -152,7 +153,7 @@ class DeviceManageFlood extends Component {
     let xdata = [];
     let ydata = [];
     var myChart = echarts.init(document.getElementById(`site-count-chart-${this.props.device.type}`));
-    data.reverse().forEach((item) => {
+    data.forEach((item) => {
       xdata.push(item.tm);
       ydata.push(Number(item.number));
     });
@@ -222,11 +223,12 @@ class DeviceManageFlood extends Component {
   }
 
   async handleImportDevice(tg) {
+    if (tg.files.length === 0) return
     this.setState({ showLoading: true });
     const formData = new FormData();
     formData.append("uploadFile", tg.files[0]);
     const rs = await fetch(
-      `/api/base/SiteDevice/import?relTypeCode=${this.props.device.type}&relTypeId=${this.state.currentSite.key}&relTypeNmae=${this.props.device.name}`,
+      `${URLDefine}/base/SiteDevice/import?relTypeCode=${this.props.device.type}&relTypeId=${this.state.currentSite.key}&relTypeNmae=${this.props.device.name}`,
       {
         method: "post",
         credentials: "include",
@@ -239,15 +241,16 @@ class DeviceManageFlood extends Component {
     if (rs.code === 200) {
       message.success(rs.data);
     } else {
-      message.error(rs.data);
+      message.error(rs.msg);
     }
+    tg.value = null
     this.setState({ showLoading: false, deviceTablePage: 1 });
     this.getDeviceData();
   }
 
   handleExportDevice() {
     this.downloadFile(
-      "/api/v2/base/SiteDevice/export",
+      "/base/SiteDevice/export",
       {
         relTypeCode: this.props.device.type,
         relTypeId: this.state.currentSite.key,
@@ -260,7 +263,7 @@ class DeviceManageFlood extends Component {
   }
   handleExportDeviceRepair() {
     this.downloadFile(
-      "/api/v2/base/SiteDevice/export",
+      "/base/SiteDevice/export",
       {
         relTypeCode: this.props.device.type,
         relTypeId: this.state.currentSite.key,
@@ -271,12 +274,12 @@ class DeviceManageFlood extends Component {
     );
   }
   downloadFile(url, params, filename) {
-    fetch(url, {
+    fetch(`${URLDefine}${url}`, {
       method: "post",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        token: localStorage.getItem("token"),
+        TOKEN: localStorage.getItem("token"),
       },
       body: JSON.stringify(params),
     })

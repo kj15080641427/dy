@@ -92,9 +92,9 @@ class WeatherChart extends React.PureComponent {
               </label>
             ))}
           </div>
-          <Row className="time-select2">
+          {/* <Row className="time-select2">
             <div>东营市降雨:{this.state.cityData}</div>
-          </Row>
+          </Row> */}
           <Row
             className="time-select"
             style={{ display: this.state.weathershow ? "block" : "none" }}
@@ -165,7 +165,7 @@ class WeatherChart extends React.PureComponent {
         },
       },
       title: {
-        text: "县区降雨量(单位mm)",
+        text: `东营市降雨:${this.state.cityData}`,
         left: "center",
         top: "2px",
         textStyle: {

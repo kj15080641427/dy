@@ -198,7 +198,8 @@ class Map extends React.PureComponent {
     // });
     this.map.startSelectFeature("water", (param) => {
       // this.props.mapActions.changeWaterId(param.id);
-      param = { ...param, id: param.stcd };
+      console.log(this.props);
+      param = { ...param, id: param.stcd, dict: this.props.dict };
       this.addOverlay(Water.type, { ...param });
 
       if (this.props.onFeatureClick) {
@@ -445,6 +446,7 @@ function mapStateToProps(state) {
   return {
     alarmData: state.currency.alarmData,
     water: state.mapAboutReducers.water,
+    dict: state.currency.dict,
   };
 }
 

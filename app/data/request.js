@@ -406,3 +406,7 @@ export function getModelResult(data) {
 export function getRainPred(data) {
   return fetchJSONData("POST", "/base/RainPrediction/query", data);
 }
+//查询菜单
+export function getUserMenu(data) {
+  return fetchJSONData("POST", "/base/Users/getMenu", data);
+}

@@ -41,15 +41,34 @@ class Rain extends Base {
         }}
       >
         <div className="m-ovl-line luo-ovl-title">雨量站点：{model.name}</div>
-        <div className="m-ovl-line"><label>站点编号：</label>{model.stcd}</div>
         <div className="m-ovl-line">
-        <label>数据来源：</label>雨量
+          <label>站点编号：</label>
+          {model.stcd}
         </div>
-        <div className="m-ovl-line"><label>站点地址：</label>{model.address}</div>
-        <div className="m-ovl-line"><label>5分钟降水量：</label>{drpLevel}</div>
-        <div className="m-ovl-line"><label>1小时降水量：</label>{hourRain}</div>
-        <div className="m-ovl-line"><label>24小时降水量：</label>{dayRain}</div>
-        <div className="m-ovl-line"><label>更新时间：</label>{tmDesc}</div>
+        <div className="m-ovl-line">
+          <label>数据来源：</label>
+          {model.dict[model.siteRain[0]?.siteDictionariesID]}
+        </div>
+        <div className="m-ovl-line">
+          <label>站点地址：</label>
+          {model.address}
+        </div>
+        <div className="m-ovl-line">
+          <label>5分钟降水量：</label>
+          {drpLevel}
+        </div>
+        <div className="m-ovl-line">
+          <label>1小时降水量：</label>
+          {hourRain}
+        </div>
+        <div className="m-ovl-line">
+          <label>24小时降水量：</label>
+          {dayRain}
+        </div>
+        <div className="m-ovl-line">
+          <label>更新时间：</label>
+          {tmDesc}
+        </div>
         <span className="iconfont iconcuo m-ovl-close"></span>
       </div>
     );

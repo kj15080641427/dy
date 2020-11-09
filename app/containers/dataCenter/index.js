@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import RouterList from "../../components/routerlist";
 import { Tabs, Input, Button, Modal, Card } from "antd";
 import Head from "../../components/head/head";
-import titleImg from "../../resource/title/ocean.png";
+import titleImg from "../../resource/title/dataCenter.png";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../home/redux/actions";
@@ -14,6 +14,7 @@ import {
   getReservoir,
   getDike,
 } from "@app/data/home";
+import ModalInfo from "./modelInfo";
 import "./style.scss";
 const { TabPane } = Tabs;
 const tabRequest = {
@@ -30,12 +31,183 @@ const storyKeys = {
   4: "dataCenterReservoir",
   5: "dataCenterDike",
 };
-const river = [{ label: "名称", value: "name" }];
-const pump = [{ label: "泵站名称", value: "name" }];
+const river = [
+  { label: "流域名称", value: "name" },
+  { label: "经度", value: "lonsrs", col: 12 },
+  { label: "纬度", value: "latsrs", col: 12 },
+  { label: "河口经度", value: "londest", col: 12 },
+  { label: "入河纬度", value: "latdest", col: 12 },
 
+  { label: "河源详细地址", value: "addresssrs" },
+  { label: "河口详细地址", value: "addressdest" },
+  { label: "上一级河流", value: "riverlevelabove" },
+  { label: "流经范围", value: "flowrange" },
+  { label: "河流总长", value: "riverlen", col: 12 },
+
+  { label: "流域总面积", value: "riverarea", col: 12 },
+  { label: "流经东营市河流长度", value: "riverlendy" },
+  { label: "流域面积东营市", value: "riveraready" },
+  { label: "防洪标准", value: "floodspec" },
+  { label: "排涝标准", value: "drainspec" },
+
+  { label: "防洪流量最小", value: "antifloodflowmin", col: 12 },
+  { label: "防洪流量最大", value: "antifloodflowmax", col: 12 },
+  { label: "最新维护时间", value: "gmtmodify" },
+];
+const pump = [
+  { label: "泵站名称", value: "name" },
+  { label: "泵站编码", value: "stcd" },
+  { label: "所在水资源三级区名称", value: "waterresource3" },
+  { label: "所在灌区", value: "irrigateregion" },
+  { label: "河流名称", value: "rivername" },
+  { label: "建成时间", value: "buildtime" },
+  { label: "工程任务", value: "projecttask" },
+  { label: "工程等级", value: "projectlevel" },
+  { label: "主要建筑物级别", value: "buildinglevel" },
+  { label: "管理单位", value: "management" },
+  { label: "归口管理部门", value: "ownermanagement" },
+  { label: "设计扬程", value: "delivery" },
+  { label: "水泵数量", value: "devicecount" },
+  { label: "经度", value: "lon", col: 12 },
+  { label: "纬度", value: "lat", col: 12 },
+  {
+    label: "是否为闸站工程",
+    value: "isgateproject",
+    col: 12,
+    isDict: "whether",
+  },
+  {
+    label: "是否为引泉工程",
+    value: "isspringsproject",
+    col: 12,
+    isDict: "whether",
+  },
+  { label: "是否完成划界", value: "isbordered", col: 12, isDict: "whether" },
+  { label: "是否完成确权", value: "isauthorized", col: 12, isDict: "whether" },
+  { label: "装机流量", value: "flow", col: 12 },
+  { label: "装机功率", value: "power", col: 12 },
+  { label: "维护时间", value: "gmtmodify" },
+];
+const gate = [
+  { label: "水闸名称", value: "name" },
+  { label: "闸站编号", value: "stcd" },
+  { label: "类别", value: "type", isDict: "type" },
+  { label: "地区编码", value: "region" },
+  { label: "经度", value: "lon" },
+  { label: "纬度", value: "lat" },
+  { label: "所在灌区", value: "irrigateregion" },
+  { label: "所在水资源三级区名称", value: "waterresource3" },
+  { label: "所在河流", value: "rivername" },
+
+  { label: "建成时间", value: "buildtime" },
+  { label: "水闸管理单位名称", value: "management" },
+  { label: "工程等级", value: "projectlevel" },
+  { label: "主要建筑物级别", value: "buidinglevel" },
+  { label: "水闸归口管理部门", value: "ownermanagement" },
+  { label: "是否为闸站工程", value: "isgateproject", isDict: "whether" },
+  { label: "是否为套闸工程", value: "isdualproject", isDict: "whether" },
+  { label: "是否完成划界", value: "isbordered", isDict: "whether" },
+  { label: "是否完成确权", value: "isauthorized", isDict: "whether" },
+  { label: "记录创建时间", value: "gmtcreate" },
+  { label: "记录修改日期", value: "gmtmodify" },
+];
+const reservoir = [
+  { label: "水库名称", value: "name" },
+  { label: "经度", value: "lon", col: 12 },
+  { label: "纬度", value: "lat", col: 12 },
+  { label: "所在水资源三级区名称", value: "waterresource3", col: 12 },
+  { label: "河流名称", value: "rivername", col: 12 },
+  { label: "水库类型", value: "rvtype", col: 12 },
+  { label: "类型", value: "rvtype1", col: 12 },
+  { label: "挡水主坝类型按材料分", value: "rvbartypem", col: 12 },
+  { label: "挡水主坝类型按结构分", value: "rvbartypes", col: 12 },
+  { label: "主要泄洪建筑物型式", value: "flooddischargetype", col: 12 },
+  { label: "生产安置人口（万人）", value: "polution", col: 12 },
+
+  { label: "工程建设情况", value: "projectstatus" },
+  { label: "建成时间", value: "buildtime" },
+  { label: "水库调节性能", value: "rvadjust" },
+  { label: "工程等别", value: "projectlevel" },
+  { label: "主坝级别", value: "barlevel" },
+
+  { label: "主坝尺寸坝高（m）", value: "barheight", col: 12 },
+  { label: "主坝尺寸坝长（m）", value: "barlen", col: 12 },
+  { label: "最大泄洪流量（m3/S）", value: "floodmax" },
+  { label: "高程系统", value: "elevationsystem" },
+  { label: "坝顶高程(m)", value: "bartopheight" },
+
+  { label: "正常蓄水位(m)", value: "waterlevelnormal", col: 12 },
+  { label: "死水位(m)", value: "waterleveldeath", col: 12 },
+  { label: "总库容（万m3）", value: "capacitymax", col: 12 },
+  { label: "死库容(万m3)", value: "capacitydeath", col: 12 },
+  { label: "正常蓄水位相应水面面积（km2）", value: "areanormal" },
+  { label: "供水", value: "waterprovid", col: 12 },
+  { label: "灌溉", value: "irrigate", col: 12 },
+  { label: "养殖", value: "farmer", col: 12 },
+  { label: "设计年供水量", value: "waterproviddesign", col: 12 },
+  { label: "2011年供水量(万m3)", value: "waterprovidactual", col: 12 },
+  { label: "2011年供水量数据来源", value: "waterprovidactualsrs", col: 12 },
+
+  { label: "取水口数量(个)", value: "intakecount", col: 12 },
+  { label: "供水对象", value: "watersupplytarget", col: 12 },
+  { label: "设计灌溉面积(万亩)", value: "areairrigate" },
+
+  { label: "灌溉对象", value: "irrigatetarget" },
+  { label: "管理单位", value: "management" },
+  { label: "水口管理单位", value: "ownermanagement" },
+
+  { label: "是否完成划界", value: "isbordered", col: 12, isDict: "whether" },
+  { label: "是否完成确权", value: "isauthorized", col: 12, isDict: "whether" },
+  { label: "记录创建时间", value: "gmtcreate" },
+  { label: "记录修改时间", value: "gmtmodify" },
+];
+const dike = [
+  { label: "堤防名称", value: "name" },
+  { label: "起点地理坐标经度", value: "startlat", col: 12 },
+  { label: "起点地理坐标纬度", value: "startlon", col: 12 },
+  { label: "终点地理坐标经度", value: "endlon", col: 12 },
+  { label: "终点地理坐标纬度", value: "endlat", col: 12 },
+  { label: "起点位置", value: "addrstart", col: 12 },
+  { label: "终点位置", value: "addrend", col: 12 },
+  { label: "所在河流(湖泊、海岸)名称", value: "rivername" },
+  { label: "河流岸别", value: "riverside" },
+  { label: "堤防跨界情况", value: "dikeinfo" },
+  { label: "堤防类型", value: "diketype" },
+  { label: "堤防型式", value: "dikestyle" },
+
+  { label: "建成时间", value: "buildtime" },
+  { label: "管理部门", value: "management" },
+  { label: "工程任务", value: "projectobjective" },
+
+  { label: "堤防级别", value: "dikelevel" },
+  { label: "是否完成划界", value: "isbordered", isDict: "whether" },
+  { label: "规划防洪(潮)标准［重现期］（年）", value: "yeardesign" },
+  { label: "堤防长度(m)", value: "dikelen" },
+  { label: "是否完成确权", value: "isauthorized", isDict: "whether" },
+  { label: "达到规划防洪（潮）标准的长度(m)", value: "dikelendesign" },
+  { label: "高程系统", value: "elevationsystem" },
+  { label: "起点堤顶高程", value: "eletops" },
+  { label: "终点堤顶高程(m)", value: "eletope" },
+  { label: "设计水（高潮）位(m)", value: "waterleveldesgin" },
+  { label: "最大堤防高度", value: "maxheight", col: 12 },
+  { label: "最小堤防高度", value: "minheight", col: 12 },
+  { label: "最大堤顶宽度", value: "maxwidth", col: 12 },
+  { label: "最小堤顶宽度", value: "minwidth", col: 12 },
+
+  { label: "水闸数量(个)", value: "gatecount", col: 12 },
+  { label: "管涵数量(个)", value: "holecount", col: 12 },
+  { label: "泵站数量(处)", value: "pumpcount", col: 12 },
+  { label: "倒虹吸数量(个)，", value: "siphowcount", col: 12 },
+
+  { label: "记录创建时间", value: "gmtcreate" },
+  { label: "记录修改时间", value: "gmtmodify" },
+];
 const infoObj = {
   1: river,
   2: pump,
+  3: gate,
+  4: reservoir,
+  5: dike,
 };
 const DataCenter = (props) => {
   const { getBase } = props.actions;
@@ -108,27 +280,13 @@ const DataCenter = (props) => {
   );
   return (
     <div className="data-center-body">
-      <div className="data-center-modal">
-        {/* <Modal
-          visible={visible}
-          footer={null}
-          onCancel={() => setVisible(false)}
-          style={{ padding: "0px" }}
-          className="data-center-modal"
-        >
-          <div className="data-center-card">
-            <Card title={"名称"}>
-              {river.map((item) => {
-                return (
-                  <div key={item.label}>
-                    {item.label}:{infoObj[tabKey][info[item.value]]}
-                  </div>
-                );
-              })}
-            </Card>
-          </div>
-        </Modal> */}
-      </div>
+      <ModalInfo
+        list={infoObj[tabKey]}
+        visible={visible}
+        setVisible={setVisible}
+        info={info}
+      ></ModalInfo>
+
       <div style={{ height: "90px", background: "#003366" }}></div>
       <div className="right-background"></div>
       <Head titleImg={titleImg} style={{ zIndex: 9999 }}></Head>
@@ -193,22 +351,22 @@ const DataCenter = (props) => {
                   width: "10%",
                   align: "center",
                 },
-                // {
-                //   name: "操作",
-                //   dataIndex: "",
-                //   width: "10%",
-                //   align: "center",
-                //   render: (record) => (
-                //     <a
-                //       onClick={() => {
-                //         setInfo(record);
-                //         setVisible(true);
-                //       }}
-                //     >
-                //       详情
-                //     </a>
-                //   ),
-                // },
+                {
+                  name: "操作",
+                  dataIndex: "",
+                  width: "10%",
+                  align: "center",
+                  render: (record) => (
+                    <a
+                      onClick={() => {
+                        setInfo(record);
+                        setVisible(true);
+                      }}
+                    >
+                      详情
+                    </a>
+                  ),
+                },
               ]}
               dataSource={dataCenterRiver}
             ></TableShow>
@@ -254,13 +412,22 @@ const DataCenter = (props) => {
                   width: "10%",
                   align: "center",
                 },
-                // {
-                //   name: "操作",
-                //   dataIndex: "gmtmodify",
-                //   width: "10%",
-                //   align: "center",
-                //   render: () => <a>详情</a>,
-                // },
+                {
+                  name: "操作",
+                  dataIndex: "",
+                  width: "10%",
+                  align: "center",
+                  render: (record) => (
+                    <a
+                      onClick={() => {
+                        setInfo(record);
+                        setVisible(true);
+                      }}
+                    >
+                      详情
+                    </a>
+                  ),
+                },
               ]}
               dataSource={dataCenterPump}
             ></TableShow>
@@ -306,13 +473,28 @@ const DataCenter = (props) => {
                   width: "10%",
                   align: "center",
                 },
-                // {
-                //   name: "操作",
-                //   dataIndex: "gmtmodify",
-                //   width: "10%",
-                //   align: "center",
-                //   render: () => <a>详情</a>,
-                // },
+                {
+                  name: "操作",
+                  dataIndex: "",
+                  width: "10%",
+                  align: "center",
+                  render: (record) => (
+                    <a
+                      onClick={() => {
+                        setInfo({
+                          ...record,
+                          isauthorized: !record.isauthorized ? 1 : 0,
+                          isbordered: !record.isbordered ? 1 : 0,
+                          isdualproject: !record.isdualproject ? 1 : 0,
+                          isgateproject: !record.isgateproject ? 1 : 0,
+                        });
+                        setVisible(true);
+                      }}
+                    >
+                      详情
+                    </a>
+                  ),
+                },
               ]}
               dataSource={dataCenterGate}
             ></TableShow>
@@ -358,13 +540,22 @@ const DataCenter = (props) => {
                   width: "10%",
                   align: "center",
                 },
-                // {
-                //   name: "操作",
-                //   dataIndex: "gmtmodify",
-                //   width: "10%",
-                //   align: "center",
-                //   render: () => <a>详情</a>,
-                // },
+                {
+                  name: "操作",
+                  dataIndex: "",
+                  width: "10%",
+                  align: "center",
+                  render: (record) => (
+                    <a
+                      onClick={() => {
+                        setInfo(record);
+                        setVisible(true);
+                      }}
+                    >
+                      详情
+                    </a>
+                  ),
+                },
               ]}
               dataSource={dataCenterReservoir}
             ></TableShow>
@@ -410,13 +601,22 @@ const DataCenter = (props) => {
                   width: "10%",
                   align: "center",
                 },
-                // {
-                //   name: "操作",
-                //   dataIndex: "gmtmodify",
-                //   width: "10%",
-                //   align: "center",
-                //   render: () => <a>详情</a>,
-                // },
+                {
+                  name: "操作",
+                  dataIndex: "",
+                  width: "10%",
+                  align: "center",
+                  render: (record) => (
+                    <a
+                      onClick={() => {
+                        setInfo(record);
+                        setVisible(true);
+                      }}
+                    >
+                      详情
+                    </a>
+                  ),
+                },
               ]}
               dataSource={dataCenterDike}
             ></TableShow>

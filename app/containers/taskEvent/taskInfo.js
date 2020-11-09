@@ -96,7 +96,8 @@ const TaskInfo = (props) => {
     }
   };
   return (
-    <div style={{ height: "100%", marginTop: "-90px" }}>
+    <div style={{ height: "100%", marginTop: "-90px", background: "#003366" }}>
+      {/* <div style={{ height: "90px" }}></div> */}
       <div style={{ height: "90px", background: "#003366", zIndex: 99 }}></div>
       <div
         style={{
@@ -109,7 +110,7 @@ const TaskInfo = (props) => {
         }}
       ></div>
       <Map layerVisible={{}} person={userPosition}></Map>
-      <Head titleImg={titleImg} />
+      <Head titleImg={titleImg} groundColor="#003366" />
       <RouterList />
       <div
         className="track-query-body"
