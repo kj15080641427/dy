@@ -7,7 +7,6 @@ import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/monitor";
 import * as mapAction from "@app/redux/actions/map";
 import UbiMap from "../../monitor/map/ubimap";
-import FloodAnimation from "./FloodAnimation";
 import addEventListener from "rc-util/lib/Dom/addEventListener";
 import emitter from "@app/utils/emitter.js";
 import { templateRain, templatePonding } from "./template";
@@ -38,13 +37,13 @@ class Map extends React.PureComponent {
       Video,
       Gate,
       Pump,
-      WfsRiver,
+      // WfsRiver,
       Ponding,
       Warehouse,
     ];
     // eslint-disable-next-line react/no-direct-mutation-state
     this.type.forEach((Ovl) => {
-      // this.state.overlays[Ovl.type] = {};
+       this.state.overlays[Ovl.type] = {};
     });
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.onOverlayClose = this.onOverlayClose.bind(this);
@@ -106,7 +105,7 @@ class Map extends React.PureComponent {
     this.videoControl.login();
   }
   componentWillUnmount() {
-    this._resizeToken.remove();
+    this._resizeToken && this._resizeToken.remove();
     if (this._resizeTimeout) {
       clearTimeout(this._resizeTimeout);
     }
@@ -127,74 +126,48 @@ class Map extends React.PureComponent {
       // url: "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}",
       url: `https://t0.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
-      opacity: 1,
-      className: "ol-layer-tiandi",
       key: "tiandi",
+      //className: "ol-layer-tiandi",
       projection: true,
     });
     this.map.addTile({
       url: `https://t0.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=${this.mapKey}`,
       visible: true,
-      opacity: 1,
       key: "tiandi2",
-      className: "ol-layer-tiandi",
+      //className: "ol-layer-tiandi",
       projection: true,
     });
-
     this.map.addGeo({
       url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
       params: {
-        LAYERS: "dy:DYWater",
+        LAYERS: "dy:市界线",
         TILED: true,
       },
       zIndex: 10,
       key: "river",
     });
-    // this.map.addImageTile({
-    //   url: 'http://code.tuhuitech.cn:10012/geoserver/dy/wms',
-    //   params: {
-    //     'LAYERS': 'dy:河流40',
-    //     'TILED': false
-    //   },
-    //   zIndex: 11,
-    //   key: "river40"
-    // });
+
     // this.map.addGeo({
     //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
     //   params: {
-    //     LAYERS: "dy:河流40",
+    //     LAYERS: "dy:DYWater",
     //     TILED: true,
     //   },
     //   zIndex: 10,
-    //   key: "river2",
+    //   opacity: 0.1,
+    //   key: "river",
     // });
 
-    this.flood = new FloodAnimation({
-      map: this.map.getMap(),
-      url: "http://code.tuhuitech.cn:10012/geoserver/dy/ows?service=WFS",
-      srsName: "EPSG:4326",
-      ns: "www.gcspace.com",
-      ws: "dy",
-      layerName: "River",
-      colorTable: [
-        { min: 0, max: 0.1, color: "#00ff00" },
-        { min: 0.1, max: 0.5, color: "#eee538" },
-        { min: 0.5, max: 0.75, color: "#ffa500" },
-        { min: 0.75, max: 1000, color: "#ff0000" },
-      ],
-    });
-    this.flood.on("click", this.onFloodClick);
-    this.map.addWFS({
-      zIndex: 11,
-      key: "wfsRiver",
-      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wfs",
-      typename: "dy:河流40",
-      onClick: (props) => {
-        if (props && props.NAME) {
-          this.onWfsRiverClick(props);
-        }
+    this.map.addGeo({
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+      params: {
+        LAYERS: "dy:河流40",
+        TILED: true,
       },
+      zIndex: 10,
+      key: "river2",
     });
+
     this.map.addVector({
       key: "fRain",
       zIndex: 20,
@@ -274,37 +247,7 @@ class Map extends React.PureComponent {
       this.addOverlay(Ponding.type, param);
     });
   }
-  onWfsRiverClick(props) {
-    props.id = props.NAME;
-    let { details } = this.props;
-    if (details.wfsRiver[props.NAME]) {
-      this.addOverlay(WfsRiver.type, {
-        ...props,
-        ...details.wfsRiver[props.NAME],
-      });
-    } else {
-      getWfsRiver({ name: props.NAME })
-        .then((res) => {
-          if (res.code === 200) {
-            let record = (res.data && res.data[0]) || null;
-            this.props.actions.setDetailData({
-              key: "wfsRiver",
-              value: record,
-              idKey: "name",
-            });
-            this.addOverlay(
-              WfsRiver.type,
-              record ? { ...props, ...record } : props
-            );
-          } else {
-            return Promise.reject(res.msg || "未知错误");
-          }
-        })
-        ["catch"]((e) => {
-          message.error("获取河流详情失败");
-        });
-    }
-  }
+
   addOverlay(key, param) {
     let id = param.id;
     let { overlays } = this.state;
@@ -336,7 +279,7 @@ class Map extends React.PureComponent {
         this.map.setVisible(layerKey, show);
       });
       // 特殊几个layer, 如洪水
-      this.flood.setVisible(layerVisible.flood);
+      //this.flood.setVisible(layerVisible.flood);
     }
   }
   addEvent() {
@@ -445,9 +388,7 @@ class Map extends React.PureComponent {
       overlays: { ...overlays },
     });
   }
-  onFloodClick(featureProp) {
-    console.log(featureProp);
-  }
+
 }
 function mapStateToProps(state) {
   // console.log(state, "STATE");
