@@ -535,8 +535,9 @@ export default (function(window) {
         if (!param || !param.key) return;
         var oneurl = param.url;
         var tilelayer = new TileLayer({
-            visible: param.visible == null ? true : param.visible,
+            visible: param.visible === null ? true : param.visible,
             zIndex: param.zIndex ? param.zIndex : 0,
+            opacity: param.opacity === null ? 1 : param.opacity,
             source: new TileWMS({ // wfs
               url: oneurl,
               params: param.params,
