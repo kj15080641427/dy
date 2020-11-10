@@ -16,6 +16,12 @@ const initState = {
   floodRain: [],
   initFlood: [],
   floodUser: [],
+
+  //按照防汛人员id 为key的映射
+  floodUserMap: {},
+  //按照防汛专家id为key 的映射
+  expertMap: {},
+
   floodLoading: true,
   expert: { all: [] },
 };
@@ -140,10 +146,28 @@ export default function mapAboutReducers(state = initState, action) {
     case types.SET_FLOOD_USER:
       action.data[1].phone = "18159774272";
       // action.data[0].phone = "1";
-      newState = { ...newState, floodUser: action.data };
+      let userMap = {};
+      //按照防汛人员的id 建立索引，便于前端进行查找
+      if (action.data && action.data.length !== 0) {
+        userMap = action.data.forEach(item => {
+          if (item.userId) {
+            userMap[item.userId] = item;
+          }
+        });
+      }
+      newState = { ...newState, floodUser: action.data, floodUserMap: {...userMap} };
       break;
     case types.SET_FLOOD_EXPERT:
-      newState = { ...newState, expert: action.data };
+      //按照专家的id 生成映射表。便于按照专家id进行查找
+      let expertMap = {};
+      if (action.data && action.data.length !== 0) {
+        action.data.forEach(item => {
+          if (item.userId) {
+            expertMap[item.userId] = item;
+          }
+        });
+      }
+      newState = { ...newState, expert: action.data, expertMap: {...expertMap} };
       break;
     case types.SET_MATERIAL_BY_ID:
       newState = { ...newState, material: action.data };
