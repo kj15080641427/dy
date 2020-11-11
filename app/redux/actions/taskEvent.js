@@ -271,3 +271,20 @@ export const getTaskWarning = (data) => {
     data,
   };
 };
+
+//请求历史路径
+export const getPersonTrack = (data) => {
+  return {
+    type: types.GET_PERSON_TRACK,
+    data,
+  };
+};
+
+//更新历史路径数据
+export const updateTrackData = (data) => {
+  return {
+    type: types.FLOOD_TRACK_UPDATE,
+    data
+  };
+};
+

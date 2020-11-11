@@ -345,6 +345,10 @@ export function getFloodRanksAll(data) {
 export function getFloodAddress(data) {
   return fetchJSONData("POST", "/base/DevicePosition/real", data);
 }
+//查询人员历史轨迹
+export function queryFloodPosLog(data) {
+  return fetchJSONData("POST", "/base/DevicePositionLog/log", data);
+}
 // 获取所有防汛人员信息
 export function getfloodUser(data) {
   return fetchJSONData("POST", "/base/floodUser/getAll", data);
@@ -535,3 +539,4 @@ export function getTaskCountState(data) {
 export function getTaskDanger(data) {
   return fetchJSONData("POST", "/base/TaskDanger/getAll", data);
 }
+

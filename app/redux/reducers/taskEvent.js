@@ -15,11 +15,16 @@ const initState = {
   taskDanger: [],
   taskdangerModalVisible: false,
   taskWarning: [],
+  //当前点击的用户轨迹列表
+  selectedPersonTrack: [],
+  //人员最后一次位置
+  floodAddress: []
 };
 let selected = [];
 
+// eslint-disable-next-line complexity
 export default function taskReducers(state = initState, action) {
-  let newState = Object.assign({}, state);
+    let newState = Object.assign({}, state);
   switch (action.type) {
     case types.SET_MATERIAL_TABLE_INPUT: // 设置物资数量
       let data = action.data;
@@ -110,6 +115,9 @@ export default function taskReducers(state = initState, action) {
       break;
     case types.SET_TASK_WARNING: //
       newState = { ...newState, taskWarning: action.data };
+      break;
+    case types.FLOOD_TRACK_UPDATE:
+      newState = {...newState, selectedPersonTrack: action.data};
       break;
     default:
       break;

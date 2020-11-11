@@ -6,6 +6,46 @@ import * as actions from "@app/redux/actions/taskEvent";
 import "../task.scss";
 
 const TaskInfoCheck = (props) => {
+  const [layerVisible, setLayerVisible] = useState({
+    person: {label: '人员定位', value: true},
+    house: {label: '物资仓库', value: true},
+    rank: {label: '防汛队伍', value: true}
+  });
+  return (
+      <div className="task-info-checkbox">
+        <div className="ranSwitch">
+          <div className="switch-border">
+            {
+              Object.keys(layerVisible).map(key => {
+                let item = layerVisible[key];
+                return (
+                    <Col span={24} key={item.floodRanksId}>
+                      <Checkbox
+                          className="switch-checkout"
+                          onChange={(e) => {
+                            let newState = {...layerVisible};
+                            newState[key].value = e.target.checked;
+                            setLayerVisible(newState);
+                          }}
+                          checked={item.value}
+                      >
+                        <div className="switch-ponding-flex">
+                          <div className="switch-rain"></div>
+                          <div>{item.label}</div>
+                          {/*<div>{item.name.split("防汛")[0]}</div>*/}
+                        </div>
+                      </Checkbox>
+                    </Col>
+                );
+              })
+            }
+          </div>
+        </div>
+      </div>
+  );
+};
+
+const TaskInfoCheck_old = (props) => {
   const { setMapUserPosition } = props.actions;
   const { floodRanks, expert, userPosition } = props;
 

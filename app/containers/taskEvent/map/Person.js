@@ -40,26 +40,26 @@ class Person extends Base {
         </div>
         <div className="m-ovl-line">
           <span>电话号码: {model.phone}</span>
-          <span className="iconfont iconshipin m-ovl-video"></span>
+          {/*<span className="iconfont iconshipin m-ovl-video"/>*/}
         </div>
-        <div style={{ color: "white" }}>
-          开始时间:
-          <DatePicker
-            format="YYYY-MM-DD HH:mm"
-            onOk={this.onStartOk}
-            onChange={() => console.log(111)}
-          ></DatePicker>
-        </div>
-        <div style={{ color: "white" }}>
-          结束时间:
-          <DatePicker
-            format="YYYY-MM-DD HH:mm"
-            onOk={this.onEndOk}
-            onChange={() => console.log(111)}
-          ></DatePicker>
-        </div>
-        <div>
-          <Button
+        {/*<div style={{ color: "white" }}>*/}
+        {/*  开始时间:*/}
+        {/*  <DatePicker*/}
+        {/*    format="YYYY-MM-DD HH:mm"*/}
+        {/*    onOk={this.onStartOk}*/}
+        {/*    onChange={() => console.log(111)}*/}
+        {/*  />*/}
+        {/*</div>*/}
+        {/*<div style={{ color: "white" }}>*/}
+        {/*  结束时间:*/}
+        {/*  <DatePicker*/}
+        {/*    format="YYYY-MM-DD HH:mm"*/}
+        {/*    onOk={this.onEndOk}*/}
+        {/*    onChange={() => console.log(111)}*/}
+        {/*  />*/}
+        {/*</div>*/}
+        <div style={{alignItems: 'right'}}>
+          <Button type={'link'}
             onClick={() => {
               onSelect;
             }}

@@ -149,21 +149,23 @@ export default function mapAboutReducers(state = initState, action) {
       let userMap = {};
       //按照防汛人员的id 建立索引，便于前端进行查找
       if (action.data && action.data.length !== 0) {
-        userMap = action.data.forEach(item => {
-          if (item.userId) {
-            userMap[item.userId] = item;
+        action.data.forEach(item => {
+          let userId = item.userid;
+          if (userId) {
+            userMap[userId] = item;
           }
         });
       }
-      newState = { ...newState, floodUser: action.data, floodUserMap: {...userMap} };
+      newState = { ...newState, floodUser: action.data, floodUserMap: userMap };
       break;
     case types.SET_FLOOD_EXPERT:
       //按照专家的id 生成映射表。便于按照专家id进行查找
       let expertMap = {};
-      if (action.data && action.data.length !== 0) {
-        action.data.forEach(item => {
-          if (item.userId) {
-            expertMap[item.userId] = item;
+      if (action.data && action.data.all && action.data.all.length !== 0) {
+        action.data.all.forEach(item => {
+          let userId = item.userid;
+          if (userId) {
+            expertMap[userId] = item;
           }
         });
       }
