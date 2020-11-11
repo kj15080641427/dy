@@ -1,45 +1,69 @@
-import React, { useState } from "react";
-import { Col, Checkbox } from "antd";
+import React, { useState, useEffect } from "react";
+import { Col, Checkbox, Button, Divider } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/taskEvent";
+import {DeleteOutlined} from '@ant-design/icons';
 import "../task.scss";
 
+
+//按钮命令
+export const ButtonCommands = {ClearTrack: 'ClearTrack'};
+
+
 const TaskInfoCheck = (props) => {
-  const [layerVisible, setLayerVisible] = useState({
-    person: {label: '人员定位', value: true},
-    house: {label: '物资仓库', value: true},
-    rank: {label: '防汛队伍', value: true}
+  const {layerStatus, onLayerChange, onCommandClick} = props;
+
+  const layerVisible = {
+    person: {label: '人员定位', value: layerStatus?.person},
+    warehouse: {label: '物资仓库', value: layerStatus?.warehouse},
+    rank: {label: '防汛队伍', value: layerStatus?.rank},
+    river40: {label: '水系图', value: layerStatus?.river40},
+    traffic: {label: '实时交通', value: layerStatus?.traffic}
+  };
+
+  let checkBox = Object.keys(layerVisible).map((key, index) => {
+    let item = layerVisible[key];
+    return (
+        <Col span={24} key={index.toString()}>
+          <Checkbox
+              className="switch-checkout"
+              onChange={(e) => {
+                let value = e.target.checked;
+                onLayerChange &&
+                    onLayerChange(key, value);
+              }}
+              checked={item.value}
+          >
+            <div className="switch-ponding-flex">
+              <div className="switch-rain"/>
+              <div>{item.label}</div>
+            </div>
+          </Checkbox>
+        </Col>
+    );
   });
+
   return (
-      <div className="task-info-checkbox">
+      <div className="task-info-checkbox" style={{display: props.visible ? 'block' : 'none'}}>
         <div className="ranSwitch">
-          <div className="switch-border">
-            {
-              Object.keys(layerVisible).map(key => {
-                let item = layerVisible[key];
-                return (
-                    <Col span={24} key={item.floodRanksId}>
-                      <Checkbox
-                          className="switch-checkout"
-                          onChange={(e) => {
-                            let newState = {...layerVisible};
-                            newState[key].value = e.target.checked;
-                            setLayerVisible(newState);
-                          }}
-                          checked={item.value}
-                      >
-                        <div className="switch-ponding-flex">
-                          <div className="switch-rain"></div>
-                          <div>{item.label}</div>
-                          {/*<div>{item.name.split("防汛")[0]}</div>*/}
-                        </div>
-                      </Checkbox>
-                    </Col>
-                );
-              })
-            }
-          </div>
+            <div className={'switch-border'}>
+              <Col span={24}>
+                <Divider className={'divider'}>{'图层控制'}</Divider>
+              </Col>
+              {checkBox}
+              <Col span={24}>
+                <Divider className={'divider'}>{'地图操作'}</Divider>
+              </Col>
+              <Col span={24} key={'clearTrackLine'}>
+                <Button
+                    type="primary"
+                    icon={<DeleteOutlined />}
+                    onClick={() => onCommandClick && onCommandClick(ButtonCommands.ClearTrack)}>
+                  {'清除轨迹'}
+                </Button>
+              </Col>
+            </div>
         </div>
       </div>
   );

@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
+import emitter from "../../utils/emitter";
 import * as action from "../../redux/actions/taskEvent";
 import * as mapAction from "../../redux/actions/map";
 import { bindActionCreators } from "redux";
 import moment from 'moment';
 import Map from "./map/map";
-import { Input, Modal, DatePicker, Button } from "antd";
-import { createHashHistory } from "history";
-import trackQuery from "@app/resource/icon/trackQuery.svg";
+import { Modal, DatePicker, Button, TreeSelect } from "antd";
 import TaskTimeLine from "./taskTimeLine";
 import TaskUpdate from "./taskUpdate";
 import Head from "../../components/head/head";
@@ -15,49 +14,96 @@ import titleImg from "@app/resource/title/rwdd.png";
 import RouterList from "../../components/routerlist";
 import TaskInfoNavi from "./component/taskInfoNavi";
 import TaskInfoCard from "./component/taskInfoCard";
-import TaskInfoCheck from "./component/taskInfoCheck";
+import TaskInfoCheck, {ButtonCommands} from "./component/taskInfoCheck";
 import checkImg from "@app/resource/图层.svg";
 import "./task.scss";
-const hashHistory = createHashHistory();
-const { Search } = Input;
+// const hashHistory = createHashHistory();
+// const { Search } = Input;
 
 const TaskInfo = (props) => {
     const {
-        taskInfo,
-        floodUser,
         floodAddress,
-        expert,
-        userPosition,
         taskList,
         selectedPersonTrack,
+        floodUserMap,
+        expertMap,
 
     } = props;
     const formRef = useRef(null);
     const {
         getFloodAddress,
         getAllFloodUser,
-        //setMapUserPosition, //设置人员定位
         getTaskList,
         setTaskInfo,
+        updateTrackData,
     } = props.actions;
     const {getFloodRankUser, getFloodExpert} = props.mapActions;
 
-    const [text, setText] = useState("");
-    const [showSearch, setShowSearch] = useState(false);
+    //搜索框数据源
+    const [searchList, setSearchList] = useState([]);
+    //是否显示图层控制框
     const [showCheck, setShowCheck] = useState(false);
+    //是否显示用户信息框
     const [personInfoVisible, setPersonInfoVisible] = useState(false);
+    //当前鼠标选择的人员
     const [selectedPerson, setSelectedPerson] = useState(null);
+    //当前历史路径选择的开始时间和结束时间
     const [selectedBeginTime, setSelectedBeginTime] = useState(moment()
         .subtract(3, 'hour'));
     const [selectedEndTime, setSelectedEndTime] = useState(moment());
-    //图层得可见性
+    //图层可见性
     const [layerVisible, setLayerVisible] = useState({
-       track: true,
+       //轨迹图层
+        track: true,
+        //人员定位图层
        person: true,
+        //防汛物资仓库图层
         warehouse: true,
+        //队伍图层
         rank: true,
+        //交通图层
+        traffic: false,
+        //水系图
+        river40: true,
     });
+    //设置搜索框数据源
+    useEffect(() => {
+        const {records} = floodAddress;
+        let personList = [];
+        let expertList = [];
 
+        if (records && records.length > 0) {
+            records.forEach(item => {
+                let userId = item.userId;
+                if (userId) {
+                    if (item.typeCode === 103) {
+                        let name = floodUserMap?.[userId]?.name;
+                        personList.push({title: name, value: userId, tag: item});
+                    } else if (item.typeCode === 104) {
+                        let name = expertMap?.[userId]?.name;
+                        expertList.push({title: name, value: userId, tag: item});
+                    }
+                }
+            });
+        }
+
+        setSearchList([
+            {
+                title: '防汛人员',
+                selectable: false,
+                value: '防汛人员',
+                children: personList
+            },
+            {
+                title: '防汛专家',
+                selectable: false,
+                value: '防汛专家',
+                children: expertList
+            }
+        ]);
+    }, [floodAddress, floodUserMap, expertMap]);
+
+    //更新数据
     useEffect(() => {
         getTaskList({
             current: 1,
@@ -69,7 +115,6 @@ const TaskInfo = (props) => {
         getFloodExpert(); //防汛专家
     }, []);
     useEffect(() => {
-        console.log(props);
         if (props?.location?.query?.info) {
             setTaskInfo(props?.location?.query?.info);
         } else {
@@ -78,9 +123,8 @@ const TaskInfo = (props) => {
             }
         }
     }, [taskList]);
-    let init = [...floodUser, ...expert?.all];
-    // let init = [];
 
+    //定时从后台获取人员定位数据
     useEffect(() => {
         let timer = setInterval(()=>{
             getFloodAddress();
@@ -91,21 +135,23 @@ const TaskInfo = (props) => {
         };
     }, []);
 
-    const onSearch = (value) => {
-        if (value) {
-            let filteredList = init.filter((item) => {
-                return item.name.indexOf(value) !== -1;
-            });
-            //setMapUserPosition(filteredList);
-        } else {
-            //setMapUserPosition(init);
-        }
-    };
+    //地图上人员点击事件
     const onPersonClick = (person) => {
         setPersonInfoVisible(true);
         setSelectedPerson(person);
     };
 
+    //在地图上定位到选择人员的位置处
+    const onPersonLocation = (userId, node) => {
+        const {tag} = node;
+
+        if (tag) {
+            const {longitude, latitude} = tag;
+            emitter.emit('map-move-focus', [longitude, latitude]);
+        }
+    };
+
+    //查询人员得历史路径
     const onQueryPersonPath = (personInfo, beginTime, endTime) => {
         setPersonInfoVisible(false);
         const {actions} = props;
@@ -130,36 +176,25 @@ const TaskInfo = (props) => {
                 }}
             />
             <Map layerVisible={layerVisible}
-                 //person={floodUser}
                 person={floodAddress.records}
                  trackList ={selectedPersonTrack}
                  onPersonClick={onPersonClick}/>
             <Head titleImg={titleImg}/>
             <RouterList/>
-            <div
-                className="track-query-body"
-                onMouseOver={() => setShowSearch(true)}
-                onMouseLeave={() => {
-                    setShowSearch(false);
-                }}
-            >
-                {showSearch ? (
-                    <Search
-                        placeholder="请输入查询人名称"
-                        onSearch={onSearch}
-                        onChange={(e) => setText(e.target.value)}
-                        suffix={
-                            <img
-                                style={{cursor: "pointer"}}
-                                src={trackQuery}
-                                onClick={() => {
-                                    onSearch(text);
-                                }}
-                            />
-                        }
-                    />
-                ) : null}
-                {showSearch ? null : <img src={trackQuery}/>}
+            <div className="track-query-body">
+                <TreeSelect
+                    showSearch
+                    placeholder="人员名称"
+                    style={{width: '100%'}}
+                    treeData={searchList}
+                    dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+                    //value={text}
+                    treeNodeFilterProp={'title'}
+                    //onChange={setText}
+                    //treeDefaultExpandedKeys
+                    treeDefaultExpandAll
+                    onSelect={onPersonLocation}
+                />
             </div>
             <div
                 className="task-checkbox-img"
@@ -169,7 +204,20 @@ const TaskInfo = (props) => {
                 }}>
 
                 <img src={checkImg}/>
-                {showCheck ? <TaskInfoCheck/> : null}
+                <TaskInfoCheck
+                    visible={showCheck}
+                    layerStatus={layerVisible}
+                    onLayerChange={(key, value) =>{
+                        let layerStatus = {...layerVisible};
+                        layerStatus[key] = value;
+                        setLayerVisible(layerStatus);
+                    }}
+                    onCommandClick={(cmd) => {
+                        if (cmd === ButtonCommands.ClearTrack) {
+                            //清除轨迹
+                            updateTrackData([]);
+                        }
+                    }}/>
             </div>
             <TaskTimeLine>/</TaskTimeLine>
             <TaskUpdate formRef={formRef}/>
@@ -208,7 +256,6 @@ const TaskInfo = (props) => {
                 </div>
                 <div className={'person-info-line'}>
                     <span>电话号码: {selectedPerson?.tag?.personInfo?.phone}</span>
-                    {/*<span className="iconfont iconshipin m-ovl-video"/>*/}
                 </div>
                 <div className={'person-info-line'}>
                     <span>定位时间: {selectedPerson?.tag?.dynamicInfo?.reportTime}</span>
@@ -219,12 +266,13 @@ const TaskInfo = (props) => {
 
 };
 const mapStateToProps = (state) => {
-    // console.log(state, "S");
     return {
         floodAddress: state.taskReducers.floodAddress,
         taskInfo: state.taskReducers.taskInfo,
         selectedPersonTrack: state.taskReducers.selectedPersonTrack,
         floodUser: state.mapAboutReducers.floodUser,
+        floodUserMap: state.mapAboutReducers.floodUserMap,
+        expertMap: state.mapAboutReducers.expertMap,
         expert: state.mapAboutReducers.expert,
         userPosition: state.taskReducers.userPosition,
         taskList: state.taskReducers.taskList,

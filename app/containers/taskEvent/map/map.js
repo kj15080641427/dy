@@ -1,5 +1,6 @@
 /**
  * map 2020-05-12
+ * update: 2020-11-11
  */
 import React from "react";
 import { connect } from "react-redux";
@@ -15,14 +16,7 @@ import "./style.scss";
 import VideoControl from "@app/components/video/VideoControl";
 
 import Person from "./Person";
-// import Rain from "./overlays/Rain";
-// import Water from "./overlays/Water";
-// import Ponding from "./overlays/Ponding";
-// import Video from "./overlays/Video";
-// import Gate from "./overlays/Gate";
-// import Pump from "./overlays/Pump";
-// import WfsRiver from "./overlays/WfsRiver";
-// import Warehouse from "./overlays/Warehouse";
+
 import { message } from "antd";
 class Map extends React.PureComponent {
   constructor(props, context) {
@@ -120,8 +114,6 @@ class Map extends React.PureComponent {
         });
       }
     }
-
-
   }
   componentDidMount() {
     this.createMap();
@@ -195,16 +187,16 @@ class Map extends React.PureComponent {
       key: "river40",
     });
 
-    // // 加入交通实况图;
-    // this.map.addGeo({
-    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-    //   params: {
-    //     LAYERS: "dy:traffic",
-    //     TILED: true,
-    //   },
-    //   zIndex: 11,
-    //   key: "traffic",
-    // });
+    // 加入交通实况图;
+    this.map.addGeo({
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+      params: {
+        LAYERS: "dy:traffic",
+        TILED: true,
+      },
+      zIndex: 11,
+      key: "traffic",
+    });
 
     //轨迹图层
     this.map.addVector({
@@ -229,7 +221,8 @@ class Map extends React.PureComponent {
         src: function (feature) {
           return require("@app/resource/人员定位.svg")["default"];
         },
-        anchor: [0.5, 1],
+        // anchor: [0.5, 1],
+        offset: [0, 0],
         strokeColor: "#1890ff",
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
@@ -328,11 +321,7 @@ class Map extends React.PureComponent {
         //   });
       }
     });
-    // this.map.activeMeasure();
-    this.map.on("moveend", () => {
-      let a = this.map.getView().calculateExtent();
-      // console.log(a);
-    });
+
     this.map.onFeatureClicked((feature) => {
       // console.log("featureclick", feature);
       if (feature) {
@@ -346,10 +335,6 @@ class Map extends React.PureComponent {
         this._isClickInfoBox = false;
       }, 0);
     });
-    // 缩放事件
-    // this.map.onView("change:resolution", () => {
-    //   this.mapViewChanged();
-    // });
     this.map.onView("change:resolution", this.mapViewChanged.bind(this));
     this.mapViewChanged(); // 初始化完成调一下,根据zoom隐藏相关图层
     // 地图拖动事件
