@@ -7,7 +7,7 @@ const initState = {
   waterWarning: 0,
   flood: [],
   count: {},
-  floodId: { },
+  floodId: {},
   floodName: "沂河路（玉苑小区）",
   waterId: "41800264", //stcd
   waterName: "明海（闸前）",
@@ -24,6 +24,7 @@ const initState = {
 
   floodLoading: true,
   expert: { all: [] },
+  userMenuList: [],
 };
 export default function mapAboutReducers(state = initState, action) {
   let newState = Object.assign({}, state);
@@ -231,6 +232,9 @@ export default function mapAboutReducers(state = initState, action) {
       break;
     case types.SET_WATER_WARNING:
       newState = { ...newState, warningInfo: action.data };
+      break;
+    case types.SET_USER_MENU:
+      newState = { ...newState, userMenuList: action.data };
       break;
     default:
       return newState;

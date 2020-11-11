@@ -33,7 +33,7 @@ class Ponding extends Base {
         </div>
         <div className="m-ovl-line">
           <label>数据来源：</label>
-          积水点
+          {model.dict[model.siteDictionariesID]}
         </div>
         <div className="m-ovl-line">
           <label>站点地址：</label>

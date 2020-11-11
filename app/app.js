@@ -29,6 +29,7 @@ import UserDispatch from "@app/containers/taskEvent/userDispatch";
 import MaterialDispatch from "@app/containers/taskEvent/materialDispatch";
 import TaskTimeLine from "@app/containers/taskEvent/taskTimeLine";
 import DeviceManager from "@app/containers/rain/device";
+import DataCenter from "@app/containers/dataCenter/";
 import "./style.scss";
 // const AsyncHome = AsyncComp(() => import(/*webpackChunkName:'Index'*/"@app/containers/home/Index").then((res) => { removeLoading(); return res; }));
 // const AsyncLogin = AsyncComp(() => import(/*webpackChunkName:'Login'*/"@app/containers/home/Login").then((res) => { removeLoading(); return res; }));
@@ -119,6 +120,8 @@ export class App extends React.Component {
               <Route path={`/materialDispatch`} component={MaterialDispatch} />
               <Route path={`/taskTimeLine`} component={TaskTimeLine} />
               <Route path={`/device`} component={DeviceManager} />
+
+              <Route path={`/dataCenter`} component={DataCenter} />
             </>
           )}
           {/* <Route component={AsyncLogin} /> */}

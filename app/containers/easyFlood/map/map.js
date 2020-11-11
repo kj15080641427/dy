@@ -243,6 +243,7 @@ class Map extends React.PureComponent {
     });
     this.map.startSelectFeature("ponding", (param) => {
       //TODO
+      param = { ...param, dict: this.props.dict };
       this.props.mapAction.changeFloodId(param);
       this.addOverlay(Ponding.type, param);
     });
@@ -362,7 +363,9 @@ class Map extends React.PureComponent {
     }
   }
   transformData(data) {
-    if (!data || !data.length) {return {};}
+    if (!data || !data.length) {
+      return {};
+    }
     let obj = {
       rain: [],
       water: [],
@@ -382,7 +385,9 @@ class Map extends React.PureComponent {
   onOverlayClose(id, type) {
     let { overlays } = this.state;
     let obj = overlays[type];
-    if (!obj || !obj[id]) {return;}
+    if (!obj || !obj[id]) {
+      return;
+    }
     delete obj[id];
     this.setState({
       overlays: { ...overlays },

@@ -78,6 +78,7 @@ class Monitor extends React.PureComponent {
   componentDidMount() {
     const { floodId } = this.props;
     // this.props.actions.getFloodType(); //易涝点基本信息
+    this.props.actions.getDict();
     this.props.actions.getFloodRain(); //获取防汛雨量站 {type: "1",isshow: "1",datasource: "3",}
     this.props.actions.getFloodInfoRealTime(floodId.id); //根据易涝点id获取实时数据
     this.props.actions.getCountStation();
@@ -260,7 +261,7 @@ class Monitor extends React.PureComponent {
     return (
       <div className="easy-flood-display">
         <Map layerVisible={layerVisible} onFeatureClick={(param)=>{}}/>
-        <Head titleImg={titleImg}></Head>
+        <Head titleImg={titleImg} groundColor='#003366'></Head>
         <div style={{ display: displayLeft }}>
           <div className="easyFlood-left">
             <RenderBox>
@@ -476,7 +477,7 @@ class Monitor extends React.PureComponent {
         <div style={{ display: displayRight }}>
           <div className="easyFlood-right">
             <div className="flood-first-box">
-              <RenderBox hasTitle title="雨量站24小时信息">
+              <RenderBox hasTitle title="雨量站24小时降水">
                 <div className="water-select">
                   <div className="water-select-flex">
                     <div className="water-select-flex">
@@ -495,7 +496,7 @@ class Monitor extends React.PureComponent {
               </RenderBox>
             </div>
             <div className="second-box">
-              <RenderBox hasTitle title="易涝点24小时信息" style={{position: 'relative'}}>
+              <RenderBox hasTitle title="易涝点24小时积水深" style={{position: 'relative'}}>
                 <div className="water-select">
                   <div className="water-select-flex">
                     <div className="water-select-flex">{floodName}</div>

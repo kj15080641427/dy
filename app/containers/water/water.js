@@ -256,6 +256,7 @@ class Monitor extends React.PureComponent {
   };
   componentDidMount() {
     const { waterId } = this.props;
+    this.props.actions.getDict();
     // this.props.actions.getWaterType(); //水位站点
     this.props.actions.getCountStation(); //来源统计
     this.props.actions.getAlarm();
@@ -321,15 +322,15 @@ class Monitor extends React.PureComponent {
     };
     return (
       <div className="water-display">
-        <Map layerVisible={layerVisible}/>
-        <Head titleImg={titleImg}/>
+        <Map layerVisible={layerVisible} />
+        <Head titleImg={titleImg} />
         <div style={{ display: displayLeft }}>
           <div className="chart-left">
             <div className="table-head-box">
               <BoxHead />
               <div className="table-backgrpund">
                 <div className="table-title-text">
-                  <img src={warningIcon}/> 超警戒水位
+                  <img src={warningIcon} /> 超警戒水位
                   <span>{alarmData?.length}</span>站
                 </div>
                 <TableShow
@@ -386,7 +387,7 @@ class Monitor extends React.PureComponent {
               </div>
             </div>
             <div className="water-right-second-box">
-              <RenderBox title={"基本统计信息"} hasTitle >
+              <RenderBox title={"基本统计信息"} hasTitle>
                 <div
                   className="bar-chart"
                   id="bar-chart"
@@ -400,7 +401,7 @@ class Monitor extends React.PureComponent {
                   }}
                 >
                   <div className="pie-flex-layout">
-                    <div className="pie-chart" id="pie-chart"/>
+                    <div className="pie-chart" id="pie-chart" />
                   </div>
                   {/* <div className="pie-lauout-text">
                     <div>水位站点</div>
@@ -576,11 +577,11 @@ class Monitor extends React.PureComponent {
                     ).format("MM-DD HH:mm")}`}</div>
                   </div>
                 </div>
-                <div className="line-chart" id="line-chart"/>
+                <div className="line-chart" id="line-chart" />
                 {/* 视频 */}
                 <div className="water-video-div">
                   <VideoPlayer
-                      style={{width: 490, height: 230}}
+                    style={{ width: 490, height: 230 }}
                     strtoken={waterVideoInfo.strtoken}
                   />
                 </div>
@@ -589,7 +590,7 @@ class Monitor extends React.PureComponent {
           </div>
           {/* 路由 */}
           <div className="router-list">
-            <RouterList/>
+            <RouterList />
           </div>
         </div>
 
@@ -658,10 +659,7 @@ class Monitor extends React.PureComponent {
               });
             }} defaultChecked />下栏目
           </Row> */}
-          <CheckBoxs
-            layerVisible={layerVisible}
-            onChecked={this.onChecked}
-          />
+          <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked} />
         </Drawer>
       </div>
     );

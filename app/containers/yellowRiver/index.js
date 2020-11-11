@@ -206,6 +206,11 @@ export default class yellowRiver extends React.PureComponent {
                   },
                   {
                     align: "center",
+                    title: "区县",
+                    dataIndex: "areaName",
+                  },
+                  {
+                    align: "center",
                     title: "水位(m)",
                     dataIndex: "sw",
                   },

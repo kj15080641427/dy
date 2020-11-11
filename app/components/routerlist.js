@@ -7,21 +7,25 @@ import React from "react";
 import { Drawer } from "antd";
 import { Link } from "react-router-dom";
 import "./style.scss";
-import { Col } from "antd";
-import display from "../resource/icon/display.svg";
-import waterRouter from "../resource/icon/waterRouter.svg";
-import rain from "../resource/icon/rain.svg";
-import easyflood from "../resource/icon/easyflood.svg";
-import video from "../resource/icon/videoTitle.svg";
-import floodmaterial from "../resource/icon/floodmaterial.svg";
-import notices from "../resource/icon/notices.svg";
-import ocean from "../resource/icon/ocean.svg";
-import yellowRiver from "../resource/icon/yellowRiver.svg";
-import home from "../resource/icon/home.svg";
-import forecast from "../resource/icon/forecast.svg";
-import task from "../resource/task.svg";
-import device from "../resource/icon/device.svg";
-const innerWidth = document.body.clientWidth;
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../redux/actions/map";
+// import display from "../resource/icon/display.svg";
+// import waterRouter from "../resource/icon/waterRouter.svg";
+// import rain from "../resource/icon/rain.svg";
+// import easyflood from "../resource/icon/easyflood.svg";
+// import video from "../resource/icon/videoTitle.svg";
+// import floodmaterial from "../resource/icon/floodmaterial.svg";
+// import notices from "../resource/icon/notices.svg";
+// import ocean from "../resource/icon/ocean.svg";
+// import yellowRiver from "../resource/icon/yellowRiver.svg";
+// import home from "../resource/icon/home.svg";
+
+// import forecast from "../resource/icon/forecast.svg";
+// import task from "../resource/task.svg";
+// import device from "../resource/icon/device.svg";
+// import dataCenter from "../resource/工程信息数据.svg";
+// import { getUserMenuList } from "../data/home";
 class RouterList extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -31,91 +35,39 @@ class RouterList extends React.PureComponent {
       weatherData: {}, //天气信息
     };
   }
+  componentDidMount() {
+    const { userMenuList } = this.props;
+    const { getUserMenuList } = this.props.actions;
+    if (!userMenuList[0]) {
+      getUserMenuList({ token: localStorage.getItem("token") });
+    }
 
-  routerList = [
-    // {
-    //   text: "数据中心",
-    //   imgurl: display,
-    //   routerUrl: innerWidth > 3000 ? "/display" : "/displaySmall",
-    // },
-    {
-      text: "河流水情",
-      imgurl: waterRouter,
-      routerUrl: "/water",
-    },
-    {
-      text: "雨情监测",
-      imgurl: rain,
-      routerUrl: "/rain",
-    },
-    {
-      text: "城市防汛",
-      imgurl: easyflood,
-      routerUrl: "/easyflood",
-    },
-    {
-      text: "视频监控",
-      imgurl: video,
-      routerUrl: "/video",
-    },
-    {
-      text: "任务调度",
-      imgurl: task,
-      routerUrl: "/taskInfo",
-    },
-    {
-      text: "设备管理",
-      imgurl: device,
-      routerUrl: "/device",
-    },
-    {
-      text: "防汛资源",
-      imgurl: floodmaterial,
-      routerUrl: "/floodwarning",
-    },
-    {
-      text: "汛情快报",
-      imgurl: notices,
-      routerUrl: "/notices",
-    },
-    {
-      text: "海洋预报",
-      imgurl: ocean,
-      routerUrl: "/ocean",
-    },
-    {
-      text: "黄河水情",
-      imgurl: yellowRiver,
-      routerUrl: "/yellowRiver",
-    },
-    {
-      text: "洪涝预报",
-      imgurl: forecast,
-      routerUrl: "/floodModel",
-    },
-    {
-      text: "数据管理",
-      imgurl: home,
-      routerUrl: "/home",
-    },
-  ];
+    // getUserMenu({ token: localStorage.getItem("token") }).then((res) => {
+    //   console.log(res, "RESSS");
+    //   this.setState({
+    //     routerList: res.data,
+    //   });
+    // });
+  }
+
   render() {
+    const { userMenuList } = this.props;
     return (
       <>
         <div className="router-item">
-          {this.routerList.map((item) => (
+          {userMenuList.map((item) => (
             <Link
-              key={item.routerUrl}
-              to={item.routerUrl}
-              target={item.routerUrl == "/home" ? "_blank" : ""}
+              key={item.url}
+              to={item.url}
+              target={item.url == "/home" ? "_blank" : ""}
             >
               <div
                 className="router-item-style"
                 style={
-                  window.location.href.split("#")[1] == item.routerUrl
+                  window.location.href.split("#")[1] == item.url
                     ? { background: "rgb(227,152,62)", color: "white" }
                     : {
-                        background: "rgb(46, 49, 146)",
+                        background: "#0099ff",
                         // color: "rgb(132,135,192)",
                         color: "white",
                       }
@@ -123,9 +75,9 @@ class RouterList extends React.PureComponent {
               >
                 <div>
                   <div className="router-item-style-img-div">
-                    <img src={item.imgurl}></img>
+                    <img src={item.img}></img>
                   </div>
-                  <div className={"router-item-text"}>{item.text}</div>
+                  <div className={"router-item-text"}>{item.name}</div>
                 </div>
               </div>
             </Link>
@@ -213,4 +165,15 @@ class RouterList extends React.PureComponent {
     clearTimeout(this.time);
   }
 }
-export default RouterList;
+function mapStateToProps(state) {
+  return {
+    userMenuList: state.mapAboutReducers.userMenuList,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(RouterList);

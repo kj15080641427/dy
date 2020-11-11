@@ -131,3 +131,10 @@ export const getDayRainBySite = (data) => {
     data,
   };
 };
+//获取菜单
+export const getUserMenuList = (data) => {
+  return {
+    type: types.GET_USER_MENU,
+    data,
+  };
+};

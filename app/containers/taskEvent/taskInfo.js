@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import moment from 'moment';
-
 import * as action from "../../redux/actions/taskEvent";
 import * as mapAction from "../../redux/actions/map";
 import { bindActionCreators } from "redux";
 
 import Map from "./map/map";
-import { Input, Modal, Button, DatePicker} from "antd";
+import { Input } from "antd";
 import { createHashHistory } from "history";
 import trackQuery from "@app/resource/icon/trackQuery.svg";
 import TaskTimeLine from "./taskTimeLine";
@@ -233,9 +231,9 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(action, dispatch),
-        mapActions: bindActionCreators(mapAction, dispatch),
-    };
+  return {
+    actions: bindActionCreators(action, dispatch),
+    mapActions: bindActionCreators(mapAction, dispatch),
+  };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TaskInfo);

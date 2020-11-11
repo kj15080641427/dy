@@ -1,5 +1,5 @@
 //发送时消息携带事件
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Tabs,
   Descriptions,
@@ -44,6 +44,7 @@ const TaskInfoMessage = (props) => {
     getFloodRankUser,
     getMessage,
   } = props.actions;
+  const formRef = useRef();
   const [selectExpert, setSelectExpert] = useState([]);
   const [selectFloodUser, setSelectFloodUser] = useState([]);
   const [showInfo, setShowInfo] = useState(false);
@@ -80,7 +81,10 @@ const TaskInfoMessage = (props) => {
       flooduserList: filteruser(selectFloodUser),
       taskEventsID: taskInfo?.taskEventsID,
     };
+    console.log(formRef, "-");
+    console.log(formRef.current, "==");
     if (e.floodcontrolexpertList[0] || e.flooduserList[0]) {
+      formRef.current.resetFields();
       sendMessage(e);
     } else {
       message.error("请选择人员");
@@ -105,7 +109,6 @@ const TaskInfoMessage = (props) => {
       value: `${item.name}|${item.floodControlExpertId}`,
     };
   });
-  console.log(city, "CITY");
   useEffect(() => {
     if (taskInfo) {
       getFloodExpert();
@@ -189,6 +192,7 @@ const TaskInfoMessage = (props) => {
                   <div className="task-display-right">
                     <Card title="发送内容">
                       <DYForm
+                        formRef={formRef}
                         id={"task"}
                         formItem={[
                           {

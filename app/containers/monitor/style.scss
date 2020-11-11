@@ -69,11 +69,12 @@
 }
 .m-set-img {
   position: absolute;
-  z-index: 999;
+  z-index: 109;
   top: 20px;
   right: 29px;
   width: 25px;
   height: 25px;
+  cursor: pointer;
 }
 .tooltip {
   position: relative;

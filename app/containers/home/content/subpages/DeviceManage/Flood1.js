@@ -418,13 +418,13 @@ class DeviceManageFlood extends Component {
                                        title: "站点名称",
                                        dataIndex: "title",
                                        render: (text, row) => (
-                                           <a
+                                           <div
                                                onClick={() =>
                                                    this.handleTreeSelect({node: row})
                                                }
                                            >
                                              {text}
-                                           </a>
+                                           </div>
                                        )
                                      }, {
                                        align: "center",

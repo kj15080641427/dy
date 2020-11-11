@@ -4,6 +4,10 @@
   min-height: $minheight;
   height: $mapDisplayHeight;
 }
+.flood-head-rain-text{
+  color: white;
+  text-align: center;
+}
 .m-left {
   display: flex;
   flex-direction: column;
@@ -24,6 +28,68 @@
 }
 .m-left-div {
   margin: 20px;
+  .ant-table.ant-table-small .ant-table-thead > tr > th {
+    color: white;
+  }
+
+  .ant-pagination-item a {
+    color: rgb(0, 160, 234);
+  }
+  .anticon svg {
+    color: rgb(0, 160, 234);
+  }
+  .ant-pagination-jump-prev
+    .ant-pagination-item-container
+    .ant-pagination-item-ellipsis,
+  .ant-pagination-jump-next
+    .ant-pagination-item-container
+    .ant-pagination-item-ellipsis {
+    color: rgb(0, 160, 234);
+  }
+  .ant-table-pagination.ant-pagination {
+    color: rgb(20, 100, 216);
+  }
+  .ant-pagination-simple .ant-pagination-simple-pager input {
+    margin-right: 0px;
+    padding: 0 0px;
+  }
+  .ant-table-container table > thead > tr:first-child th:first-child :hover {
+    color: white;
+    background: rgb(20, 100, 216);
+  }
+  .ant-table-container table > thead > tr:first-child th:last-child :hover {
+    color: white;
+    background: rgb(20, 100, 216);
+  }
+  .ant-table-small .ant-table-thead > tr > th {
+    color: white;
+    background: rgb(20, 100, 216);
+  }
+  .ant-pagination-item-active {
+    font-weight: 500;
+    background: rgba(0, 51, 102, 0.7);
+    border: 1px solid #1890ff;
+  }
+  .ant-pagination-item {
+    display: inline-block;
+    min-width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    font-family: Arial;
+    line-height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    list-style: none;
+    background-color: rgba(0, 51, 102, 0.7);
+    border: 1px solid #1890ff;
+    border-radius: 2px;
+    outline: 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
   //border: solid 1px black;
 }
 
@@ -76,6 +142,8 @@
 }
 
 .flood-model-right {
+  color: white;
+  text-align: center;
   width: 460px;
   display: flex;
   flex-wrap: wrap;
@@ -83,7 +151,50 @@
   top: 90px;
   right: 140px;
   bottom: 0px;
-  .radar-box{
+  .radar-box {
     height: 95%;
   }
+}
+.flood-model-left-box {
+  .radar-box {
+    height: 50vh;
+  }
+  .task-card-container {
+    .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
+      border: 1px solid #003366;
+    }
+    .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab {
+      border-radius: 2px 20px 0 0;
+      border: 0px;
+      color: white;
+      background: #1890ff;
+    }
+    .task-card-container
+      .ant-tabs-card.ant-tabs-top
+      > .ant-tabs-nav
+      .ant-tabs-tab {
+      color: white;
+    }
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: white;
+    }
+    .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active {
+      background: blue;
+    }
+  }
+}
+.flood-model-water {
+  width: 480px;
+  height: 400px;
+}
+.flood-model-water-border {
+  margin: 10px;
+  border: 1px solid #0099ff;
+}
+.flood-head-rain {
+  .radar-box {
+    height: 200px;
+  }
+  width: 500px;
+  height: 200px;
 }

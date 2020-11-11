@@ -61,3 +61,6 @@ export const SET_FLOOD_ALARM_DATA = "SET_FLOOD_ALARM_DATA";
 //24小时降雨
 export const GET_DAY_RAIN_BY_SITE = "GET_DAY_RAIN_BY_SITE";
 export const SET_DAY_RAIN_BY_SITE = "SET_DAY_RAIN_BY_SITE";
+//用户菜单
+export const GET_USER_MENU = "GET_USER_MENU";
+export const SET_USER_MENU = "SET_USER_MENU";
