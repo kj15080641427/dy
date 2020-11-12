@@ -94,10 +94,10 @@ class Map extends React.PureComponent {
       .then((res) => {
         if (res.code === 200 && res.data && res.data[0]) {
           this.props.actions.addVideos(res.data);
-          this.props.actions.setVideoInfo({
-            ...res.data[0],
-            ...res.data[0].stiteWaterRadios[0],
-          });
+          // this.props.actions.setVideoInfo({
+          //   ...res.data[0],
+          //   ...res.data[0].stiteWaterRadios[0],
+          // });
           this.map.addFeatures(
             "video",
             res.data.map((item) => {

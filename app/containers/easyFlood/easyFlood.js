@@ -260,8 +260,8 @@ class Monitor extends React.PureComponent {
     const { getDayRainBySite } = this.props.actions;
     return (
       <div className="easy-flood-display">
-        <Map layerVisible={layerVisible} onFeatureClick={(param)=>{}}/>
-        <Head titleImg={titleImg} groundColor='#003366'></Head>
+        <Map layerVisible={layerVisible} onFeatureClick={(param) => {}} />
+        <Head titleImg={titleImg} groundColor="#003366"></Head>
         <div style={{ display: displayLeft }}>
           <div className="easyFlood-left">
             <RenderBox>
@@ -323,19 +323,19 @@ class Monitor extends React.PureComponent {
                     积水{" "}
                   </Radio.Button>
                   <Radio.Button
-                      value="b"
-                      style={
-                        this.state.radio == "a"
-                            ? {
-                              background: "#003366",
-                              color: "#3397d4",
-                              borderTop: "1px solid rgb(0, 51, 102)",
-                              borderRight: "1px solid rgb(0, 51, 102)",
-                              borderBottom: "1px solid rgb(0, 51, 102)",
-                              borderLeft: "0px solid rgb(0, 51, 102)",
-                            }
-                            : {}
-                      }
+                    value="b"
+                    style={
+                      this.state.radio == "a"
+                        ? {
+                            background: "#003366",
+                            color: "#3397d4",
+                            borderTop: "1px solid rgb(0, 51, 102)",
+                            borderRight: "1px solid rgb(0, 51, 102)",
+                            borderBottom: "1px solid rgb(0, 51, 102)",
+                            borderLeft: "0px solid rgb(0, 51, 102)",
+                          }
+                        : {}
+                    }
                   >
                     雨量
                   </Radio.Button>
@@ -345,26 +345,6 @@ class Monitor extends React.PureComponent {
                     display: this.state.radio == "a" ? "block" : "none",
                   }}
                 >
-                  {/* <div className="pie-title-flex">
-                    {count?.floodcount?.list?.map((item) => (
-                      <div key={item.dataSourceDesc}>
-                        <label className="number-color">{item.number}</label>
-                        <label>{item.dataSourceDesc}</label>
-                      </div>
-                    ))}
-                    <div>
-                      <label className="number-color">{onLine}</label>
-                      <label>最新数据</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{onLine}</label>
-                      <label>在线</label>
-                    </div>
-                    <div>
-                      <label className="number-color">{line}</label>
-                      <label>离线</label>
-                    </div>
-                  </div> */}
                   <div className="funnel-chart" id="funnel-chart"></div>
                 </div>
 
@@ -425,13 +405,19 @@ class Monitor extends React.PureComponent {
                       />
                     </Tabs.TabPane>
                     <Tabs.TabPane key="rain" tab="雨量站">
-                      {console.log(floodRain, "floodRain")}
                       <>
                         <TableShow
                           onRow={(record) => {
                             return {
                               onClick: () => {
-                                this.setState({ floodName: record.aliasName });
+                                record = {
+                                ...record,
+                                id: record.riverwaterdataList
+                                  ? record.riverwaterdataList[0].stcd
+                                  : "",
+                              };
+                                this.setState({ floodRainName: record.aliasName });
+                                this.locationClick(record);
                                 getDayRainBySite(record.stcd);
                               },
                             };
@@ -496,7 +482,11 @@ class Monitor extends React.PureComponent {
               </RenderBox>
             </div>
             <div className="second-box">
-              <RenderBox hasTitle title="易涝点24小时积水深" style={{position: 'relative'}}>
+              <RenderBox
+                hasTitle
+                title="易涝点24小时积水深"
+                style={{ position: "relative" }}
+              >
                 <div className="water-select">
                   <div className="water-select-flex">
                     <div className="water-select-flex">{floodName}</div>
@@ -509,9 +499,9 @@ class Monitor extends React.PureComponent {
                 </div>
                 <div className="easyfloodLine" id="easyfloodLine"></div>
                 {/* 视频 */}
-                <div className='videoBox'>
+                <div className="videoBox">
                   <VideoPlayer
-                      strtoken={floodId?.stiteWaterRadios?.[0]?.strtoken}
+                    strtoken={floodId?.stiteWaterRadios?.[0]?.strtoken}
                   />
                 </div>
                 {/* <img src={video} width="430px" height="200px"></img> */}
@@ -566,7 +556,7 @@ class Monitor extends React.PureComponent {
           <RouterList />
         </div>
 
-        <div className="m-bottom"/>
+        <div className="m-bottom" />
         <img
           onClick={() => {
             this.setState({

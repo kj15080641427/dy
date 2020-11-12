@@ -15,6 +15,7 @@ const initState = {
   taskDanger: [],
   taskdangerModalVisible: false,
   taskWarning: [],
+  formUser: [],
 };
 let selected = [];
 

@@ -64,3 +64,8 @@ export const SET_DAY_RAIN_BY_SITE = "SET_DAY_RAIN_BY_SITE";
 //用户菜单
 export const GET_USER_MENU = "GET_USER_MENU";
 export const SET_USER_MENU = "SET_USER_MENU";
+
+//设置防汛队伍
+export const SET_FLOOD_RANK_ADDRESS = "SET_FLOOD_RANK_ADDRESS";
+//设置防汛专家
+export const SET_FLOOD_EXPERT_ADDRESS = "SET_FLOOD_EXPERT_ADDRESS";

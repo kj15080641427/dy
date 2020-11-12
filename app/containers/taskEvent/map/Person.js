@@ -43,23 +43,26 @@ class Person extends Base {
           <span className="iconfont iconshipin m-ovl-video"></span>
         </div>
         <div>
-          开始时间:
+          开始时间：
           <DatePicker
             format="YYYY-MM-DD HH:mm"
             onOk={this.onStartOk}
             onChange={() => console.log(111)}
           ></DatePicker>
         </div>
+        <br />
         <div>
-          结束时间:
+          结束时间：
           <DatePicker
             format="YYYY-MM-DD HH:mm"
             onOk={this.onEndOk}
             onChange={() => console.log(111)}
           ></DatePicker>
         </div>
-        <div>
+        <br />
+        <div style={{ textAlign: "center" }}>
           <Button
+            type="primary"
             onClick={() => {
               onSelect;
             }}

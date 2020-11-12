@@ -26,23 +26,23 @@ class Water extends Base {
       >
         <div className="m-ovl-line luo-ovl-title">水位站点：{model.name}</div>
         <div className="m-ovl-line">
-          <label>水位：</label>
+          <label style={{ width: "80px" }}>水位：</label>
           {model?.z || "--"}m
         </div>
         <div className="m-ovl-line">
-          <label>警戒水位：</label>
-          {model.warning}m
+          <label style={{ width: "80px" }}>警戒水位：</label>
+          {model.warning || "--"}m
         </div>
         <div className="m-ovl-line">
-          <label>数据来源：</label>
+          <label style={{ width: "80px" }}>数据来源：</label>
           {model.dict[model.siteDictionariesID]}
         </div>
         <div className="m-ovl-line">
-          <label>区县：</label>
+          <label style={{ width: "80px" }}>区县：</label>
           {model.stlc || "--"}
         </div>
         <div className="m-ovl-line">
-          <label>河流：</label>
+          <label style={{ width: "80px" }}>河流：</label>
           {model.rvnm}
         </div>
         {/* <div className="m-ovl-line">
@@ -50,7 +50,7 @@ class Water extends Base {
           {model.z}cm
         </div> */}
         <div className="m-ovl-line">
-          <label>更新时间：</label>
+          <label style={{ width: "80px" }}>更新时间：</label>
           {tmDesc}
         </div>
         <span className="iconfont iconcuo m-ovl-close"></span>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import * as action from "../../redux/actions/taskEvent";
 import { bindActionCreators } from "redux";
@@ -14,9 +14,12 @@ const typeList = ["事件新增", "消息发送", "人员调度", "专家调度"
 const TaskTimeLine = (props) => {
   const { getTaskTimeLine } = props.actions;
   const { taskInfo, taskTimeLine } = props;
-
+  const srcoolRef = useRef(null);
   useEffect(() => {
     getTaskTimeLine({ taskEventsID: taskInfo?.taskEventsID });
+    srcoolRef.current.scrollTop = 900;
+    // window.scrollTo(0, 100);
+    console.log(srcoolRef.current, "srcoolRef", srcoolRef);
   }, [taskInfo]);
 
   const renderTimeLine = (item) => {
@@ -52,7 +55,7 @@ const TaskTimeLine = (props) => {
 
   return (
     <div className="task-info-timeline">
-      <div className="task-timeline-div">
+      <div className="task-timeline-div" ref={srcoolRef}>
         <Timeline mode="alternate">
           <Timeline.Item
             style={{ height: "80px" }}
@@ -130,7 +133,14 @@ const TaskTimeLine = (props) => {
                         className="task-timeline-arrow"
                         style={{ justifyContent: "flex-start" }}
                       >
-                        <CaretLeftOutlined style={{ color: "white" }} />
+                        <CaretLeftOutlined
+                          style={{
+                            color:
+                              index == taskTimeLine.length - 1
+                                ? "#1890ff"
+                                : "white",
+                          }}
+                        />
                         <Card className="task-timeline-card">
                           <div>{typeList[item.type]}</div>
                         </Card>
@@ -159,7 +169,14 @@ const TaskTimeLine = (props) => {
                         <Card className="task-timeline-card">
                           <div>{typeList[item.type]}</div>
                         </Card>
-                        <CaretRightOutlined style={{ color: "white" }} />
+                        <CaretRightOutlined
+                          style={{
+                            color:
+                              index == taskTimeLine.length - 1
+                                ? "#1890ff"
+                                : "white",
+                          }}
+                        />
                       </div>
                     </Popover>
                   </>

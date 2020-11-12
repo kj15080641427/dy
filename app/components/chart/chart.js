@@ -179,7 +179,7 @@ export const pieChart = (domId, data, width, legend, title) => {
         startAngle: 140,
         name: "",
         type: "pie",
-        radius: ["50%", "65%"],
+        radius: ["70%", "85%"],
         data: data,
         left: "center",
         // width: width || 400,
@@ -335,21 +335,21 @@ export const lineChart = (domId, data, width, warningline) => {
 export const rotateBarChart = (domId, data, width, height) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let fontSize = 15;
-  const max = Math.max(...data.map((d) => d.value));
-  const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
-  let reduceNum = Math.floor(max / 15);
-  if (reduceNum >= min) {
-    reduceNum = min - 1;
-  }
-  if (reduceNum == 0) {
-    reduceNum = max / 10;
-  }
-  data.map((d) => {
-    if (d.value == 0) {
-      d.value = reduceNum;
-      d.reduceFlag = true;
-    }
-  });
+  // const max = Math.max(...data.map((d) => d.value));
+  // const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
+  // let reduceNum = Math.floor(max / 15);
+  // if (reduceNum >= min) {
+  //   reduceNum = min - 1;
+  // }
+  // if (reduceNum == 0) {
+  //   reduceNum = max / 10;
+  // }
+  // data.map((d) => {
+  //   if (d.value == 0) {
+  //     d.value = reduceNum;
+  //     d.reduceFlag = true;
+  //   }
+  // });
   let option = {
     tooltip: {
       trigger: "axis",
@@ -427,19 +427,20 @@ export const rotateBarChart = (domId, data, width, height) => {
     },
     series: [
       {
+        barMinHeight: 4,
         name: "24小时降雨",
         type: "bar",
         label: {
           show: true,
           position: "left",
           color: "white",
-          formatter: (params) => {
-            if (params.data.reduceFlag) {
-              return 0;
-            } else {
-              return params.value;
-            }
-          },
+          // formatter: (params) => {
+          //   if (params.data.reduceFlag) {
+          //     return 0;
+          //   } else {
+          //     return params.value;
+          //   }
+          // },
         },
         width: width || 300,
         height: height,
@@ -608,6 +609,8 @@ export const funnelChart = (domId, data) => {
 };
 //24小时折线图
 export const showChart = (data, id, yd, yname) => {
+  const length = data.length;
+  let num = Math.floor(length / 4);
   let xdata = [];
   let ydata = [];
   var myChart = echarts.init(document.getElementById(id));
@@ -639,7 +642,20 @@ export const showChart = (data, id, yd, yname) => {
       axisLabel: {
         color: "white",
         fontSize: 16,
+        // interval: (index) => {
+        //   if (
+        //     index == length - 1 ||
+        //     index == 0 ||
+        //     index == num ||
+        //     index == length - num
+        //   ) {
+        //     return true;
+        //   } else {
+        //     return false;
+        //   }
+        // },
       },
+
       axisLine: {
         lineStyle: {
           color: "white",

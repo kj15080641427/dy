@@ -93,6 +93,7 @@ export const TabsList = (props) => {
   return (
     <>
       <TableShow
+        pageSize={5}
         number={6}
         onRow={(record) => {
           return {
@@ -101,7 +102,7 @@ export const TabsList = (props) => {
                 id: record?.siteWaterLevels[0]?.stcd,
                 name: record.name,
               });
-              changeWaterVideo(record);
+              // changeWaterVideo(record);
               emitter.emit("map-move-focus", [record.lgtd, record.lttd], 3000);
             },
             onDoubleClick: () => {
@@ -127,18 +128,18 @@ export const TabsList = (props) => {
             },
           },
           {
-            name: "河流",
-            dataIndex: "siteWaterLevels",
+            name: "区县",
+            dataIndex: "areaName",
             width: "20%",
             // sorter: (a, b) => (a & a[0] ? a[0].rvnm - b[0].rvnm : 1),
             render: (v) => {
-              return v && v[0] ? v[0].rvnm : "-";
+              return (v && v.split("(")[0]) || "-";
             },
           },
           {
-            name: "实时水位",
+            name: "实时水位(m)",
             dataIndex: "z",
-            width: "15%",
+            width: "17%",
             render: (v) => {
               return v ? v : "-";
             },

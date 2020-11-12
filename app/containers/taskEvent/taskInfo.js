@@ -3,10 +3,8 @@ import { connect } from "react-redux";
 import * as action from "../../redux/actions/taskEvent";
 import * as mapAction from "../../redux/actions/map";
 import { bindActionCreators } from "redux";
-
 import Map from "./map/map";
 import { Input } from "antd";
-import { createHashHistory } from "history";
 import trackQuery from "@app/resource/icon/trackQuery.svg";
 import TaskTimeLine from "./taskTimeLine";
 import TaskUpdate from "./taskUpdate";
@@ -18,17 +16,17 @@ import TaskInfoCard from "./component/taskInfoCard";
 import TaskInfoCheck from "./component/taskInfoCheck";
 import checkImg from "@app/resource/图层.svg";
 import "./task.scss";
-const hashHistory = createHashHistory();
 const { Search } = Input;
 
 const TaskInfo = (props) => {
   const {
-    taskInfo,
-    floodUser,
+    floodRanks,
     floodAddress,
     expert,
     userPosition,
     taskList,
+    floodRankAddress,
+    floodExpertAddress,
   } = props;
   const formRef = useRef(null);
   const {
@@ -37,13 +35,13 @@ const TaskInfo = (props) => {
     setMapUserPosition, //设置人员定位
     getTaskList,
     setTaskInfo,
+    getFlooodUserExpert, //专家/人员定位
   } = props.actions;
   const { getFloodRankUser, getFloodExpert } = props.mapActions;
 
   const [text, setText] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
-
   useEffect(() => {
     getTaskList({
       current: 1,
@@ -53,9 +51,9 @@ const TaskInfo = (props) => {
     getAllFloodUser(); //防汛人员
     getFloodRankUser(); //防汛队伍
     getFloodExpert(); //防汛专家
+    getFlooodUserExpert();
   }, []);
   useEffect(() => {
-    console.log(props);
     if (props?.location?.query?.info) {
       setTaskInfo(props?.location?.query?.info);
     } else {
@@ -64,30 +62,21 @@ const TaskInfo = (props) => {
       }
     }
   }, [taskList]);
-  let init = [...floodUser, ...expert?.all];
-  // let init = [];
+  // let init = [...floodExpertAddress, ...floodRankAddress.allRankUser];
+  let init = [];
 
   useEffect(() => {
-    // if (floodUser && floodAddress) {
-    //   floodUser?.map((item) => {
-    //     floodAddress?.records?.map((t) => {
-    //       if (item.userid === t.userid) {
-    //         init.push({ ...item, ...t });
-    //         setPerson([...person, { ...item, ...t }]);
-    //         return;
-    //       }
-    //     });
-    //   });
-    // }
-    // return () => {
-    //   setPerson([]);
-    // };
-    setMapUserPosition([]);
-  }, [floodUser, floodAddress]);
+    return () => {
+      setMapUserPosition([]);
+    };
+  }, [floodRanks, floodAddress]);
 
   const onSearch = (value) => {
     if (value) {
-      let filteredList = init.filter((item) => {
+      let filteredList = [
+        ...floodExpertAddress.all,
+        ...floodRankAddress.allRankUser,
+      ].filter((item) => {
         return item.name.indexOf(value) !== -1;
       });
       setMapUserPosition(filteredList);
@@ -145,7 +134,7 @@ const TaskInfo = (props) => {
         }}
       >
         <img src={checkImg}></img>
-        {showCheck ? <TaskInfoCheck /> : null}
+        {showCheck ? <TaskInfoCheck /> : <div></div>}
       </div>
       <TaskTimeLine></TaskTimeLine>
       <TaskUpdate formRef={formRef}></TaskUpdate>
@@ -159,10 +148,14 @@ const mapStateToProps = (state) => {
   return {
     floodAddress: state.taskReducers.floodAddress,
     taskInfo: state.taskReducers.taskInfo,
-    floodUser: state.mapAboutReducers.floodUser,
+    // floodUser: state.mapAboutReducers.floodUser,
     expert: state.mapAboutReducers.expert,
     userPosition: state.taskReducers.userPosition,
     taskList: state.taskReducers.taskList,
+    floodRanks: state.mapAboutReducers.floodRanks,
+
+    floodRankAddress: state.currency.floodRankAddress,
+    floodExpertAddress: state.currency.floodExpertAddress,
   };
 };
 const mapDispatchToProps = (dispatch) => {

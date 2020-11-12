@@ -175,15 +175,13 @@ function* getMaterialDispatch({ data }) {
       taskEventsID: data,
     });
     if (result.code == successCode) {
-      let a = [];
+      let list = [];
       result.data.map((item) => {
-        item.taskMaterialListList?.map((t) => {
-          a.push({ ...item, ...t });
-        });
+        list.push({ ...item, ...item.taskMaterialListList[0] });
       });
       yield put({
         type: types.SET_MATERIAL_DISPATCH,
-        data: a,
+        data: list,
       });
     } else {
       message.error(result.msg);
@@ -380,7 +378,58 @@ function* getTaskWarning({ data }) {
     console.error(e);
   }
 }
-
+//防汛人员/专家定位
+function* getFloodUserExpertAddress() {
+  try {
+    const address = yield call(req.getFloodAddress, { current: 1, size: -1 });
+    const expert = yield call(req.getFloodControlExpertAll, {});
+    const rankUser = yield call(req.getFloodRanksAll, {});
+    if (address.code == 200 && expert.code == 200 && rankUser.code == 200) {
+      const city = [];
+      const county = [];
+      const town = [];
+      const allRankUser = [];
+      expert.data.map((item) => {
+        if (item.type == 1) {
+          city.push(item);
+        } else if (item.type == 2) {
+          county.push(item);
+        } else if (item.type == 3) {
+          town.push(item);
+        }
+        address.data?.records?.forEach((t) => {
+          if (item.userid && item.userid === t.userId) {
+            item.lon = t.longitude;
+            item.lat = t.latitude;
+            return;
+          }
+        });
+      });
+      rankUser.data.forEach((i) => {
+        i.userList.forEach((item) => {
+          address.data?.records?.forEach((t) => {
+            if (item.userid && item.userid === t.userId) {
+              item.lon = t.longitude;
+              item.lat = t.latitude;
+              return;
+            }
+          });
+        });
+        allRankUser.push(...i.userList);
+      });
+      yield put({
+        type: types.SET_FLOOD_RANK_ADDRESS,
+        data: { rankUser: rankUser.data, allRankUser: allRankUser },
+      });
+      yield put({
+        type: types.SET_FLOOD_EXPERT_ADDRESS,
+        data: { all: expert.data, city: city, county: county, town: town },
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
 export default function* management() {
   yield all([
     takeEvery(types.SEND_MESSAGE, sendMessage),
@@ -407,5 +456,6 @@ export default function* management() {
     takeEvery(types.GET_TASK_COUNT_STATE, getTaskCountState),
     takeEvery(types.GET_TASK_DANGER, getTaskDanger),
     takeEvery(types.GET_TASK_WARNING, getTaskWarning),
+    takeEvery(types.GET_FLOOD_USER_EXPERT_ADDREDD, getFloodUserExpertAddress),
   ]);
 }

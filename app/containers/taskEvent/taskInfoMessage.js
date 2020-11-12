@@ -124,7 +124,7 @@ const TaskInfoMessage = (props) => {
       <div className="right-background"></div>
       <Head titleImg={titleImg} />
       <RouterList />
-      <PageHeader></PageHeader>
+      <PageHeader taskInfo={taskInfo}></PageHeader>
       <div className="task-dispatch-body">
         <div className="task-card-container">
           <Tabs defaultActiveKey="1" type="card">

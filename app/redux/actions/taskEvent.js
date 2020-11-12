@@ -271,3 +271,10 @@ export const getTaskWarning = (data) => {
     data,
   };
 };
+//防汛人员/专家定位
+export const getFlooodUserExpert = (data) => {
+  return {
+    type: types.GET_FLOOD_USER_EXPERT_ADDREDD,
+    data,
+  };
+};

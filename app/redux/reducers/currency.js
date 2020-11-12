@@ -1,6 +1,14 @@
 import * as actionTypes from "../constants/home";
 import * as types from "../constants/map";
-export default function currency(state = { dict: {}, alarmData: [] }, action) {
+export default function currency(
+  state = {
+    dict: {},
+    alarmData: [],
+    floodRankAddress: [],
+    floodExpertAddress: [],
+  },
+  action
+) {
   let newState = Object.assign({}, state);
   switch (action.type) {
     case actionTypes.CURRENCY:
@@ -19,6 +27,12 @@ export default function currency(state = { dict: {}, alarmData: [] }, action) {
       break;
     case types.SET_ALARM_DATA:
       newState = { ...newState, alarmData: action.data };
+      break;
+    case types.SET_FLOOD_RANK_ADDRESS:
+      newState = { ...newState, floodRankAddress: action.data };
+      break;
+    case types.SET_FLOOD_EXPERT_ADDRESS:
+      newState = { ...newState, floodExpertAddress: action.data };
       break;
     default:
       return state;

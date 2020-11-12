@@ -59,6 +59,7 @@ const TaskList = (props) => {
     setTaskWarningModal,
   } = props.actions;
   const formRef = useRef(null);
+  const warningFormRef = useRef(null);
   const [page, setPage] = useState(1);
   const [danger, setDanger] = useState({});
   const [showDanger, setShowDanger] = useState(false);
@@ -82,6 +83,7 @@ const TaskList = (props) => {
       dataSource: source,
     };
     addTaskEvent(form);
+    setTaskWarningModal(false);
     setTaskDangerModal(false);
   };
 
@@ -308,7 +310,7 @@ const TaskList = (props) => {
                           </div>
                         </div>
                       </div>
-                      <Link
+                      <div
                         className="task-list-card-footer"
                         onClick={() => {
                           setTaskDangerModal(true);
@@ -318,7 +320,7 @@ const TaskList = (props) => {
                         // to={{ pathname: "/taskInfo", query: { info: item } }}
                       >
                         事件详情
-                      </Link>
+                      </div>
                     </Card>
                   </div>
                 );
@@ -424,7 +426,7 @@ const TaskList = (props) => {
                       ]}
                       onFinish={onFinish}
                       showCancel
-                      cancelClick={() => setModalVislble(false)}
+                      cancelClick={() => setTaskDangerModal(false)}
                     ></DYForm>
                   </Card>
                 </div>
@@ -436,28 +438,23 @@ const TaskList = (props) => {
               columns={[
                 {
                   title: "类型",
-                  dataIndex: "name",
-                  key: "name",
+                  dataIndex: "alarmtype",
                 },
                 {
                   title: "警戒值",
-                  dataIndex: "name",
-                  key: "name",
+                  dataIndex: "baselevel",
                 },
                 {
                   title: "实时值",
-                  dataIndex: "name",
-                  key: "name",
+                  dataIndex: "actuallevel",
                 },
                 {
                   title: "站名",
-                  dataIndex: "name",
-                  key: "name",
+                  dataIndex: "stnm",
                 },
                 {
                   title: "地址",
-                  dataIndex: "name",
-                  key: "name",
+                  dataIndex: "stlc",
                 },
                 {
                   title: "操作",
@@ -466,6 +463,17 @@ const TaskList = (props) => {
                   render: (row) => (
                     <a
                       onClick={() => {
+                        warningFormRef.current.setFieldsValue({
+                          ...row,
+                          address: row.stlc,
+                          name:
+                            row.alarmtype == 1
+                              ? "水位站点超警"
+                              : "积水站点超警",
+                          remark: `${row.alarmtime},${row.stnm},${
+                            row.alarmtype == 1 ? "水位站点超警" : "积水站点超警"
+                          }`,
+                        });
                         setTaskWarningModal(true);
                       }}
                     >
@@ -478,12 +486,11 @@ const TaskList = (props) => {
             ></Table>
 
             <Modal
-              width="1200px"
               visible={taskWarningModalVisible}
               footer={null}
               closable={false}
               onCancel={() => {
-                // setTaskDangerModal(false);
+                setTaskWarningModal(false);
                 // setShowButton(true);
                 // setShowDanger(false);
               }}
@@ -491,31 +498,22 @@ const TaskList = (props) => {
               forceRender
             >
               <div className="task-danger-modal">
-                <div style={{ width: "300px" }}>
-                  <Card
-                    title="新增事件"
-                    style={{
-                      height: "700px",
-                      width: "400px",
-                      display: showDanger ? "block" : "none",
-                    }}
-                  >
-                    <DYForm
-                      formRef={formRef}
-                      formItem={[
-                        {
-                          label: "事件来源",
-                          name: "happenTime",
-                          ele: <text>超预警</text>,
-                        },
-                        ...taskListform,
-                      ]}
-                      onFinish={onFinish}
-                      showCancel
-                      cancelClick={() => setModalVislble(false)}
-                    ></DYForm>
-                  </Card>
-                </div>
+                <Card title="新增事件" style={{ width: "100%" }}>
+                  <DYForm
+                    formRef={warningFormRef}
+                    formItem={[
+                      {
+                        label: "事件来源：",
+                        name: "happenTime",
+                        ele: <text>超预警</text>,
+                      },
+                      ...taskListform,
+                    ]}
+                    onFinish={onFinish}
+                    showCancel
+                    cancelClick={() => setTaskWarningModal(false)}
+                  ></DYForm>
+                </Card>
               </div>
             </Modal>
           </Tabs.TabPane>
