@@ -232,7 +232,7 @@ class FloodModel extends Component {
                         },
                       ]}
                       dataSource={water}
-                    ></TableShow>
+                    />
                   </Tabs.TabPane>
                   <Tabs.TabPane key="2" tab="积水点">
                     <TableShow
@@ -296,7 +296,7 @@ class FloodModel extends Component {
                         },
                       ]}
                       dataSource={initFlood}
-                    ></TableShow>
+                    />
                   </Tabs.TabPane>
                 </Tabs>
               </div>
@@ -314,13 +314,13 @@ class FloodModel extends Component {
               {moment(titleTime).add(1, "days").format("YYYY-MM-DD HH:mm")} */}
             </div>
             <div className="flood-model-water-border">
-              <div>{defaultWater.name}站24小时水位预测曲线图</div>
+              <div>{defaultWater?.name}站24小时水位预测曲线图</div>
               {/* <div className="flood-model-water-border"> */}
               <div className="flood-model-water" id="floodModelWater"></div>
               {/* </div> */}
             </div>
             <div className="flood-model-water-border">
-              <div>{defaultFlood.name}站24小时积水预测曲线图</div>
+              <div>{defaultFlood?.name}站24小时积水预测曲线图</div>
               {/* <div className="flood-model-water-border"> */}
               <div className="flood-model-water" id="floodModelFlood"></div>
               {/* </div> */}
