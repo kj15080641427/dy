@@ -34,7 +34,7 @@ export default class yellowRiver extends React.PureComponent {
     siteData.map((td) => {
       td.key = td.siteWaterLevelsID;
     });
-    this.setState({ siteData, selectedSite: siteData[3] }, () => {
+    this.setState({ siteData, selectedSite: siteData[2] }, () => {
       this.buildTableData();
     });
   }
@@ -183,6 +183,7 @@ export default class yellowRiver extends React.PureComponent {
               </Space>
             </div>
             <div>
+              {console.log(this.state.tableData)}
               <Table
                 bordered
                 dataSource={this.state.tableData}

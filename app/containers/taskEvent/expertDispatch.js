@@ -68,7 +68,7 @@ const ExpertDispatch = (props) => {
     <div className="task-dispatch-root-body">
       <div style={{ height: "90px", background: "#003366" }}></div>
       <div className="right-background"></div>
-      <PageHeader></PageHeader>
+      <PageHeader taskInfo={taskInfo}></PageHeader>
       <Head titleImg={titleImg} />
       <RouterList />
       <div className="task-dispatch-body">

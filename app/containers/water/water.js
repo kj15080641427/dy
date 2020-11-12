@@ -117,7 +117,7 @@ class Monitor extends React.PureComponent {
         color: "rgba(90,150,222,1)",
       },
     });
-    pieChart("pie-chart", data, 450, [], {
+    pieChart("pie-chart", data, 500, [], {
       text: `水文局在线:${typeOnline.q}\n\n水务局在线:${typeOnline.w}\n\n基层防汛在线:${typeOnline.e}\n\n其他来源在线:${typeOnline.r}`,
       left: "center",
       top: "center",
@@ -454,83 +454,88 @@ class Monitor extends React.PureComponent {
               </RenderBox>
             </div>
             <div className="video-table">
-              <RenderBox>
-                <div>
-                  <Radio.Group
-                    optionType="button"
-                    buttonStyle="solid"
-                    defaultValue={this.state.radiotabs}
-                    onChange={(e) =>
-                      this.setState({
-                        radiotabs: e.target.value,
-                      })
-                    }
-                  >
-                    <Radio.Button value="city">区县</Radio.Button>
-                    <Radio.Button value="river">河流</Radio.Button>
-                  </Radio.Group>
-                </div>
-                {this.state.radiotabs == "city" ? (
-                  <div className="card-container">
-                    <Tabs
-                      type="card"
-                      activeKey={this.state.cityTabsKey}
-                      onChange={(e) => this.setState({ cityTabsKey: e })}
-                    >
-                      <TabPane tab="全部" key="1">
-                        <WaterInfo dataSource={water} />
-                      </TabPane>
-                      <TabPane tab="东营区" key="2">
-                        <WaterInfo dataSource={dy} />
-                      </TabPane>
-                      <TabPane tab="广饶县" key="3">
-                        <WaterInfo dataSource={gr} />
-                      </TabPane>
-                      <TabPane tab="利津县" key="4">
-                        <WaterInfo dataSource={lj} />
-                      </TabPane>
-                      <TabPane tab="河口区" key="5">
-                        <WaterInfo dataSource={hk} />
-                      </TabPane>
-                      <TabPane tab="垦利区" key="6">
-                        <WaterInfo dataSource={kl} />
-                      </TabPane>
-                    </Tabs>
-                  </div>
-                ) : (
-                  <div className="card-container">
-                    <Tabs
-                      type="card"
-                      onChange={(e) => {
-                        this.setState({
-                          riverTabsKey: e,
-                        });
-                        renderRiverSite(e);
-                      }}
-                      activeKey={this.state.riverTabsKey}
-                    >
-                      <Tabs.TabPane tab="广利河" key="a">
-                        <WaterInfoRiver dataSource={siteRiverTable} />
-                      </Tabs.TabPane>
-                      <Tabs.TabPane tab="溢洪河" key="b">
-                        <WaterInfoRiver dataSource={siteRiverTable} />
-                      </Tabs.TabPane>
-                      <Tabs.TabPane tab="永丰河" key="c">
-                        <WaterInfoRiver dataSource={siteRiverTable} />
-                      </Tabs.TabPane>
-                      <Tabs.TabPane tab="马新河" key="d">
-                        <WaterInfoRiver dataSource={siteRiverTable} />
-                      </Tabs.TabPane>
-                      <Tabs.TabPane tab="小清河" key="e">
-                        <WaterInfoRiver dataSource={siteRiverTable} />
-                      </Tabs.TabPane>
-                      <Tabs.TabPane tab="草桥沟" key="f">
-                        <WaterInfoRiver dataSource={siteRiverTable} />
-                      </Tabs.TabPane>
-                    </Tabs>
-                  </div>
-                )}
-              </RenderBox>
+              <div>
+                <Radio.Group
+                  optionType="button"
+                  buttonStyle="solid"
+                  defaultValue={this.state.radiotabs}
+                  onChange={(e) =>
+                    this.setState({
+                      radiotabs: e.target.value,
+                    })
+                  }
+                >
+                  <Radio.Button value="city" className="water-tabs-button">
+                    区县
+                  </Radio.Button>
+                  <Radio.Button value="river" className="water-tabs-button">
+                    河流
+                  </Radio.Button>
+                </Radio.Group>
+
+                <RenderBox>
+                  {this.state.radiotabs == "city" ? (
+                    <div className="card-container">
+                      <Tabs
+                        type="card"
+                        activeKey={this.state.cityTabsKey}
+                        onChange={(e) => this.setState({ cityTabsKey: e })}
+                      >
+                        <TabPane tab="全部" key="1">
+                          <WaterInfo dataSource={water} />
+                        </TabPane>
+                        <TabPane tab="东营区" key="2">
+                          <WaterInfo dataSource={dy} />
+                        </TabPane>
+                        <TabPane tab="广饶县" key="3">
+                          <WaterInfo dataSource={gr} />
+                        </TabPane>
+                        <TabPane tab="利津县" key="4">
+                          <WaterInfo dataSource={lj} />
+                        </TabPane>
+                        <TabPane tab="河口区" key="5">
+                          <WaterInfo dataSource={hk} />
+                        </TabPane>
+                        <TabPane tab="垦利区" key="6">
+                          <WaterInfo dataSource={kl} />
+                        </TabPane>
+                      </Tabs>
+                    </div>
+                  ) : (
+                    <div className="card-container">
+                      <Tabs
+                        type="card"
+                        onChange={(e) => {
+                          this.setState({
+                            riverTabsKey: e,
+                          });
+                          renderRiverSite(e);
+                        }}
+                        activeKey={this.state.riverTabsKey}
+                      >
+                        <Tabs.TabPane tab="广利河" key="a">
+                          <WaterInfoRiver dataSource={siteRiverTable} />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="溢洪河" key="b">
+                          <WaterInfoRiver dataSource={siteRiverTable} />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="永丰河" key="c">
+                          <WaterInfoRiver dataSource={siteRiverTable} />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="马新河" key="d">
+                          <WaterInfoRiver dataSource={siteRiverTable} />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="小清河" key="e">
+                          <WaterInfoRiver dataSource={siteRiverTable} />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="草桥沟" key="f">
+                          <WaterInfoRiver dataSource={siteRiverTable} />
+                        </Tabs.TabPane>
+                      </Tabs>
+                    </div>
+                  )}
+                </RenderBox>
+              </div>
             </div>
           </div>
         </div>
@@ -565,25 +570,27 @@ class Monitor extends React.PureComponent {
             <div className="water-right-last-box">
               {/* 来源图 */}
               <RenderBox title={"水位站点"} hasTitle>
-                <div className="water-select">
-                  <div className="">
-                    <div className="water-select-flex">
-                      {waterName}24小时水位变化曲线
+                <div className="water-radar-box-flex">
+                  <div className="water-select">
+                    <div className="">
+                      <div className="water-select-flex">
+                        {waterName}24小时水位变化曲线
+                      </div>
+                      <div className="water-select-flex">{`${moment(
+                        new Date().getTime() - 24 * 60 * 60 * 1000
+                      ).format("YYYY-MM-DD HH:mm")}  至 ${moment(
+                        new Date()
+                      ).format("MM-DD HH:mm")}`}</div>
                     </div>
-                    <div className="water-select-flex">{`${moment(
-                      new Date().getTime() - 24 * 60 * 60 * 1000
-                    ).format("YYYY-MM-DD HH:mm")}  至 ${moment(
-                      new Date()
-                    ).format("MM-DD HH:mm")}`}</div>
                   </div>
-                </div>
-                <div className="line-chart" id="line-chart" />
-                {/* 视频 */}
-                <div className="water-video-div">
-                  <VideoPlayer
-                    style={{ width: 490, height: 230 }}
-                    strtoken={waterVideoInfo.strtoken}
-                  />
+                  <div className="line-chart" id="line-chart" />
+                  {/* 视频 */}
+                  <div className="water-video-div">
+                    <VideoPlayer
+                      style={{ width: 490, height: 230 }}
+                      strtoken={waterVideoInfo.strtoken}
+                    />
+                  </div>
                 </div>
               </RenderBox>
             </div>

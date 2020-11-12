@@ -42,6 +42,7 @@ class Person extends Base {
           <span>电话号码: {model.phone}</span>
           {/*<span className="iconfont iconshipin m-ovl-video"/>*/}
         </div>
+
         {/*<div style={{ color: "white" }}>*/}
         {/*  开始时间:*/}
         {/*  <DatePicker*/}

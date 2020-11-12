@@ -93,6 +93,7 @@ export const TabsList = (props) => {
   return (
     <>
       <TableShow
+        pageSize={5}
         number={6}
         onRow={(record) => {
           return {

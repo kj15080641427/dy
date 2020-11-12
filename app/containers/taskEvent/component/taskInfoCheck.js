@@ -71,7 +71,7 @@ const TaskInfoCheck = (props) => {
 
 const TaskInfoCheck_old = (props) => {
   const { setMapUserPosition } = props.actions;
-  const { floodRanks, expert, userPosition } = props;
+  const { floodRankAddress, userPosition, floodExpertAddress, style } = props;
 
   const [user, setUser] = useState({
     市级防汛应急抢险队: false,
@@ -86,9 +86,9 @@ const TaskInfoCheck_old = (props) => {
   });
 
   const expertList = [
-    { name: "市级", userList: expert?.city },
-    { name: "县级", userList: expert?.county },
-    { name: "乡镇", userList: expert?.town },
+    { name: "市级", userList: floodExpertAddress?.city },
+    { name: "县级", userList: floodExpertAddress?.county },
+    { name: "乡镇", userList: floodExpertAddress?.town },
   ];
 
   const filterList = (item) => {
@@ -104,11 +104,11 @@ const TaskInfoCheck_old = (props) => {
   //   getFloodExpert(); //防汛专家分类
   // }, []);
   return (
-    <div className="task-info-checkbox">
+    <div className="task-info-checkbox" style={style}>
       <div className="ranSwitch">
         <div className="switch-border">
           抢险队
-          {floodRanks?.map((item) => {
+          {floodRankAddress?.rankUser?.map((item) => {
             return (
               <Col span={24} key={item.floodRanksId}>
                 <Checkbox
@@ -161,9 +161,11 @@ const TaskInfoCheck_old = (props) => {
 };
 function mapStateToProps(state) {
   return {
-    floodRanks: state.mapAboutReducers.floodRanks,
-    expert: state.mapAboutReducers.expert,
+    // floodRanks: state.mapAboutReducers.floodRanks,
+    // expert: state.mapAboutReducers.expert,
     userPosition: state.taskReducers.userPosition,
+    floodRankAddress: state.currency.floodRankAddress,
+    floodExpertAddress: state.currency.floodExpertAddress,
   };
 }
 

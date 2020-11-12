@@ -181,19 +181,28 @@ class Monitor extends React.PureComponent {
     const { video, videoInfo } = this.props;
     return (
       <div className="video">
-        <Map layerVisible={layerVisible}/>
-        <Head titleImg={titleImg}/>
+        <Map layerVisible={layerVisible} />
+        <Head titleImg={titleImg} />
         <div className="">
           <div style={{ display: displayLeft }}>
             <div className="chart-left-video">
-              <RenderBox hasTitle title="视频站点来源图" style={{height: '100%', alignItem: 'center'}}>
-                <div className="videoFunnelChart" id="videoFunnelChart"/>
+              <RenderBox
+                hasTitle
+                title="视频站点来源图"
+                style={{ height: "100%", alignItem: "center" }}
+              >
+                <div className="videoFunnelChart" id="videoFunnelChart" />
               </RenderBox>
               <RenderBox
-                  // hasTitle
-                  style={{height: '100%'}}
-                  title="视频站点在线图">
-                <div className="videoBarChart" id="videoBarChart" style={{height: '100%'}}/>
+                // hasTitle
+                style={{ height: "100%" }}
+                title="视频站点在线图"
+              >
+                <div
+                  className="videoBarChart"
+                  id="videoBarChart"
+                  style={{ height: "100%" }}
+                />
               </RenderBox>
               <RenderBox>
                 {/* <div className="video-table"> */}
@@ -225,10 +234,17 @@ class Monitor extends React.PureComponent {
             </div>
           </div>
           <div className="chart-right-video" style={{ display: displayRight }}>
-            <RenderBox className="video-img-box" style={{overflow: 'hidden'}}>
-              <div className="video-ing-title">{videoInfo.name}</div>
-              <VideoPlayer strtoken={videoInfo.stiteWaterRadios?.[0].strtoken}/>
-            </RenderBox>
+            {videoInfo.stiteWaterRadios ? (
+              <RenderBox
+                className="video-img-box"
+                style={{ overflow: "hidden" }}
+              >
+                <div className="video-ing-title">{videoInfo.name}</div>
+                <VideoPlayer
+                  strtoken={videoInfo.stiteWaterRadios?.[0].strtoken}
+                />
+              </RenderBox>
+            ) : null}
           </div>
           <RouterList />
         </div>

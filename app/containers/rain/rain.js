@@ -260,6 +260,7 @@ class RainMonitor extends React.PureComponent {
                       dataIndex: "max",
                       key: "max",
                       width: "43%",
+                      align: "center",
                       render: (text, record) => {
                         const { max } = record;
                         let value = null;
@@ -280,6 +281,7 @@ class RainMonitor extends React.PureComponent {
                       dataIndex: "min",
                       key: "min",
                       width: "43%",
+                      align: "center",
                       render: (text, record) => {
                         const { max, min } = record;
 
@@ -335,50 +337,6 @@ class RainMonitor extends React.PureComponent {
                       min: a,
                     },
                   ]}
-                  // dataSource={[
-                  //   {
-                  //     address: "东营区",
-                  //     max: `${tabsList?.dy[0]?.aliasName}(${tabsList?.dy[0]?.raindataList[0]?.dayDrp})`,
-                  //     min: d?.raindataList[0]
-                  //       ? `${d?.aliasName}(${d?.raindataList[0]?.dayDrp})`
-                  //       : `${d?.aliasName}(0)`,
-                  //   },
-                  //   {
-                  //     address: "广饶县",
-                  //     max: `${tabsList?.gr[0]?.aliasName}(${tabsList?.gr[0]?.raindataList[0]?.dayDrp})`,
-                  //     min: g?.raindataList[0]
-                  //         ? `${g?.aliasName}(${g?.raindataList[0]?.dayDrp})`
-                  //         : `${g?.aliasName}(0)`,
-                  //   },
-                  //   {
-                  //     address: "利津县",
-                  //     max: `${tabsList?.lj[0]?.aliasName}(${tabsList?.lj[0]?.raindataList[0]?.dayDrp})`,
-                  //     min: l?.raindataList[0]
-                  //       ? `${l?.aliasName}(${l?.raindataList[0]?.dayDrp})`
-                  //       : `${l?.aliasName}(0)`,
-                  //   },
-                  //   {
-                  //     address: "河口区",
-                  //     max: `${tabsList?.hk[0]?.aliasName}(${tabsList?.hk[0]?.raindataList[0]?.dayDrp})`,
-                  //     min: h?.raindataList[0]
-                  //       ? `${h?.aliasName}(${h?.raindataList[0]?.dayDrp})`
-                  //       : `${h?.aliasName}(0)`,
-                  //   },
-                  //   {
-                  //     address: "垦利区",
-                  //     max: `${tabsList?.kl[0]?.aliasName}(${tabsList?.kl[0]?.raindataList[0]?.dayDrp})`,
-                  //     min: k?.raindataList[0]
-                  //       ? `${k?.aliasName}(${k?.raindataList[0]?.dayDrp})`
-                  //       : `${k?.aliasName}(0)`,
-                  //   },
-                  //   {
-                  //     address: "东营市",
-                  //     max: `${tabsList?.tableAll[0]?.aliasName}(${tabsList?.tableAll[0]?.raindataList[0]?.dayDrp})`,
-                  //     min: a?.raindataList[0]
-                  //       ? `${a?.aliasName}(${a?.raindataList[0]?.dayDrp})`
-                  //       : `${a?.aliasName}(0)`,
-                  //   },
-                  // ]}
                 />
               </RenderBox>
             </div>

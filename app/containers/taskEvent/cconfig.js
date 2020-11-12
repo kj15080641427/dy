@@ -130,21 +130,33 @@ export const materialColumns = [
   { title: "电话", dataIndex: "phone" },
   { title: "调派数量", dataIndex: "phone" },
 ];
-const materiral = ["市水务局防汛仓库"];
+export const materialWarehouse = {
+  32: "市水务局防汛仓库",
+  33: "东营区防汛仓库",
+  34: "垦利区防汛仓库",
+  35: "河口区防汛仓库",
+  36: "利津县防汛仓库",
+  37: "广饶县防汛仓库",
+};
+const stateImg = ["未处理", "处理中", "已处理", "已终止"];
 export const materiaTab2lColumns = [
   {
-    title: "仓库",
-    dataIndex: "materialWarehouseID",
-    render: (e) => materiral[e - 1] || "市水务局防汛仓库",
+    title: "调派时间",
+    dataIndex: "createTime",
   },
-  { title: "物品名称", dataIndex: "materialWarehouseName" },
+  { title: "操作人", dataIndex: "user" },
   {
-    title: "调拨数量",
-    dataIndex: "materialNumber",
+    title: "物资种类",
+    dataIndex: "taskMaterialListList",
+    render: (row) => row?.length,
   },
-  { title: "负责人", dataIndex: "remark" },
-  { title: "电话", dataIndex: "phone" },
-  { title: "时间", dataIndex: "createTime" },
+  { title: "任务内容", dataIndex: "content" },
+  {
+    title: "任务状态",
+    dataIndex: "state",
+    width: "20%",
+    render: (e) => stateImg[e],
+  },
 ];
 export const offTaskForm = [
   {

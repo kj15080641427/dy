@@ -53,7 +53,7 @@ class WeatherChart extends React.PureComponent {
         let setData = [];
         let c = result.data.pop();
         that.setState({
-          cityData: Number(c.prd).toFixed(2),
+          cityData: Number(c.prd).toFixed(1),
         });
         for (var i = result.data.length - 1; i >= 0; i--) {
           setData.unshift((result.data[i].prd * 1).toFixed(2));
@@ -149,7 +149,7 @@ class WeatherChart extends React.PureComponent {
     if (params) {
       const { data } = await getFiveCitydata(params);
       let c = data.pop();
-      this.setState({ cityData: Number(c.prd).toFixed(2) });
+      this.setState({ cityData: Number(c.prd).toFixed(1) });
 
       data.map((d) => (d.value = Number(d.prd)));
       dataSource = data;
@@ -168,17 +168,17 @@ class WeatherChart extends React.PureComponent {
         text: `东营市降雨:${this.state.cityData}`,
         left: "center",
         top: "2px",
+        bottom: "20px",
         textStyle: {
-          color: "#ffffff",
-          fontWeight: "200",
-          fontSize: "18",
+          color: "#0099ff",
+          fontSize: "25",
+          fontWeight: "bold",
         },
       },
       grid: {
         top: this.state.selectedTime === "自定义" ? "120px" : "90px",
         left: "5%",
         right: "0%",
-        bottom: "3%",
         containLabel: true,
         show: true,
         borderColor: "#00A0FD",
@@ -203,6 +203,8 @@ class WeatherChart extends React.PureComponent {
       yAxis: {
         // min: "dataMin",
         // boundaryGap: ["10%", "10%"],
+        nameLocation: "end",
+        name: "单位(mm)",
         type: "value",
         axisLabel: {
           textStyle: {
@@ -236,7 +238,7 @@ class WeatherChart extends React.PureComponent {
               { offset: 1, color: "rgba(156, 79, 245, 0.1)" },
             ]),
           },
-          data: dataSource ? dataSource.map((ds) => ds.value.toFixed(2)) : [],
+          data: dataSource ? dataSource.map((ds) => ds.value.toFixed(1)) : [],
         },
       ],
     });
