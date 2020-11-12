@@ -271,6 +271,7 @@ export const getTaskWarning = (data) => {
     data,
   };
 };
+// <<<<<<< HEAD
 //防汛人员/专家定位
 export const getFlooodUserExpert = (data) => {
   return {
@@ -278,3 +279,22 @@ export const getFlooodUserExpert = (data) => {
     data,
   };
 };
+// =======
+
+//请求历史路径
+export const getPersonTrack = (data) => {
+  return {
+    type: types.GET_PERSON_TRACK,
+    data,
+  };
+};
+
+//更新历史路径数据
+export const updateTrackData = (data) => {
+  return {
+    type: types.FLOOD_TRACK_UPDATE,
+    data
+  };
+};
+
+// >>>>>>> c8cd550299825242c8af38c6acf816b56258f26f

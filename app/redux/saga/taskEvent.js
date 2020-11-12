@@ -233,9 +233,9 @@ function* updateTaskInfo({ data }) {
 function* getTaskInfoThenUpdate({ data }) {
   try {
     const result = yield call(req.getTaskList, { current: 1, size: -1 });
-    if (result.code == successCode) {
+    if (result.code === successCode) {
       const nowTaskInfo = result.data?.records.filter(
-        (item) => item.taskEventsID == data
+        (item) => item.taskEventsID === data
       );
       yield put({
         type: types.SET_TASK_INFO,
@@ -265,10 +265,10 @@ function* deleteTaskInfo({ data }) {
 //取消事件
 function* endTask({ data }) {
   const { param, eventType } = data;
-  let reqType = eventType == "终止事件" ? req.offTask : req.completeTask;
+  let reqType = eventType === "终止事件" ? req.offTask : req.completeTask;
   try {
     const result = yield call(reqType, param);
-    if (result.code == successCode) {
+    if (result.code === successCode) {
       yield put({
         type: types.FEED_TASK_MODAL,
         data: false,
@@ -285,7 +285,7 @@ function* endTask({ data }) {
 function* completeTask({ data }) {
   try {
     const result = yield call(req.completeTask, data);
-    if (result.code == successCode) {
+    if (result.code === successCode) {
       message.info("成功");
     }
   } catch (e) {
@@ -297,7 +297,7 @@ function* completeTask({ data }) {
 function* getTaskTimeLine({ data }) {
   try {
     const result = yield call(req.getTaskTimeLine, data);
-    if (result.code == successCode) {
+    if (result.code === successCode) {
       yield put({
         type: types.SET_TASK_TIMELINE,
         data: result.data.taskDynamicResultDos,
@@ -312,7 +312,7 @@ function* getTaskTimeLine({ data }) {
 function* getTaskCountSource({ data }) {
   try {
     const result = yield call(req.getTaskCountDataSource, data);
-    if (result.code == successCode) {
+    if (result.code === successCode) {
       yield put({
         type: types.SET_TASK_COUNT_SOURCE,
         data: result.data,
@@ -326,7 +326,7 @@ function* getTaskCountSource({ data }) {
 function* getTaskCountGrade({ data }) {
   try {
     const result = yield call(req.getTaskCountGrade, data);
-    if (result.code == successCode) {
+    if (result.code === successCode) {
       yield put({
         type: types.SET_TASK_COUNT_GRADE,
         data: result.data,
@@ -340,7 +340,7 @@ function* getTaskCountGrade({ data }) {
 function* getTaskCountState({ data }) {
   try {
     const result = yield call(req.getTaskCountState, data);
-    if (result.code == successCode) {
+    if (result.code === successCode) {
       yield put({
         type: types.SET_TASK_COUNT_STATE,
         data: result.data,
@@ -354,7 +354,7 @@ function* getTaskCountState({ data }) {
 function* getTaskDanger({ data }) {
   try {
     const result = yield call(req.getTaskDanger, data);
-    if (result.code == successCode) {
+    if (result.code === successCode) {
       yield put({
         type: types.SET_TASK_DANGER,
         data: result.data,
@@ -368,7 +368,7 @@ function* getTaskDanger({ data }) {
 function* getTaskWarning({ data }) {
   try {
     const result = yield call(req.getAlarmWarning, data);
-    if (result.code == successCode) {
+    if (result.code === successCode) {
       yield put({
         type: types.SET_TASK_WARNING,
         data: result.data,
@@ -378,6 +378,7 @@ function* getTaskWarning({ data }) {
     console.error(e);
   }
 }
+// <<<<<<< HEAD
 //防汛人员/专家定位
 function* getFloodUserExpertAddress() {
   try {
@@ -430,6 +431,31 @@ function* getFloodUserExpertAddress() {
     console.error(e);
   }
 }
+// =======
+
+function *getPersonTrack({data}) {
+  try {
+    const {userId, beginTime, endTime} = data;
+    const result = yield call(req.queryFloodPosLog, {
+      userId: userId ? userId : 6,
+      startTime: beginTime.format('YYYY-MM-DD HH:mm:00'),
+      endTime: endTime.format('YYYY-MM-DD HH:mm:00'),
+      current: 0,
+      size: -1,
+    });
+
+    if (result.code === successCode) {
+      yield put({
+        type: types.FLOOD_TRACK_UPDATE,
+        data: result.data.records,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+// >>>>>>> c8cd550299825242c8af38c6acf816b56258f26f
 export default function* management() {
   yield all([
     takeEvery(types.SEND_MESSAGE, sendMessage),
@@ -455,6 +481,7 @@ export default function* management() {
     takeEvery(types.GET_TASK_COUNT_GRADE, getTaskCountGrade),
     takeEvery(types.GET_TASK_COUNT_STATE, getTaskCountState),
     takeEvery(types.GET_TASK_DANGER, getTaskDanger),
+    takeEvery(types.GET_PERSON_TRACK, getPersonTrack),
     takeEvery(types.GET_TASK_WARNING, getTaskWarning),
     takeEvery(types.GET_FLOOD_USER_EXPERT_ADDREDD, getFloodUserExpertAddress),
   ]);

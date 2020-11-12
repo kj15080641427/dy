@@ -1,5 +1,6 @@
 /**
  * map 2020-05-12
+ * update: 2020-11-11
  */
 import React from "react";
 import { connect } from "react-redux";
@@ -15,14 +16,7 @@ import "./style.scss";
 import VideoControl from "@app/components/video/VideoControl";
 
 import Person from "./Person";
-// import Rain from "./overlays/Rain";
-// import Water from "./overlays/Water";
-// import Ponding from "./overlays/Ponding";
-// import Video from "./overlays/Video";
-// import Gate from "./overlays/Gate";
-// import Pump from "./overlays/Pump";
-// import WfsRiver from "./overlays/WfsRiver";
-// import Warehouse from "./overlays/Warehouse";
+
 import { message } from "antd";
 class Map extends React.PureComponent {
   constructor(props, context) {
@@ -85,7 +79,7 @@ class Map extends React.PureComponent {
     );
   }
   componentDidUpdate(prevProps) {
-    let { layerVisible, person, floodRanks } = this.props;
+    let { layerVisible, person, floodRanks, trackList } = this.props;
     if (person !== prevProps.person) {
       this.loadData();
     }
@@ -101,6 +95,24 @@ class Map extends React.PureComponent {
     ) {
       this._zoom = null;
       this.toggleTagByMapZoom();
+    }
+
+    this.loadData();
+
+    if (trackList !== prevProps.trackList) {
+
+      this.map.clear('track');
+
+      if (trackList) {
+        let mapPoints = trackList.map(item => {
+          return [item.longitude, item.latitude];
+        });
+
+        this.map.addFeature('track', {
+          type: 'LineString',
+          lonlats: mapPoints,
+        });
+      }
     }
   }
   componentDidMount() {
@@ -164,15 +176,7 @@ class Map extends React.PureComponent {
       zIndex: 10,
       key: "city",
     });
-    // this.map.addGeo({
-    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-    //   params: {
-    //     LAYERS: "dy:区县",
-    //     TILED: true,
-    //   },
-    //   zIndex: 10,
-    //   key: "city",
-    // });
+
     this.map.addImageTile({
       url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
       params: {
@@ -183,17 +187,30 @@ class Map extends React.PureComponent {
       key: "river40",
     });
 
-    // // 加入交通实况图;
-    // this.map.addGeo({
-    //   url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
-    //   params: {
-    //     LAYERS: "dy:traffic",
-    //     TILED: true,
-    //   },
-    //   zIndex: 11,
-    //   key: "traffic",
-    // });
+    // 加入交通实况图;
+    this.map.addGeo({
+      url: "http://code.tuhuitech.cn:10012/geoserver/dy/wms",
+      params: {
+        LAYERS: "dy:traffic",
+        TILED: true,
+      },
+      zIndex: 11,
+      key: "traffic",
+    });
 
+    //轨迹图层
+    this.map.addVector({
+      key: 'track',
+      zIndex: 21,
+      style: {
+        strokeColor: 'red',
+        width: 3
+      },
+      visible: true,
+    });
+
+
+    //防汛人员图层
     this.map.addVector({
       key: "person",
       zIndex: 20,
@@ -201,15 +218,16 @@ class Map extends React.PureComponent {
         heading: function (featureObj) {
           return featureObj.heading;
         },
-        src: function () {
+        src: function (feature) {
           return require("@app/resource/人员定位.svg")["default"];
         },
-        anchor: [0.5, 1],
+        // anchor: [0.5, 1],
+        offset: [0, 0],
         strokeColor: "#1890ff",
         fillColor: "#1890ff",
         fontColor: "#82B2FF",
         fontText: function (featureObj) {
-          return featureObj.id + "";
+          return featureObj.name + "";
         },
         font: "16px sans-serif",
         width: "20px",
@@ -217,6 +235,7 @@ class Map extends React.PureComponent {
       },
     });
 
+    //防汛物资仓库图层
     this.map.addVector({
       key: "warehouse",
       zIndex: 30,
@@ -236,6 +255,7 @@ class Map extends React.PureComponent {
         font: "16px sans-serif",
       },
     });
+    //防汛队伍图层
     this.map.addVector({
       key: "rank",
       zIndex: 30,
@@ -255,23 +275,17 @@ class Map extends React.PureComponent {
         font: "16px sans-serif",
       },
     });
+
     this.map.startHighlightFeatureonLayer("person");
     this.map.startHighlightFeatureonLayer("rank");
     this.map.startHighlightFeatureonLayer("warehouse");
-    // this.map.startSelectFeature("person", (param) => {
-    //   this.addOverlay(Person.type, param);
-    //   // this.map.addOverlay(param.id, { Coordinate: param.lonlat, offset: [13, -25] }, createPersonDom(param, {
-    //   //   onVideoClick: () => {
-    //   //     console.log(param.id);
-    //   //   },
-    //   //   onClose: () => {
-    //   //     this.map.removeOverlay(param.id);
-    //   //   }
-    //   // }));
-    // });
 
     this.map.startSelectFeature("person", (param) => {
-      this.addOverlay(Person.type, param);
+      if (this.props.onPersonClick) {
+        this.props.onPersonClick(param);
+      } else {
+        this.addOverlay(Person.type, param);
+      }
     });
     this.map.startSelectFeature("rank", (param) => {
       // this.addOverlay(Person.type, param);
@@ -307,11 +321,7 @@ class Map extends React.PureComponent {
         //   });
       }
     });
-    // this.map.activeMeasure();
-    this.map.on("moveend", () => {
-      let a = this.map.getView().calculateExtent();
-      // console.log(a);
-    });
+
     this.map.onFeatureClicked((feature) => {
       // console.log("featureclick", feature);
       if (feature) {
@@ -325,10 +335,6 @@ class Map extends React.PureComponent {
         this._isClickInfoBox = false;
       }, 0);
     });
-    // 缩放事件
-    // this.map.onView("change:resolution", () => {
-    //   this.mapViewChanged();
-    // });
     this.map.onView("change:resolution", this.mapViewChanged.bind(this));
     this.mapViewChanged(); // 初始化完成调一下,根据zoom隐藏相关图层
     // 地图拖动事件
@@ -353,7 +359,7 @@ class Map extends React.PureComponent {
     let id = param.id;
     let { overlays } = this.state;
     let elements = overlays[key];
-    if (elements[id]) return;
+    if (elements[id]) {return;}
     // 查询该key是否只能显示一个overlay
     let isSingle = this.type.some((Overlay) => {
       if (Overlay.type === key) {
@@ -379,8 +385,6 @@ class Map extends React.PureComponent {
         let show = layerVisible[layerKey];
         this.map.setVisible(layerKey, show);
       });
-      // 特殊几个layer, 如洪水
-      // this.flood.setVisible(layerVisible.flood);
     }
   }
   addEvent() {
@@ -427,8 +431,8 @@ class Map extends React.PureComponent {
     }
 
     this._clickToken = addEventListener(window, "click", () => {
-      if (!this._windowCloseFlag) return;
-      if (this._isMapMoved) return;
+      if (!this._windowCloseFlag) {return;}
+      if (this._isMapMoved) {return;}
       let obj = {};
       this.type.forEach((Ovl) => {
         obj[Ovl.type] = {};
@@ -461,25 +465,49 @@ class Map extends React.PureComponent {
           );
         }
       })
-      .catch(() => {
+      ["catch"](() => {
         console.log(e);
       });
   }
   loadData() {
-    const { person } = this.props;
-    // 加载视频数据
+    const { person, floodUserMap, expertMap } = this.props;
     this.map.clear("person");
-    this.map.addFeatures(
-      "person",
-      person.map((item) => {
-        return {
-          ...item,
-          type: "Point",
-          id: item.name,
-          lonlat: [item.lon, item.lat],
-        };
-      })
-    );
+    let personFeatures = [];
+
+    if (!person || !person.length || person.length === 0) {
+      return;
+    }
+
+    for (let index = 0; index < person.length; index++) {
+      let item = person[index];
+
+      if (!item.userId) {
+        continue;
+      }
+
+      let personInfo = null;
+      let personType = item.typeCode;
+
+      //103是防汛人员
+      //104是防汛专家
+      if (personType === 103) {
+        personInfo = floodUserMap[item.userId];
+      } else if (personType === 104) {
+        personInfo = expertMap[item.userId];
+      }
+
+      if (personInfo && item.longitude && item.latitude) {
+        personFeatures.push({
+          type: 'Point',
+          id: personInfo.userid,
+          name: personInfo.name,
+          lonlat: [item.longitude, item.latitude],
+          tag: {personInfo, dynamicInfo: {...item}}
+        });
+      }
+    }
+
+    this.map.addFeatures('person', personFeatures);
   }
 
   addFloodRank() {
@@ -495,19 +523,12 @@ class Map extends React.PureComponent {
         };
       })
     );
-    // floodRanks.map((item) => {
-    //   return {
-    //     ...item,
-    //     type: "Point",
-    //     id: item.name,
-    //     lonlat: [item.longitude, item.latitude],
-    //   };
-    // });
+
   }
   onOverlayClose(id, type) {
     let { overlays } = this.state;
     let obj = overlays[type];
-    if (!obj || !obj[id]) return;
+    if (!obj || !obj[id]) {return;}
     delete obj[id];
     this.setState({
       overlays: { ...overlays },
@@ -552,6 +573,11 @@ function mapStateToProps(state) {
     details: state.monitor.details,
     warehouse: state.monitor.warehouse,
     floodUser: state.mapAboutReducers.floodUser,
+    //防汛人员表
+    floodUserMap: state.mapAboutReducers.floodUserMap,
+    //防汛专家表
+    expertMap: state.mapAboutReducers.expertMap,
+    //防汛队伍表
     floodRanks: state.mapAboutReducers.floodRanks,
   };
 }
