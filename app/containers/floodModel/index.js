@@ -232,7 +232,7 @@ class FloodModel extends Component {
                         },
                       ]}
                       dataSource={water}
-                    ></TableShow>
+                    />
                   </Tabs.TabPane>
                   <Tabs.TabPane key="2" tab="积水点">
                     <TableShow
@@ -296,7 +296,7 @@ class FloodModel extends Component {
                         },
                       ]}
                       dataSource={initFlood}
-                    ></TableShow>
+                    />
                   </Tabs.TabPane>
                 </Tabs>
               </div>
@@ -313,10 +313,12 @@ class FloodModel extends Component {
             </div>
             <div className="flood-model-water-border">
               <div>{waterName}站24小时水位预测曲线图</div>
+
               <div className="flood-model-water" id="floodModelWater"></div>
             </div>
             <div className="flood-model-water-border">
               <div>{floodName}站24小时积水预测曲线图</div>
+
               <div className="flood-model-water" id="floodModelFlood"></div>
             </div>
           </RenderBox>
