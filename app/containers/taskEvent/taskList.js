@@ -177,6 +177,10 @@ const TaskList = (props) => {
                       </div>
                       <div className="task-list-card-text-margin">
                         <div className="task-list-card-text-span"></div>
+                        <div> 事件类型：{dangerType[item.stateRelationID]}</div>
+                      </div>
+                      <div className="task-list-card-text-margin">
+                        <div className="task-list-card-text-span"></div>
                         <div> 事件区域：{item.address}</div>
                       </div>
                       <div className="task-list-card-text-margin">

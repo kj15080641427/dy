@@ -9,21 +9,28 @@
     height: 100%;
   }
   .chart-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    margin-top: 90px;
+    width: 514px;
     .rain-left-head-chart {
       // .m-wth-chart-rain {
       //   min-height: 410px;
       //   height: 42vh;
       // }
-      // .m-chart-dev-rain {
-      //   min-height: 410px;
-      //   height: 42vh;
-      // }
+      .m-chart-dev-rain {
+        // min-height: 410px;
+        height: 100%;
+        border: none;
+      }
     }
     .rain-left-first-box {
       .radar-box {
         width: 514px;
-        min-height: 430px;
-        height: 46vh;
+        // min-height: 430px;
+        height: 47vh;
         .box-head {
           width: 160px;
         }
@@ -32,21 +39,18 @@
     .rain-online {
       // margin-top: 100px;
       width: 500px;
-      height: 300px;
+      height: 350px;
     }
-    display: flex;
-    flex-wrap: wrap;
-    position: absolute;
-    margin-top: 90px;
-    width: 514px;
+
     .m-wth-chart-rain {
       background: rgba(0, 51, 102, 0.7);
-      height: 400px;
+      height: 450px;
+      border: 1px solid #0099ff;
     }
 
     .rain-pie-chart {
       width: 500px;
-      height: 310px;
+      height: 350px;
     }
   }
   .pie-title-flex {
@@ -94,7 +98,7 @@
   .ranSwitch {
     position: absolute;
     right: 553px;
-    bottom: 0;
+    bottom: 144px;
     .ant-btn-primary {
       background: #003366;
       border-color: #003366;
@@ -102,7 +106,8 @@
   }
   .rain-chart-right {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
     width: 450px;
     position: absolute;
     right: 105px;
@@ -119,7 +124,7 @@
     .right-first-box {
       .radar-box {
         min-height: 100%;
-        height: 30vh;
+        height: 100%;
         .box-head {
           width: 180px;
         }
@@ -129,7 +134,7 @@
       align-items: center;
       .radar-box {
         min-height: 260px;
-        height: 28vh;
+        height: 30vh;
 
         .box-head {
           width: 160px;
@@ -141,14 +146,20 @@
       }
     }
     .rain-video-table {
+        .ant-tabs-card.ant-tabs-top
+        > .ant-tabs-nav
+        .ant-tabs-tab:not(:last-of-type) {
+        // border: 0.5px solid #0099ff;
+      }
       .radar-box {
-        min-height: 270px;
-        height: 28vh;
+        min-height: 350px;
+        height: 100%;
       }
       .ant-tabs-tab {
         color: white;
         // margin-left: 10px;
       }
+
       .card-container {
         color: white;
         margin-top: 5px;
@@ -276,7 +287,7 @@
 .rain-chart-radio {
   z-index: 99;
   position: absolute;
-  top: 10px;
+  top: 25px;
   right: 10px;
   .ant-radio-button {
     border: 1px solid #0099ff;

@@ -13,14 +13,7 @@ import WeatherPic from "./right/WeatherPic";
 import CheckBoxs from "../../components/setting/setting";
 import setImg from "@app/resource/setsys.png";
 // import Satellite from "../display/left/SatelliteFlood";
-import {
-  Drawer,
-  Row,
-  Divider,
-  Checkbox,
-  Tabs,
-  Popover,
-} from "antd";
+import { Drawer, Row, Divider, Checkbox, Tabs, Popover } from "antd";
 import SetTitle from "@app/components/setting/SetTitle";
 import RouterList from "../../components/routerlist";
 import { RenderBox } from "../../components/chart/decorate";
@@ -179,6 +172,7 @@ class Monitor extends React.PureComponent {
                         tab={item.name.split("防汛")[0]}
                       >
                         <TableShow
+                          pageSize={5}
                           columns={[
                             {
                               name: "姓名",
@@ -264,6 +258,7 @@ class Monitor extends React.PureComponent {
                   >
                     <TabPane key="1" tab="市级专家">
                       <TableShow
+                        pageSize={7}
                         columns={[
                           {
                             name: "姓名",

@@ -200,15 +200,21 @@
     }
   }
   .dis-ov-table {
-    height: 687px;
+    height: 787px;
     background-image: url(("../../../resource/display/区县降雨量_bg.png"));
     background-repeat: no-repeat;
     background-size: 100% 100%;
     -moz-background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .dis-img-bank {
       height: 590px;
       position: relative;
       top: 100px;
+    }
+    .dis-chart{
+      transform: scale(1.6);
     }
   }
 }

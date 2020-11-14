@@ -97,19 +97,17 @@ class Map extends React.PureComponent {
       this.toggleTagByMapZoom();
     }
 
-    this.loadData();
+    // this.loadData();
 
     if (trackList !== prevProps.trackList) {
-
-      this.map.clear('track');
-
+      this.map.clear("track");
       if (trackList) {
-        let mapPoints = trackList.map(item => {
+        let mapPoints = trackList.map((item) => {
           return [item.longitude, item.latitude];
         });
 
-        this.map.addFeature('track', {
-          type: 'LineString',
+        this.map.addFeature("track", {
+          type: "LineString",
           lonlats: mapPoints,
         });
       }
@@ -200,15 +198,14 @@ class Map extends React.PureComponent {
 
     //轨迹图层
     this.map.addVector({
-      key: 'track',
+      key: "track",
       zIndex: 21,
       style: {
-        strokeColor: 'red',
-        width: 3
+        strokeColor: "red",
+        width: 3,
       },
       visible: true,
     });
-
 
     //防汛人员图层
     this.map.addVector({
@@ -359,7 +356,9 @@ class Map extends React.PureComponent {
     let id = param.id;
     let { overlays } = this.state;
     let elements = overlays[key];
-    if (elements[id]) {return;}
+    if (elements[id]) {
+      return;
+    }
     // 查询该key是否只能显示一个overlay
     let isSingle = this.type.some((Overlay) => {
       if (Overlay.type === key) {
@@ -431,8 +430,12 @@ class Map extends React.PureComponent {
     }
 
     this._clickToken = addEventListener(window, "click", () => {
-      if (!this._windowCloseFlag) {return;}
-      if (this._isMapMoved) {return;}
+      if (!this._windowCloseFlag) {
+        return;
+      }
+      if (this._isMapMoved) {
+        return;
+      }
       let obj = {};
       this.type.forEach((Ovl) => {
         obj[Ovl.type] = {};
@@ -473,41 +476,49 @@ class Map extends React.PureComponent {
     const { person, floodUserMap, expertMap } = this.props;
     this.map.clear("person");
     let personFeatures = [];
-
     if (!person || !person.length || person.length === 0) {
       return;
     }
-
     for (let index = 0; index < person.length; index++) {
       let item = person[index];
-
-      if (!item.userId) {
-        continue;
-      }
+      // if (!item.userid) {
+      //   item.userid = item.userId;
+      // }
 
       let personInfo = null;
       let personType = item.typeCode;
 
       //103是防汛人员
       //104是防汛专家
-      if (personType === 103) {
-        personInfo = floodUserMap[item.userId];
-      } else if (personType === 104) {
-        personInfo = expertMap[item.userId];
-      }
-
-      if (personInfo && item.longitude && item.latitude) {
+      // if (personType === 103) {
+      //   personInfo = floodUserMap[item.userId];
+      // } else if (personType === 104) {
+      //   personInfo = expertMap[item.userId];
+      // }
+      if (item.lon && item.lat) {
         personFeatures.push({
-          type: 'Point',
-          id: personInfo.userid,
-          name: personInfo.name,
-          lonlat: [item.longitude, item.latitude],
-          tag: {personInfo, dynamicInfo: {...item}}
+          type: "Point",
+          id: item.name,
+          name: item.name,
+          lonlat: [item.lon, item.lat],
+          tag: { personInfo: { ...item }, dynamicInfo: { ...item } },
         });
       }
     }
-
-    this.map.addFeatures('person', personFeatures);
+    console.log(personFeatures);
+    this.map.addFeatures("person", personFeatures);
+    // this.map.addFeatures(
+    //   "person",
+    //   person.map((item) => {
+    //     return {
+    //       ...item,
+    //       type: "Point",
+    //       id: item.userid,
+    //       lonlat: [item.lon, item.lat],
+    //       tag: { ...item, dynamicInfo: { ...item } },
+    //     };
+    //   })
+    // );
   }
 
   addFloodRank() {
@@ -523,12 +534,13 @@ class Map extends React.PureComponent {
         };
       })
     );
-
   }
   onOverlayClose(id, type) {
     let { overlays } = this.state;
     let obj = overlays[type];
-    if (!obj || !obj[id]) {return;}
+    if (!obj || !obj[id]) {
+      return;
+    }
     delete obj[id];
     this.setState({
       overlays: { ...overlays },

@@ -92,23 +92,24 @@
     width: 500px;
     position: absolute;
     left: 10px;
-    top: 0;
+    // top: 0;
     bottom: 0;
     z-index: 10;
     margin-top: 80px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     & > div:first-child {
       flex: 1;
     }
     & > div:nth-child(2) {
       margin-top: 8px;
-      flex: 1
+      flex: 1;
     }
     & > div:last-child {
       margin-top: 8px;
       //height: 380px;
-      flex: 2
+      flex: 2;
     }
     .videoFunnelChart {
       width: 100%;
@@ -121,7 +122,14 @@
     .radar-box {
       margin-top: 0;
       //height: calc(100% - 8px) !important;
-      height: 400px;
+      height: 375px;
+    }
+    .video-first-chart {
+      // background: red;
+      .radar-box {
+        // background: red;
+        height: 350px;
+      }
     }
   }
   .chart-right-video {
@@ -131,11 +139,12 @@
     position: absolute;
     right: 90px;
     // top: 0;
-    bottom: 5%;
+    bottom: 0px;
     z-index: 10;
     margin-top: 80px;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     & > div:first-child {
       flex: 1;
     }
@@ -155,7 +164,8 @@
       //display: flex;
       //align-items: center;
       width: 530px;
-      height: 100%;
+      // height: 100%;
+      height: 250px;
       //height: calc(100% - 25px);
     }
     .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -224,7 +234,7 @@
         //height: 400px;
         position: relative;
         overflow: hidden;
-       }
+      }
     }
     .video-ing-title {
       color: white;

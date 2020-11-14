@@ -42,6 +42,7 @@ class WeatherChart extends React.PureComponent {
   };
   render() {
     const { RangePicker } = DatePicker;
+    const { hideBorder, color } = this.props;
     const that = this;
     function onChange(value, dateString) {
       getFiveCitydata({
@@ -73,12 +74,15 @@ class WeatherChart extends React.PureComponent {
     }
     return (
       <div className="m-wth-chart-rain">
-        <img className="m-chart-img" src={imgURL} alt="" />
-
-        <div className="m-chart-dev-rain">
+        <img className="m-chart-img" src={hideBorder ? "" : imgURL} alt="" />
+        <div
+          className="m-chart-dev-rain"
+          style={{ border: hideBorder ? "0px" : "1px solid #007ed7" }}
+        >
           <div className="time-selector">
             {this.state.timeList.map((tm, index) => (
               <label
+                style={{ color: color ? color : "" }}
                 key={index}
                 className={this.state.selectedTime === tm ? "active" : ""}
                 onClick={() => {
@@ -165,7 +169,7 @@ class WeatherChart extends React.PureComponent {
         },
       },
       title: {
-        text: `东营市降雨:${this.state.cityData}`,
+        text: `全市平均降雨:${this.state.cityData}(mm)`,
         left: "center",
         top: "2px",
         bottom: "20px",
@@ -176,7 +180,7 @@ class WeatherChart extends React.PureComponent {
         },
       },
       grid: {
-        top: this.state.selectedTime === "自定义" ? "120px" : "90px",
+        top: this.state.selectedTime === "自定义" ? "120px" : "100px",
         left: "5%",
         right: "0%",
         containLabel: true,

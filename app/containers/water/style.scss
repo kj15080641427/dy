@@ -43,8 +43,8 @@
     }
     .line-chart {
       width: 500px;
-      min-height: 250px;
-      height: 25vh;
+      height: 300px;
+      // height: 25vh;
       z-index: 10;
     }
     .box-head {
@@ -392,15 +392,15 @@
   .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type) {
     margin-right: 0px;
   }
-  .card-container > .ant-tabs-card .ant-tabs-tab {
-    // border-color: transparent;
-    background: transparent;
-    border-top: 0.5px solid #b6b2b2;
-    border-left: 0.5px solid #b6b2b2;
-    border-bottom: 0.5px solid #b6b2b2;
-    width: 100%;
-    margin: 0px;
-  }
+  // .card-container > .ant-tabs-card .ant-tabs-tab {
+  //   // border-color: transparent;
+  //   background: transparent;
+  //   border-top: 0.5px solid #0099ff;
+  //   border-left: 0.5px solid #0099ff;
+  //   border-bottom: 0.5px solid #0099ff;
+  //   width: 100%;
+  //   margin: 0px;
+  // }
   .card-container > .ant-tabs-card .ant-tabs-tab-active {
     border: 1px solid #1890ff;
     border-color: #1890ff;

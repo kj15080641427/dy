@@ -186,16 +186,18 @@ class Monitor extends React.PureComponent {
         <div className="">
           <div style={{ display: displayLeft }}>
             <div className="chart-left-video">
-              <RenderBox
-                hasTitle
-                title="视频站点来源图"
-                style={{ height: "100%", alignItem: "center" }}
-              >
-                <div className="videoFunnelChart" id="videoFunnelChart" />
-              </RenderBox>
+              <div className="video-first-chart">
+                <RenderBox
+                  hasTitle
+                  title="视频站点来源图"
+                  // style={{ height: "100%", alignItem: "center" }}
+                >
+                  <div className="videoFunnelChart" id="videoFunnelChart" />
+                </RenderBox>
+              </div>
               <RenderBox
                 // hasTitle
-                style={{ height: "100%" }}
+                style={{ height: "250px" }}
                 title="视频站点在线图"
               >
                 <div
@@ -205,7 +207,6 @@ class Monitor extends React.PureComponent {
                 />
               </RenderBox>
               <RenderBox>
-                {/* <div className="video-table"> */}
                 <div className="card-container">
                   <Tabs type="card" style={{ color: "white" }}>
                     <TabPane tab="全部" key="1">
@@ -228,8 +229,6 @@ class Monitor extends React.PureComponent {
                     </TabPane>
                   </Tabs>
                 </div>
-                {/* <WeatherTable></WeatherTable> */}
-                {/* </div> */}
               </RenderBox>
             </div>
           </div>

@@ -632,7 +632,7 @@ export const showChart = (data, id, yd, yname) => {
         // dataView: { show: true, readOnly: true },
         magicType: { show: true, type: ["line", "bar"] },
         restore: { show: true },
-        saveAsImage: { show: true },
+        // saveAsImage: { show: true },
       },
     },
     xAxis: {
@@ -642,6 +642,7 @@ export const showChart = (data, id, yd, yname) => {
       axisLabel: {
         color: "white",
         fontSize: 16,
+        // rotate: 20,
         // interval: (index) => {
         //   if (
         //     index == length - 1 ||

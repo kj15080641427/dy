@@ -61,6 +61,7 @@ class deviceManage extends Component {
     return (
       <div className="device-manager">
         <Tabs
+          type='card'
           tabBarExtraContent={
             <div style={{ display: "flex" }}>
               <Input

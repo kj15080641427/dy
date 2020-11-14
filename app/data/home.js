@@ -563,3 +563,7 @@ export function getTaskDanger(data) {
 export function getUserMenu(data) {
   return fetchJSONData("POST", "/base/Users/getMenu", data);
 }
+//视频在线
+export function getVideoOnline(data) {
+  return fetchJSONData("POST", "/base/RadioOnline/query", data);
+}

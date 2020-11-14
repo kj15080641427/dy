@@ -203,13 +203,15 @@ function* getFloodRain() {
 //根据id获取易涝点实时数据
 function* getFloodInfoRealTime({ data }) {
   try {
-    const nowDate = moment(new Date()).format("YYYY-MM-DD");
+    const nowDate = moment(new Date());
     const result = yield call(req.getWaterHistory, {
       current: 1,
-      starttm: `${nowDate} 00:00:00`,
+      starttm: moment(new Date().getTime() - 24 * 60 * 60 * 1000).format(
+        "YYYY-MM-DD HH:mm:ss"
+      ),
       isOrder: "1",
       size: -1,
-      endtm: `${nowDate} 24:00:00`,
+      endtm: nowDate.format("YYYY-MM-DD HH:mm:ss"),
       stcd: data,
     });
     if ((result.code = code)) {

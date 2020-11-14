@@ -7,6 +7,7 @@ import * as actions from "@app/redux/actions/map";
 import Map from "../display/map/Map";
 import Head from "../display/head/Head";
 import APPIMG from "../../resource/icon/appCode.png";
+import WeatherChart from "../rain/left/WeatherChart";
 import "./style.scss";
 
 const DisplaySmall = (props) => {

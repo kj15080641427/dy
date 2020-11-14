@@ -33,25 +33,25 @@ const storyKeys = {
 };
 const river = [
   { label: "流域名称", value: "name" },
-  { label: "经度", value: "lonsrs", col: 12 },
-  { label: "纬度", value: "latsrs", col: 12 },
-  { label: "河口经度", value: "londest", col: 12 },
-  { label: "入河纬度", value: "latdest", col: 12 },
+  { label: "经度", value: "lonsrs" },
+  { label: "纬度", value: "latsrs" },
+  { label: "河口经度", value: "londest" },
+  { label: "入河纬度", value: "latdest" },
 
   { label: "河源详细地址", value: "addresssrs" },
   { label: "河口详细地址", value: "addressdest" },
   { label: "上一级河流", value: "riverlevelabove" },
   { label: "流经范围", value: "flowrange" },
-  { label: "河流总长", value: "riverlen", col: 12 },
+  { label: "河流总长", value: "riverlen" },
 
-  { label: "流域总面积", value: "riverarea", col: 12 },
+  { label: "流域总面积", value: "riverarea" },
   { label: "流经东营市河流长度", value: "riverlendy" },
   { label: "流域面积东营市", value: "riveraready" },
   { label: "防洪标准", value: "floodspec" },
   { label: "排涝标准", value: "drainspec" },
 
-  { label: "防洪流量最小", value: "antifloodflowmin", col: 12 },
-  { label: "防洪流量最大", value: "antifloodflowmax", col: 12 },
+  { label: "防洪流量最小", value: "antifloodflowmin" },
+  { label: "防洪流量最大", value: "antifloodflowmax" },
   { label: "最新维护时间", value: "gmtmodify" },
 ];
 const pump = [
@@ -68,24 +68,24 @@ const pump = [
   { label: "归口管理部门", value: "ownermanagement" },
   { label: "设计扬程", value: "delivery" },
   { label: "水泵数量", value: "devicecount" },
-  { label: "经度", value: "lon", col: 12 },
-  { label: "纬度", value: "lat", col: 12 },
+  { label: "经度", value: "lon" },
+  { label: "纬度", value: "lat" },
   {
     label: "是否为闸站工程",
     value: "isgateproject",
-    col: 12,
+
     isDict: "whether",
   },
   {
     label: "是否为引泉工程",
     value: "isspringsproject",
-    col: 12,
+
     isDict: "whether",
   },
-  { label: "是否完成划界", value: "isbordered", col: 12, isDict: "whether" },
-  { label: "是否完成确权", value: "isauthorized", col: 12, isDict: "whether" },
-  { label: "装机流量", value: "flow", col: 12 },
-  { label: "装机功率", value: "power", col: 12 },
+  { label: "是否完成划界", value: "isbordered", isDict: "whether" },
+  { label: "是否完成确权", value: "isauthorized", isDict: "whether" },
+  { label: "装机流量", value: "flow" },
+  { label: "装机功率", value: "power" },
   { label: "维护时间", value: "gmtmodify" },
 ];
 const gate = [
@@ -113,16 +113,16 @@ const gate = [
 ];
 const reservoir = [
   { label: "水库名称", value: "name" },
-  { label: "经度", value: "lon", col: 12 },
-  { label: "纬度", value: "lat", col: 12 },
-  { label: "所在水资源三级区名称", value: "waterresource3", col: 12 },
-  { label: "河流名称", value: "rivername", col: 12 },
-  { label: "水库类型", value: "rvtype", col: 12 },
-  { label: "类型", value: "rvtype1", col: 12 },
-  { label: "挡水主坝类型按材料分", value: "rvbartypem", col: 12 },
-  { label: "挡水主坝类型按结构分", value: "rvbartypes", col: 12 },
-  { label: "主要泄洪建筑物型式", value: "flooddischargetype", col: 12 },
-  { label: "生产安置人口（万人）", value: "polution", col: 12 },
+  { label: "经度", value: "lon" },
+  { label: "纬度", value: "lat" },
+  { label: "所在水资源三级区名称", value: "waterresource3" },
+  { label: "河流名称", value: "rivername" },
+  { label: "水库类型", value: "rvtype" },
+  { label: "类型", value: "rvtype1" },
+  { label: "挡水主坝类型按材料分", value: "rvbartypem" },
+  { label: "挡水主坝类型按结构分", value: "rvbartypes" },
+  { label: "主要泄洪建筑物型式", value: "flooddischargetype" },
+  { label: "生产安置人口（万人）", value: "polution" },
 
   { label: "工程建设情况", value: "projectstatus" },
   { label: "建成时间", value: "buildtime" },
@@ -130,45 +130,45 @@ const reservoir = [
   { label: "工程等别", value: "projectlevel" },
   { label: "主坝级别", value: "barlevel" },
 
-  { label: "主坝尺寸坝高（m）", value: "barheight", col: 12 },
-  { label: "主坝尺寸坝长（m）", value: "barlen", col: 12 },
+  { label: "主坝尺寸坝高（m）", value: "barheight" },
+  { label: "主坝尺寸坝长（m）", value: "barlen" },
   { label: "最大泄洪流量（m3/S）", value: "floodmax" },
   { label: "高程系统", value: "elevationsystem" },
   { label: "坝顶高程(m)", value: "bartopheight" },
 
-  { label: "正常蓄水位(m)", value: "waterlevelnormal", col: 12 },
-  { label: "死水位(m)", value: "waterleveldeath", col: 12 },
-  { label: "总库容（万m3）", value: "capacitymax", col: 12 },
-  { label: "死库容(万m3)", value: "capacitydeath", col: 12 },
+  { label: "正常蓄水位(m)", value: "waterlevelnormal" },
+  { label: "死水位(m)", value: "waterleveldeath" },
+  { label: "总库容（万m3）", value: "capacitymax" },
+  { label: "死库容(万m3)", value: "capacitydeath" },
   { label: "正常蓄水位相应水面面积（km2）", value: "areanormal" },
-  { label: "供水", value: "waterprovid", col: 12 },
-  { label: "灌溉", value: "irrigate", col: 12 },
-  { label: "养殖", value: "farmer", col: 12 },
-  { label: "设计年供水量", value: "waterproviddesign", col: 12 },
-  { label: "2011年供水量(万m3)", value: "waterprovidactual", col: 12 },
-  { label: "2011年供水量数据来源", value: "waterprovidactualsrs", col: 12 },
+  { label: "供水", value: "waterprovid" },
+  { label: "灌溉", value: "irrigate" },
+  { label: "养殖", value: "farmer" },
+  { label: "设计年供水量", value: "waterproviddesign" },
+  { label: "2011年供水量(万m3)", value: "waterprovidactual" },
+  { label: "2011年供水量数据来源", value: "waterprovidactualsrs" },
 
-  { label: "取水口数量(个)", value: "intakecount", col: 12 },
-  { label: "供水对象", value: "watersupplytarget", col: 12 },
+  { label: "取水口数量(个)", value: "intakecount" },
+  { label: "供水对象", value: "watersupplytarget" },
   { label: "设计灌溉面积(万亩)", value: "areairrigate" },
 
   { label: "灌溉对象", value: "irrigatetarget" },
   { label: "管理单位", value: "management" },
   { label: "水口管理单位", value: "ownermanagement" },
 
-  { label: "是否完成划界", value: "isbordered", col: 12, isDict: "whether" },
-  { label: "是否完成确权", value: "isauthorized", col: 12, isDict: "whether" },
+  { label: "是否完成划界", value: "isbordered", isDict: "whether" },
+  { label: "是否完成确权", value: "isauthorized", isDict: "whether" },
   { label: "记录创建时间", value: "gmtcreate" },
   { label: "记录修改时间", value: "gmtmodify" },
 ];
 const dike = [
   { label: "堤防名称", value: "name" },
-  { label: "起点地理坐标经度", value: "startlat", col: 12 },
-  { label: "起点地理坐标纬度", value: "startlon", col: 12 },
-  { label: "终点地理坐标经度", value: "endlon", col: 12 },
-  { label: "终点地理坐标纬度", value: "endlat", col: 12 },
-  { label: "起点位置", value: "addrstart", col: 12 },
-  { label: "终点位置", value: "addrend", col: 12 },
+  { label: "起点地理坐标经度", value: "startlat" },
+  { label: "起点地理坐标纬度", value: "startlon" },
+  { label: "终点地理坐标经度", value: "endlon" },
+  { label: "终点地理坐标纬度", value: "endlat" },
+  { label: "起点位置", value: "addrstart" },
+  { label: "终点位置", value: "addrend" },
   { label: "所在河流(湖泊、海岸)名称", value: "rivername" },
   { label: "河流岸别", value: "riverside" },
   { label: "堤防跨界情况", value: "dikeinfo" },
@@ -189,15 +189,15 @@ const dike = [
   { label: "起点堤顶高程", value: "eletops" },
   { label: "终点堤顶高程(m)", value: "eletope" },
   { label: "设计水（高潮）位(m)", value: "waterleveldesgin" },
-  { label: "最大堤防高度", value: "maxheight", col: 12 },
-  { label: "最小堤防高度", value: "minheight", col: 12 },
-  { label: "最大堤顶宽度", value: "maxwidth", col: 12 },
-  { label: "最小堤顶宽度", value: "minwidth", col: 12 },
+  { label: "最大堤防高度", value: "maxheight" },
+  { label: "最小堤防高度", value: "minheight" },
+  { label: "最大堤顶宽度", value: "maxwidth" },
+  { label: "最小堤顶宽度", value: "minwidth" },
 
-  { label: "水闸数量(个)", value: "gatecount", col: 12 },
-  { label: "管涵数量(个)", value: "holecount", col: 12 },
-  { label: "泵站数量(处)", value: "pumpcount", col: 12 },
-  { label: "倒虹吸数量(个)，", value: "siphowcount", col: 12 },
+  { label: "水闸数量(个)", value: "gatecount" },
+  { label: "管涵数量(个)", value: "holecount" },
+  { label: "泵站数量(处)", value: "pumpcount" },
+  { label: "倒虹吸数量(个)，", value: "siphowcount" },
 
   { label: "记录创建时间", value: "gmtcreate" },
   { label: "记录修改时间", value: "gmtmodify" },
@@ -248,6 +248,7 @@ const DataCenter = (props) => {
     <div className="data-center-search">
       <Input
         className="input"
+        value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       ></Input>
       <Button
@@ -266,6 +267,7 @@ const DataCenter = (props) => {
       <Button
         className="reset"
         onClick={() => {
+          setInputValue("");
           getBase({
             request: tabRequest[tabKey],
             key: storyKeys[tabKey],
@@ -300,7 +302,7 @@ const DataCenter = (props) => {
         >
           <TabPane key="1" tab={`河流(${dataCenterRiver?.length})`}>
             <TableShow
-              pageSize="10"
+              pageSize="20"
               columns={[
                 {
                   name: "河流名称",
@@ -345,12 +347,12 @@ const DataCenter = (props) => {
                   width: "10%",
                   align: "center",
                 },
-                {
-                  name: "维护时间",
-                  dataIndex: "gmtmodify",
-                  width: "10%",
-                  align: "center",
-                },
+                // {
+                //   name: "维护时间",
+                //   dataIndex: "gmtmodify",
+                //   width: "10%",
+                //   align: "center",
+                // },
                 {
                   name: "操作",
                   dataIndex: "",
@@ -373,7 +375,7 @@ const DataCenter = (props) => {
           </TabPane>
           <TabPane key="2" tab={`泵站(${dataCenterPump?.length})`}>
             <TableShow
-              pageSize="10"
+              pageSize="20"
               columns={[
                 {
                   name: "名称",
@@ -434,7 +436,7 @@ const DataCenter = (props) => {
           </TabPane>
           <TabPane key="3" tab={`水闸(${dataCenterGate?.length})`}>
             <TableShow
-              pageSize="10"
+              pageSize="20"
               columns={[
                 {
                   name: "名称",
@@ -501,7 +503,7 @@ const DataCenter = (props) => {
           </TabPane>
           <TabPane key="4" tab={`水库(${dataCenterReservoir?.length})`}>
             <TableShow
-              pageSize="10"
+              pageSize="20"
               columns={[
                 {
                   name: "名称",
@@ -562,7 +564,7 @@ const DataCenter = (props) => {
           </TabPane>
           <TabPane key="5" tab={`堤防工程(${dataCenterDike?.length})`}>
             <TableShow
-              pageSize="10"
+              pageSize="20"
               columns={[
                 {
                   name: "名称",

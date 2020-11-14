@@ -19,6 +19,7 @@ import { Row, Col } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/map";
+import WeatherChart from "../../rain/left/WeatherChart";
 const areaMap = {
   370502: "东营区\n(开发区)",
   370503: "河口区\n(东营港)",
@@ -164,11 +165,15 @@ class OverView extends React.PureComponent {
           </div>
         </div>
         <div className="dis-ov-table">
+          <div className="dis-chart">
+            <WeatherChart hideBorder color="white"></WeatherChart>
+          </div>
           <div
             id="fivemain"
             style={{
               width: "100%",
               height: "90%",
+              display: "none",
             }}
           ></div>
         </div>
@@ -191,6 +196,10 @@ class OverView extends React.PureComponent {
         let areaName = areaMap[result.data[i].areaId];
         addData.push(areaName);
       }
+      console.log(hourData, "hourData1");
+      let chartHead = hourData.shift();
+      console.log(hourData, "hourData2");
+      let chartHeadText = addData.shift();
       myChart.setOption({
         // color:["#c23531","#99CCFF","#FFFF66","#666666",],
         tooltip: {
@@ -201,7 +210,7 @@ class OverView extends React.PureComponent {
           },
         },
         title: {
-          text: "区县降雨量(单位:mm)",
+          text: `全市平均降雨${chartHead}(单位:mm)`,
           left: "center",
           textStyle: {
             color: "#fff",
@@ -256,35 +265,36 @@ class OverView extends React.PureComponent {
           axisLabel: {
             show: true,
             textStyle: {
-              color: "#fff", //更改坐标轴文字颜色
+              color: "white", //更改坐标轴文字颜色
               fontSize: 20, //更改坐标轴文字大小
             },
           },
           axisLine: {
             onZero: false,
             lineStyle: {
-              color: "#0099FF", //更改坐标轴颜色
+              color: "white", //更改坐标轴颜色
             },
           },
         },
 
         yAxis: {
+          // axisLabel: {
+          // },
+          // inverse: true,
+          // type: 'value',          name: "单位(mm)",
           axisLabel: {
             formatter: "{value}",
-          },
-          // inverse: true,
-          // type: 'value',
-          axisLabel: {
+
             show: true,
             textStyle: {
-              color: "#0099FF", //更改坐标轴文字颜色
+              color: "white", //更改坐标轴文字颜色
               fontSize: 20, //更改坐标轴文字大小
             },
           },
           axisLine: {
             onZero: false,
             lineStyle: {
-              color: "#0099FF", //更改坐标轴颜色
+              color: "white", //更改坐标轴颜色
             },
           },
           splitLine: {

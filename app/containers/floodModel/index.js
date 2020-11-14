@@ -33,7 +33,7 @@ class FloodModel extends Component {
         className: "tableRow",
         render: (text, record) => {
           const { model } = this.props;
-          if (record.modelPredictionId === model.selectedPredictionId) {
+          if (record?.modelPredictionId === model.selectedPredictionId) {
             return <span style={{ color: "green" }}>{"✔"}</span>;
           }
 
@@ -78,7 +78,7 @@ class FloodModel extends Component {
               type={"link"}
               size={"small"}
               onClick={() => {
-                this.onViewPrediction(record.modelPredictionId);
+                this.onViewPrediction(record?.modelPredictionId);
                 this.props.dispatch(actions.setDefaultPred(record));
                 // this.setState({ titleTime: record.beginTime });
               }}
@@ -116,7 +116,7 @@ class FloodModel extends Component {
       defaultWater,
       defaultFlood,
     } = this.props;
-    const { predictionId } = this.state;
+    const { predictionId, waterName, floodName } = this.state;
     return (
       <div className="flood-model-display">
         <Map
@@ -133,7 +133,7 @@ class FloodModel extends Component {
               title="降水预报走势图"
               style={{ height: "230px" }}
             >
-              <div className='flood-head-rain-text'>
+              <div className="flood-head-rain-text">
                 {moment(new Date()).format("YYYY-MM-DD HH:mm")}至
                 {moment(new Date()).add(1, "days").format("YYYY-MM-DD HH:mm")}
               </div>
@@ -275,19 +275,19 @@ class FloodModel extends Component {
                             );
                           },
                         },
-                        {
-                          name: "所属区域",
-                          dataIndex: "regionName",
-                          width: "20%",
-                        },
+                        // {
+                        //   name: "所属区域",
+                        //   dataIndex: "regionName",
+                        //   width: "20%",
+                        // },
                         {
                           name: "地址",
                           dataIndex: "stlc",
                           width: "30%",
                           render: (name) => {
-                            return name.length >= 10 ? (
+                            return name.length >= 18 ? (
                               <Popover content={name} title="地址全称">
-                                {name.toString().substring(0, 10) + "..."}
+                                {name.toString().substring(0, 18) + "..."}
                               </Popover>
                             ) : (
                               name
@@ -310,20 +310,14 @@ class FloodModel extends Component {
               {moment(defaultPred?.beginTime)
                 .add(1, "days")
                 .format("YYYY-MM-DD HH:mm")}
-              {/* {titleTime?.slice(0, -3)}至
-              {moment(titleTime).add(1, "days").format("YYYY-MM-DD HH:mm")} */}
             </div>
             <div className="flood-model-water-border">
-              <div>{defaultWater.name}站24小时水位预测曲线图</div>
-              {/* <div className="flood-model-water-border"> */}
+              <div>{waterName}站24小时水位预测曲线图</div>
               <div className="flood-model-water" id="floodModelWater"></div>
-              {/* </div> */}
             </div>
             <div className="flood-model-water-border">
-              <div>{defaultFlood.name}站24小时积水预测曲线图</div>
-              {/* <div className="flood-model-water-border"> */}
+              <div>{floodName}站24小时积水预测曲线图</div>
               <div className="flood-model-water" id="floodModelFlood"></div>
-              {/* </div> */}
             </div>
           </RenderBox>
         </div>
@@ -413,7 +407,7 @@ class FloodModel extends Component {
         "predValue"
       );
     }
-    if (defaultWater != pre.defaultWater && defaultPred.modelPredictionId) {
+    if (defaultWater != pre.defaultWater && defaultPred?.modelPredictionId) {
       dispatch(
         actions.getModelResult({
           startTime: defaultPred?.beginTime,
@@ -426,7 +420,7 @@ class FloodModel extends Component {
       );
     }
 
-    if (defaultFlood != pre.defaultFlood && defaultPred.modelPredictionId) {
+    if (defaultFlood != pre.defaultFlood && defaultPred?.modelPredictionId) {
       dispatch(
         actions.getModelFloodResult({
           startTime: defaultPred?.beginTime,
@@ -437,6 +431,16 @@ class FloodModel extends Component {
           siteNodeId: defaultFlood?.siteNodeId,
         })
       );
+    }
+    if (defaultWater != pre.defaultWater) {
+      this.setState({
+        waterName: defaultWater?.name,
+      });
+    }
+    if (defaultFlood != pre.defaultFlood) {
+      this.setState({
+        floodName: defaultFlood?.name,
+      });
     }
   }
   componentWillUnmount() {

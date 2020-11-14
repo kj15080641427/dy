@@ -59,15 +59,15 @@
       border: 0;
     }
     .ant-table-thead > tr > th {
-      background: #132F90;
+      background: #132f90;
       color: #fff;
-      border: 0!important;
+      border: 0 !important;
     }
     .ant-table-tbody > tr > td {
       color: #fff;
       background: #003366;
-      border-left: 0!important;
-      border-right: 0!important;
+      border-left: 0 !important;
+      border-right: 0 !important;
       border-bottom: 1px solid #0099ff;
       padding: 12px 16px;
     }
@@ -75,7 +75,7 @@
       background: #003366;
     }
     .flood-warning-display
-      .card-container
+      .device-manager
       > .ant-tabs-card
       .ant-tabs-content
       > .ant-tabs-tabpane {
@@ -159,7 +159,8 @@
       background: rgba(0, 51, 102, 0.7);
       border: 1px solid #1890ff;
     }
-    .ant-pagination-prev .ant-pagination-item-link, .ant-pagination-next .ant-pagination-item-link {
+    .ant-pagination-prev .ant-pagination-item-link,
+    .ant-pagination-next .ant-pagination-item-link {
       background: transparent;
       border: 0;
     }
@@ -185,15 +186,16 @@
     .ant-tabs-tabpane {
       height: 100%;
       width: 100%;
-      .primary-row , .primary-row:hover {
-        background: #81b8eb!important;
-        color: #fff!important;
-        transition: background .3s,color .3s;
+      .primary-row,
+      .primary-row:hover {
+        background: #0099ff !important;
+        color: #fff !important;
+        transition: background 0.3s, color 0.3s;
         a {
-          color: #fff!important;
+          color: #fff !important;
         }
         td {
-          background-color: #81b8eb!important;
+          background-color: #0099ff !important;
         }
       }
       .ant-table-cell {
@@ -202,35 +204,46 @@
     }
   }
 }
+.device-manage-content-right{
+  min-height: 436px;
+}
 .device-manager {
-  background: #0A3164;
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: white;
+  }
+  background: #0a3164;
+  color: red;
   padding: 16px;
-  & > .ant-tabs >.ant-tabs-nav {
+  & > .ant-tabs > .ant-tabs-nav {
     margin: 0;
+    margin-left: 18px;
     .ant-tabs-tab {
       color: #fff;
     }
   }
-  .device-manage { 
+  .device-manage {
     .ant-tabs {
-      border: 0!important;
+      border: 0 !important;
       & > .ant-tabs-nav {
         margin: 0;
+       
         &:before {
           display: none;
         }
         .ant-tabs-nav-list {
+          padding-left: 10px;
+          padding-right: 10px;
           display: flex;
           width: 100%;
           .ant-tabs-tab {
             flex: 1;
             color: #fff;
-            background: transparent!important;
-            border: 0!important;
+            background: transparent !important;
+            border: 0 !important;
             &-active {
-              background: #1890FF!important;
+              background: #1890ff !important;
               div {
-                color: #fff!important;
+                color: #fff !important;
               }
             }
             div {
@@ -241,4 +254,59 @@
       }
     }
   }
+}
+
+.device-manager p {
+  margin: 0;
+}
+.device-manager > .ant-tabs-card .ant-tabs-content {
+  height: 100%;
+  margin-top: -16px;
+}
+.device-manager > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
+  // background: #fff;
+  background: rgba(0, 51, 102, 0.7);
+  padding: 10px 10px 0px 10px;
+}
+.device-manager > .ant-tabs-card > .ant-tabs-nav::before {
+  display: none;
+}
+.device-manager > .ant-tabs-card .ant-tabs-tab,
+[data-theme="compact"] .device-manager > .ant-tabs-card .ant-tabs-tab {
+  border-color: transparent;
+  background: transparent;
+}
+
+.device-manager > .ant-tabs-card .ant-tabs-tab-active,
+[data-theme="compact"] .device-manager > .ant-tabs-card .ant-tabs-tab-active {
+  border-color: #1890ff;
+  background: #1890ff;
+  color: white;
+}
+#components-tabs-demo-card-top .code-box-demo {
+  background: #f5f5f5;
+  overflow: hidden;
+  padding: 24px;
+}
+[data-theme="compact"] .device-manager > .ant-tabs-card .ant-tabs-content {
+  height: 120px;
+  margin-top: -8px;
+}
+[data-theme="dark"] .device-manager > .ant-tabs-card .ant-tabs-tab {
+  border-color: transparent;
+  background: transparent;
+}
+[data-theme="dark"] #components-tabs-demo-card-top .code-box-demo {
+  background: #000;
+}
+[data-theme="dark"]
+  .device-manager
+  > .ant-tabs-card
+  .ant-tabs-content
+  > .ant-tabs-tabpane {
+  background: #141414;
+}
+[data-theme="dark"] .device-manager > .ant-tabs-card .ant-tabs-tab-active {
+  border-color: #141414;
+  background: #141414;
 }

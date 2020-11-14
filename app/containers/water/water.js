@@ -544,7 +544,7 @@ class Monitor extends React.PureComponent {
           <div className="chart-right">
             <div className="water-right-first-box">
               <RenderBox
-                title={"河流全程水位走势图"}
+                title={"河流水位图"}
                 containerStyle={{ height: "30.05%" }}
                 hasTitle
               >
@@ -574,7 +574,7 @@ class Monitor extends React.PureComponent {
                   <div className="water-select">
                     <div className="">
                       <div className="water-select-flex">
-                        {waterName}24小时水位变化曲线
+                        {waterName}
                       </div>
                       <div className="water-select-flex">{`${moment(
                         new Date().getTime() - 24 * 60 * 60 * 1000

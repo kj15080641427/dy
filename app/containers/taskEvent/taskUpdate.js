@@ -9,6 +9,7 @@ const formItem = [
   {
     label: "事件名称",
     name: "name",
+    rules: [{ required: true }],
     ele: <Input></Input>,
   },
   {
@@ -19,11 +20,25 @@ const formItem = [
   {
     label: "事件等级",
     name: "grade",
+    rules: [{ required: true }],
     ele: (
       <Select>
         <Select.Option value={1}>一级</Select.Option>
         <Select.Option value={2}>二级</Select.Option>
         <Select.Option value={3}>三级</Select.Option>
+      </Select>
+    ),
+  },
+  {
+    label: "事件类型",
+    name: "stateRelationID",
+    rules: [{ required: true }],
+    ele: (
+      <Select>
+        <Select.Option value={26}>河流水位</Select.Option>
+        <Select.Option value={27}>城市积水</Select.Option>
+        <Select.Option value={28}>设备问题</Select.Option>
+        <Select.Option value={29}>其他</Select.Option>
       </Select>
     ),
   },
@@ -45,6 +60,7 @@ const formItem = [
   {
     label: "事件描述",
     name: "remark",
+    rules: [{ required: true }],
     ele: <Input></Input>,
   },
 ];

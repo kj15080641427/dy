@@ -1,13 +1,19 @@
 @import "@app/variable.scss";
 
 .easy-flood-display {
+  
   position: relative;
   min-height: $minheight;
   height: $mapDisplayHeight;
-  .easyflood-flex-center{
-    height: 100%;
+  .easyflood-flex-center {
+    // height: 100%;
     display: flex;
     align-items: center;
+  }
+  .flood-video-flex{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   .flood-chart-radio {
     position: absolute;
@@ -17,17 +23,39 @@
     .ant-radio-button {
       border: 1px solid #0099ff;
     }
-    .ant-radio-button-wrapper:not(:first-child)::before{
+    .ant-radio-button-wrapper:not(:first-child)::before {
       display: none;
     }
   }
   .easyFlood-left {
-    .set-table-style .ant-table-pagination.ant-pagination{
+    .set-table-style .ant-table-pagination.ant-pagination {
       margin: 7px 0;
     }
     .card-container {
       .ant-tabs-tab-btn {
         color: white;
+      }
+      .radar-box {
+        margin: 0;
+      }
+      .ant-tabs-card .ant-tabs-tab {
+        background: #003366;
+        border-radius: 0 20px 0 0;
+      }
+      .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
+        height: 30px;
+        // background: #003366;
+      }
+      .ant-tabs-card.ant-tabs-top
+        > .ant-tabs-nav
+        .ant-tabs-tab:not(:last-of-type) {
+        margin: 0;
+      }
+      .ant-tabs-card.ant-tabs-top
+        > .ant-tabs-nav
+        .ant-tabs-tab:not(:last-of-type) {
+        border-radius: 0 30px 0 0;
+        background: #003366;
       }
     }
     .card-container p {
@@ -35,12 +63,15 @@
     }
     .card-container > .ant-tabs-card .ant-tabs-content {
       height: 100%;
-      margin-top: -16px;
+      // margin-top: -16px;
     }
     .card-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
       // background: #fff;
       background: rgba(0, 51, 102, 0.7);
-      padding: 10px 10px 0px 10px;
+      // padding: 10px 10px 0px 10px;
+    }
+    .ant-tabs-top > .ant-tabs-nav {
+      margin: 0;
     }
     .card-container > .ant-tabs-card > .ant-tabs-nav::before {
       display: none;
@@ -57,7 +88,7 @@
       > .ant-tabs-card
       .ant-tabs-tab-active {
       border-color: #1890ff;
-      background: #1890ff;
+      background: #1890ff !important;
       color: white;
     }
     #components-tabs-demo-card-top .code-box-demo {
@@ -94,7 +125,8 @@
 
     width: 500px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
     position: absolute;
     top: 90px;
     bottom: 0px;
@@ -111,7 +143,7 @@
     .easyflood-left-bottom {
       .radar-box {
         width: 500px;
-        height: 56.5vh;
+        height: 270px;
         // min-height: 550px;
       }
     }
@@ -154,7 +186,8 @@
   .easyFlood-right {
     width: 460px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
     position: absolute;
     top: 90px;
     right: 90px;
@@ -183,7 +216,7 @@
         margin-right: 10px;
         width: 12px;
         height: 12px;
-        background:white;
+        background: white;
         border-radius: 50%;
       }
       .switch-ponding {
@@ -235,15 +268,15 @@
     .flood-first-box {
       .radar-box {
         width: 445px;
-        min-height: 290px;
-        height: 32vh;
+        height: 370px;
+        // height: 32vh;
         .box-head {
           width: 180px;
         }
       }
-      .flood-rain-chart{
+      .flood-rain-chart {
         width: 445px;
-        height: 260px;
+        height: 290px;
         // background: red;
       }
     }
@@ -266,12 +299,13 @@
 
     .easyfloodLine {
       width: 450px;
-      height: 250px;
+      height: 290px;
     }
     .videoBox {
+      // margin-top: 10px;
       position: relative;
       width: 440px;
-      height: 230px;
+      // height: 330px;
       overflow: hidden;
     }
   }

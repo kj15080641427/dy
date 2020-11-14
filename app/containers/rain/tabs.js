@@ -117,6 +117,7 @@ export const TabsList = (props) => {
             },
           };
         }}
+        pageSize={6}
         columns={[
           {
             name: "站名",

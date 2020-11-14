@@ -14,9 +14,10 @@
     color: white;
   }
   .ant-card-body {
-    height: 400px;
     background: #003366;
     height: 100%;
+    max-height: 800px;
+    overflow: auto;
   }
   .ant-card-bordered {
     border: 1px solid rgb(0, 160, 234);
@@ -47,6 +48,12 @@
     // margin-right: 10px;
   }
   .task-card-container {
+    .ant-tabs-top > .ant-tabs-nav::before {
+      border: 0px;
+    }
+    .ant-tabs > .ant-tabs-nav {
+      height: 30px;
+    }
     .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
       border: 1px solid #003366;
     }

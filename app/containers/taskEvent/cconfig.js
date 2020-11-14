@@ -40,6 +40,19 @@ export const taskListform = [
     ),
   },
   {
+    label: "事件类型",
+    name: "stateRelationID",
+    rules: [{ required: true }],
+    ele: (
+      <Select>
+        <Select.Option value={26}>河流水位</Select.Option>
+        <Select.Option value={27}>城市积水</Select.Option>
+        <Select.Option value={28}>设备问题</Select.Option>
+        <Select.Option value={29}>其他</Select.Option>
+      </Select>
+    ),
+  },
+  {
     label: "发生区域",
     name: "address",
     // rules: [{ required: true }],

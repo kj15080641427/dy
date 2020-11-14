@@ -1,6 +1,9 @@
 @import "@app/variable.scss";
 
 .flood-warning-display {
+  .ant-table-pagination.ant-pagination {
+    margin: 10px 0;
+  }
   position: relative;
   height: $mapDisplayHeight;
   min-height: $minheight;
@@ -31,8 +34,8 @@
     .first-box {
       .radar-box {
         width: 500px;
-        min-height: 550px;
-        height: 55vh;
+        height: 600px;
+        // height: 58vh;
         .box-head {
           width: 160px;
         }
@@ -41,8 +44,8 @@
     .second-box {
       .radar-box {
         width: 500px;
-        height: 302px;
-        height: 31vh;
+        height: 350px;
+        // height: 31vh;
         .box-head {
           width: 150px;
         }
@@ -53,7 +56,7 @@
     }
     .floodWaringPie {
       width: 450px;
-      height: 200px;
+      height: 240px;
       // margin-top: 20px;
     }
     .flood-text {
@@ -66,7 +69,8 @@
   .flood-warning-right {
     width: 500px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
     // justify-content: space-evenly;
     position: absolute;
     right: 105px;
@@ -74,10 +78,13 @@
     bottom: 0;
     z-index: 10;
     margin-top: 80px;
+    .flood-warning-chart{
+      margin-bottom: 4px;
+    }
     .radar-box {
       width: 500px;
-      height: 430px;
-      height: 48vh;
+      height: 575px;
+      // height: 48vh;
       .box-head {
         width: 120px;
       }

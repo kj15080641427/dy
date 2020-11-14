@@ -96,7 +96,7 @@ class Monitor extends React.PureComponent {
     } = this.props;
     if (floodId != pre.floodId) {
       this.props.actions.getFloodInfoRealTime(
-        floodId.riverwaterdataList ? floodId.riverwaterdataList[0].stcd : ""
+        floodId.siteWaterPoints ? floodId.siteWaterPoints[0].stcd : ""
       );
     }
     if (historyFlood != pre.historyFlood) {
@@ -260,6 +260,7 @@ class Monitor extends React.PureComponent {
     const { getDayRainBySite } = this.props.actions;
     return (
       <div className="easy-flood-display">
+        <div className="right-background"></div>
         <Map layerVisible={layerVisible} onFeatureClick={(param) => {}} />
         <Head titleImg={titleImg} groundColor="#003366"></Head>
         <div style={{ display: displayLeft }}>
@@ -355,108 +356,113 @@ class Monitor extends React.PureComponent {
                 >
                   <div className="easyfloodInfo" id="easyfloodInfo"></div>
                 </div>
-                <div className="card-container">
-                  <Tabs defaultActiveKey="flood" type="card">
-                    <Tabs.TabPane key="flood" tab="易涝点">
-                      <TableShow
-                        onRow={(record) => {
-                          return {
-                            onClick: () => {
-                              record = {
-                                ...record,
-                                id: record.riverwaterdataList
-                                  ? record.riverwaterdataList[0].stcd
-                                  : "",
-                              };
-                              this.props.actions.changeFloodId(record);
-                              this.locationClick(record);
-                            },
-                          };
-                        }}
-                        pageSize={4}
-                        columns={[
-                          {
-                            name: "易涝点名称",
-                            dataIndex: "aliasName",
-                            filter: "name",
-                            width: "45%",
-                          },
-                          {
-                            name: "积水深(cm)",
-                            dataIndex: "riverwaterdataList",
-                            width: "25%",
-                            render: (value) =>
-                              value && value[0]
-                                ? (value[0].z * 100).toFixed(2)
-                                : "-",
-                          },
-                          {
-                            width: "30%",
-                            name: "更新时间",
-                            dataIndex: "tm",
-                            render: (value) =>
-                              value ? value.slice(0, -3) : "-",
-                            sorter: (a, b) => {
-                              return moment(a.tm).unix() - moment(b.tm).unix();
-                            },
-                          },
-                        ]}
-                        dataSource={initFlood || []}
-                      />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane key="rain" tab="雨量站">
-                      <>
-                        <TableShow
-                          onRow={(record) => {
-                            return {
-                              onClick: () => {
-                                record = {
-                                ...record,
-                                id: record.riverwaterdataList
-                                  ? record.riverwaterdataList[0].stcd
-                                  : "",
-                              };
-                                this.setState({ floodRainName: record.aliasName });
-                                this.locationClick(record);
-                                getDayRainBySite(record.stcd);
-                              },
-                            };
-                          }}
-                          dataSource={floodRain}
-                          columns={[
-                            {
-                              name: "雨量站名称",
-                              dataIndex: "aliasName",
-                              filter: "name",
-                              width: "45%",
-                            },
-                            {
-                              name: "雨量",
-                              dataIndex: "raindataList",
-                              width: "15%",
-                              render: (v) => (v && v[0] ? v[0].dayDrp : "-"),
-                            },
-                            {
-                              name: "更新时间",
-                              dataIndex: "tm",
-                              width: "40%",
-                              render: (v) => {
-                                return v?.slice(0, -3) || "--";
-                              },
-                              sorter: (a, b) => {
-                                return (
-                                  moment(a.tm).unix() - moment(b.tm).unix()
-                                );
-                              },
-                            },
-                          ]}
-                        />
-                      </>
-                    </Tabs.TabPane>
-                  </Tabs>
-                </div>
               </RenderBox>
             </div>
+            {/* <RenderBox style={{ height: "340px" }}> */}
+            <div className="card-container">
+              <Tabs defaultActiveKey="flood" type="card">
+                <Tabs.TabPane key="flood" tab="易涝点">
+                  <RenderBox style={{ height: "320px" }}>
+                    <TableShow
+                      pageSize={6}
+                      onRow={(record) => {
+                        return {
+                          onClick: () => {
+                            console.log(record, "record");
+                            record = {
+                              ...record,
+                              id: record.siteWaterPoints[0]
+                                ? record.siteWaterPoints[0].stcd
+                                : record.siteWaterPoints[0].stcd,
+                            };
+                            this.props.actions.changeFloodId(record);
+                            this.locationClick(record);
+                          },
+                        };
+                      }}
+                      columns={[
+                        {
+                          name: "易涝点名称",
+                          dataIndex: "aliasName",
+                          filter: "name",
+                          width: "45%",
+                        },
+                        {
+                          name: "积水深(cm)",
+                          dataIndex: "riverwaterdataList",
+                          width: "25%",
+                          render: (value) =>
+                            value && value[0]
+                              ? (value[0].z * 100).toFixed(2)
+                              : "-",
+                        },
+                        {
+                          width: "30%",
+                          name: "更新时间",
+                          dataIndex: "tm",
+                          render: (value) => (value ? value.slice(0, -3) : "-"),
+                          sorter: (a, b) => {
+                            return moment(a.tm).unix() - moment(b.tm).unix();
+                          },
+                        },
+                      ]}
+                      dataSource={initFlood || []}
+                    />
+                  </RenderBox>
+                </Tabs.TabPane>
+                <Tabs.TabPane key="rain" tab="雨量站">
+                  <RenderBox style={{ height: "320px" }}>
+                    <TableShow
+                      pageSize={6}
+                      onRow={(record) => {
+                        return {
+                          onClick: () => {
+                            record = {
+                              ...record,
+                              id: record.siteWaterPoints[0]
+                                ? record.siteWaterPoints[0].stcd
+                                : record.siteWaterPoints[0].stcd,
+                            };
+                            this.setState({
+                              floodRainName: record.aliasName,
+                            });
+                            this.locationClick(record);
+                            getDayRainBySite(record.stcd);
+                          },
+                        };
+                      }}
+                      dataSource={floodRain}
+                      columns={[
+                        {
+                          name: "雨量站名称",
+                          dataIndex: "aliasName",
+                          filter: "name",
+                          width: "45%",
+                        },
+                        {
+                          name: "雨量",
+                          dataIndex: "raindataList",
+                          width: "15%",
+                          render: (v) => (v && v[0] ? v[0].dayDrp : "-"),
+                        },
+                        {
+                          name: "更新时间",
+                          dataIndex: "tm",
+                          width: "40%",
+                          render: (v) => {
+                            return v?.slice(0, -3) || "--";
+                          },
+                          sorter: (a, b) => {
+                            return moment(a.tm).unix() - moment(b.tm).unix();
+                          },
+                        },
+                      ]}
+                    />
+                  </RenderBox>
+                </Tabs.TabPane>
+              </Tabs>
+            </div>
+            {/* </RenderBox> */}
           </div>
           {/* <WeatherTable></WeatherTable> */}
         </div>
@@ -465,6 +471,7 @@ class Monitor extends React.PureComponent {
             <div className="flood-first-box">
               <RenderBox hasTitle title="雨量站24小时降水">
                 <div className="water-select">
+                  <br />
                   <div className="water-select-flex">
                     <div className="water-select-flex">
                       {floodRainName} &nbsp;
@@ -487,24 +494,29 @@ class Monitor extends React.PureComponent {
                 title="易涝点24小时积水深"
                 style={{ position: "relative" }}
               >
-                <div className="water-select">
-                  <div className="water-select-flex">
-                    <div className="water-select-flex">{floodName}</div>
-                    <div className="water-select-flex">{`${moment(
-                      new Date()
-                    ).format("MM-DD")} 00:00 至 ${moment(new Date()).format(
-                      "MM-DD"
-                    )} 24:00`}</div>
+                <div className="flood-video-flex">
+                  <div>
+                    {/* <br /> */}
+                    <div className="water-select">
+                      <div className="water-select-flex">
+                        <div className="water-select-flex">{floodName}</div>
+                        <div className="water-select-flex">
+                          {`${moment(
+                            new Date().getTime() - 24 * 60 * 60 * 1000
+                          ).format("MM-DD HH:mm")}
+                          至 ${moment(new Date()).format("MM-DD HH:mm")}`}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="easyfloodLine" id="easyfloodLine"></div>
+                  </div>
+                  {/* 视频 */}
+                  <div className="videoBox">
+                    <VideoPlayer
+                      strtoken={floodId?.stiteWaterRadios?.[0]?.strtoken}
+                    />
                   </div>
                 </div>
-                <div className="easyfloodLine" id="easyfloodLine"></div>
-                {/* 视频 */}
-                <div className="videoBox">
-                  <VideoPlayer
-                    strtoken={floodId?.stiteWaterRadios?.[0]?.strtoken}
-                  />
-                </div>
-                {/* <img src={video} width="430px" height="200px"></img> */}
               </RenderBox>
             </div>
             {/* <RenderBox style={{ height: "280px" }}></RenderBox> */}

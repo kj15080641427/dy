@@ -156,6 +156,7 @@ class RainMonitor extends React.PureComponent {
                   <div
                     style={{
                       display: this.state.radio == "a" ? "block" : "none",
+                      marginTop: "30px",
                     }}
                   >
                     <div className="flex-center">
@@ -194,7 +195,8 @@ class RainMonitor extends React.PureComponent {
                   <div
                     style={{
                       display: this.state.radio == "b" ? "block" : "none",
-                      height: "100%",
+                      // height: "100%",
+                      marginTop: "30px",
                     }}
                   >
                     <div className="flex-center">
@@ -341,7 +343,7 @@ class RainMonitor extends React.PureComponent {
               </RenderBox>
             </div>
             <div className="right-second-box">
-              <RenderBox hasTitle title="24小时降雨情况">
+              <RenderBox hasTitle title="24小时降雨统计">
                 <div className="flex-center">
                   <div className="rotateBarChart" id="rotateBarChart" />
                 </div>
