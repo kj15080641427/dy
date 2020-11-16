@@ -1,5 +1,8 @@
 @import "@app/variable.scss";
 .flood-model-display {
+  .ant-tabs-top > .ant-tabs-nav {
+    margin: 0px;
+  }
   position: relative;
   min-height: $minheight;
   height: $mapDisplayHeight;
@@ -155,11 +158,14 @@
     height: 95%;
   }
 }
+
 .flood-model-left-box {
+  
   .radar-box {
     height: 50vh;
   }
   .task-card-container {
+    
     .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
       border: 1px solid #003366;
     }

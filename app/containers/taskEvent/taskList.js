@@ -97,7 +97,11 @@ const TaskList = (props) => {
       <Head titleImg={titleImg} />
       <RouterList />
       <div className="task-card-container">
-        <Tabs defaultActiveKey="1" type="card">
+        <Tabs
+          defaultActiveKey="1"
+          type="card"
+          onChange={() => setTaskDangerModal(false)}
+        >
           <Tabs.TabPane key="1" tab="事件中心" className="task-body-border">
             <div className="task-list-head">
               <div className="task-list-head-div">
@@ -143,7 +147,17 @@ const TaskList = (props) => {
                     <Card
                       className="task-list-card-item-card"
                       title={
-                        <div className="task-list-card-title">
+                        <div
+                          className="task-list-card-title"
+                          style={{
+                            color:
+                              item.grade == "1"
+                                ? "red"
+                                : item.grade == "2"
+                                ? "green"
+                                : "blue",
+                          }}
+                        >
                           <div>{item.name}</div>
                         </div>
                       }
@@ -152,23 +166,21 @@ const TaskList = (props) => {
                         src={stateImg[item.state]}
                         className="task-list-card-img"
                       ></img>
-                      <div className="task-list-card-text-margin">
+                      <div
+                        className="task-list-card-text-margin"
+                        style={{
+                          color:
+                            item.grade == "1"
+                              ? "red"
+                              : item.grade == "2"
+                              ? "green"
+                              : "blue",
+                        }}
+                      >
                         <div className="task-list-card-text-span"></div>
                         <div>
-                          {" "}
                           事件等级：
-                          <span
-                            style={{
-                              color:
-                                item.grade == "1"
-                                  ? "red"
-                                  : item.grade == "2"
-                                  ? "green"
-                                  : "blue",
-                            }}
-                          >
-                            {gradeElement[item.grade - 1]}
-                          </span>
+                          <span>{gradeElement[item.grade - 1]}</span>
                         </div>
                       </div>
                       <div className="task-list-card-text-margin">
@@ -193,17 +205,7 @@ const TaskList = (props) => {
                             <div className="task-list-card-text-span"></div>
                             <div>事件描述：</div>
                           </div>
-                          <div
-                            className="task-list-card-remark"
-                            style={{
-                              color:
-                                item.grade == "1"
-                                  ? "red"
-                                  : item.grade == "2"
-                                  ? "green"
-                                  : "blue",
-                            }}
-                          >
+                          <div className="task-list-card-remark">
                             &nbsp;&nbsp; &nbsp;&nbsp;
                             <Popover content={item.remark}>
                               {item.remark}
@@ -331,7 +333,7 @@ const TaskList = (props) => {
               })}
             </div>
             <Modal
-              width="1200px"
+              width="600px"
               visible={taskdangerModalVisible}
               footer={null}
               closable={false}
@@ -436,6 +438,22 @@ const TaskList = (props) => {
                 </div>
               </div>
             </Modal>
+            {/* <Pagination
+              className="task-list-pagination"
+              current={page}
+              defaultPageSize={6}
+              // pageSize={6}
+              // hideOnSinglePage
+              total={taskDanger?.length}
+              // onChange={(page) => {
+              //   setPage(page);
+              //   getTaskList({
+              //     current: page,
+              //     name: taskInput,
+              //     size: 6,
+              //   });
+              // }}
+            ></Pagination> */}
           </Tabs.TabPane>
           <Tabs.TabPane key="3" tab="超警戒" className="task-body-border">
             <Table

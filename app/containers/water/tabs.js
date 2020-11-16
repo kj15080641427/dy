@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import emitter from "@app/utils/emitter.js";
 import { TableShow } from "../../components/chart/table";
 import { connect } from "react-redux";
@@ -12,11 +12,14 @@ export const TabsList = (props) => {
   const { visible, dataSource, dayWater } = props;
   const { changeModalVisible, getDayWater, changeWaterVideo } = props.actions;
   const { changeWaterId } = props.mapActions;
+  const [row, setRow] = useState({});
   const showChart = (data, id) => {
     let xdata = [];
     let ydata = [];
-    let name = data[0] ? data[0].stnm : "";
-    var myChart = echarts.init(document.getElementById("dayWaterDiv"));
+    let name = row.aliasName;
+    var myChart = echarts.init(document.getElementById(id));
+    console.log(myChart, "dayWater---------", dayWater);
+
     data.forEach((item) => {
       xdata.push(item.tm);
       ydata.push(item.z);
@@ -98,6 +101,7 @@ export const TabsList = (props) => {
         onRow={(record) => {
           return {
             onClick: () => {
+              setRow(record);
               changeWaterId({
                 id: record?.siteWaterLevels[0]?.stcd,
                 name: record.name,
@@ -164,7 +168,7 @@ export const TabsList = (props) => {
         onCancel={() => changeModalVisible(false)}
         width={1300}
         // forceRender
-        destroyOnClose
+        // destroyOnClose
       >
         <Tabs defaultActiveKey="1" style={{ color: "black" }}>
           <Tabs.TabPane
@@ -173,39 +177,39 @@ export const TabsList = (props) => {
             forceRender={true}
             style={{ color: "black" }}
           >
-            <Row>
-              <Col span={12}>
-                <div id="dayWaterDiv" style={{ width: 600, height: 500 }}></div>
-              </Col>
-              <Col span={12}>
-                <Table
-                  size="small"
-                  rowKey={(row) => row.riverwaterdataID}
-                  columns={[
-                    {
-                      title: "站名",
-                      dataIndex: "stnm",
-                      width: "40%",
-                      textWrap: "word-break",
-                    },
-                    {
-                      title: "水位",
-                      dataIndex: "z",
-                      width: "20%",
-                      textWrap: "word-break",
-                    },
-                    {
-                      title: "更新时间",
-                      dataIndex: "tm",
-                      width: "20%",
-                      textWrap: "word-break",
-                    },
-                  ]}
-                  dataSource={dayWater}
-                />
-              </Col>
-            </Row>
-          </Tabs.TabPane>
+        <Row>
+          <Col span={12}>
+            <div id="dayWaterDiv" style={{ width: 600, height: 500 }}></div>
+          </Col>
+          <Col span={12}>
+            <Table
+              size="small"
+              rowKey={(row) => row.riverwaterdataID}
+              columns={[
+                {
+                  title: "站名",
+                  dataIndex: "stnm",
+                  width: "40%",
+                  textWrap: "word-break",
+                },
+                {
+                  title: "水位",
+                  dataIndex: "z",
+                  width: "20%",
+                  textWrap: "word-break",
+                },
+                {
+                  title: "更新时间",
+                  dataIndex: "tm",
+                  width: "20%",
+                  textWrap: "word-break",
+                },
+              ]}
+              dataSource={dayWater}
+            />
+          </Col>
+        </Row>
+        </Tabs.TabPane>
         </Tabs>
       </Modal>
     </>

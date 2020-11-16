@@ -334,7 +334,7 @@ const TaskInfo = (props) => {
 
   return (
     <div style={{ height: "100%" }}>
-      <div style={{ height: "90px", background: "#003366", zIndex: 99 }} />
+      {/* <div style={{ height: "90px", background: "#003366", zIndex: 99 }} /> */}
       <div
         style={{
           height: "100%",
@@ -352,7 +352,7 @@ const TaskInfo = (props) => {
         trackList={selectedPersonTrack}
         onPersonClick={onPersonClick}
       />
-      <Head titleImg={titleImg} />
+      <Head titleImg={titleImg} groundColor="#003366" />
       <RouterList />
       <div
         className="track-query-body"

@@ -64,14 +64,7 @@
   }
 }
 .small-dis-table {
- 
-  // .row{
-  //   height: 130px !important;
-  // }
-  // .row-item{
-  //   height: 40px !important;
-  //   line-height: 40px !important;
-  // }
+
   .dis-tables {
     width: 600px;
     position: absolute;
@@ -79,6 +72,7 @@
     right: 0;
     display: flex;
     justify-content:flex-start;
+   
     .dis-table-btns {
       top: 50px;
       right: 80px;
@@ -90,8 +84,12 @@
       .dis-table-wrap {
         transform: scale(0.9);
         margin-top: -20px;
-        height: 245px;
+        height: 255px;
         margin-bottom: 5px;
+        .dis-table-head-extra{
+          // color: red;
+          margin-top: -10px;
+        }
         .table-wrapper {
           .loadingTop-loading-div {
             top: 0px;

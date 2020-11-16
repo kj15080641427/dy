@@ -88,7 +88,7 @@ class Video extends React.PureComponent {
       columnWidth: [210],
     };
     return (
-      <div>
+      <div className="video-scarll-body">
         <div className="table-wrapper">
           {this.props.lod ? (
             <Loading
@@ -122,10 +122,10 @@ class Video extends React.PureComponent {
           width={"50%"}
           footer={null}
           centered={true}
-          className="county-video-chart"
+          // className="county-video-chart"
         >
           {/* <FullScreen ></FullScreen> */}
-          <div
+          {/* <div
             style={{
               "overflow-y": "hidden",
               padding: "8px 0",
@@ -140,7 +140,8 @@ class Video extends React.PureComponent {
             scrolling="no"
             borderWidth="0"
             position="absolute"
-          >
+          > */}
+          <div className="modal-video-body" style={{ position: "relative" }}>
             {this.videoControl !== null ? (
               <VideoComponent
                 videoControl={this.videoControl}
@@ -160,7 +161,8 @@ class Video extends React.PureComponent {
               />
             ) : null}
           </div>
-          <Holder token={this.state.token}></Holder>
+          {/* </div> */}
+          {/* <Holder token={this.state.token}></Holder> */}
         </Modal>
       </div>
     );

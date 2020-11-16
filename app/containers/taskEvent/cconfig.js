@@ -106,7 +106,7 @@ export const expertColumns = [
 const grade = ["队长", "副队长", "组长", "成员"];
 export const userColumns = [
   { title: "姓名", dataIndex: "name" },
-  { title: "年龄", dataIndex: "age" },
+  // { title: "年龄", dataIndex: "age" },
   { title: "工作单位", dataIndex: "unit" },
   { title: "等级", dataIndex: "grade", render: (e) => grade[e - 1] },
   { title: "备注", dataIndex: "remark" },

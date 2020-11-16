@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import emitter from "@app/utils/emitter.js";
 import { TableShow } from "../../components/chart/table";
 import { connect } from "react-redux";
@@ -12,10 +12,11 @@ export const TabsList = (props) => {
   const { visible, dataSource, dayWater } = props;
   const { changeModalVisible, getDayWater, changeWaterVideo } = props.actions;
   const { changeWaterId } = props.mapActions;
+  const [row, setRow] = useState({});
   const showChart = (data, id) => {
     let xdata = [];
     let ydata = [];
-    let name = data[0] ? data[0].stnm : "";
+    let name = row.aliasName;
     var myChart = echarts.init(document.getElementById(id));
     data.forEach((item) => {
       xdata.push(item.tm);
@@ -98,6 +99,7 @@ export const TabsList = (props) => {
         onRow={(record) => {
           return {
             onClick: () => {
+              setRow(record);
               changeWaterId({
                 id: record?.siteWaterLevels[0]?.stcd,
                 name: record.name,

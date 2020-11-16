@@ -118,7 +118,7 @@ class Monitor extends React.PureComponent {
       },
     });
     pieChart("pie-chart", data, 500, [], {
-      text: `水文局在线:${typeOnline.q}\n\n水务局在线:${typeOnline.w}\n\n基层防汛在线:${typeOnline.e}\n\n其他来源在线:${typeOnline.r}`,
+      text: `水文局在线：${typeOnline.q}\n\n水务局在线：${typeOnline.w}\n\n基层防汛在线：${typeOnline.e}\n\n其他来源在线：${typeOnline.r}`,
       left: "center",
       top: "center",
       textStyle: { color: "white", fontWeight: "200", fontSize: 14 },
@@ -500,6 +500,11 @@ class Monitor extends React.PureComponent {
                           <WaterInfo dataSource={kl} />
                         </TabPane>
                       </Tabs>
+                      {/* {this.state.cityTabsKey == 1 ? (
+                        <WaterInfo dataSource={water} />
+                      ) : (
+                        <WaterInfo dataSource={dy} />
+                      )} */}
                     </div>
                   ) : (
                     <div className="card-container">
@@ -573,9 +578,7 @@ class Monitor extends React.PureComponent {
                 <div className="water-radar-box-flex">
                   <div className="water-select">
                     <div className="">
-                      <div className="water-select-flex">
-                        {waterName}
-                      </div>
+                      <div className="water-select-flex">{waterName}</div>
                       <div className="water-select-flex">{`${moment(
                         new Date().getTime() - 24 * 60 * 60 * 1000
                       ).format("YYYY-MM-DD HH:mm")}  至 ${moment(

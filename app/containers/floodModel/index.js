@@ -6,7 +6,8 @@ import "./style.scss";
 import Head from "./head/Head";
 import Map from "./map/map";
 import { RenderBox } from "../../components/chart/decorate";
-import { modelChart } from "../../components/chart/chart";
+import { modelChart, modelBarChart } from "../../components/chart/chart";
+import emitter from "@app/utils/emitter.js";
 import {
   Table,
   DatePicker,
@@ -87,7 +88,7 @@ class FloodModel extends Component {
               //   record.modelPredictionId
               // )}
             >
-              {"选择"}
+              <div style={{ color: "#18cb36" }}>选择</div>
             </Button>
           );
         },
@@ -143,11 +144,13 @@ class FloodModel extends Component {
               <div className={"m-left-div"}>
                 <Spin
                   spinning={this.props.model.modelIsRunning}
-                  tip={"预报模型计算中..."}
+                  tip={
+                    <div style={{ color: "#18cb36" }}>预报模型计算中...</div>
+                  }
                   size={"small"}
                 >
                   <div style={{ paddingBottom: 20 }}>
-                    <Divider style={{ color: "gray" }}>实时预报</Divider>
+                    {/* <Divider style={{ color: "gray" }}>实时预报</Divider> */}
                     <span>开始预报时间:</span>
                     <DatePicker
                       style={{ width: "200px", margin: "0 20px" }}
@@ -187,12 +190,79 @@ class FloodModel extends Component {
             <RenderBox className="flood-model-left-box">
               <div className="task-card-container">
                 <Tabs type="card">
-                  <Tabs.TabPane key="1" tab="水位站">
+                  <Tabs.TabPane key="1" tab="积水点">
                     <TableShow
                       number={5}
                       onRow={(record) => {
                         return {
                           onClick: () => {
+                            emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
+                            if (predictionId) {
+                              this.setState({
+                                floodName: record.aliasName,
+                              });
+                              dispatch(
+                                actions.getModelFloodResult({
+                                  startTime: defaultPred?.beginTime,
+                                  endTime: moment(defaultPred?.beginTime)
+                                    .add(1, "days")
+                                    .format("YYYY-MM-DD HH:mm:ss"),
+                                  predictid: predictionId,
+                                  siteNodeId: record.siteNodeId,
+                                })
+                              );
+                            } else {
+                              message.warning("请选择预报");
+                            }
+                          },
+                        };
+                      }}
+                      columns={[
+                        {
+                          name: "站点名称",
+                          dataIndex: "aliasName",
+                          width: "40%",
+                          render: (name) => {
+                            return name.length >= 18 ? (
+                              <Popover content={name} title="站名全称">
+                                {name.toString().substring(0, 18) + "..."}
+                              </Popover>
+                            ) : (
+                              name
+                            );
+                          },
+                        },
+                        // {
+                        //   name: "所属区域",
+                        //   dataIndex: "regionName",
+                        //   width: "20%",
+                        // },
+                        {
+                          name: "地址",
+                          dataIndex: "stlc",
+                          width: "60%",
+                          render: (name) => {
+                            return name.length >= 19 ? (
+                              <Popover content={name} title="地址全称">
+                                {name.toString().substring(0, 19) + "..."}
+                              </Popover>
+                            ) : (
+                              name
+                            );
+                          },
+                        },
+                      ]}
+                      dataSource={initFlood}
+                    />
+                  </Tabs.TabPane>
+
+                  <Tabs.TabPane key="2" tab="水位站">
+                    <TableShow
+                      number={5}
+                      onRow={(record) => {
+                        return {
+                          onClick: () => {
+                            emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
                             if (predictionId) {
                               this.setState({
                                 waterName: record.aliasName,
@@ -232,70 +302,6 @@ class FloodModel extends Component {
                         },
                       ]}
                       dataSource={water}
-                    />
-                  </Tabs.TabPane>
-                  <Tabs.TabPane key="2" tab="积水点">
-                    <TableShow
-                      number={5}
-                      onRow={(record) => {
-                        return {
-                          onClick: () => {
-                            if (predictionId) {
-                              this.setState({
-                                floodName: record.aliasName,
-                              });
-                              dispatch(
-                                actions.getModelFloodResult({
-                                  startTime: defaultPred?.beginTime,
-                                  endTime: moment(defaultPred?.beginTime)
-                                    .add(1, "days")
-                                    .format("YYYY-MM-DD HH:mm:ss"),
-                                  predictid: predictionId,
-                                  siteNodeId: record.siteNodeId,
-                                })
-                              );
-                            } else {
-                              message.warning("请选择预报");
-                            }
-                          },
-                        };
-                      }}
-                      columns={[
-                        {
-                          name: "站点名称",
-                          dataIndex: "aliasName",
-                          width: "30%",
-                          render: (name) => {
-                            return name.length >= 10 ? (
-                              <Popover content={name} title="站名全称">
-                                {name.toString().substring(0, 10) + "..."}
-                              </Popover>
-                            ) : (
-                              name
-                            );
-                          },
-                        },
-                        // {
-                        //   name: "所属区域",
-                        //   dataIndex: "regionName",
-                        //   width: "20%",
-                        // },
-                        {
-                          name: "地址",
-                          dataIndex: "stlc",
-                          width: "30%",
-                          render: (name) => {
-                            return name.length >= 18 ? (
-                              <Popover content={name} title="地址全称">
-                                {name.toString().substring(0, 18) + "..."}
-                              </Popover>
-                            ) : (
-                              name
-                            );
-                          },
-                        },
-                      ]}
-                      dataSource={initFlood}
                     />
                   </Tabs.TabPane>
                 </Tabs>
@@ -383,7 +389,7 @@ class FloodModel extends Component {
       rainPred,
     } = this.props;
     if (rainPred !== pre.rainPred) {
-      modelChart(
+      modelBarChart(
         rainPred,
         "floodHeadRain",
         "降雨",

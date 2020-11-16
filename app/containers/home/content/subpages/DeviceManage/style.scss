@@ -255,7 +255,14 @@
     }
   }
 }
-
+.device-edit-button{
+  a{
+    background:  #0099ff;
+    color: white;
+    padding: 3px 5px;
+    border-radius: 5px;
+  }
+}
 .device-manager p {
   margin: 0;
 }

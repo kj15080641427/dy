@@ -245,7 +245,7 @@ class Monitor extends React.PureComponent {
       funnelChart("funnel-chart", data);
     }
     if (floodDayRain != pre.floodDayRain) {
-      showChart(floodDayRain, "floodRainChart", "avgDrp", "水位(mm)");
+      showChart(floodDayRain, "floodRainChart", "avgDrp", "降雨(mm)");
     }
   }
   render() {

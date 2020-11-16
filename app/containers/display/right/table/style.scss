@@ -16,6 +16,19 @@ h2 {
   color: rgba(255, 255, 255, 0);
   padding: 30px 0;
 }
+.video-scarll-body {
+  .ant-modal-body{
+    width: 800px;
+    min-height: 567px;
+  }
+  .modal-video-body {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    min-width: 600px;
+    min-height: 400px;
+  }
+}
 
 .table-wrapper {
   .loadingTop-loading-div {

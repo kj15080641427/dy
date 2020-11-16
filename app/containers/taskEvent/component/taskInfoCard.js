@@ -45,23 +45,35 @@ const TaskInfoCard = (props) => {
   }, []);
 
   useEffect(() => {
-    let sourceList = taskCountSource.map((item) => ({
+    let sourceList = taskCountSource.map((item, index) => ({
       name: item.taskName,
       value: item.number,
+      itemStyle: {
+        color: index == 0 ? "red" : "blue",
+      },
     }));
 
     let gradeList = taskCountGrade.map((item) => ({
       name: item.taskName,
       value: item.number,
+      itemStyle: {
+        color: item.taskkey == 1 ? "red" : item.taskkey == 2 ? "green" : "blue",
+      },
     }));
 
-    let stateList = taskCountState.map((item) => ({
+    let stateList = taskCountState.map((item, index) => ({
       name: item.taskName,
       value: item.number,
+      itemStyle: {
+        color: index == 1 ? "red" : index == 2 ? "green" : "blue",
+      },
     }));
+    let a = stateList[0];
+    stateList[0] = stateList[2];
+    stateList[2] = a;
     taskChart("stateChart", stateList, "状态");
     taskChart("sourceChart", sourceList, "来源");
-    taskChart("gradeChart", gradeList, "等级");
+    taskChart("gradeChart", gradeList.reverse(), "等级");
   }, [taskCountSource, taskCountGrade, taskCountState]);
 
   const onOffFinish = (data) => {
@@ -75,7 +87,7 @@ const TaskInfoCard = (props) => {
         <Card>
           <div className="task-event-chart">
             <Link to="/taskList" className="task-event-flex">
-              <img src={taskListIcon} width="150px" height="150px"></img>
+              <img src={taskListIcon} width="100px" height="100px"></img>
               <div>事件中心</div>
             </Link>
             <div className="task-event-flex">
@@ -102,8 +114,8 @@ const TaskInfoCard = (props) => {
               position: "absolute",
               right: "10px",
               top: "10px",
-              width: "200px",
-              height: "200px",
+              width: "150px",
+              height: "150px",
             }}
           ></img>
           <Row gutter={gutter}>

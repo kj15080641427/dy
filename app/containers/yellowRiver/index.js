@@ -56,6 +56,7 @@ export default class yellowRiver extends React.PureComponent {
       const item = riverwaterdata.find((rwd) => rwd.stcd == td.stcd) || {};
       td.sw = item.z || "-";
       td.ll = item.q || "-";
+      td.areaName = item.areaName || "-";
     });
     this.setState(
       {

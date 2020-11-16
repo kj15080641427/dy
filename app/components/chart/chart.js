@@ -794,86 +794,77 @@ export const modelChart = (data, id, yname, xvalue, yvalue) => {
     ],
   });
 };
+//模型
 export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
   let xdata = [];
   let ydata = [];
-  let myChartcount = echarts.init(document.getElementById(id));
-
+  var myChart = echarts.init(document.getElementById(id));
   data.forEach((item) => {
     xdata.push(item[xvalue].split(" ")[1].slice(0, -3));
     ydata.push(item[yvalue]);
   });
-  myChartcount.setOption({
+  myChart.setOption({
     tooltip: {
       trigger: "axis",
       axisPointer: {
         // 坐标轴指示器，坐标轴触发有效
         type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
-        shadowStyle: {
-          color: "rgba(0, 51, 102, 0.5)",
-        },
-      },
-    },
-    legend: {
-      data: [],
-      left: "center",
-      top: "10",
-      textStyle: {
-        color: "white",
       },
     },
     toolbox: {
-      show: false,
+      show: true,
       feature: {
-        mark: { show: true },
-        dataView: { show: true, readOnly: false },
-        magicType: {
-          show: true,
-          type: ["pie", "funnel"],
-        },
+        // dataView: { show: true, readOnly: true },
+        magicType: { show: true, type: ["line", "bar"] },
         restore: { show: true },
         saveAsImage: { show: true },
       },
     },
-    // grid: {
-    //   left: "center",
-    // },
-    xAxis: [
-      {
-        type: "category",
-        data: xdata,
-        splitNumber: 0,
-        maxInterval: 0,
-        axisLine: {
-          show: false,
-        },
-        axisTick: {
-          show: false,
-        },
-        axisLabel: {
+    xAxis: {
+      type: "category",
+      data: xdata.length ? xdata : [],
+      name: "",
+      axisLabel: {
+        color: "white",
+        fontSize: 16,
+      },
+      axisLine: {
+        lineStyle: {
           color: "white",
-          fontSize: 18,
         },
       },
-    ],
-    yAxis: [
-      {
-        type: "value",
-        show: false,
+    },
+    yAxis: {
+      min: 1,
+      type: "value",
+      name: yname ? yname : "水位（m）",
+      axisLabel: {
+        color: "white",
+        fontSize: 16,
       },
-    ],
+      axisLine: {
+        lineStyle: {
+          color: "white",
+        },
+      },
+    },
+    legend: {
+      right: "center",
+      x: "0px",
+      y: "0px",
+      data: ["1小时降水", "24小时降水"],
+    },
+    // grid: {
+    //   width: 250,
+    //   height: 250,
+    // },
     series: [
       {
-        name: "",
+        // name: '1小时降水',
+        data: ydata.length ? ydata : [],
         type: "bar",
-        data: ydata,
-        barWidth: 25,
-        label: {
-          show: true,
-          position: "inside",
-        },
-        itemStyle: {
-          color: "rgba(33,115,111,1)",
+        lineStyle: {
+          color: "rgb(27,184,108)", //改变折线颜色
         },
       },
     ],

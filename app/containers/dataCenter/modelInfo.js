@@ -10,6 +10,18 @@ const dict = {
     4: "排退水闸",
     5: "挡潮闸",
   },
+  rvType: {
+    1: "平原水库",
+  },
+  rvType1: {
+    1: "挡水坝",
+  },
+  rvbartypem: {
+    1: '土坝',
+  },
+  rvbartypes: {
+    1: '均质坝',
+  },
 };
 const ModalInfo = (props) => {
   const { visible, setVisible, list, info } = props;

@@ -17,11 +17,14 @@ class Situation extends React.PureComponent {
           <>
             {console.log(dataSource, "dataSource")}
             {/* <Row className="situation-title"> 汛情快报</Row> */}
-            <Row className="situation-text" style={{ color: " #0099ff", fontWeight: 'bold' }}>
+            <Row
+              className="situation-text"
+              style={{ color: " #0099ff", fontWeight: "bold" }}
+            >
               {dataSource.a} ，全市汛情概况如下：
             </Row>
             <Row className="situation-text">
-              <a className="text-title">降雨：</a>全市平均降水量{dataSource.b}
+              <a className="text-title">降雨：</a>全市平均降水量{Number(dataSource?.b).toFixed(1)}
               毫米
               {dataSource.b !== "0.00"
                 ? `，最大${dataSource.c}站${dataSource.d}毫米。全市${dataSource.e}

@@ -166,7 +166,7 @@ class DeviceManageFlood extends Component {
       let ydata = [];
       var myChart = echarts.init(document.getElementById(`deviceVideo`));
       data.forEach((item) => {
-        xdata.push(item.tm);
+        xdata.push(item.tm.slice(5, 9));
         ydata.push(Number(item.list[1].number));
       });
       myChart.setOption({
@@ -178,6 +178,7 @@ class DeviceManageFlood extends Component {
           },
         },
         xAxis: {
+          boundaryGap: false,
           type: "category",
           data: xdata,
           name: "时间",
@@ -243,7 +244,7 @@ class DeviceManageFlood extends Component {
       document.getElementById(`site-count-chart-${this.props.device.type}`)
     );
     data.forEach((item) => {
-      xdata.push(item.tm);
+      xdata.push(item.tm.slice(5, 10));
       ydata.push(Number(item.number));
     });
     myChart.setOption({
@@ -251,7 +252,7 @@ class DeviceManageFlood extends Component {
         trigger: "axis",
         axisPointer: {
           // 坐标轴指示器，坐标轴触发有效
-          type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+          type: "line", // 默认为直线，可选为：'line' | 'shadow'
         },
       },
       // toolbox: {
@@ -264,6 +265,7 @@ class DeviceManageFlood extends Component {
       //   },
       // },
       xAxis: {
+        boundaryGap: false,
         type: "category",
         data: xdata,
         name: "时间",
@@ -442,6 +444,9 @@ class DeviceManageFlood extends Component {
     const { currentSite } = this.state;
     if (item.produceTime) {
       item.produceTime = moment(item.produceTime).format("YYYY-MM-DD HH:mm:ss");
+    }
+    if (item.createTime) {
+      item.createTime = moment(item.createTime).format("YYYY-MM-DD HH:mm:ss");
     }
     await AllApi.saveSiteDevice(
       Object.assign({}, item, {
@@ -659,8 +664,8 @@ class DeviceManageFlood extends Component {
                     title: "操作",
                     dataIndex: "g",
                     render: (text, record) => (
-                      <Space>
-                        <a onClick={() => this.handleRepair(record)}>维修</a>
+                      <Space className='device-edit-button'>
+                        <a onClick={() => this.handleRepair(record)}>维护</a>
                         <a onClick={() => this.handleChange(record)}>更换</a>
                         <a onClick={() => this.handleRemove(record)}>拆除</a>
                       </Space>
@@ -689,7 +694,6 @@ class DeviceManageFlood extends Component {
               </div>
               {this.props.device.type == 4 ? (
                 <div className="site-count-chart" id="deviceVideo">
-                  11
                 </div>
               ) : (
                 <div
@@ -792,6 +796,11 @@ class DeviceManageFlood extends Component {
               {
                 label: "生产日期",
                 name: "produceTime",
+                ele: <DatePicker></DatePicker>,
+              },
+              {
+                label: "安装时间",
+                name: "createTime",
                 ele: <DatePicker></DatePicker>,
               },
             ]}
