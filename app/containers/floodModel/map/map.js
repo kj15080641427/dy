@@ -20,9 +20,7 @@ class Map extends React.PureComponent {
       test: 1,
       overlays: {},
     };
-    this.type = [
-      Water,
-    ];
+    this.type = [Water];
     let _this = this;
     // eslint-disable-next-line react/no-direct-mutation-state
     this.type.forEach((Ovl) => {
@@ -90,8 +88,8 @@ class Map extends React.PureComponent {
   createMap() {
     this.map = new UbiMap({
       target: "map",
-      center: [118.67, 37.6],
-      zoom: 9.7,
+      center: [118.62, 37.45],
+      zoom: 11.8,
       minZoom: 3,
       maxZoom: 18,
       mouseControl: false,
@@ -169,7 +167,6 @@ class Map extends React.PureComponent {
     //   key: "RiverOut",
     // });
 
-
     this.map.addVector({
       key: "water",
       zIndex: 20,
@@ -194,8 +191,7 @@ class Map extends React.PureComponent {
     this.map.startHighlightFeatureonLayer("water");
     this.map.startSelectFeature("water", (param) => {
       //this.addOverlay("water", {...param});
-      this.props.onFeatureClick &&
-          this.props.onFeatureClick({...param});
+      this.props.onFeatureClick && this.props.onFeatureClick({ ...param });
     });
     // this.map.startHighlightFeatureonLayer("ponding");
 
@@ -210,30 +206,28 @@ class Map extends React.PureComponent {
   }
 
   drawNodes(nodes) {
-    let eleData = nodes.map(item=>{
+    let eleData = nodes.map((item) => {
       return {
-        type: 'Point',
+        type: "Point",
         id: item.siteid,
-        lonlat: [parseFloat(item.lgtd),parseFloat(item.lttd)],
-        ...item
+        lonlat: [parseFloat(item.lgtd), parseFloat(item.lttd)],
+        ...item,
       };
     });
 
     if (eleData && eleData[0]) {
-      this.map.addFeatures('water', eleData);
+      this.map.addFeatures("water", eleData);
     }
-
-
   }
 
   addOverlay(key, param) {
     let id = param.id;
-    let {overlays} = this.state;
+    let { overlays } = this.state;
     overlays[key] = {
       [id]: param,
     };
     this.setState({
-      overlays: {...overlays},
+      overlays: { ...overlays },
     });
   }
   setVisible() {
@@ -266,58 +260,59 @@ class Map extends React.PureComponent {
           }
         );
     });
-    // this._mapMoveFocus = emitter.addListener(
-    //   "map-move-focus",
-    //   (lonlat, duration = 20000) => {
-    //     this.map &&
-    //       this.map.animate(
-    //         {
-    //           center: lonlat,
-    //           duration: 250,
-    //         },
-    //         () => {
-    //           this.addFocusBox(lonlat, duration);
-    //         }
-    //       );
-    //   }
-    // );
+    this._mapMoveFocus = emitter.addListener(
+      "map-move-focus",
+      (lonlat, duration = 20000) => {
+        this.map &&
+          this.map.animate(
+            {
+              center: lonlat,
+              duration: 250,
+            },
+            () => {
+              this.addFocusBox(lonlat, duration);
+            }
+          );
+      }
+    );
   }
-  // addFocusBox(lonlat, duration = 2000) {
-  //   let div = document.createElement("div");
-  //   div.className = "ol-focus-container";
-  //   let div1 = document.createElement("div");
-  //   div1.className = "ol-focus-box";
-  //   let div2 = document.createElement("div");
-  //   div2.className = "ol-focus-box";
-  //   let div3 = document.createElement("div");
-  //   div3.className = "ol-focus-box";
-  //   let div4 = document.createElement("div");
-  //   div4.className = "ol-focus-box";
-  //   div.append(div1, div2, div3, div4);
-  //   this.map.removeOverlay("focus");
-  //   this.map.addOverlay(
-  //     "focus",
-  //     {
-  //       Coordinate: lonlat,
-  //       positioning: "center-center",
-  //       offset: [0, 0],
-  //       stopEvent: false,
-  //     },
-  //     div
-  //   );
-  //   if (this._focusToken) {
-  //     clearTimeout(this._focusToken);
-  //   }
-  //   this._focusToken = window.setTimeout(() => {
-  //     this.map.removeOverlay("focus");
-  //   }, duration);
-  // }
-
+  addFocusBox(lonlat, duration = 2000) {
+    let div = document.createElement("div");
+    div.className = "ol-focus-container";
+    let div1 = document.createElement("div");
+    div1.className = "ol-focus-box";
+    let div2 = document.createElement("div");
+    div2.className = "ol-focus-box";
+    let div3 = document.createElement("div");
+    div3.className = "ol-focus-box";
+    let div4 = document.createElement("div");
+    div4.className = "ol-focus-box";
+    div.append(div1, div2, div3, div4);
+    this.map.removeOverlay("focus");
+    this.map.addOverlay(
+      "focus",
+      {
+        Coordinate: lonlat,
+        positioning: "center-center",
+        offset: [0, 0],
+        stopEvent: false,
+      },
+      div
+    );
+    if (this._focusToken) {
+      clearTimeout(this._focusToken);
+    }
+    this._focusToken = window.setTimeout(() => {
+      this.map.removeOverlay("focus");
+    }, duration);
+  }
 
   onOverlayClose(id, type) {
     let { overlays } = this.state;
     let obj = overlays[type];
-    if (!obj || !obj[id]) {return;}
+    if (!obj || !obj[id]) {
+      return;
+    }
     delete obj[id];
     this.setState({
       overlays: { ...overlays },
@@ -329,7 +324,7 @@ class Map extends React.PureComponent {
 }
 function mapStateToProps(state) {
   return {
-    model: state.floodModel
+    model: state.floodModel,
   };
 }
 

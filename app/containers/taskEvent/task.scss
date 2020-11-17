@@ -371,6 +371,9 @@
   .task-event-flex {
     color: white;
     width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
   }
 }

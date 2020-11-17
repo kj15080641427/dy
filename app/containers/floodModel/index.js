@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import RouterList from "../../components/routerlist";
 import * as actions from "../../redux/actions/floodModel";
 import "./style.scss";
-import Head from "./head/Head";
+import Head from "../../components/head/head";
+import titleImg from "../../resource/title/hnyb.png";
 import Map from "./map/map";
 import { RenderBox } from "../../components/chart/decorate";
 import { modelChart, modelBarChart } from "../../components/chart/chart";
@@ -17,6 +18,7 @@ import {
   Spin,
   message,
   Tabs,
+  Progress,
   Popover,
 } from "antd";
 import ReactEcharts from "echarts-for-react";
@@ -60,16 +62,6 @@ class FloodModel extends Component {
           );
         },
       },
-      // {
-      //     title: '结束时间',
-      //     dataIndex: 'endTime',
-      //     key: 'endTime',
-      //     render: (text, record) => {
-      //         return (
-      //             <span>{moment(record.endTime).format('YYYY-MM-DD HH点')}</span>
-      //         );
-      //     }
-      // },
       {
         title: " ",
         className: "tableRow",
@@ -103,40 +95,35 @@ class FloodModel extends Component {
       predictionId: "",
       waterName: "",
       floodName: "",
+      progress: 0,
     };
   }
 
   render() {
     let curDate = new moment();
     let dataSource = [...this.props.model.predictions];
-    const {
-      water,
-      initFlood,
-      dispatch,
-      defaultPred,
-      defaultWater,
-      defaultFlood,
-    } = this.props;
+    const { water, initFlood, dispatch, defaultPred } = this.props;
     const { predictionId, waterName, floodName } = this.state;
     return (
       <div className="flood-model-display">
+        <div className="right-background"></div>
         <Map
           layerVisible={{ water: true }}
           onFeatureClick={this.onFeatureClick.bind(this)}
         />
         <div className="flood-noyices-top" />
-        <Head />
+        <Head titleImg={titleImg} groundColor="#003366" />
         <RouterList />
         <div className="m-left">
           <Spin spinning={this.props.model.loading}>
             <RenderBox
               hasTitle
-              title="降水预报走势图"
+              title="东营市全市平均降水24h预报"
               style={{ height: "230px" }}
             >
               <div className="flood-head-rain-text">
-                {moment(new Date()).format("YYYY-MM-DD HH:mm")}至
-                {moment(new Date()).add(1, "days").format("YYYY-MM-DD HH:mm")}
+                {moment(new Date()).format("YYYY-MM-DD HH:00")}至
+                {moment(new Date()).add(1, "days").format("YYYY-MM-DD HH:00")}
               </div>
               <div className="flood-head-rain" id="floodHeadRain"></div>
             </RenderBox>
@@ -145,7 +132,20 @@ class FloodModel extends Component {
                 <Spin
                   spinning={this.props.model.modelIsRunning}
                   tip={
-                    <div style={{ color: "#18cb36" }}>预报模型计算中...</div>
+                    <div
+                      style={{
+                        color: "black",
+                        fontSize: "24px",
+                        background: "rgba(177, 183, 178,1)",
+                      }}
+                    >
+                      预报模型计算中...
+                      <Progress
+                        percent={this.state.progress}
+                        // size="small"
+                        status="active"
+                      ></Progress>
+                    </div>
                   }
                   size={"small"}
                 >
@@ -196,7 +196,11 @@ class FloodModel extends Component {
                       onRow={(record) => {
                         return {
                           onClick: () => {
-                            emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
+                            emitter.emit(
+                              "map-move-focus",
+                              [record.lgtd, record.lttd],
+                              3000
+                            );
                             if (predictionId) {
                               this.setState({
                                 floodName: record.aliasName,
@@ -262,7 +266,11 @@ class FloodModel extends Component {
                       onRow={(record) => {
                         return {
                           onClick: () => {
-                            emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
+                            emitter.emit(
+                              "map-move-focus",
+                              [record.lgtd, record.lttd],
+                              3000
+                            );
                             if (predictionId) {
                               this.setState({
                                 waterName: record.aliasName,
@@ -366,8 +374,8 @@ class FloodModel extends Component {
     dispatch(actions.queryPredictions());
     dispatch(
       actions.getRainPred({
-        endtm: moment(new Date()).add(1, "days").format("YYYY-MM-DD HH:mm:ss"),
-        starttm: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+        endtm: moment(new Date()).add(1, "days").format("YYYY-MM-DD HH:00:00"),
+        starttm: moment(new Date()).format("YYYY-MM-DD HH:00:00"),
       })
     );
     this.timer = setInterval(() => {
@@ -375,8 +383,8 @@ class FloodModel extends Component {
     }, 30000);
 
     dispatch(actions.queryModelState());
-    dispatch(actions.getModelWaterType());
-    dispatch(actions.getModelFloodType());
+    // dispatch(actions.getModelWaterType());
+    // dispatch(actions.getModelFloodType());
   }
   componentDidUpdate(pre) {
     const {
@@ -388,11 +396,23 @@ class FloodModel extends Component {
       defaultFlood,
       rainPred,
     } = this.props;
+    if (this.props.model.predictions != pre.model.predictions) {
+      this.onViewPrediction(this.props.model.predictions[0]?.modelPredictionId);
+    }
+    if (
+      this.props.model.modelIsRunning != pre.model.modelIsRunning &&
+      !this.props.model.modelIsRunning
+    ) {
+      clearInterval("addprogess");
+      this.setState({
+        progress: 0,
+      });
+    }
     if (rainPred !== pre.rainPred) {
       modelBarChart(
         rainPred,
         "floodHeadRain",
-        "降雨",
+        "降雨(mm)",
         "predictionTime",
         "predictionValue"
       );
@@ -415,7 +435,7 @@ class FloodModel extends Component {
         "predValue"
       );
     }
-    if (defaultWater != pre.defaultWater && defaultPred?.modelPredictionId) {
+    if (defaultWater != pre.defaultWater) {
       dispatch(
         actions.getModelResult({
           startTime: defaultPred?.beginTime,
@@ -428,7 +448,7 @@ class FloodModel extends Component {
       );
     }
 
-    if (defaultFlood != pre.defaultFlood && defaultPred?.modelPredictionId) {
+    if (defaultFlood != pre.defaultFlood) {
       dispatch(
         actions.getModelFloodResult({
           startTime: defaultPred?.beginTime,
@@ -465,6 +485,11 @@ class FloodModel extends Component {
 
   onRunModel() {
     const { dispatch } = this.props;
+    var addprogess = setInterval(() => {
+      this.setState({
+        progress: this.state.progress + 1,
+      });
+    }, 5000);
     dispatch(actions.runModel(this.state.runModelTime));
   }
 

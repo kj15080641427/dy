@@ -82,7 +82,7 @@ class WeatherChart extends React.PureComponent {
           <div className="time-selector">
             {this.state.timeList.map((tm, index) => (
               <label
-                style={{ color: color ? color : "" }}
+                style={{ color: color ? color : "white" }}
                 key={index}
                 className={this.state.selectedTime === tm ? "active" : ""}
                 onClick={() => {

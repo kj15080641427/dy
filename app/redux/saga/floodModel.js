@@ -27,16 +27,26 @@ function* queryModelNodesReq(data) {
     console.log(e);
   }
 }
-
+//预报列表
 function* queryPredictions() {
   try {
     yield put({ type: types.LOADING, data: { loading: true } });
+    //模型列表
     let result = yield call(queryPrediction);
-
     if (result.code === 200) {
       yield put({ type: types.PREDICTIONS_UPDATE, data: result.data });
+      //水位列表
+      let water = yield call(getModelWater, {});
+      if (water.code === 200 && result.data) {
+        yield put({ type: types.SET_DEFAULT_WATER, data: water });
+      }
+      //积水点列表
+      let flood = yield call(getModelFlood, {});
+      if (flood.code === 200 && result.data) {
+        yield put({ type: types.SET_DEFAULT_FLOOD, data: flood });
+      }
     }
-
+    //loading
     yield put({ type: types.LOADING, data: { loading: false } });
   } catch (e) {
     console.log(e);
@@ -117,7 +127,7 @@ function* getModelWaterSaga() {
     let result = yield call(getModelWater, {});
 
     if (result.code === 200) {
-      yield put({ type: types.SET_MODEL_WATER, data: result });
+      yield put({ type: types.SET_DEFAULT_WATER, data: result });
     }
   } catch (e) {
     console.log(e);
@@ -128,7 +138,7 @@ function* getModelFloodSaga() {
     let result = yield call(getModelFlood, {});
 
     if (result.code === 200) {
-      yield put({ type: types.SET_MODEL_FLOOD, data: result });
+      yield put({ type: types.SET_DEFAULT_FLOOD, data: result });
     }
   } catch (e) {
     console.log(e);

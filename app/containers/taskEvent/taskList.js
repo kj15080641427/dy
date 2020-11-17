@@ -14,6 +14,7 @@ import {
   Tabs,
   DatePicker,
   Table,
+  Spin,
 } from "antd";
 import DYForm from "@app/components/home/form";
 import moment from "moment";
@@ -46,6 +47,7 @@ const TaskList = (props) => {
     taskdangerModalVisible,
     taskWarningModalVisible,
     taskWarning,
+    taskEventLoading, //加载中
   } = props;
   const {
     getTaskList,
@@ -65,17 +67,32 @@ const TaskList = (props) => {
   const [showDanger, setShowDanger] = useState(false);
   const [showButton, setShowButton] = useState(true);
   const [source, setSource] = useState(0);
-
+  const [grade, setGrade] = useState("");
+  const [dangerList, setDangerList] = useState([]);
+  const [dangerPage, setDangerPage] = useState(1);
   useEffect(() => {
     getTaskWarning({});
-    getTaskDanger({});
+    getTaskDanger({ size: 6, current: 1 });
     getTaskList({
       current: 1,
       name: taskInput,
       size: 6,
+      grade: grade,
     });
   }, []);
-
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getTaskList({
+        current: 1,
+        name: taskInput,
+        size: 6,
+        grade: grade,
+      });
+    }, 30000);
+    return () => {
+      clearInterval(interval);
+    };
+  });
   const onFinish = (form) => {
     form = {
       ...form,
@@ -112,6 +129,7 @@ const TaskList = (props) => {
                       current: 1,
                       name: taskInput,
                       size: 6,
+                      grade: grade,
                     })
                   }
                   value={taskInput}
@@ -120,15 +138,29 @@ const TaskList = (props) => {
                 &nbsp; 事件等级：
                 <Select
                   defaultValue={""}
-                  onChange={(e) =>
-                    getTaskList({ current: 1, grade: e, size: 6 })
-                  }
+                  onChange={(e) => {
+                    setGrade(e);
+                    setPage(1);
+                    getTaskList({ current: 1, grade: e, size: 6 });
+                  }}
                 >
                   <Select.Option value={""}>全部</Select.Option>
                   <Select.Option value={1}>一级</Select.Option>
                   <Select.Option value={2}>二级</Select.Option>
                   <Select.Option value={3}>三级</Select.Option>
                 </Select>
+                {/* &nbsp; 事件类型：
+                <Select
+                  defaultValue={""}
+                  onChange={(e) =>
+                    getTaskList({ current: 1, grade: grade, size: 6 })
+                  }
+                >
+                  <Select.Option value={""}>全部</Select.Option>
+                  <Select.Option value={1}>一级</Select.Option>
+                  <Select.Option value={2}>二级</Select.Option>
+                  <Select.Option value={3}>三级</Select.Option>
+                </Select> */}
                 <Button
                   type="primary"
                   onClick={() => {
@@ -140,124 +172,149 @@ const TaskList = (props) => {
                 </Button>
               </div>
             </div>
-            <div className="task-list-card">
-              {taskList?.records?.map((item) => {
-                return (
-                  <div key={item.taskEventsID} className="task-list-card-item">
-                    <Card
-                      className="task-list-card-item-card"
-                      title={
-                        <div
-                          className="task-list-card-title"
-                          style={{
-                            color:
-                              item.grade == "1"
-                                ? "red"
-                                : item.grade == "2"
-                                ? "green"
-                                : "blue",
-                          }}
-                        >
-                          <div>{item.name}</div>
-                        </div>
-                      }
-                    >
-                      <img
-                        src={stateImg[item.state]}
-                        className="task-list-card-img"
-                      ></img>
+            {taskEventLoading ? (
+              <Spin spinning={taskEventLoading} />
+            ) : (
+              <>
+                <div className="task-list-card">
+                  {taskList?.records?.map((item) => {
+                    return (
                       <div
-                        className="task-list-card-text-margin"
-                        style={{
-                          color:
-                            item.grade == "1"
-                              ? "red"
-                              : item.grade == "2"
-                              ? "green"
-                              : "blue",
-                        }}
+                        key={item.taskEventsID}
+                        className="task-list-card-item"
                       >
-                        <div className="task-list-card-text-span"></div>
-                        <div>
-                          事件等级：
-                          <span>{gradeElement[item.grade - 1]}</span>
-                        </div>
-                      </div>
-                      <div className="task-list-card-text-margin">
-                        <div className="task-list-card-text-span"></div>
-                        <div> 事件来源：{taskSourceColor[item.dataSource]}</div>
-                      </div>
-                      <div className="task-list-card-text-margin">
-                        <div className="task-list-card-text-span"></div>
-                        <div> 事件类型：{dangerType[item.stateRelationID]}</div>
-                      </div>
-                      <div className="task-list-card-text-margin">
-                        <div className="task-list-card-text-span"></div>
-                        <div> 事件区域：{item.address}</div>
-                      </div>
-                      <div className="task-list-card-text-margin">
-                        <div className="task-list-card-text-span"></div>
-                        <div>事件时间：{item.happenTime?.substring(0, 16)}</div>
-                      </div>
-                      <div className="task-list-card-text-margin">
-                        <div>
+                        <Card
+                          className="task-list-card-item-card"
+                          title={
+                            <div
+                              className="task-list-card-title"
+                              style={{
+                                color:
+                                  item.grade == "1"
+                                    ? "red"
+                                    : item.grade == "2"
+                                    ? "green"
+                                    : "blue",
+                              }}
+                            >
+                              <div>{item.name}</div>
+                            </div>
+                          }
+                        >
+                          <img
+                            src={stateImg[item.state]}
+                            className="task-list-card-img"
+                          ></img>
+                          <div
+                            className="task-list-card-text-margin"
+                            style={{
+                              color:
+                                item.grade == "1"
+                                  ? "red"
+                                  : item.grade == "2"
+                                  ? "green"
+                                  : "blue",
+                            }}
+                          >
+                            <div className="task-list-card-text-span"></div>
+                            <div>
+                              事件等级：
+                              <span>{gradeElement[item.grade - 1]}</span>
+                            </div>
+                          </div>
                           <div className="task-list-card-text-margin">
                             <div className="task-list-card-text-span"></div>
-                            <div>事件描述：</div>
+                            <div>
+                              {" "}
+                              事件来源：{taskSourceColor[item.dataSource]}
+                            </div>
                           </div>
-                          <div className="task-list-card-remark">
-                            &nbsp;&nbsp; &nbsp;&nbsp;
-                            <Popover content={item.remark}>
-                              {item.remark}
-                            </Popover>
+                          <div className="task-list-card-text-margin">
+                            <div className="task-list-card-text-span"></div>
+                            <div>
+                              {" "}
+                              事件类型：{dangerType[item.stateRelationID]}
+                            </div>
                           </div>
-                        </div>
+                          <div className="task-list-card-text-margin">
+                            <div className="task-list-card-text-span"></div>
+                            <div> 事件区域：{item.address}</div>
+                          </div>
+                          <div className="task-list-card-text-margin">
+                            <div className="task-list-card-text-span"></div>
+                            <div>
+                              事件时间：{item.happenTime?.substring(0, 16)}
+                            </div>
+                          </div>
+                          <div className="task-list-card-text-margin">
+                            <div>
+                              <div className="task-list-card-text-margin">
+                                <div className="task-list-card-text-span"></div>
+                                <div>事件描述：</div>
+                              </div>
+                              <div className="task-list-card-remark">
+                                &nbsp;&nbsp; &nbsp;&nbsp;
+                                <Popover content={item.remark}>
+                                  {item.remark}
+                                </Popover>
+                              </div>
+                            </div>
+                          </div>
+                          <Link
+                            className="task-list-card-footer"
+                            onClick={() => {
+                              setTaskInfo(item);
+                            }}
+                            to={{
+                              pathname: "/taskInfo",
+                              query: { info: item },
+                            }}
+                          >
+                            事件详情
+                          </Link>
+                        </Card>
                       </div>
-                      <Link
-                        className="task-list-card-footer"
-                        onClick={() => {
-                          setTaskInfo(item);
-                        }}
-                        to={{ pathname: "/taskInfo", query: { info: item } }}
-                      >
-                        事件详情
-                      </Link>
-                    </Card>
-                  </div>
-                );
-              })}
-            </div>
-            <Modal visible={taskModalVisible} footer={null} closable={false}>
-              <DYForm
-                formItem={[
-                  {
-                    label: "事件来源",
-                    name: "happenTime",
-                    ele: <text>新建事件</text>,
-                  },
-                  ...taskListform,
-                ]}
-                onFinish={onFinish}
-                showCancel
-                cancelClick={() => setModalVislble(false)}
-              ></DYForm>
-            </Modal>
-            <Pagination
-              className="task-list-pagination"
-              current={page}
-              defaultPageSize={6}
-              // pageSize={6}
-              // hideOnSinglePage
-              total={taskList?.total}
-              onChange={(page) => {
-                setPage(page);
-                getTaskList({
-                  current: page,
-                  name: taskInput,
-                  size: 6,
-                });
-              }}
-            ></Pagination>
+                    );
+                  })}
+                </div>
+                <Modal
+                  visible={taskModalVisible}
+                  footer={null}
+                  closable={false}
+                >
+                  <DYForm
+                    formItem={[
+                      {
+                        label: "事件来源",
+                        name: "happenTime",
+                        ele: <text>新建事件</text>,
+                      },
+                      ...taskListform,
+                    ]}
+                    onFinish={onFinish}
+                    showCancel
+                    cancelClick={() => setModalVislble(false)}
+                  ></DYForm>
+                </Modal>
+                <Pagination
+                  className="task-list-pagination"
+                  current={page}
+                  defaultPageSize={6}
+                  // pageSize={6}
+                  // hideOnSinglePage
+                  total={taskList?.total}
+                  onChange={(page) => {
+                    setPage(page);
+                    getTaskList({
+                      current: page,
+                      name: taskInput,
+                      size: 6,
+                      grade: grade,
+                    });
+                  }}
+                ></Pagination>
+              </>
+            )}
           </Tabs.TabPane>
           <Tabs.TabPane key="2" tab="险情上报" className="task-body-border">
             <div className="task-list-head">
@@ -267,15 +324,27 @@ const TaskList = (props) => {
                   onChange={(e) => {
                     let start = moment(e).format("YYYY-MM-DD 00:00:00");
                     let end = moment(e).format("YYYY-MM-DD 23:59:00");
-                    getTaskDanger({ endtm: end, starttm: start });
+                    getTaskDanger({
+                      size: 6,
+                      current: 1,
+                      endtm: end,
+                      starttm: start,
+                    });
                   }}
                 ></DatePicker>
-                <Button onClick={() => getTaskDanger({})}>重置</Button>
+                <Button
+                  onClick={() => {
+                    setDangerPage(1);
+                    getTaskDanger({ size: 6, current: 1 });
+                  }}
+                >
+                  重置
+                </Button>
               </div>
             </div>
             {/* card */}
             <div className="task-list-card">
-              {taskDanger?.map((item) => {
+              {taskDanger?.records?.map((item) => {
                 return (
                   <div key={item.taskEventsID} className="task-list-card-item">
                     <Card
@@ -438,22 +507,18 @@ const TaskList = (props) => {
                 </div>
               </div>
             </Modal>
-            {/* <Pagination
+            <Pagination
               className="task-list-pagination"
-              current={page}
+              current={dangerPage}
               defaultPageSize={6}
               // pageSize={6}
               // hideOnSinglePage
-              total={taskDanger?.length}
-              // onChange={(page) => {
-              //   setPage(page);
-              //   getTaskList({
-              //     current: page,
-              //     name: taskInput,
-              //     size: 6,
-              //   });
-              // }}
-            ></Pagination> */}
+              total={taskDanger?.total}
+              onChange={(page) => {
+                setDangerPage(page);
+                getTaskDanger({ size: 6, current: page });
+              }}
+            ></Pagination>
           </Tabs.TabPane>
           <Tabs.TabPane key="3" tab="超警戒" className="task-body-border">
             <Table
@@ -557,6 +622,7 @@ const mapStateToProps = (state) => {
     taskdangerModalVisible: state.taskReducers.taskdangerModalVisible,
     taskWarning: state.taskReducers.taskWarning,
     taskWarningModalVisible: state.taskReducers.taskWarningModalVisible,
+    taskEventLoading: state.taskReducers.taskEventLoading,
   };
 };
 const mapDispatchToProps = (dispatch) => {

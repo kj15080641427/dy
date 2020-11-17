@@ -20,6 +20,7 @@ const initState = {
   selectedPersonTrack: [],
   //人员最后一次位置
   floodAddress: [],
+  taskEventLoading: false,
 };
 let selected = [];
 
@@ -119,6 +120,9 @@ export default function taskReducers(state = initState, action) {
       break;
     case types.FLOOD_TRACK_UPDATE:
       newState = { ...newState, selectedPersonTrack: action.data };
+      break;
+    case types.SET_TASKEVENT_LOADING:
+      newState = { ...newState, taskEventLoading: action.data };
       break;
     default:
       break;

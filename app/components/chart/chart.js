@@ -743,6 +743,9 @@ export const modelChart = (data, id, yname, xvalue, yvalue) => {
         color: "white",
         fontSize: 16,
       },
+      splitLine: {
+        show: true,
+      },
       axisLine: {
         lineStyle: {
           color: "white",
@@ -756,6 +759,9 @@ export const modelChart = (data, id, yname, xvalue, yvalue) => {
       axisLabel: {
         color: "white",
         fontSize: 16,
+        formatter: (v) => {
+          return Number(v).toFixed(1);
+        },
       },
       axisLine: {
         lineStyle: {
@@ -801,7 +807,7 @@ export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
   var myChart = echarts.init(document.getElementById(id));
   data.forEach((item) => {
     xdata.push(item[xvalue].split(" ")[1].slice(0, -3));
-    ydata.push(item[yvalue]);
+    ydata.push(Number(item[yvalue]).toFixed(2));
   });
   myChart.setOption({
     tooltip: {
@@ -841,6 +847,9 @@ export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
       axisLabel: {
         color: "white",
         fontSize: 16,
+        formatter: (v) => {
+          return Number(v).toFixed(1);
+        },
       },
       axisLine: {
         lineStyle: {

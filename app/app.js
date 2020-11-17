@@ -1,8 +1,8 @@
 import React from "react";
-import { HashRouter, BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 // import Monitor from '@app/containers/monitor/Monitor';
 // import Home from '@app/containers/home/Index';
-import AsyncComp from "@app/components/asyncComponent";
+// import AsyncComp from "@app/components/asyncComponent";
 import AsyncHome from "@app/containers/home/Index";
 import rainMonitor from "@app/containers/rain/rain";
 import waterMonitor from "@app/containers/water/water";
@@ -54,12 +54,12 @@ import "./style.scss";
 //     }
 //   )
 // );
-function removeLoading() {
-  let $loading = document.getElementById("loading");
-  if ($loading) {
-    $loading.parentNode.removeChild($loading);
-  }
-}
+// function removeLoading() {
+//   let $loading = document.getElementById("loading");
+//   if ($loading) {
+//     $loading.parentNode.removeChild($loading);
+//   }
+// }
 // const AsyncDisplay = AsyncComp(() =>
 //   import(/*webpackChunkName:'display'*/ "@app/containers/display/Display").then(
 //     (res) => {

@@ -356,7 +356,6 @@ class Monitor extends React.PureComponent {
               <WeatherPic></WeatherPic>
               {/* <Satellite type={2}></Satellite> */}
             </div>
-
             {/* <PannelBtn></PannelBtn> */}
             {/* <WeatherDy></WeatherDy>
             <AlarmTable></AlarmTable>

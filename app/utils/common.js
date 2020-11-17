@@ -11,7 +11,6 @@ const hashHistory = createHashHistory();
 const isV2 = 0;
 export const URL = isV2 ? "/api/v2" : "/api";
 
-
 // const hostUrl = "http://218.56.180.250:9109/tuhui-base";
 
 export function hasClassName(obj, name) {
@@ -77,12 +76,14 @@ export function fetchJSONData(method, url, data) {
     body: data ? JSON.stringify(data) : null,
   }).then((res) => {
     // console.log(res, 7777777777);
-
+    if (res.status == 500) {
+      message.error("网络请求失败,500");
+    }
     if (res.status == 400) {
       hashHistory.push("/");
     }
     if (res.status == "404") {
-      message.error("网络请求失败");
+      message.error("网络请求失败,404");
     }
     if (url === "/api/users/login") {
       return res.ok ? res : Promise.reject("接口出错");

@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import emitter from "@app/utils/emitter.js";
 import { TableShow } from "../../components/chart/table";
 import { connect } from "react-redux";
@@ -143,7 +143,7 @@ export const TabsList = (props) => {
             dataIndex: "z",
             width: "17%",
             render: (v) => {
-              return v ? v : "-";
+              return v ? Number(v).toFixed(2) : "-";
             },
             // sorter: (a, b) => a.z - b.z,
           },
@@ -160,11 +160,12 @@ export const TabsList = (props) => {
         dataSource={dataSource}
       />
       <Modal
-        title="水位详情"
+        title={`${row.aliasName}水位详情`}
         visible={visible}
         footer={null}
         onCancel={() => changeModalVisible(false)}
         width={1300}
+        destroyOnClose
       >
         <Tabs defaultActiveKey="1" style={{ color: "black" }}>
           <Tabs.TabPane

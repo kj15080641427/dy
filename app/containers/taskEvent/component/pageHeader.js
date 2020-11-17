@@ -8,6 +8,7 @@ const hashHistory = createHashHistory();
 
 export default (props) => {
   const { taskInfo } = props;
+  console.log(taskInfo, "taskInfo");
   return (
     <Link
       className="task-page-head"

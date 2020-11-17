@@ -87,8 +87,10 @@ const TaskInfoCard = (props) => {
         <Card>
           <div className="task-event-chart">
             <Link to="/taskList" className="task-event-flex">
-              <img src={taskListIcon} width="100px" height="100px"></img>
-              <div>事件中心</div>
+              <div>
+                <img src={taskListIcon} width="100px" height="100px"></img>
+                <div>事件中心</div>
+              </div>
             </Link>
             <div className="task-event-flex">
               <div className="task-event-card-head" id="stateChart"></div>

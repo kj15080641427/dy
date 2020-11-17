@@ -39,10 +39,13 @@ const itemStyle = {
   黄河东营境内水位站点: "rgba(33,36,185,1)",
   人工录入: "rgba(90,150,222,1)",
 };
+
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      tabsCity: {},
+      tabsRiver: {},
       typeOnline: { q: "", w: "", e: "", r: "" },
       showLeft: true,
       showRight: true,
@@ -246,6 +249,14 @@ class Monitor extends React.PureComponent {
       hk: hk,
       gr: gr,
       typeOnline: typeOnline,
+      tabsCity: {
+        2: dy,
+        3: kl,
+        4: lj,
+        5: hk,
+        6: gr,
+        1: initWater,
+      },
     });
     barChart(
       "bar-chart",
@@ -308,6 +319,8 @@ class Monitor extends React.PureComponent {
       kl,
       lj,
       hk,
+      tabsCity,
+      cityTabsKey,
     } = this.state;
     const renderRiverSite = (e) => {
       const obj = {
@@ -482,29 +495,26 @@ class Monitor extends React.PureComponent {
                         onChange={(e) => this.setState({ cityTabsKey: e })}
                       >
                         <TabPane tab="全部" key="1">
-                          <WaterInfo dataSource={water} />
+                          {/* <WaterInfo dataSource={water} /> */}
                         </TabPane>
                         <TabPane tab="东营区" key="2">
-                          <WaterInfo dataSource={dy} />
+                          {/* <WaterInfo dataSource={dy} /> */}
                         </TabPane>
                         <TabPane tab="广饶县" key="3">
-                          <WaterInfo dataSource={gr} />
+                          {/* <WaterInfo dataSource={gr} /> */}
                         </TabPane>
                         <TabPane tab="利津县" key="4">
-                          <WaterInfo dataSource={lj} />
+                          {/* <WaterInfo dataSource={lj} /> */}
                         </TabPane>
                         <TabPane tab="河口区" key="5">
-                          <WaterInfo dataSource={hk} />
+                          {/* <WaterInfo dataSource={hk} /> */}
                         </TabPane>
                         <TabPane tab="垦利区" key="6">
-                          <WaterInfo dataSource={kl} />
+                          {/* <WaterInfo dataSource={kl} /> */}
                         </TabPane>
                       </Tabs>
-                      {/* {this.state.cityTabsKey == 1 ? (
-                        <WaterInfo dataSource={water} />
-                      ) : (
-                        <WaterInfo dataSource={dy} />
-                      )} */}
+
+                      <WaterInfo dataSource={tabsCity[cityTabsKey]} />
                     </div>
                   ) : (
                     <div className="card-container">
@@ -519,24 +529,25 @@ class Monitor extends React.PureComponent {
                         activeKey={this.state.riverTabsKey}
                       >
                         <Tabs.TabPane tab="广利河" key="a">
-                          <WaterInfoRiver dataSource={siteRiverTable} />
+                          {/* <WaterInfoRiver dataSource={siteRiverTable} /> */}
                         </Tabs.TabPane>
                         <Tabs.TabPane tab="溢洪河" key="b">
-                          <WaterInfoRiver dataSource={siteRiverTable} />
+                          {/* <WaterInfoRiver dataSource={siteRiverTable} /> */}
                         </Tabs.TabPane>
                         <Tabs.TabPane tab="永丰河" key="c">
-                          <WaterInfoRiver dataSource={siteRiverTable} />
+                          {/* <WaterInfoRiver dataSource={siteRiverTable} /> */}
                         </Tabs.TabPane>
                         <Tabs.TabPane tab="马新河" key="d">
-                          <WaterInfoRiver dataSource={siteRiverTable} />
+                          {/* <WaterInfoRiver dataSource={siteRiverTable} /> */}
                         </Tabs.TabPane>
                         <Tabs.TabPane tab="小清河" key="e">
-                          <WaterInfoRiver dataSource={siteRiverTable} />
+                          {/* <WaterInfoRiver dataSource={siteRiverTable} /> */}
                         </Tabs.TabPane>
                         <Tabs.TabPane tab="草桥沟" key="f">
-                          <WaterInfoRiver dataSource={siteRiverTable} />
+                          {/* <WaterInfoRiver dataSource={siteRiverTable} /> */}
                         </Tabs.TabPane>
                       </Tabs>
+                      <WaterInfoRiver dataSource={siteRiverTable} />
                     </div>
                   )}
                 </RenderBox>

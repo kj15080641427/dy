@@ -71,11 +71,11 @@ export default function floodModel(state = initState, action) {
     case types.MODEL_STATE_UPDATE:
       newState.modelIsRunning = data.status;
       break;
-    case types.SET_MODEL_WATER:
+    case types.SET_DEFAULT_WATER:
       newState.defaultWater = data.data[0];
       newState.modelWater = data.data;
       break;
-    case types.SET_MODEL_FLOOD:
+    case types.SET_DEFAULT_FLOOD:
       newState.defaultFlood = data.data[0];
       newState.modelFlood = data.data;
       break;

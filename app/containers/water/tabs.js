@@ -145,9 +145,8 @@ export const TabsList = (props) => {
             dataIndex: "z",
             width: "17%",
             render: (v) => {
-              return v ? v : "-";
+              return v ? Number(v).toFixed(2) : "-";
             },
-            // sorter: (a, b) => a.z - b.z,
           },
           {
             name: "更新时间",
@@ -162,7 +161,7 @@ export const TabsList = (props) => {
         dataSource={dataSource}
       />
       <Modal
-        title="水位详情"
+        title={`${row.aliasName}水位详情`}
         visible={visible}
         footer={null}
         onCancel={() => changeModalVisible(false)}
@@ -177,39 +176,39 @@ export const TabsList = (props) => {
             forceRender={true}
             style={{ color: "black" }}
           >
-        <Row>
-          <Col span={12}>
-            <div id="dayWaterDiv" style={{ width: 600, height: 500 }}></div>
-          </Col>
-          <Col span={12}>
-            <Table
-              size="small"
-              rowKey={(row) => row.riverwaterdataID}
-              columns={[
-                {
-                  title: "站名",
-                  dataIndex: "stnm",
-                  width: "40%",
-                  textWrap: "word-break",
-                },
-                {
-                  title: "水位",
-                  dataIndex: "z",
-                  width: "20%",
-                  textWrap: "word-break",
-                },
-                {
-                  title: "更新时间",
-                  dataIndex: "tm",
-                  width: "20%",
-                  textWrap: "word-break",
-                },
-              ]}
-              dataSource={dayWater}
-            />
-          </Col>
-        </Row>
-        </Tabs.TabPane>
+            <Row>
+              <Col span={12}>
+                <div id="dayWaterDiv" style={{ width: 600, height: 500 }}></div>
+              </Col>
+              <Col span={12}>
+                <Table
+                  size="small"
+                  rowKey={(row) => row.riverwaterdataID}
+                  columns={[
+                    {
+                      title: "站名",
+                      dataIndex: "stnm",
+                      width: "40%",
+                      textWrap: "word-break",
+                    },
+                    {
+                      title: "水位",
+                      dataIndex: "z",
+                      width: "20%",
+                      textWrap: "word-break",
+                    },
+                    {
+                      title: "更新时间",
+                      dataIndex: "tm",
+                      width: "20%",
+                      textWrap: "word-break",
+                    },
+                  ]}
+                  dataSource={dayWater}
+                />
+              </Col>
+            </Row>
+          </Tabs.TabPane>
         </Tabs>
       </Modal>
     </>

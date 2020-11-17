@@ -556,7 +556,7 @@ export function getTaskCountState(data) {
 }
 //险情上报
 export function getTaskDanger(data) {
-  return fetchJSONData("POST", "/base/TaskDanger/getAll", data);
+  return fetchJSONData("POST", "/base/TaskDanger/page", data);
 }
 
 //查询菜单

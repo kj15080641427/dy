@@ -38,9 +38,9 @@ class Situation extends React.PureComponent {
             </Row>
             <Row className="situation-text">
               <a className="text-title">城市积水：</a>全市{dataSource.j}
-              个积水点有积水，
+              个积水点有积水
               {dataSource.j != "0"
-                ? `其中积水深超过20cm的有${dataSource.k}
+                ? `，其中积水深超过20cm的有${dataSource.k}
               个，积水深超过10cm的有${dataSource.l}个。积水点所在区划中，东营区
               ${dataSource.m}个，开发区${dataSource.n}个。`
                 : ""}

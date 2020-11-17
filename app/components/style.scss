@@ -3,7 +3,7 @@
   background: #003366;
 }
 .ant-table-thead .table-background {
-  background: #132F90!important;
+  background: #132f90 !important;
 }
 .ant-table.ant-table-small .ant-table-thead .ant-table-filter-column-title {
   padding: 8px;
@@ -115,7 +115,6 @@
   width: 85px;
   z-index: 99999;
   .router-item-style {
-    
     border-radius: 10px;
     margin-bottom: 7px;
     width: 70px;
@@ -129,7 +128,7 @@
       justify-content: center;
       align-items: center;
     }
-    .router-item-text{
+    .router-item-text {
       font-size: 10px;
     }
     img {
@@ -137,6 +136,7 @@
       height: 30px;
     }
   }
+
   // img {
   //   border-radius: 10px;
   //   margin-bottom: 15px;
@@ -144,4 +144,24 @@
   //   height: 70px;
   //   width: 70px;
   // }
+}
+.rouer-list-modal {
+  .ant-modal-body {
+    font-size: 44px;
+    background: #003366;
+    height: 700px;
+    overflow: auto;
+  }
+  .ant-modal-header {
+    background: #048ef1;
+    border: 0px;
+    .ant-modal-title {
+      color: white;
+    }
+  }
+  .anticon svg {
+    color: white;
+    width: 30px;
+    height: 30px;
+  }
 }

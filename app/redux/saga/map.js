@@ -43,7 +43,7 @@ function* getFlood() {
     if (result.code == code) {
       let data = result.data.map((item) => {
         if (item.stiteWaterRadios && item.stiteWaterRadios[0]) {
-          return { ...item, ...item.stiteWaterRadios[0] };
+          return { ...item.stiteWaterRadios[0], ...item };
         } else {
           return item;
         }
@@ -453,7 +453,7 @@ function* getFloodAlarmData() {
       });
       let data = resultwater.data.map((item) => {
         if (item.stiteWaterRadios && item.stiteWaterRadios[0]) {
-          return { ...item, ...item.stiteWaterRadios[0] };
+          return { ...item.stiteWaterRadios[0], ...item };
         } else {
           return item;
         }

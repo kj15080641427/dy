@@ -80,7 +80,7 @@ class Monitor extends React.PureComponent {
     // this.props.actions.getFloodType(); //易涝点基本信息
     this.props.actions.getDict();
     this.props.actions.getFloodRain(); //获取防汛雨量站 {type: "1",isshow: "1",datasource: "3",}
-    this.props.actions.getFloodInfoRealTime(floodId.id); //根据易涝点id获取实时数据
+    // this.props.actions.getFloodInfoRealTime(floodId.id); //根据易涝点id获取实时数据
     this.props.actions.getCountStation();
     this.props.actions.getDayRainBySite(floodRainId);
     this.props.actions.getFloodAlarm();
@@ -368,7 +368,6 @@ class Monitor extends React.PureComponent {
                       onRow={(record) => {
                         return {
                           onClick: () => {
-                            console.log(record, "record");
                             record = {
                               ...record,
                               id: record.siteWaterPoints[0]
@@ -419,9 +418,9 @@ class Monitor extends React.PureComponent {
                           onClick: () => {
                             record = {
                               ...record,
-                              id: record.siteWaterPoints[0]
-                                ? record.siteWaterPoints[0].stcd
-                                : record.siteWaterPoints[0].stcd,
+                              id: record.siteRain[0]
+                                ? record.siteRain[0].stcd
+                                : record.siteRain[0].stcd,
                             };
                             this.setState({
                               floodRainName: record.aliasName,

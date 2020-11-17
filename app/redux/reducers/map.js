@@ -59,8 +59,9 @@ export default function mapAboutReducers(state = initState, action) {
       action.data.forEach((item) => {
         if (item.riverwaterdataList && item.riverwaterdataList[0]) {
           floodList.push({
-            ...item,
             ...item.riverwaterdataList[0],
+            ...item,
+            ...item.siteWaterPoints[0],
           });
         } else {
           floodList.push(item);

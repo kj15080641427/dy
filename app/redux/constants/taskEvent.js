@@ -13,8 +13,8 @@ export const CHANGE_TASK_INPUT = "CHANGE_TASK_INPUT"; //查询事件
 export const SET_EXPERT_MODAL = "SET_EXPERT_MODAL"; //专家调度弹窗
 export const GET_FLOOD_ADDRESS = "GET_FLOOD_ADDRESS"; //定位
 export const SET_FLOOD_ADDRESS = "SET_FLOOD_ADDRESS"; //定位
-export const GET_PERSON_TRACK = 'GET_PERSON_TRACK'; //获取人员轨迹
-export const FLOOD_TRACK_UPDATE = 'FLOOD_TRACK_UPDATE'; //轨迹查询成功
+export const GET_PERSON_TRACK = "GET_PERSON_TRACK"; //获取人员轨迹
+export const FLOOD_TRACK_UPDATE = "FLOOD_TRACK_UPDATE"; //轨迹查询成功
 export const GET_FLOOD_USER = "GET_FLOOD_USER"; //所有防汛人员
 
 export const GET_TASK_DISPATCH_EXPERT = "GET_TASK_DISPATCH_EXPERT"; //根据事件查询已调度专家
@@ -91,3 +91,5 @@ export const SET_FLOOD_USER_EXPERT_ADDREDD = "SET_FLOOD_USER_EXPERT_ADDREDD";
 export const SET_FLOOD_RANK_ADDRESS = "SET_FLOOD_RANK_ADDRESS";
 //设置防汛专家
 export const SET_FLOOD_EXPERT_ADDRESS = "SET_FLOOD_EXPERT_ADDRESS";
+//事件列表loading
+export const SET_TASKEVENT_LOADING = "SET_TASKEVENT_LOADING";

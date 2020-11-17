@@ -21,8 +21,10 @@ export const TabsList = (props) => {
         pageSize={6}
         onRow={(record) => {
           return {
-            onClick: () =>
-              emitter.emit("map-move-focus", [record.lon, record.lat], 3000),
+            onClick: () => {
+              console.log(record.lon, record.lat);
+              emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
+            },
             onDoubleClick: () => {
               // changeModalVisible(true);
               // getDayWater(record.siteWaterLevels[0].stcd);

@@ -14,6 +14,10 @@ function* sendMessage({ data }) {
     if (result.code == successCode) {
       message.success("发送成功");
       yield put({
+        type: "GET_TASK_THEN_UPDATE",
+        data: data.taskEventsID,
+      });
+      yield put({
         type: types.GET_MESSAGE,
         data: { taskEventsID: data.taskEventsID, type: 101 },
       });
@@ -41,11 +45,19 @@ function* getMessage({ data }) {
 //查询事件
 function* getTaskList({ data }) {
   try {
+    yield put({
+      type: types.SET_TASKEVENT_LOADING,
+      data: true,
+    });
     let result = yield call(req.getTaskList, data);
     if (result.code == successCode) {
       yield put({
         type: types.SET_TASKEVENT_LIST,
         data: result.data,
+      });
+      yield put({
+        type: types.SET_TASKEVENT_LOADING,
+        data: false,
       });
       // console.log("saga");
     }
@@ -121,6 +133,10 @@ function* addExpertDispatch({ data }) {
     if (result.code == successCode) {
       message.success("成功");
       yield put({
+        type: "GET_TASK_THEN_UPDATE",
+        data: data.taskEventsID,
+      });
+      yield put({
         type: types.SET_EXPERT_MODAL,
         data: false,
       });
@@ -155,6 +171,10 @@ function* addUserDispatch({ data }) {
     const result = yield call(req.addUserDispatch, data);
     if (result.code == successCode) {
       message.success("新增成功");
+      yield put({
+        type: "GET_TASK_THEN_UPDATE",
+        data: data.taskEventsID,
+      });
       yield put({
         type: types.SET_EXPERT_MODAL,
         data: false,
@@ -196,6 +216,10 @@ function* addMaterialDispatch({ data }) {
     const result = yield call(req.addMaterialDispatch, data);
     if (result.code == successCode) {
       message.success("新增物资调度成功");
+      yield put({
+        type: "GET_TASK_THEN_UPDATE",
+        data: data.taskEventsID,
+      });
       yield put({
         type: types.SET_EXPERT_MODAL,
         data: false,
@@ -433,13 +457,13 @@ function* getFloodUserExpertAddress() {
 }
 // =======
 
-function *getPersonTrack({data}) {
+function* getPersonTrack({ data }) {
   try {
-    const {userId, beginTime, endTime} = data;
+    const { userId, beginTime, endTime } = data;
     const result = yield call(req.queryFloodPosLog, {
       userId: userId ? userId : 6,
-      startTime: beginTime.format('YYYY-MM-DD HH:mm:00'),
-      endTime: endTime.format('YYYY-MM-DD HH:mm:00'),
+      startTime: beginTime.format("YYYY-MM-DD HH:mm:00"),
+      endTime: endTime.format("YYYY-MM-DD HH:mm:00"),
       current: 0,
       size: -1,
     });
