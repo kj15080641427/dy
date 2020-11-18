@@ -157,7 +157,9 @@ class FloodModel extends Component {
                       showTime={{ format: "HH" }}
                       format={"YYYY-MM-DD HH时"}
                       defaultValue={this.state.runModelTime}
-                      onChange={(time) => this.setState({ runModelTime: time })}
+                      onChange={(time) => {
+                        this.setState({ runModelTime: time });
+                      }}
                       disabledDate={(selectDate) => selectDate <= curDate}
                     />
                     <Button
@@ -372,12 +374,16 @@ class FloodModel extends Component {
     const { dispatch } = this.props;
     dispatch(actions.queryModelNodesAction());
     dispatch(actions.queryPredictions());
-    dispatch(
-      actions.getRainPred({
-        endtm: moment(new Date()).add(1, "days").format("YYYY-MM-DD HH:00:00"),
-        starttm: moment(new Date()).format("YYYY-MM-DD HH:00:00"),
-      })
-    );
+    this.rainModel = setInterval(() => {
+      dispatch(
+        actions.getRainPred({
+          endtm: moment(new Date())
+            .add(1, "days")
+            .format("YYYY-MM-DD HH:00:00"),
+          starttm: moment(new Date()).format("YYYY-MM-DD HH:00:00"),
+        })
+      );
+    }, 30000);
     this.timer = setInterval(() => {
       dispatch(actions.queryModelState());
     }, 30000);
@@ -405,7 +411,7 @@ class FloodModel extends Component {
     ) {
       clearInterval("addprogess");
       this.setState({
-        progress: 0,
+        progress: 100,
       });
     }
     if (rainPred !== pre.rainPred) {
@@ -416,6 +422,15 @@ class FloodModel extends Component {
         "predictionTime",
         "predictionValue"
       );
+    }
+    if (!this.props.model.modelIsRunning) {
+      var addprogess = setInterval(() => {
+        if (this.state.progress <= 98) {
+          this.setState({
+            progress: this.state.progress + 1,
+          });
+        }
+      }, 5000);
     }
     if (modelResult !== pre.modelResult) {
       modelChart(
@@ -475,6 +490,9 @@ class FloodModel extends Component {
     if (this.timer) {
       clearInterval(this.timer);
     }
+    if (this.rainModel) {
+      clearInterval(this.rainModel);
+    }
   }
 
   onViewPrediction(predictionId) {
@@ -485,11 +503,11 @@ class FloodModel extends Component {
 
   onRunModel() {
     const { dispatch } = this.props;
-    var addprogess = setInterval(() => {
-      this.setState({
-        progress: this.state.progress + 1,
-      });
-    }, 5000);
+    // var addprogess = setInterval(() => {
+    this.setState({
+      progress: 0,
+    });
+    // }, 5000);
     dispatch(actions.runModel(this.state.runModelTime));
   }
 

@@ -28,7 +28,7 @@ const DisplaySmall = (props) => {
       <div className="small-dis-head">
         <Head></Head>
       </div>
-      {/* <div
+      <div
         className="download-app"
         onMouseEnter={() => setShowCode(true)}
         onMouseLeave={() => {
@@ -36,12 +36,12 @@ const DisplaySmall = (props) => {
         }}
       >
         <div> APP下载</div>
-      </div> */}
-      {/* {showCode ? (
+      </div>
+      {showCode ? (
         <div className="download-app-img">
           <img src={APPIMG} width="200px" height="200px"></img>
         </div>
-      ) : null} */}
+      ) : null}
       <div className="small-display">
         <Map></Map>
       </div>

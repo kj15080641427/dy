@@ -74,7 +74,7 @@ class RouterList extends React.PureComponent {
                     <div className="router-item-style-img-div">
                       <img src={item.img}></img>
                     </div>
-                    <div className={"router-item-text"}>{item.name}}</div>
+                    <div className={"router-item-text"}>{item.name}</div>
                   </div>
                 </div>
               </a>
@@ -101,7 +101,7 @@ class RouterList extends React.PureComponent {
                     <div className="router-item-style-img-div">
                       <img src={item.img}></img>
                     </div>
-                    <div className={"router-item-text"}>{item.name}}</div>
+                    <div className={"router-item-text"}>{item.name}</div>
                   </div>
                 </div>
               </a>
@@ -207,39 +207,46 @@ class RouterList extends React.PureComponent {
     w.location.href = "http://172.19.112.74/new/dist/index.html#/video";
   }
   childTable() {
+    const baseColumns = [
+      {
+        name: "序号",
+        dataIndex: "b",
+        render: (text, record, index) => {
+          return <span>{index + 1}</span>;
+        },
+      },
+      {
+        name: "起始位置",
+        dataIndex: "c",
+      },
+      {
+        name: "结束位置",
+        dataIndex: "d",
+      },
+      {
+        name: "时长(分钟)",
+        dataIndex: "e",
+      },
+      {
+        name: "播放",
+        dataIndex: "f",
+        render: (record) => {
+          return (
+            <a
+              onClick={() => {
+                this.setState({ videoUrl: record });
+                this.setState({ showVideo: true });
+                this.container && this.container.requestFullscreen();
+              }}
+            >
+              播放
+            </a>
+          );
+        },
+      },
+    ];
     const expandedRowRender = () => {
-      const columns = [
-        {
-          name: "起始位置",
-          dataIndex: "c",
-        },
-        {
-          name: "结束位置",
-          dataIndex: "d",
-        },
-        {
-          name: "时长",
-          dataIndex: "e",
-        },
-        {
-          name: "播放",
-          dataIndex: "f",
-          render: (record) => {
-            return (
-              <a
-                onClick={() => {
-                  this.setState({ videoUrl: record });
-                  this.setState({ showVideo: true });
-                  this.container && this.container.requestFullscreen();
-                  console.log(record, "11");
-                }}
-              >
-                播放
-              </a>
-            );
-          },
-        },
-      ];
+      const columns = baseColumns;
 
       const dataSource = [
         {
@@ -338,7 +345,7 @@ class RouterList extends React.PureComponent {
       return (
         <TableShow
           hideOnSinglePage
-          pageSize={10}
+          pageSize={15}
           columns={columns}
           dataSource={dataSource}
           pagination={false}
@@ -348,48 +355,12 @@ class RouterList extends React.PureComponent {
     return (
       <Tabs type="card">
         <Tabs.TabPane key="1" tab="广利河">
-          <div style={{ color: "white" }}>
-            广利河 起始位置：路南干渠，结束位置：东八路，总时长：55.17
-          </div>
           {expandedRowRender()}
         </Tabs.TabPane>
         <Tabs.TabPane key="2" tab="溢洪河">
-          <div style={{ color: "white" }}>
-            溢洪河 起始位置：王营村，结束位置： 德州路桥，总时长：31.22
-          </div>
           <TableShow
-            pageSize={10}
-            columns={[
-              {
-                name: "起始位置",
-                dataIndex: "c",
-              },
-              {
-                name: "结束位置",
-                dataIndex: "d",
-              },
-              {
-                name: "时长",
-                dataIndex: "e",
-              },
-              {
-                name: "播放",
-                dataIndex: "f",
-                render: (record) => {
-                  return (
-                    <a
-                      onClick={() => {
-                        this.setState({ videoUrl: record });
-                        this.setState({ showVideo: true });
-                        this.container && this.container.requestFullscreen();
-                      }}
-                    >
-                      播放
-                    </a>
-                  );
-                },
-              },
-            ]}
+            pageSize={15}
+            columns={baseColumns}
             dataSource={[
               {
                 c: "王营村",
@@ -454,7 +425,66 @@ class RouterList extends React.PureComponent {
             ]}
           ></TableShow>
         </Tabs.TabPane>
+        <Tabs.TabPane key="3" tab="黄河">
+          <TableShow
+            pageSize={15}
+            columns={baseColumns}
+            dataSource={[
+              {
+                c: "宫家引黄闸",
+                d: "德大铁路桥",
+                e: "3.20",
+                f: "http://218.56.180.250:9110/my/黄河视频/1.mp4",
+              },
+              {
+                c: "德大铁路桥",
+                d: "利津黄河大桥",
+                e: "2.15",
+                f: "http://218.56.180.250:9110/my/黄河视频/2.mp4",
+              },
+              {
+                c: "利津黄河大桥",
+                d: "胜利引黄闸",
+                e: "3.17",
+                f: "http://218.56.180.250:9110/my/黄河视频/3.mp4",
+              },
+              {
+                c: "胜利引黄闸",
+                d: "王庄引黄闸",
+                e: "4.58",
+                f: "http://218.56.180.250:9110/my/黄河视频/4.mp4",
+              },
+              {
+                c: "王庄引黄闸",
+                d: "胜利黄河大桥",
+                e: "3.55",
+                f: "http://218.56.180.250:9110/my/黄河视频/5.mp4",
+              },
+              {
+                c: "胜利黄河大桥",
+                d: "荣乌高速黄河大桥",
+                e: "2.37",
+                f: "http://218.56.180.250:9110/my/黄河视频/6.mp4",
+              },
+            ]}
+          ></TableShow>
+        </Tabs.TabPane>
+        <Tabs.TabPane key="4" tab="神仙沟">
+          <TableShow
+            pageSize={15}
+            columns={baseColumns}
+            dataSource={[
+              {
+                c: "神仙沟起始位置",
+                d: "神仙沟结束位置",
+                e: "3.20",
+                f: "http://218.56.180.250:9110/my/神仙沟开头2公里.mp4",
+              },
+            ]}
+          ></TableShow>
+        </Tabs.TabPane>
       </Tabs>
+
       // <Table
       //   className="components-table-demo-nested"
       //   columns={columns}

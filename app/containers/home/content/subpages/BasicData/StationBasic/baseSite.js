@@ -216,8 +216,8 @@ class BaseStation extends React.Component {
           okText="关联"
           onOk={() => {
             addSiteRelation({
-              relationID: selected[option][0],
-              siteBaseID: rowId,
+              relationID: Number(selected[option][0]),
+              siteBaseID: Number(rowId),
               siteDictionariesID: dict[option],
               state: 1,
             });

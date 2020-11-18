@@ -48,6 +48,16 @@ const formItem = [
     ele: <Input></Input>,
   },
   {
+    label: "经度",
+    name: "lon",
+    ele: <Input />,
+  },
+  {
+    label: "纬度",
+    name: "lat",
+    ele: <Input />,
+  },
+  {
     label: "上报人",
     name: "reportPersonName",
     ele: <Input></Input>,

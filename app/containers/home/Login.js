@@ -20,6 +20,9 @@ const FormItem = Form.Item;
 class Login extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      selectSystem: "东营市智慧水务系统",
+    };
   }
   componentDidMount() {
     window.addEventListener("resize", this.onResize);
@@ -33,54 +36,62 @@ class Login extends Component {
   }
   render() {
     const onFinish = (values) => {
-      login({
-        channel: "common",
-        username: values.username,
-        password: values.password,
-      }).then((result) => {
-        if (result.code == 200) {
-          localStorage.setItem("token", result.data.userToken);
-          localStorage.setItem("username", values.username);
-          // console.log(localStorage.getItem("token"));
-          // this.props.history.push("/display");
-          // window.location.reload();
-          // message.success("登录成功！");
-          // localStorage.setItem("token", result.data.userToken);
+      if (this.state.selectSystem == "东营市智慧水务系统") {
+        login({
+          channel: "common",
+          username: values.username,
+          password: values.password,
+        }).then((result) => {
+          if (result.code == 200) {
+            localStorage.setItem("token", result.data.userToken);
+            localStorage.setItem("username", values.username);
+            // console.log(localStorage.getItem("token"));
+            // this.props.history.push("/display");
+            // window.location.reload();
+            // message.success("登录成功！");
+            // localStorage.setItem("token", result.data.userToken);
 
-          const hrefNavi = window.location.href.split("?url=");
-          const url = unescape(hrefNavi[1]);
-          if (hrefNavi[1]) {
-            if (url.split("?")[1]) {
-              window.location.replace(`${url}&token=${result.data.userToken}`);
+            const hrefNavi = window.location.href.split("?url=");
+            const url = unescape(hrefNavi[1]);
+            if (hrefNavi[1]) {
+              if (url.split("?")[1]) {
+                window.location.replace(
+                  `${url}&token=${result.data.userToken}`
+                );
+              } else {
+                window.location.replace(
+                  `${url}?token=${result.data.userToken}`
+                );
+              }
             } else {
-              window.location.replace(`${url}?token=${result.data.userToken}`);
+              if (innerWidth > 3000) {
+                this.props.history.push("/display");
+                window.location.reload();
+                message.success("登录成功！");
+                localStorage.setItem("token", result.data.userToken);
+              } else {
+                this.props.history.push("/displaySmall");
+                window.location.reload();
+                message.success("登录成功！");
+                // localStorage.removeItem("token");
+                localStorage.setItem("token", result.data.userToken);
+                // console.log(localStorage.getItem("token"));
+              }
             }
+            // queryUser({
+            //   username: values.username,
+            // }).then((res) => {
+            //   console.log(res);
+            //   // this.props.actions.addUserInfo(result.data.records);
+            //   localStorage.setItem("userInfo", res.data.records[0]);
+            // });
           } else {
-            if (innerWidth > 3000) {
-              this.props.history.push("/display");
-              window.location.reload();
-              message.success("登录成功！");
-              localStorage.setItem("token", result.data.userToken);
-            } else {
-              this.props.history.push("/displaySmall");
-              window.location.reload();
-              message.success("登录成功！");
-              // localStorage.removeItem("token");
-              localStorage.setItem("token", result.data.userToken);
-              // console.log(localStorage.getItem("token"));
-            }
+            message.error("账号或密码错误");
           }
-          // queryUser({
-          //   username: values.username,
-          // }).then((res) => {
-          //   console.log(res);
-          //   // this.props.actions.addUserInfo(result.data.records);
-          //   localStorage.setItem("userInfo", res.data.records[0]);
-          // });
-        } else {
-          message.error("账号或密码错误");
-        }
-      });
+        });
+      } else {
+        window.open("http://218.56.180.250:9110/wemaws/frame");
+      }
     };
     //根据登录名查询用户信息
     // const selectUser = (username) => {
@@ -143,14 +154,23 @@ class Login extends Component {
                 type="password"
               />
             </Form.Item>
-            <Form.Item
-              name="remember"
-              valuePropName="checked"
-            >
+            <Form.Item name="remember" valuePropName="checked">
               <div style={{ display: "flex" }}>
-                <Select defaultValue="东营市智慧水务系统" style={{ flex: 1, marginRight: 16 }}>
-                  <Select.Option value="东营市智慧水务系统">东营市智慧水务系统</Select.Option>
-                  <Select.Option value="水质监测系统">水质监测系统</Select.Option>
+                <Select
+                  defaultValue="东营市智慧水务系统"
+                  onChange={(e) => {
+                    this.setState({
+                      selectSystem: e,
+                    });
+                  }}
+                  style={{ flex: 1, marginRight: 16 }}
+                >
+                  <Select.Option value="东营市智慧水务系统">
+                    东营市智慧水务系统
+                  </Select.Option>
+                  <Select.Option value="水质监测系统">
+                    水质监测系统
+                  </Select.Option>
                 </Select>
                 <Checkbox>
                   <span className="remenberpass">记住密码</span>

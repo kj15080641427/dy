@@ -198,8 +198,11 @@ class Map extends React.PureComponent {
     // });
     this.map.startSelectFeature("water", (param) => {
       // this.props.mapActions.changeWaterId(param.id);
-      console.log(this.props);
-      param = { ...param, id: param.stcd, dict: this.props.dict };
+      param = {
+        ...param,
+        id: param.siteWaterLevels[0].stcd,
+        dict: this.props.dict,
+      };
       this.addOverlay(Water.type, { ...param });
 
       if (this.props.onFeatureClick) {

@@ -102,10 +102,12 @@ export const TabsList = (props) => {
           return {
             onClick: () => {
               setRow(record);
-              changeWaterId({
-                id: record?.siteWaterLevels[0]?.stcd,
-                name: record.name,
-              });
+              record?.siteWaterLevels[0]?.stcd
+                ? changeWaterId({
+                    id: record?.siteWaterLevels[0]?.stcd,
+                    name: record?.siteWaterLevels[0]?.aliasName,
+                  })
+                : "";
               changeWaterVideo(record);
               emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
             },

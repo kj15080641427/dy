@@ -15,7 +15,9 @@ class Water extends Base {
     const { dict } = model;
     console.log(model);
     //let drpLevel = (model.drp !== null && model.drp !== undefined) ? model.drp + 'mm' : '--';
-    let tmDesc = model.tm ? model.tm : "--";
+    let tmDesc = model?.riverwaterdataList[0]?.tm
+      ? model?.riverwaterdataList[0]?.tm
+      : "--";
     return (
       <div
         className="m-ovl-box m-ovl-rain luo-ovl-rain"
@@ -24,26 +26,28 @@ class Water extends Base {
           this.container = node;
         }}
       >
-        <div className="m-ovl-line luo-ovl-title">水位站点：{model.name}</div>
+        <div className="m-ovl-line luo-ovl-title">
+          水位站点：{model?.siteWaterLevels[0]?.name}
+        </div>
         <div className="m-ovl-line">
           <label style={{ width: "80px" }}>水位：</label>
-          {model?.z || "--"}m
+          {model?.riverwaterdataList[0]?.z || "--"}m
         </div>
         <div className="m-ovl-line">
           <label style={{ width: "80px" }}>警戒水位：</label>
-          {model.warning || "--"}m
+          {model?.siteWaterLevels[0]?.warning || "--"}m
         </div>
         <div className="m-ovl-line">
           <label style={{ width: "80px" }}>数据来源：</label>
-          {model.dict[model.siteDictionariesID]}
+          {model.dict[model?.siteWaterLevels[0]?.siteDictionariesID]}
         </div>
         <div className="m-ovl-line">
           <label style={{ width: "80px" }}>区县：</label>
-          {model.stlc || "--"}
+          {model?.siteWaterLevels[0]?.stlc || "--"}
         </div>
         <div className="m-ovl-line">
           <label style={{ width: "80px" }}>河流：</label>
-          {model.rvnm}
+          {model?.siteWaterLevels[0]?.rvnm}
         </div>
         {/* <div className="m-ovl-line">
           <label>水位</label>

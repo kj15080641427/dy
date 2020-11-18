@@ -145,12 +145,12 @@ class Monitor extends React.PureComponent {
       });
       let list = [
         // { value: noRain, itemStyle: { color: "rgba(229,229,229)" } },
-        { value: small, itemStyle: { color: "rgba(175,233,159)" } },
-        { value: c, itemStyle: { color: "rgba(91,175,51)" } },
-        { value: d, itemStyle: { color: "rgba(121,190,255)" } },
-        { value: e, itemStyle: { color: "rgba(57,53,255)" } },
-        { value: f, itemStyle: { color: "rgba(228,41,255)" } },
-        { value: g, itemStyle: { color: "rgba(123,42,51)" } },
+        { value: small, itemStyle: { color: "rgba(175,233,159,1)" } },
+        { value: c, itemStyle: { color: "rgba(91,175,51,1)" } },
+        { value: d, itemStyle: { color: "rgba(121,190,255,1)" } },
+        { value: e, itemStyle: { color: "rgba(57,53,255,1)" } },
+        { value: f, itemStyle: { color: "rgba(228,41,255,1)" } },
+        { value: g, itemStyle: { color: "rgba(123,42,51,1)" } },
         // { value: h, itemStyle: { color: "rgba(228,41,50)" } },
       ];
       easyfloodRain("easyfloodInfo", list);
@@ -215,27 +215,27 @@ class Monitor extends React.PureComponent {
         {
           value: b,
           name: "0-10cm",
-          itemStyle: { color: "rgba(175,233,159)" },
+          itemStyle: { color: "rgba(175,233,159,1)" },
         },
         {
           value: c,
           name: "10-20cm",
-          itemStyle: { color: "rgba(91,175,51)" },
+          itemStyle: { color: "rgba(91,175,51,1)" },
         },
         {
           value: d,
           name: "20-30cm",
-          itemStyle: { color: "rgba(121,190,255)" },
+          itemStyle: { color: "rgba(121,190,255,1)" },
         },
         {
           value: e,
           name: "30-40cm",
-          itemStyle: { color: "rgba(57,53,255)" },
+          itemStyle: { color: "rgba(57,53,255,1)" },
         },
         {
           value: f,
           name: "40cm以上",
-          itemStyle: { color: "rgba(228,41,255)" },
+          itemStyle: { color: "rgba(228,41,255,1)" },
         },
       ];
       this.setState({

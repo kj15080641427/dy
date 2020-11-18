@@ -1,5 +1,5 @@
 import * as types from "../constants/floodModel";
-
+import moment from "moment";
 export function queryModelNodesAction() {
   return {
     type: types.QUERY_MODEL_NODES,
@@ -58,7 +58,7 @@ export function runModel(time) {
   return {
     type: types.RUN_MODEL,
     data: {
-      runTimeString: time.format("yyyyMMDDHH00"),
+      runTimeString: moment(time).format("YYYYMMDDHH0000"),
     },
   };
 }

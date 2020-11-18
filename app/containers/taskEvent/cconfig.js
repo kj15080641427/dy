@@ -22,11 +22,11 @@ export const taskListform = [
     rules: [{ required: true }],
     ele: <Input />,
   },
-  // {
-  //   label: "发生时间",
-  //   name: "happenTime",
-  //   ele: <DatePicker showTime />,
-  // },
+  {
+    label: "发生时间",
+    name: "happenTime",
+    ele: <DatePicker showTime />,
+  },
   {
     label: "事件等级",
     name: "grade",
@@ -56,6 +56,16 @@ export const taskListform = [
     label: "发生区域",
     name: "address",
     // rules: [{ required: true }],
+    ele: <Input />,
+  },
+  {
+    label: "经度",
+    name: "lon",
+    ele: <Input />,
+  },
+  {
+    label: "纬度",
+    name: "lat",
     ele: <Input />,
   },
   {

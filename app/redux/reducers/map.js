@@ -37,10 +37,11 @@ export default function mapAboutReducers(state = initState, action) {
       action.data.forEach((item) => {
         if (item.riverwaterdataList && item.riverwaterdataList[0]) {
           const items = {
-            ...item,
             ...item.siteWaterLevels[0],
             ...(item.stiteWaterRadios ? { ...item.stiteWaterRadios[0] } : {}),
             ...item.riverwaterdataList[0],
+            ...item,
+
           };
           waterList.push(items);
           if (items.z >= item.warning) {

@@ -348,7 +348,7 @@ function* getFloodExpert({ data }) {
     console.error(e);
   }
 }
-//水位报警TODO
+//水位报警
 function* getAlarmData() {
   try {
     let list = [];
@@ -361,9 +361,9 @@ function* getAlarmData() {
           if (item?.riverwaterdataList && item?.riverwaterdataList[0]) {
             if (item?.riverwaterdataList[0].stcd == st.stcd) {
               list.push({
-                ...item,
                 ...{ ...(item.stiteWaterRadios && item.stiteWaterRadios[0]) },
                 ...st,
+                ...item,
               });
             }
           }

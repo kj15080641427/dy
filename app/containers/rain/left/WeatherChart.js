@@ -180,7 +180,7 @@ class WeatherChart extends React.PureComponent {
         },
       },
       grid: {
-        top: this.state.selectedTime === "自定义" ? "120px" : "100px",
+        top: this.state.selectedTime === "自定义" ? "100px" : "100px",
         left: "5%",
         right: "0%",
         containLabel: true,
@@ -192,7 +192,13 @@ class WeatherChart extends React.PureComponent {
           ? dataSource.map((ds) => ({
               value: ds.areaName.split("(").join("\n("),
             }))
-          : [],
+          : [
+              "东营区\n(开发区)",
+              "河口区\n(东营港)",
+              "垦利区",
+              "利津县",
+              "广饶县\n(省高农区)",
+            ],
         axisLabel: {
           textStyle: {
             color: "#ffffff",
@@ -209,6 +215,9 @@ class WeatherChart extends React.PureComponent {
         // boundaryGap: ["10%", "10%"],
         nameLocation: "end",
         name: "单位(mm)",
+        nameTextStyle: {
+          color: "white",
+        },
         type: "value",
         axisLabel: {
           textStyle: {

@@ -17,6 +17,9 @@ class Water extends React.PureComponent {
     const { dict, rowNum } = this.props;
     let elements = [];
     for (let i = 0; i < data.length; i++) {
+      if (!data[i]?.riverwaterdataList) {
+        console.log(data[i], "===", i);
+      }
       // elements.push(
       //     <tr key={i}>
       //         <td style={{ width: 200 }}>{data[i].name + "(" + data[i].dataSourceDesc + ")"}</td>
@@ -34,7 +37,9 @@ class Water extends React.PureComponent {
           ? dict[data[i]?.siteWaterLevels[0]?.siteDictionariesID]
           : ""
       } )`;
-      let z = data[i]?.riverwaterdataList[0]?.z || "--";
+      let z = data[i]?.riverwaterdataList
+        ? data[i]?.riverwaterdataList[0]?.z || "--"
+        : "-";
       let warning =
         data[i].siteWaterLevels[0]?.warning === 99
           ? "--"

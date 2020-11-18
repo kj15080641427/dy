@@ -238,14 +238,25 @@ const TaskList = (props) => {
                           </div>
                           <div className="task-list-card-text-margin">
                             <div className="task-list-card-text-span"></div>
-                            <div> 事件区域：{item.address}</div>
-                          </div>
-                          <div className="task-list-card-text-margin">
-                            <div className="task-list-card-text-span"></div>
                             <div>
                               事件时间：{item.happenTime?.substring(0, 16)}
                             </div>
                           </div>
+                          <div className="task-list-card-text-margin">
+                            <div>
+                              <div className="task-list-card-text-margin">
+                                <div className="task-list-card-text-span"></div>
+                                <div>事件地址：</div>
+                              </div>
+                              <div className="task-list-card-remark">
+                                &nbsp;&nbsp; &nbsp;&nbsp;
+                                <Popover content={item.address}>
+                                  {item.address}
+                                </Popover>
+                              </div>
+                            </div>
+                          </div>
+
                           <div className="task-list-card-text-margin">
                             <div>
                               <div className="task-list-card-text-margin">
@@ -359,10 +370,10 @@ const TaskList = (props) => {
                         <div className="task-list-card-text-span"></div>
                         <div>上报时间：{item.createTime?.substring(0, 16)}</div>
                       </div>
-                      <div className="task-list-card-text-margin">
+                      {/* <div className="task-list-card-text-margin">
                         <div className="task-list-card-text-span"></div>
                         <div> 事件区域：{item.address}</div>
-                      </div>
+                      </div> */}
                       <div className="task-list-card-text-margin">
                         <div className="task-list-card-text-span"></div>
                         <div> 上报人：{item.user}</div>
@@ -371,6 +382,21 @@ const TaskList = (props) => {
                         <div className="task-list-card-text-span"></div>
                         <div> 联系电话：{item.phone}</div>
                       </div>
+                      <div className="task-list-card-text-margin">
+                        <div>
+                          <div className="task-list-card-text-margin">
+                            <div className="task-list-card-text-span"></div>
+                            <div>事件地址：</div>
+                          </div>
+                          <div className="task-list-card-remark">
+                            &nbsp;&nbsp; &nbsp;&nbsp;{" "}
+                            <Popover content={item.address}>
+                              {item.address}
+                            </Popover>
+                          </div>
+                        </div>
+                      </div>
+
                       <div className="task-list-card-text-margin">
                         <div>
                           <div className="task-list-card-text-margin">
@@ -402,7 +428,8 @@ const TaskList = (props) => {
               })}
             </div>
             <Modal
-              width="600px"
+              width="100%"
+              height="900px"
               visible={taskdangerModalVisible}
               footer={null}
               closable={false}
@@ -423,9 +450,23 @@ const TaskList = (props) => {
                     <div className="task-list-card-text-span"></div>
                     <div>上报时间：{danger.createTime?.substring(0, 16)}</div>
                   </div>
-                  <div className="task-list-card-text-margin">
+                  {/* <div className="task-list-card-text-margin">
                     <div className="task-list-card-text-span"></div>
-                    <div> 事件区域：{danger.address}</div>
+                    <div>
+                      事件区域：<span>{danger.address}</span>
+                    </div>
+                  </div> */}
+                  <div className="task-list-card-text-margin">
+                    <div>
+                      <div className="task-list-card-text-margin">
+                        <div className="task-list-card-text-span"></div>
+                        <div>事件地址：</div>
+                      </div>
+                      <div className="task-list-card-remark">
+                        &nbsp;&nbsp; &nbsp;&nbsp;{" "}
+                        <Popover content={danger.address}>{danger.address}</Popover>
+                      </div>
+                    </div>
                   </div>
                   <div className="task-list-card-text-margin">
                     <div>
@@ -482,9 +523,9 @@ const TaskList = (props) => {
 
                 <div style={{ width: "300px" }}>
                   <Card
-                    title="新增事件"
+                    // title="新增事件"
                     style={{
-                      height: "700px",
+                      height: "100%",
                       width: "400px",
                       display: showDanger ? "block" : "none",
                     }}
@@ -501,7 +542,11 @@ const TaskList = (props) => {
                       ]}
                       onFinish={onFinish}
                       showCancel
-                      cancelClick={() => setTaskDangerModal(false)}
+                      cancelClick={() => {
+                        setTaskDangerModal(false);
+                        setShowButton(true);
+                        setShowDanger(false);
+                      }}
                     ></DYForm>
                   </Card>
                 </div>
@@ -585,7 +630,7 @@ const TaskList = (props) => {
               forceRender
             >
               <div className="task-danger-modal">
-                <Card title="新增事件" style={{ width: "100%" }}>
+                <Card style={{ width: "100%" }}>
                   <DYForm
                     formRef={warningFormRef}
                     formItem={[

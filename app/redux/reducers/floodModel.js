@@ -89,7 +89,6 @@ export default function floodModel(state = initState, action) {
       newState.defaultPred = data;
       break;
     case types.SET_RAIN_PREDICTION:
-      console.log(data, "DD");
       newState.rainPred = data.data;
       break;
     default:

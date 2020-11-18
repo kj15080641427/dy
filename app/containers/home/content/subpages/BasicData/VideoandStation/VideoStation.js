@@ -1,6 +1,6 @@
 import React from "react";
 import BaseLayout from "../../connectComponents";
-import { Input } from "antd";
+import { Input, Select } from "antd";
 import { getDict } from "../../../../redux/actions";
 import {
   delSiteRelation,
@@ -24,7 +24,19 @@ const formItem = [
   { label: "状态", name: "state", ele: <Input /> },
 ];
 const rowSelect = [
-  { label: "站点关系类型", name: "siteDictionariesID", element: <Input /> },
+  {
+    label: "站点关系类型",
+    name: "siteDictionariesID",
+    element: (
+      <Select defaultValue=" ">
+        <Select.Option value=" ">全部</Select.Option>
+        <Select.Option value="18">雨量</Select.Option>
+        <Select.Option value="19">水位</Select.Option>
+        <Select.Option value="20">积水点</Select.Option>
+        <Select.Option value="21">视频</Select.Option>
+      </Select>
+    ),
+  },
 ];
 class VideoStation extends React.Component {
   constructor(props) {

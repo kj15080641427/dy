@@ -115,6 +115,8 @@
   width: 85px;
   z-index: 99999;
   .router-item-style {
+    overflow: auto;
+    height: calc(100 - 80px);
     border-radius: 10px;
     margin-bottom: 7px;
     width: 70px;
@@ -149,7 +151,7 @@
   .ant-modal-body {
     font-size: 44px;
     background: #003366;
-    height: 700px;
+    height: 750px;
     overflow: auto;
   }
   .ant-modal-header {
