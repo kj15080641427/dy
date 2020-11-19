@@ -88,7 +88,7 @@ const TaskList = (props) => {
         size: 6,
         grade: grade,
       });
-    }, 30000);
+    }, 300000);
     return () => {
       clearInterval(interval);
     };
@@ -172,41 +172,22 @@ const TaskList = (props) => {
                 </Button>
               </div>
             </div>
-            {taskEventLoading ? (
+            {/* {taskEventLoading ? (
               <Spin spinning={taskEventLoading} />
-            ) : (
-              <>
-                <div className="task-list-card">
-                  {taskList?.records?.map((item) => {
-                    return (
-                      <div
-                        key={item.taskEventsID}
-                        className="task-list-card-item"
-                      >
-                        <Card
-                          className="task-list-card-item-card"
-                          title={
-                            <div
-                              className="task-list-card-title"
-                              style={{
-                                color:
-                                  item.grade == "1"
-                                    ? "red"
-                                    : item.grade == "2"
-                                    ? "green"
-                                    : "blue",
-                              }}
-                            >
-                              <div>{item.name}</div>
-                            </div>
-                          }
-                        >
-                          <img
-                            src={stateImg[item.state]}
-                            className="task-list-card-img"
-                          ></img>
+            ) : ( */}
+            <>
+              <div className="task-list-card">
+                {taskList?.records?.map((item) => {
+                  return (
+                    <div
+                      key={item.taskEventsID}
+                      className="task-list-card-item"
+                    >
+                      <Card
+                        className="task-list-card-item-card"
+                        title={
                           <div
-                            className="task-list-card-text-margin"
+                            className="task-list-card-title"
                             style={{
                               color:
                                 item.grade == "1"
@@ -216,116 +197,131 @@ const TaskList = (props) => {
                                   : "blue",
                             }}
                           >
-                            <div className="task-list-card-text-span"></div>
-                            <div>
-                              事件等级：
-                              <span>{gradeElement[item.grade - 1]}</span>
+                            <div>{item.name}</div>
+                          </div>
+                        }
+                      >
+                        <img
+                          src={stateImg[item.state]}
+                          className="task-list-card-img"
+                        ></img>
+                        <div
+                          className="task-list-card-text-margin"
+                          style={{
+                            color:
+                              item.grade == "1"
+                                ? "red"
+                                : item.grade == "2"
+                                ? "green"
+                                : "blue",
+                          }}
+                        >
+                          <div className="task-list-card-text-span"></div>
+                          <div>
+                            事件等级：
+                            <span>{gradeElement[item.grade - 1]}</span>
+                          </div>
+                        </div>
+                        <div className="task-list-card-text-margin">
+                          <div className="task-list-card-text-span"></div>
+                          <div>
+                            {" "}
+                            事件来源：{taskSourceColor[item.dataSource]}
+                          </div>
+                        </div>
+                        <div className="task-list-card-text-margin">
+                          <div className="task-list-card-text-span"></div>
+                          <div>
+                            {" "}
+                            事件类型：{dangerType[item.stateRelationID]}
+                          </div>
+                        </div>
+                        <div className="task-list-card-text-margin">
+                          <div className="task-list-card-text-span"></div>
+                          <div>
+                            事件时间：{item.happenTime?.substring(0, 16)}
+                          </div>
+                        </div>
+                        <div className="task-list-card-text-margin">
+                          <div>
+                            <div className="task-list-card-text-margin">
+                              <div className="task-list-card-text-span"></div>
+                              <div>事件地址：</div>
+                            </div>
+                            <div className="task-list-card-remark">
+                              &nbsp;&nbsp; &nbsp;&nbsp;
+                              <Popover content={item.address}>
+                                {item.address}
+                              </Popover>
                             </div>
                           </div>
-                          <div className="task-list-card-text-margin">
-                            <div className="task-list-card-text-span"></div>
-                            <div>
-                              {" "}
-                              事件来源：{taskSourceColor[item.dataSource]}
-                            </div>
-                          </div>
-                          <div className="task-list-card-text-margin">
-                            <div className="task-list-card-text-span"></div>
-                            <div>
-                              {" "}
-                              事件类型：{dangerType[item.stateRelationID]}
-                            </div>
-                          </div>
-                          <div className="task-list-card-text-margin">
-                            <div className="task-list-card-text-span"></div>
-                            <div>
-                              事件时间：{item.happenTime?.substring(0, 16)}
-                            </div>
-                          </div>
-                          <div className="task-list-card-text-margin">
-                            <div>
-                              <div className="task-list-card-text-margin">
-                                <div className="task-list-card-text-span"></div>
-                                <div>事件地址：</div>
-                              </div>
-                              <div className="task-list-card-remark">
-                                &nbsp;&nbsp; &nbsp;&nbsp;
-                                <Popover content={item.address}>
-                                  {item.address}
-                                </Popover>
-                              </div>
-                            </div>
-                          </div>
+                        </div>
 
-                          <div className="task-list-card-text-margin">
-                            <div>
-                              <div className="task-list-card-text-margin">
-                                <div className="task-list-card-text-span"></div>
-                                <div>事件描述：</div>
-                              </div>
-                              <div className="task-list-card-remark">
-                                &nbsp;&nbsp; &nbsp;&nbsp;
-                                <Popover content={item.remark}>
-                                  {item.remark}
-                                </Popover>
-                              </div>
+                        <div className="task-list-card-text-margin">
+                          <div>
+                            <div className="task-list-card-text-margin">
+                              <div className="task-list-card-text-span"></div>
+                              <div>事件描述：</div>
+                            </div>
+                            <div className="task-list-card-remark">
+                              &nbsp;&nbsp; &nbsp;&nbsp;
+                              <Popover content={item.remark}>
+                                {item.remark}
+                              </Popover>
                             </div>
                           </div>
-                          <Link
-                            className="task-list-card-footer"
-                            onClick={() => {
-                              setTaskInfo(item);
-                            }}
-                            to={{
-                              pathname: "/taskInfo",
-                              query: { info: item },
-                            }}
-                          >
-                            事件详情
-                          </Link>
-                        </Card>
-                      </div>
-                    );
-                  })}
-                </div>
-                <Modal
-                  visible={taskModalVisible}
-                  footer={null}
-                  closable={false}
-                >
-                  <DYForm
-                    formItem={[
-                      {
-                        label: "事件来源",
-                        name: "happenTime",
-                        ele: <text>新建事件</text>,
-                      },
-                      ...taskListform,
-                    ]}
-                    onFinish={onFinish}
-                    showCancel
-                    cancelClick={() => setModalVislble(false)}
-                  ></DYForm>
-                </Modal>
-                <Pagination
-                  className="task-list-pagination"
-                  current={page}
-                  defaultPageSize={6}
-                  // pageSize={6}
-                  // hideOnSinglePage
-                  total={taskList?.total}
-                  onChange={(page) => {
-                    setPage(page);
-                    getTaskList({
-                      current: page,
-                      name: taskInput,
-                      size: 6,
-                      grade: grade,
-                    });
-                  }}
-                ></Pagination>
-              </>
-            )}
+                        </div>
+                        <Link
+                          className="task-list-card-footer"
+                          onClick={() => {
+                            setTaskInfo(item);
+                          }}
+                          to={{
+                            pathname: "/taskInfo",
+                            query: { info: item },
+                          }}
+                        >
+                          事件详情
+                        </Link>
+                      </Card>
+                    </div>
+                  );
+                })}
+              </div>
+              <Modal visible={taskModalVisible} footer={null} closable={false}>
+                <DYForm
+                  formItem={[
+                    {
+                      label: "事件来源",
+                      name: "happenTime",
+                      ele: <text>新建事件</text>,
+                    },
+                    ...taskListform,
+                  ]}
+                  onFinish={onFinish}
+                  showCancel
+                  cancelClick={() => setModalVislble(false)}
+                ></DYForm>
+              </Modal>
+              <Pagination
+                className="task-list-pagination"
+                current={page}
+                defaultPageSize={6}
+                // pageSize={6}
+                // hideOnSinglePage
+                total={taskList?.total}
+                onChange={(page) => {
+                  setPage(page);
+                  getTaskList({
+                    current: page,
+                    name: taskInput,
+                    size: 6,
+                    grade: grade,
+                  });
+                }}
+              ></Pagination>
+            </>
+            {/* } */}
           </Tabs.TabPane>
           <Tabs.TabPane key="2" tab="险情上报" className="task-body-border">
             <div className="task-list-head">
@@ -429,7 +425,8 @@ const TaskList = (props) => {
             </div>
             <Modal
               width="100%"
-              height="900px"
+              height="930px"
+              style={{ top: 20 }}
               visible={taskdangerModalVisible}
               footer={null}
               closable={false}
@@ -464,7 +461,9 @@ const TaskList = (props) => {
                       </div>
                       <div className="task-list-card-remark">
                         &nbsp;&nbsp; &nbsp;&nbsp;{" "}
-                        <Popover content={danger.address}>{danger.address}</Popover>
+                        <Popover content={danger.address}>
+                          {danger.address}
+                        </Popover>
                       </div>
                     </div>
                   </div>

@@ -374,6 +374,14 @@ class FloodModel extends Component {
     const { dispatch } = this.props;
     dispatch(actions.queryModelNodesAction());
     dispatch(actions.queryPredictions());
+    dispatch(
+      actions.getRainPred({
+        endtm: moment(new Date())
+          .add(1, "days")
+          .format("YYYY-MM-DD HH:00:00"),
+        starttm: moment(new Date()).format("YYYY-MM-DD HH:00:00"),
+      })
+    );
     this.rainModel = setInterval(() => {
       dispatch(
         actions.getRainPred({

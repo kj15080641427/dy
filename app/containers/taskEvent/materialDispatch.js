@@ -54,7 +54,6 @@ const MaterialDispatch = (props) => {
     };
   });
   const onFinish = (data) => {
-    console.log(data, "formUser");
     let formData = {
       flooduserList: formUser.map((item) => item.split("|")[1]),
       ...data,

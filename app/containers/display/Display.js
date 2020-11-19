@@ -12,7 +12,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import CheckBoxs from "./right/CheckBoxs";
 import Legend from "./right/Legend";
-import Head from "./head/Head";
+import Head from "../../components/head/head";
+import titleImg from "../../resource/display/head.png";
 class Display extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -45,7 +46,7 @@ class Display extends React.PureComponent {
       <div className="display">
         <Map></Map>
         <div className="dis-head">
-          <Head></Head>
+          <Head titleImg={titleImg}></Head>
         </div>
         <div className="dis-left">
           <Satellite></Satellite>
@@ -56,13 +57,12 @@ class Display extends React.PureComponent {
             {/* <CheckBoxs layerVisible={layerVisible} onChecked={this.onChecked} clicks={this.onShow}></CheckBoxs> */}
             {/* <Legend></Legend> */}
           </div>
-          <Tables dict={dict}rowNum={6}></Tables>
+          <Tables dict={dict} rowNum={6}></Tables>
         </div>
       </div>
     );
   }
-  onShow(layerKey) {
-  }
+  onShow(layerKey) {}
   onChecked(layerKey, checked) {
     let { layerVisible } = this.state;
     if (layerVisible[layerKey] === checked) return;

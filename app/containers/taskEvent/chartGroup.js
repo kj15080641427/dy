@@ -71,7 +71,6 @@ const ChartGroup = (props) => {
         });
         message.success("新建成功");
       });
-      console.log(res);
     });
   };
   return (
@@ -154,7 +153,6 @@ const ChartGroup = (props) => {
             <div className="chart-group-right">
               <Card>已选择{userList.length}</Card>
               {userList.map((item) => {
-                console.log(item, "III");
                 return (
                   <Card>
                     <div>{item.name}</div>

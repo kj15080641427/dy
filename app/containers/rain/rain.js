@@ -95,7 +95,7 @@ class RainMonitor extends React.PureComponent {
     return (
       <div className="rain-display">
         <Map layerVisible={layerVisible} />
-        <Head titleImg={titleImg} />
+        <Head titleImg={titleImg} groundColor="#003366"/>
         <div style={{ display: displayLeft }}>
           <div className="m-left">
             <div className="chart-left">

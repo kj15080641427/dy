@@ -1,14 +1,10 @@
 import React from "react";
 import backImg from "@app/resource/返回上一页.svg";
 import { Link } from "react-router-dom";
-import { createHashHistory } from "history";
 import "../task.scss";
-
-const hashHistory = createHashHistory();
 
 export default (props) => {
   const { taskInfo } = props;
-  console.log(taskInfo, "taskInfo");
   return (
     <Link
       className="task-page-head"

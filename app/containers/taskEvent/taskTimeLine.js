@@ -19,7 +19,6 @@ const TaskTimeLine = (props) => {
     getTaskTimeLine({ taskEventsID: taskInfo?.taskEventsID });
     srcoolRef.current.scrollTop = 900;
     // window.scrollTo(0, 100);
-    console.log(srcoolRef.current, "srcoolRef", srcoolRef);
   }, [taskInfo]);
 
   const renderTimeLine = (item) => {

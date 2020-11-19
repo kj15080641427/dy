@@ -59,7 +59,6 @@ function* getTaskList({ data }) {
         type: types.SET_TASKEVENT_LOADING,
         data: false,
       });
-      // console.log("saga");
     }
   } catch (e) {
     console.error(e);
@@ -134,7 +133,7 @@ function* addExpertDispatch({ data }) {
       message.success("成功");
       yield put({
         type: "GET_TASK_THEN_UPDATE",
-        data: data.taskEventsID,
+        data: data[0].taskEventsID,
       });
       yield put({
         type: types.SET_EXPERT_MODAL,
@@ -173,7 +172,7 @@ function* addUserDispatch({ data }) {
       message.success("新增成功");
       yield put({
         type: "GET_TASK_THEN_UPDATE",
-        data: data.taskEventsID,
+        data: data[0].taskEventsID,
       });
       yield put({
         type: types.SET_EXPERT_MODAL,
@@ -293,6 +292,10 @@ function* endTask({ data }) {
   try {
     const result = yield call(reqType, param);
     if (result.code === successCode) {
+      yield put({
+        type: "GET_TASK_THEN_UPDATE",
+        data: data.param.taskEventsID,
+      });
       yield put({
         type: types.FEED_TASK_MODAL,
         data: false,

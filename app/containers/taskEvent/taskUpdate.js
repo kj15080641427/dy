@@ -78,7 +78,6 @@ const TaskUpDate = (props) => {
   const { setTaskUpdateModal, updateTaskInfo, deleteTaskInfo } = props.actions;
   const { taskUpdateMidal, taskInfo, formRef } = props;
   const onFinish = (data) => {
-    console.log(data);
     data = {
       ...data,
       happenTime: moment(data.happenTime).format("YYYY-MM-DD HH:mm:ss"),

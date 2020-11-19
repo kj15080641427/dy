@@ -123,6 +123,8 @@ export default class yellowRiver extends React.PureComponent {
       },
       grid: {
         right: "0%",
+        show: true,
+        borderColor: "black",
       },
       xAxis: {
         type: "category",

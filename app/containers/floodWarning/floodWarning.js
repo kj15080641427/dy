@@ -91,7 +91,7 @@ class Monitor extends React.PureComponent {
     return (
       <div className="flood-warning-display">
         <Map layerVisible={layerVisible}></Map>
-        <Head titleImg={titleImg}></Head>
+        <Head titleImg={titleImg} groundColor="#003366"></Head>
         <div style={{ display: displayLeft }}>
           <div className="flood-warning-left">
             <div className="first-box">
@@ -175,7 +175,7 @@ class Monitor extends React.PureComponent {
                           pageSize={5}
                           columns={[
                             {
-                              name: "姓名",
+                              name: "名称",
                               dataIndex: "name",
                               filter: "name",
                               width: "25%",

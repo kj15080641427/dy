@@ -336,7 +336,7 @@ class Monitor extends React.PureComponent {
     return (
       <div className="water-display">
         <Map layerVisible={layerVisible} />
-        <Head titleImg={titleImg} />
+        <Head titleImg={titleImg} groundColor="#003366" />
         <div style={{ display: displayLeft }}>
           <div className="chart-left">
             <div className="table-head-box">

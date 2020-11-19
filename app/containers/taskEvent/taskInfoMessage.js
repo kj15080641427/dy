@@ -81,8 +81,6 @@ const TaskInfoMessage = (props) => {
       flooduserList: filteruser(selectFloodUser),
       taskEventsID: taskInfo?.taskEventsID,
     };
-    console.log(formRef, "-");
-    console.log(formRef.current, "==");
     if (e.floodcontrolexpertList[0] || e.flooduserList[0]) {
       formRef.current.resetFields();
       sendMessage(e);

@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import DYForm from "@app/components/home/form";
 import { URL as URLDefine } from "@app/utils/common.js";
 import echarts from "echarts/lib/echarts";
+import { exportSiteDevice } from "@app/data/home";
+import { TableShow } from "@app/components/chart/table";
 import {
   DatePicker,
   Tabs,
@@ -150,9 +152,7 @@ class DeviceManageFlood extends Component {
     // console.log(range);
     const [startTime, endTime] = range;
     if (this.props.device.type == 4) {
-      console.log(this.state.currentSite, "state");
       const { data } = await AllApi.getVideoOnline({
-        // type: this.props.device.type,
         radioID: this.state.currentSite.radioID,
         startTime: moment(startTime || this.state.chartStartTM).format(
           "YYYY-MM-DD 00:00:00"
@@ -161,7 +161,6 @@ class DeviceManageFlood extends Component {
           "YYYY-MM-DD 23:00:00"
         ),
       });
-      // console.log(data, "data");
       let xdata = [];
       let ydata = [];
       var myChart = echarts.init(document.getElementById(`deviceVideo`));
@@ -176,6 +175,10 @@ class DeviceManageFlood extends Component {
             // 坐标轴指示器，坐标轴触发有效
             type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
           },
+        },
+        grid: {
+          show: true,
+          borderColor: "white",
         },
         xAxis: {
           boundaryGap: false,
@@ -255,6 +258,10 @@ class DeviceManageFlood extends Component {
           type: "line", // 默认为直线，可选为：'line' | 'shadow'
         },
       },
+      grid: {
+        show: true,
+        borderColor: "white",
+      },
       // toolbox: {
       //   show: true,
       //   feature: {
@@ -326,7 +333,13 @@ class DeviceManageFlood extends Component {
     const formData = new FormData();
     formData.append("uploadFile", tg.files[0]);
     const rs = await fetch(
-      `${URLDefine}/base/SiteDevice/import?relTypeCode=${this.props.device.type}&relTypeId=${this.state.currentSite.key}&relTypeNmae=${this.props.device.name}`,
+      `${URLDefine}/base/SiteDevice/import?relTypeCode=${
+        this.props.device.type
+      }&relTypeId=${
+        this.state.currentSite.key
+          ? this.state.currentSite.key
+          : this.state.currentSite.radioID
+      }&relTypeNmae=${this.props.device.name}`,
       {
         method: "post",
         credentials: "include",
@@ -483,7 +496,13 @@ class DeviceManageFlood extends Component {
     this.getDeviceData();
     this.getDeviceRepairData();
   }
-
+  componentDidUpdate(pre) {
+    if (this.props.tabKey) {
+      console.log(this.props.tabKey, "this.props.tabKey");
+      // this.componentDidMount();
+      // this.render();
+    }
+  }
   render() {
     const {
       showLoading,
@@ -509,45 +528,50 @@ class DeviceManageFlood extends Component {
                 <Tabs className="device-tabs" type="card">
                   {treeData.map((node) => (
                     <TabPane tab={node.title} key={node.key}>
-                      {/* {console.log(node.children, "node.children")} */}
-                      <Table
-                        scroll={{ y: 300 }}
+                      {console.log(node.children, "node.children")}
+                      <TableShow
+                        // scroll={{ y: 300 }}
                         bordered
+                        pageSize={9}
                         dataSource={node.children}
                         pagination={false}
                         onRow={(record) => {
                           return {
-                            onClick: () =>
-                              this.handleTreeSelect({ node: record }),
+                            onClick: () => {
+                              record = {
+                                ...record,
+                                key: record.key ? record.key : record.radioID,
+                              };
+                              this.handleTreeSelect({ node: record });
+                            },
                           };
                         }}
                         columns={[
                           {
                             align: "center",
-                            title: "站点名称",
+                            name: "站点名称",
                             dataIndex: "title",
+                            filter: "name",
                             render: (text, row) => (
-                              <div
-                              // onClick={() =>
-                              //   this.handleTreeSelect({ node: row })
-                              // }
-                              >
-                                {text}
-                              </div>
+                              <Popover content={text.toString()} title="全称">
+                                {text.toString().length > 9
+                                  ? text.toString().substring(0, 9) + "..."
+                                  : text.toString()}
+                              </Popover>
                             ),
                           },
 
                           {
                             align: "center",
-                            title: "位置",
+                            name: "位置",
                             dataIndex: "",
-                            width: 170,
+                            width: 200,
                             render: (text) => {
                               let stlc = text.stlc || text.address;
                               return stlc ? (
                                 <Popover content={stlc.toString()} title="全称">
-                                  {stlc.toString().length > 11
-                                    ? stlc.toString().substring(0, 11) + "..."
+                                  {stlc.toString().length > 13
+                                    ? stlc.toString().substring(0, 13) + "..."
                                     : stlc.toString()}
                                 </Popover>
                               ) : (
@@ -557,7 +581,7 @@ class DeviceManageFlood extends Component {
                           },
                           {
                             align: "center",
-                            title: "管理单位",
+                            name: "管理单位",
                             dataIndex: "siteDictionariesID",
                             width: 170,
                             render: (text, row) => (
@@ -566,9 +590,9 @@ class DeviceManageFlood extends Component {
                           },
                           {
                             align: "center",
-                            title: "维护时间",
+                            name: "维护时间",
                             dataIndex: "repairTime",
-                            width: 170,
+                            width: 100,
                             render: (text, row) => (
                               <>{(text && text.split(" ")[0]) || "-"}</>
                             ),
@@ -606,7 +630,9 @@ class DeviceManageFlood extends Component {
                       type="file"
                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
                       className="upload"
-                      onChange={(e) => this.handleImportDevice(e.target)}
+                      onChange={(e) => {
+                        this.handleImportDevice(e.target);
+                      }}
                     />
                   </Button>
                   <Button onClick={() => this.handleExportDevice()}>
@@ -658,13 +684,16 @@ class DeviceManageFlood extends Component {
                     align: "center",
                     title: "安装时间",
                     dataIndex: "createTime",
+                    render: (e) => {
+                      return e.slice(0, -9);
+                    },
                   },
                   {
                     align: "center",
                     title: "操作",
                     dataIndex: "g",
                     render: (text, record) => (
-                      <Space className='device-edit-button'>
+                      <Space className="device-edit-button">
                         <a onClick={() => this.handleRepair(record)}>维护</a>
                         <a onClick={() => this.handleChange(record)}>更换</a>
                         <a onClick={() => this.handleRemove(record)}>拆除</a>
@@ -693,15 +722,13 @@ class DeviceManageFlood extends Component {
                 />
               </div>
               {this.props.device.type == 4 ? (
-                <div className="site-count-chart" id="deviceVideo">
-                </div>
+                <div className="site-count-chart" id="deviceVideo"></div>
               ) : (
                 <div
                   className="site-count-chart"
                   id={`site-count-chart-${this.props.device.type}`}
                 ></div>
               )}
-              {console.log(this.props.device.type, "--")}
             </div>
             <div
               className="device-manage-content-right"
@@ -755,6 +782,7 @@ class DeviceManageFlood extends Component {
                     align: "center",
                     title: "维护时间",
                     dataIndex: "repairTime",
+                    render: (e) => e.split(" ")[0],
                   },
                 ]}
               />

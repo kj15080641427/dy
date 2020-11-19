@@ -181,6 +181,9 @@
 }
 .device-tabs {
   height: 100%;
+  .ant-table{
+    background: none;
+  }
   .ant-tabs-content {
     height: 100%;
     .ant-tabs-tabpane {
@@ -204,8 +207,17 @@
     }
   }
 }
+.device-manage-content{
+  display: flex;
+  justify-content: space-between;
+}
 .device-manage-content-right{
   min-height: 436px;
+  flex: none;
+  width: 59%;
+  .ant-table{
+    background: none;
+  }
 }
 .device-manager {
   .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {

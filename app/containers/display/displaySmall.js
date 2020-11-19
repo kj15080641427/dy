@@ -5,7 +5,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/map";
 import Map from "../display/map/Map";
-import Head from "../display/head/Head";
+// import Head from "../display/head/Head";
+import Head from "../../components/head/head";
+import titleImg from "../../resource/display/head.png";
 import APPIMG from "../../resource/icon/appCode.png";
 import WeatherChart from "../rain/left/WeatherChart";
 import "./style.scss";
@@ -26,7 +28,7 @@ const DisplaySmall = (props) => {
   return (
     <div className="display-body">
       <div className="small-dis-head">
-        <Head></Head>
+        <Head titleImg={titleImg} groundColor="#003366"></Head>
       </div>
       <div
         className="download-app"

@@ -92,7 +92,6 @@ const Task = (props) => {
       value: `${item.name}|${item.floodControlExpertId}`,
     };
   });
-  console.log(city, "CITY");
   useEffect(() => {
     getFloodExpert();
     getFloodRankUser();

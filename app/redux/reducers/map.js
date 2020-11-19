@@ -31,7 +31,6 @@ export default function mapAboutReducers(state = initState, action) {
   let waterList = [];
   let floodList = [];
   let historyWater = [];
-  let historyFlood = [];
   switch (action.type) {
     case types.SET_WATER:
       action.data.forEach((item) => {
@@ -41,7 +40,6 @@ export default function mapAboutReducers(state = initState, action) {
             ...(item.stiteWaterRadios ? { ...item.stiteWaterRadios[0] } : {}),
             ...item.riverwaterdataList[0],
             ...item,
-
           };
           waterList.push(items);
           if (items.z >= item.warning) {
@@ -114,6 +112,7 @@ export default function mapAboutReducers(state = initState, action) {
     case types.SET_FLOOD_INFO_REALTIME: //易涝点实时数据
       action.data.records.map((item) => {
         item.tm = item.tm.slice(5, -3);
+        item.z = (item.z * 100).toFixed(2);
         // let tm = item.tm.split(" ")[1].split(":");
         // if (tm[0] % 2 == 0 && tm[1] == "00") {
         //   historyFlood.unshift(item.z * 100);

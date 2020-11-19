@@ -53,7 +53,6 @@ export default function taskReducers(state = initState, action) {
       newState = { ...newState, feedTaskModalVisible: action.data };
       break;
     case types.SET_TASKEVENT_LIST:
-      console.log("reduer", action.data, "asdasd");
       newState = { ...newState, taskList: action.data };
       break;
     case types.SET_MODAL_VISIBLE:

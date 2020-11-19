@@ -1,11 +1,4 @@
 import React from "react";
-import {
-  MailOutlined,
-  UserOutlined,
-  TeamOutlined,
-  BuildOutlined,
-  SnippetsOutlined,
-} from "@ant-design/icons";
 // import taskTimelineSvg from "@app/resource/icon/taskTimeline.png";
 import { connect } from "react-redux";
 import * as action from "../../../redux/actions/taskEvent";

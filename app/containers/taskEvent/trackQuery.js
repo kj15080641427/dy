@@ -53,7 +53,6 @@ const TrackQuery = (props) => {
         return item.name.indexOf(value) !== -1;
       });
       setPerson(filteredList);
-      console.log(filteredList, "filteredList");
       // filteredList.map((item) => {
       //   emitter.emit("map-move-focus", [item.longitude, item.latitude], 3000);
       // });

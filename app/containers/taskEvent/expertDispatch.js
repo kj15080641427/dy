@@ -36,7 +36,6 @@ const ExpertDispatch = (props) => {
   const [info, setInfo] = useState({});
   const onFinish = (data) => {
     let formData = listRender.map((item) => {
-      console.log(item);
       return {
         ...data,
         name: taskInfo?.name,

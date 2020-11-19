@@ -93,69 +93,6 @@ export const barChart = (domId, legend, online, line) => {
     ],
   });
 };
-export const radarChart = (domId, data) => {
-  let myChartcount = echarts.init(document.getElementById(domId));
-  let option = {
-    tooltip: {
-      trigger: "axis",
-    },
-    legend: {
-      left: "center",
-      data: ["今日累计报警", "本周累计报警", "本月累计报警"],
-    },
-    radar: [
-      {
-        indicator: [
-          { text: "今天", max: 80, color: "rgba(0,153,255,1)" },
-          { text: "一天前", max: 80, color: "rgba(0,153,255,1)" },
-          { text: "两天前", max: 80, color: "rgba(0,153,255,1)" },
-          { text: "三天前", max: 80, color: "rgba(0,153,255,1)" },
-          { text: "四天前", max: 80, color: "rgba(0,153,255,1)" },
-          { text: "五天前", max: 80, color: "rgba(0,153,255,1)" },
-          { text: "六天前", max: 80, color: "rgba(0,153,255,1)" },
-        ],
-        center: ["50%", "50%"],
-        radius: 60,
-        startAngle: 90,
-        axisLabel: {
-          //连线图背景
-          color: "red",
-          backgroundColor: "red",
-        },
-        axisLine: false, //显示坐标
-        splitArea: {
-          show: false, //是否显示分隔区域。
-        },
-        splitLine: {
-          //线
-          show: true,
-          lineStyle: {
-            color: "#1890ff",
-          },
-        },
-      },
-    ],
-    series: [
-      {
-        type: "radar",
-        tooltip: {
-          trigger: "item",
-        },
-        areaStyle: {
-          color: "red",
-          opacity: 0.2,
-        },
-        data: [
-          {
-            value: data,
-            name: "报警统计",
-          },
-        ],
-      },
-    ],
-  };
-  myChartcount.setOption(option);
-};
 export const pieChart = (domId, data, width, legend, title) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let option = {
@@ -182,9 +119,7 @@ export const pieChart = (domId, data, width, legend, title) => {
         radius: ["70%", "85%"],
         data: data,
         left: "center",
-        // width: width || 400,
         labelLine: {
-          // show: false,
           lineStyle: {
             color: "white",
           },
@@ -251,87 +186,7 @@ export const taskChart = (domId, data, title, width, legend) => {
   };
   myChartcount.setOption(option);
 };
-export const lineChart = (domId, data, width, warningline) => {
-  let myChartcount = echarts.init(document.getElementById(domId));
-  const time = [
-    "00:00",
-    "02:00",
-    "04:00",
-    "06:00",
-    "08:00",
-    "10:00",
-    "12:00",
-    "14:00",
-    "16:00",
-    "18:00",
-    "20:00",
-    "22:00",
-    "24:00",
-  ];
-  const warning = time?.map(() => warningline);
-  let option = {
-    xAxis: {
-      type: "category",
-      show: true,
-      data: time,
-      axisTick: {
-        show: false,
-      },
-      axisLabel: {
-        color: "white",
-        interval: 0,
-        rotate: 40,
-        fontSize: "15",
-      },
-    },
-    yAxis: {
-      min: 10,
-      name: "积水(cm)",
-      nameTextStyle: {
-        color: "white",
-        fontSize: "18",
-      },
-      axisLabel: {
-        color: "white",
-        fontSize: "15",
-      },
-      max: "dataMax",
-      type: "value",
-      axisLine: {
-        color: "green",
-      },
-    },
-    tooltip: {
-      trigger: "axis",
-    },
-    grid: {
-      width: width || 400,
-    },
-    series: [
-      {
-        data: data || [],
-        type: "line",
-        color: "rgb(30,182,107)",
-        markPoint: {
-          data: [
-            { type: "max", name: "最大值" },
-            // {
-            //   type: "min",
-            //   name: "最小值",
-            //   itemStyle: {
-            //     color: "#03d6d6",
-            //   },
-            // },
-          ],
-        },
-      },
-      // { data: warningline == -0.1 ? warning : null, type: "line" },
-    ],
-  };
-  myChartcount.setOption(option);
-};
 
-//
 export const rotateBarChart = (domId, data, width, height) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let fontSize = 15;
@@ -453,18 +308,6 @@ export const rotateBarChart = (domId, data, width, height) => {
 
 export const easyfloodRain = (domId, data) => {
   let myChartcount = echarts.init(document.getElementById(domId));
-  // const max = Math.max(...data.map((d) => d.value));
-  // const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
-  // let reduceNum = Math.floor(max / 15);
-  // if (reduceNum >= min) {
-  //   reduceNum = min - 1;
-  // }
-  // data.map((d) => {
-  //   if (d.value == 0) {
-  //     d.value = reduceNum;
-  //     d.reduceFlag = true;
-  //   }
-  // });
   let option = {
     tooltip: {
       trigger: "axis",
@@ -491,7 +334,6 @@ export const easyfloodRain = (domId, data) => {
       position: "left",
       type: "category",
       data: [
-        // { value: "无雨(0)" },
         {
           value: "小雨(0-10)",
         },
@@ -518,13 +360,6 @@ export const easyfloodRain = (domId, data) => {
           show: true,
           position: "right",
           color: "white",
-          // formatter: (params) => {
-          //   if (params.data.reduceFlag) {
-          //     return 0;
-          //   } else {
-          //     return params.value;
-          //   }
-          // },
         },
         name: "积水",
         type: "bar",
@@ -537,19 +372,6 @@ export const easyfloodRain = (domId, data) => {
 };
 export const funnelChart = (domId, data) => {
   let myChartcount = echarts.init(document.getElementById(domId));
-  // const max = Math.max(...data.map((d) => d.value));
-  // const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
-  // let reduceNum = Math.floor(max / 15);
-  // if (reduceNum >= min) {
-  //   reduceNum = min - 1;
-  // }
-  // data.map((d) => {
-  //   if (d.value === 0) {
-  //     //d.value = reduceNum;
-  //     d.value = 2;
-  //     d.reduceFlag = true;
-  //   }
-  // });
   let option = {
     tooltip: {
       trigger: "axis",
@@ -575,14 +397,7 @@ export const funnelChart = (domId, data) => {
       axisTick: { show: false },
       position: "left",
       type: "category",
-      data: [
-        // "0cm 无积水",
-        "0-10cm",
-        "10-20cm",
-        "20-30cm",
-        "30-40cm",
-        "40cm以上",
-      ],
+      data: ["0-10cm", "10-20cm", "20-30cm", "30-40cm", "40cm以上"],
     },
     series: [
       {
@@ -590,13 +405,6 @@ export const funnelChart = (domId, data) => {
           show: true,
           position: "right",
           color: "white",
-          // formatter: (params) => {
-          //   if (params.data.reduceFlag) {
-          //     return 0;
-          //   } else {
-          //     return params.value;
-          //   }
-          // },
         },
         barMinHeight: 4,
         name: "积水",
@@ -610,7 +418,6 @@ export const funnelChart = (domId, data) => {
 //24小时折线图
 export const showChart = (data, id, yd, yname) => {
   const length = data.length;
-  let num = Math.floor(length / 4);
   let xdata = [];
   let ydata = [];
   var myChart = echarts.init(document.getElementById(id));
@@ -625,6 +432,11 @@ export const showChart = (data, id, yd, yname) => {
         // 坐标轴指示器，坐标轴触发有效
         type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
       },
+    },
+    grid: {
+      show: true,
+      borderColor: "white",
+      right: "3%",
     },
     toolbox: {
       show: true,
@@ -642,19 +454,6 @@ export const showChart = (data, id, yd, yname) => {
       axisLabel: {
         color: "white",
         fontSize: 16,
-        // rotate: 20,
-        // interval: (index) => {
-        //   if (
-        //     index == length - 1 ||
-        //     index == 0 ||
-        //     index == num ||
-        //     index == length - num
-        //   ) {
-        //     return true;
-        //   } else {
-        //     return false;
-        //   }
-        // },
       },
 
       axisLine: {
@@ -670,6 +469,9 @@ export const showChart = (data, id, yd, yname) => {
       axisLabel: {
         color: "white",
         fontSize: 16,
+        formatter: (v) => {
+          return Number(v).toFixed(1);
+        },
       },
       axisLine: {
         lineStyle: {
@@ -683,13 +485,8 @@ export const showChart = (data, id, yd, yname) => {
       y: "0px",
       data: ["1小时降水", "24小时降水"],
     },
-    // grid: {
-    //   width: 250,
-    //   height: 250,
-    // },
     series: [
       {
-        // name: '1小时降水',
         data: ydata.length ? ydata : [],
         type: "line",
         markPoint: {
@@ -726,6 +523,11 @@ export const modelChart = (data, id, yname, xvalue, yvalue) => {
         type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
       },
     },
+    grid: {
+      show: true,
+      borderColor: "white",
+      right: "3%",
+    },
     toolbox: {
       show: true,
       feature: {
@@ -742,9 +544,6 @@ export const modelChart = (data, id, yname, xvalue, yvalue) => {
       axisLabel: {
         color: "white",
         fontSize: 16,
-      },
-      splitLine: {
-        show: true,
       },
       axisLine: {
         lineStyle: {
@@ -809,6 +608,7 @@ export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
     xdata.push(item[xvalue].split(" ")[1].slice(0, -3));
     ydata.push(Number(item[yvalue]).toFixed(2));
   });
+  console.log(xdata, ydata, "XX");
   myChart.setOption({
     tooltip: {
       trigger: "axis",
@@ -820,7 +620,6 @@ export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
     toolbox: {
       show: true,
       feature: {
-        // dataView: { show: true, readOnly: true },
         magicType: { show: true, type: ["line", "bar"] },
         restore: { show: true },
         saveAsImage: { show: true },
@@ -863,13 +662,8 @@ export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
       y: "0px",
       data: ["1小时降水", "24小时降水"],
     },
-    // grid: {
-    //   width: 250,
-    //   height: 250,
-    // },
     series: [
       {
-        // name: '1小时降水',
         data: ydata.length ? ydata : [],
         type: "bar",
         lineStyle: {
@@ -879,15 +673,12 @@ export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
     ],
   });
 };
+//河流水位
 export const showChartRiver = (data, id) => {
   let xdata = [];
   let ydata = [];
   var myChart = echarts.init(document.getElementById(id));
   data.forEach((item) => {
-    // item.stnm = `${item.stnm.slice(0, 2)}\n${item.stnm.slice(
-    //   2,
-    //   4
-    // )}\n${item.stnm.slice(4, 33)}`;
     xdata.push(item.name);
     ydata.push(item.z);
   });
@@ -902,9 +693,11 @@ export const showChartRiver = (data, id) => {
     },
     grid: {
       left: "3%",
-      right: "4%",
+      right: "3%",
       bottom: "3%",
       containLabel: true,
+      show: true,
+      borderColor: "white",
     },
     xAxis: [
       {
@@ -934,6 +727,13 @@ export const showChartRiver = (data, id) => {
             color: "white",
           },
         },
+        axisLabel: {
+          color: "white",
+          fontSize: 16,
+          formatter: (v) => {
+            return Number(v).toFixed(1);
+          },
+        },
       },
     ],
     series: [
@@ -948,21 +748,3 @@ export const showChartRiver = (data, id) => {
     ],
   });
 };
-const Chart = () => {
-  useEffect(() => {
-    barChart("chartlint");
-    radarChart("source");
-  }, []);
-  return (
-    <>
-      <div className="barChart">
-        <div className="echarts-count" id="chartlint"></div>
-        <div />
-        <div className="radar">
-          <div className="echarts-count" id="source"></div>
-        </div>
-      </div>
-    </>
-  );
-};
-export default Chart;

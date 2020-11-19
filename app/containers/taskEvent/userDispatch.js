@@ -50,7 +50,6 @@ const UserDispatch = (props) => {
   }, []);
   const onFinish = (data) => {
     let formData = listRender.map((item) => {
-      console.log(item);
       return {
         ...data,
         name: taskInfo?.name,
@@ -171,7 +170,6 @@ const UserDispatch = (props) => {
   );
 };
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     floodRanksUser: state.mapAboutReducers.floodRanksUser,
     taskInfo: state.taskReducers.taskInfo,

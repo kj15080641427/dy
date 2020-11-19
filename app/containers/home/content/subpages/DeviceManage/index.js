@@ -38,6 +38,7 @@ class deviceManage extends Component {
     this.state = {
       deviceTypeMap: [],
       device: null,
+      tabKey: 0,
     };
   }
 
@@ -61,31 +62,19 @@ class deviceManage extends Component {
     return (
       <div className="device-manager">
         <Tabs
-          type='card'
-          tabBarExtraContent={
-            <div style={{ display: "flex" }}>
-              <Input
-                onChange={(value) => {
-                  this.setState(
-                    { waterName: value, deviceTablePage: 1 },
-                    () => {
-                      this.getDeviceData7777();
-                    }
-                  );
-                }}
-              />
-              <Button type="primary" style={{ marginLeft: "8px" }}>
-                查询
-              </Button>
-            </div>
+          onChange={(e) =>
+            this.setState({
+              tabKey: e,
+            })
           }
+          type="card"
         >
           {this.state.deviceTypeMap.map((device, index) => (
             <TabPane
               tab={`${device?.name}(${device?.siteData?.records?.length}个)`}
               key={index}
             >
-              <Flood device={device} />
+              <Flood device={device} tabKey={this.state.tabKey} />
             </TabPane>
           ))}
         </Tabs>
