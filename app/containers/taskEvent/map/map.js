@@ -279,6 +279,7 @@ class Map extends React.PureComponent {
 
     this.map.startSelectFeature("person", (param) => {
       if (this.props.onPersonClick) {
+        console.log(param, "PARAM");
         this.props.onPersonClick(param);
       } else {
         this.addOverlay(Person.type, param);
@@ -474,6 +475,8 @@ class Map extends React.PureComponent {
   }
   loadData() {
     const { person, floodUserMap, expertMap } = this.props;
+    console.log(person, "person--", floodUserMap, expertMap);
+
     this.map.clear("person");
     let personFeatures = [];
     if (!person || !person.length || person.length === 0) {
@@ -484,7 +487,6 @@ class Map extends React.PureComponent {
       // if (!item.userid) {
       //   item.userid = item.userId;
       // }
-
       let personInfo = null;
       let personType = item.typeCode;
 
@@ -505,7 +507,6 @@ class Map extends React.PureComponent {
         });
       }
     }
-    console.log(personFeatures);
     this.map.addFeatures("person", personFeatures);
     // this.map.addFeatures(
     //   "person",

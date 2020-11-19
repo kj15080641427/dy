@@ -90,7 +90,15 @@ class Login extends Component {
           }
         });
       } else {
-        window.open("http://218.56.180.250:9110/wemaws/frame");
+        login({
+          channel: "common",
+          username: values.username,
+          password: values.password,
+        }).then((res) => {
+          window.open(
+            `http://218.56.180.250:9110/wemaws/frame?token=${res.data.userToken}`
+          );
+        });
       }
     };
     //根据登录名查询用户信息

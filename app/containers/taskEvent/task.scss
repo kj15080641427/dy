@@ -571,6 +571,51 @@
   height: 11vh;
   width: 100%;
 }
+.person-info-modal {
+  .ant-modal-content {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .ant-modal-footer {
+    
+    background: #003366;
+    opacity: 0.8;
+    border-top: none;
+    .ant-picker {
+      background: #003366;
+      .ant-picker-input > input {
+        color: white;
+      }
+    }
+    .ant-btn > span {
+      color: white;
+    }
+    .ant-btn-link:hover {
+      border: 1px solid #1890ff;
+    }
+  }
+  .anticon svg {
+    color: white;
+  }
+  .ant-modal-header {
+    .ant-modal-title {
+      font-size: 20px;
+      color: white;
+    }
+    background: #1890ff;
+  }
+  .ant-modal-body {
+    font-size: 20px;
+    background: #003366;
+    opacity: 0.8;
+  }
+}
 .person-info-line {
   padding: 10px;
+
+  color: white;
+  button {
+    font-size: 18px;
+    margin-left: 10px;
+    border: 1px solid #1890ff;
+  }
 }

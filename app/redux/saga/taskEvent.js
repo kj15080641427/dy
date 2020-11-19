@@ -405,7 +405,6 @@ function* getTaskWarning({ data }) {
     console.error(e);
   }
 }
-// <<<<<<< HEAD
 //防汛人员/专家定位
 function* getFloodUserExpertAddress() {
   try {
@@ -429,6 +428,7 @@ function* getFloodUserExpertAddress() {
           if (item.userid && item.userid === t.userId) {
             item.lon = t.longitude;
             item.lat = t.latitude;
+            item.reportTime = t.reportTime;
             return;
           }
         });
@@ -439,6 +439,7 @@ function* getFloodUserExpertAddress() {
             if (item.userid && item.userid === t.userId) {
               item.lon = t.longitude;
               item.lat = t.latitude;
+              item.reportTime = t.reportTime;
               return;
             }
           });
@@ -458,7 +459,6 @@ function* getFloodUserExpertAddress() {
     console.error(e);
   }
 }
-// =======
 
 function* getPersonTrack({ data }) {
   try {

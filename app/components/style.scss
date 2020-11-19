@@ -148,6 +148,9 @@
   // }
 }
 .rouer-list-modal {
+  .ant-tabs-top > .ant-tabs-nav::before{
+    border-bottom: none;
+  }
   .ant-modal-body {
     font-size: 44px;
     background: #003366;

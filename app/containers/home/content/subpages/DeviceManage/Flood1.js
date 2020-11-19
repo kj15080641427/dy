@@ -165,7 +165,7 @@ class DeviceManageFlood extends Component {
       let ydata = [];
       var myChart = echarts.init(document.getElementById(`deviceVideo`));
       data.forEach((item) => {
-        xdata.push(item.tm.slice(5, 9));
+        xdata.push(item.tm.slice(5, 10));
         ydata.push(Number(item.list[1].number));
       });
       myChart.setOption({
@@ -530,9 +530,9 @@ class DeviceManageFlood extends Component {
                     <TabPane tab={node.title} key={node.key}>
                       {console.log(node.children, "node.children")}
                       <TableShow
-                        // scroll={{ y: 300 }}
+                        scroll={{ y: 330 }}
                         bordered
-                        pageSize={9}
+                        pageSize={999}
                         dataSource={node.children}
                         pagination={false}
                         onRow={(record) => {

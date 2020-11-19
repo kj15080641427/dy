@@ -21,8 +21,8 @@ class notices extends React.PureComponent {
       pointloding: false,
       riverloding: false,
       starttime: moment(new Date())
-        .subtract("hour", 1)
-        .format("YYYY-MM-DD HH:00"),
+        // .subtract("hour", 1)
+        .format("YYYY-MM-DD 08:00"),
       endtime: moment(new Date()).format("YYYY-MM-DD HH:00"),
       // moment().format('YYYY-MM-DD')
     };

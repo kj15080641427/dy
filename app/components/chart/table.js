@@ -109,10 +109,12 @@ export class TableShow extends React.PureComponent {
       rowKey,
       number,
       locale,
+      scroll
     } = this.props;
 
     return (
       <Table
+        scroll={scroll}
         locale={locale}
         size="small"
         dataSource={dataSource}

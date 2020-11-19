@@ -271,7 +271,6 @@ export const getTaskWarning = (data) => {
     data,
   };
 };
-// <<<<<<< HEAD
 //防汛人员/专家定位
 export const getFlooodUserExpert = (data) => {
   return {
@@ -279,7 +278,6 @@ export const getFlooodUserExpert = (data) => {
     data,
   };
 };
-// =======
 
 //请求历史路径
 export const getPersonTrack = (data) => {
