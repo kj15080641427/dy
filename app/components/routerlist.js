@@ -83,7 +83,9 @@ class RouterList extends React.PureComponent {
                 key={"szjc"}
                 onClick={() =>
                   window.open(
-                    "http://218.56.180.250:9110/wemaws/frame?token=1a91bd63bca44785adb2bea0cc937ad9&token=b2a286ef8bb54c90b2babfe515c9424a"
+                    `http://218.56.180.250:9110/wemaws/frame?token=${localStorage.getItem(
+                      "token"
+                    )}`
                   )
                 }
                 // to={"http://218.58.213.201:8081/dyhzsys"}

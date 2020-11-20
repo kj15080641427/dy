@@ -22,7 +22,7 @@
   }
   .water-right-last-box {
     .radar-box {
-      // min-height: 555px;
+      min-height: 530px;
       height: 58vh;
       .water-radar-box-flex {
         // min-height: 515px;
@@ -197,7 +197,7 @@
     width: 200px;
   }
   .radar-box {
-    // min-height: 300px;
+    min-height: 300px;
     height: 31vh;
   }
 }
@@ -423,7 +423,7 @@
     position: relative;
     border: 2px solid rgb(0, 153, 255);
     width: 500px;
-    min-height: 30%;
+    min-height: 315px;
     height: 30vh;
     z-index: 9;
   }

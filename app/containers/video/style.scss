@@ -92,10 +92,9 @@
     width: 500px;
     position: absolute;
     left: 10px;
-    // top: 0;
+    top: 90px;
     bottom: 0;
     z-index: 10;
-    margin-top: 80px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -122,7 +121,7 @@
     .radar-box {
       margin-top: 0;
       //height: calc(100% - 8px) !important;
-      height: 375px;
+      height: 300px;
     }
     .video-first-chart {
       // background: red;

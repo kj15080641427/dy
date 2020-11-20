@@ -113,8 +113,6 @@ class Monitor extends React.PureComponent {
                                 dataIndex: "name",
                                 filter: "name",
                                 width: "25%",
-                                // filter: "name",
-                                // ...this.getColumnSearchProps("name"),
                               },
                               {
                                 name: "单位",

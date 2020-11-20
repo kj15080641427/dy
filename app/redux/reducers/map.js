@@ -222,6 +222,10 @@ export default function mapAboutReducers(state = initState, action) {
             break;
         }
         count = count + item.userList.length;
+        item.userList.sort((item1, item2) => {
+          return item1.unit.localeCompare(item2.unit, "zh-CN");
+        });
+        console.log(item.userList, "====");
         item.userList.map((t) => {
           // console.log([`rank${item.floodRanksId}`][0]);
           rankSelect[item.floodRanksId].push(t.floodId);

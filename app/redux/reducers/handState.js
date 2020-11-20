@@ -8,7 +8,7 @@ const initState = {
   floodDayRain: [],
   riverSiteWater: [],
   siteRiverTable: [],
-  displayWater:[]
+  displayWater: [],
 };
 export default function handState(state = initState, action) {
   let newState = Object.assign({}, state);
