@@ -58,7 +58,7 @@ export function runModel(time) {
   return {
     type: types.RUN_MODEL,
     data: {
-      runTimeString: moment(time).format("YYYYMMDDHH0000"),
+      runTimeString: moment(time).format("YYYYMMDDHH00"),
     },
   };
 }
