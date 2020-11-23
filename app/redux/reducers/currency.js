@@ -6,6 +6,7 @@ export default function currency(
     alarmData: [],
     floodRankAddress: [],
     floodExpertAddress: [],
+    baseDict: [],
   },
   action
 ) {
@@ -23,7 +24,11 @@ export default function currency(
       newState = { ...newState, visible: false };
       break;
     case actionTypes.SET_DICT:
-      newState = { ...newState, dict: action.data };
+      newState = {
+        ...newState,
+        dict: action.data.obj,
+        baseDict: action.data.baseDict,
+      };
       break;
     case types.SET_ALARM_DATA:
       newState = { ...newState, alarmData: action.data };

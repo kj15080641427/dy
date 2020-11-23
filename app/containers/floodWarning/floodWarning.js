@@ -90,6 +90,8 @@ class Monitor extends React.PureComponent {
     const { expert, wareHouse, material, floodRanks, expertCount } = this.props;
     return (
       <div className="flood-warning-display">
+        {/* <script src="http://119.187.146.174:10416/shzh/base/js/md5/md5.js"></script> */}
+        {/* {console.log(faultylabs, "faultylabs")} */}
         <Map layerVisible={layerVisible}></Map>
         <Head titleImg={titleImg} groundColor="#003366"></Head>
         <div style={{ display: displayLeft }}>

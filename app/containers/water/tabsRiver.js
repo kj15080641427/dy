@@ -104,7 +104,14 @@ export const TabsList = (props) => {
                 id: record?.siteWaterLevels[0]?.stcd,
                 name: record.name,
               });
-              // changeWaterVideo(record);
+              record =
+                record.stiteWaterRadios && record.stiteWaterRadios[0]
+                  ? {
+                      ...record,
+                      strtoken: record.stiteWaterRadios[0].strtoken,
+                    }
+                  : record;
+              changeWaterVideo(record);
               emitter.emit("map-move-focus", [record.lgtd, record.lttd], 3000);
             },
             onDoubleClick: () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "antd";
+import { Input, Select, Radio } from "antd";
 import BaseLayout from "../connectComponents";
 import ReadOnlyTable from "../readOnlyTable";
 import {
@@ -8,6 +8,7 @@ import {
   deleteSiteWaterData,
   updateSiteWaterData,
 } from "@app/data/home";
+import BaseDict from "../baseDict";
 import "../../../style.scss";
 
 const formItem = [
@@ -18,11 +19,79 @@ const formItem = [
     ele: <Input></Input>,
   },
   {
+    label: "别名",
+    name: "aliasName",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
     label: "地址",
     name: "stlc",
     rules: [{ required: true }],
     ele: <Input></Input>,
   },
+  {
+    label: "经度",
+    name: "lgtd",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "纬度",
+    name: "lttd",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "来源",
+    name: "siteDictionariesID",
+    rules: [{ required: true }],
+    // ele: <BaseDict type={1}></BaseDict>,
+    ele: (
+      <Select>
+        <Select.Option value={1}>水文局</Select.Option>
+      </Select>
+    ),
+  },
+  {
+    label: "河流名称",
+    name: "rvnm",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+
+  {
+    label: "状态",
+    name: "state",
+    rules: [{ required: true }],
+    ele: (
+      <Radio.Group>
+        <Radio value={0}>显示</Radio>
+        <Radio value={1}>隐藏</Radio>
+      </Radio.Group>
+    ),
+  },
+
+  {
+    label: "站点编码",
+    name: "stcd",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+
+  {
+    label: "警戒值",
+    name: "warning",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "距河口距离",
+    name: "distancetoport",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+
   {
     label: "流域名称",
     name: "bsnm",
@@ -37,15 +106,80 @@ const formItem = [
     ele: <Input></Input>,
   },
   {
-    label: "距河口距离",
-    name: "distancetoport",
-    rules: [{ required: true }],
+    label: "测站岸别",
+    name: "stbk",
     ele: <Input></Input>,
   },
   {
-    label: "河流名称",
-    name: "rvnm",
-    rules: [{ required: true }],
+    label: "站类",
+    name: "sttp",
+    ele: <Input></Input>,
+  },
+  {
+    label: "管理机构",
+    name: "admauth",
+    ele: <Input></Input>,
+  },
+  {
+    label: "始报年月",
+    name: "bgfrym",
+    ele: <Input></Input>,
+  },
+  {
+    label: "拍报段次",
+    name: "dfrtms",
+    ele: <Input></Input>,
+  },
+
+  {
+    label: "积水面积",
+    name: "drna",
+    ele: <Input></Input>,
+  },
+  {
+    label: "基层高层",
+    name: "dtmel",
+    ele: <Input></Input>,
+  },
+  {
+    label: "基层名称",
+    name: "dtmnm",
+    ele: <Input></Input>,
+  },
+  {
+    label: "止报年月",
+    name: "edfrym",
+    ele: <Input></Input>,
+  },
+  {
+    label: "防汛等级",
+    name: "frgrd",
+    ele: <Input></Input>,
+  },
+  {
+    label: "拍报项目",
+    name: "fritm",
+    ele: <Input></Input>,
+  },
+  {
+    label: "水系名称",
+    name: "hnnm",
+    ele: <Input></Input>,
+  },
+  {
+    label: "修正基值",
+    name: "mdbz",
+    ele: <Input></Input>,
+  },
+  {
+    label: "修正参数",
+    name: "mdpr",
+    ele: <Input></Input>,
+  },
+
+  {
+    label: "拼音码",
+    name: "phcd",
     ele: <Input></Input>,
   },
 ];

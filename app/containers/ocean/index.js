@@ -44,6 +44,7 @@ export default () => {
               margin: "0 auto",
             }}
           >
+            {console.log(url, "URL")}
             <iframe
               // src="http://hsdy.dongying.gov.cn/col/col36593/index.html"
               src={url}

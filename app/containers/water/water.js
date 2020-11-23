@@ -296,13 +296,7 @@ class Monitor extends React.PureComponent {
   }
 
   render() {
-    const {
-      waterName,
-      alarmData,
-      water,
-      waterVideoInfo,
-      siteRiverTable,
-    } = this.props;
+    const { waterName, alarmData, waterVideoInfo, siteRiverTable } = this.props;
     const { changeWaterId } = this.props.actions;
     const {
       changeModalVisible,
@@ -314,11 +308,6 @@ class Monitor extends React.PureComponent {
       layerVisible,
       displayRight,
       displayLeft,
-      dy,
-      gr,
-      kl,
-      lj,
-      hk,
       tabsCity,
       cityTabsKey,
     } = this.state;

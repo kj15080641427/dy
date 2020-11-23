@@ -13,13 +13,7 @@ import { ReadonlyRain } from "../../site/siteRain";
 import { ReadonlyWater } from "../../site/siteWater";
 import { ReadonlyWaterPoint } from "../../site/siteWaterPoint";
 import { ReadonlyReservoir } from "../../site/siteReservoir";
-// import SiteDike from "../../site/siteR";
-// import SiteGate from "../../site/siteGate";
-// import SiteVideo from "../../site/siteVideo";
 
-// import SiteVideo from "../../site/siteVideo";
-// import SiteGate from "../../site/siteGate";
-// import SiteVideo from "../../site/siteVideo";
 import {
   getSiteBase,
   delSiteBase,
@@ -35,14 +29,14 @@ const formItem = [
     ele: <Input></Input>,
   },
   {
-    label: "详细地址",
-    name: "address",
+    label: "站点别名",
+    name: "aliasName",
     rules: [{ required: true }],
     ele: <Input></Input>,
   },
   {
-    label: "别名",
-    name: "aliasName",
+    label: "详细地址",
+    name: "address",
     rules: [{ required: true }],
     ele: <Input></Input>,
   },
@@ -55,6 +49,36 @@ const formItem = [
   {
     label: "纬度",
     name: "lat",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "地区编码",
+    name: "region",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "状态",
+    name: "state",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "站点描述",
+    name: "stationdesc",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "隶属单位",
+    name: "memerof",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "交换管理单位",
+    name: "exchangeorg",
     rules: [{ required: true }],
     ele: <Input></Input>,
   },

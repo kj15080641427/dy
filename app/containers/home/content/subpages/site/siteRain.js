@@ -19,8 +19,56 @@ const formItem = [
     ele: <Input></Input>,
   },
   {
+    label: "站点别名",
+    name: "aliasName",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "经度",
+    name: "lon",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "纬度",
+    name: "lat",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
     label: "地址",
     name: "stlc",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "河流名称",
+    name: "rvnm",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "来源编码",
+    name: "siteDictionariesID",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "状态",
+    name: "state",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "站点编码",
+    name: "stcd",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "站类",
+    name: "sttp",
     rules: [{ required: true }],
     ele: <Input></Input>,
   },
@@ -43,12 +91,7 @@ const formItem = [
     rules: [{ required: true }],
     ele: <Input></Input>,
   },
-  {
-    label: "河流名称",
-    name: "rvnm",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
+
 ];
 // 表格配置
 const columns = [

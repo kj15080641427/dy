@@ -639,6 +639,11 @@ export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
         },
       },
     },
+    grid: {
+      show: true,
+      borderColor: "white",
+      right: "3%",
+    },
     yAxis: {
       min: 1,
       type: "value",

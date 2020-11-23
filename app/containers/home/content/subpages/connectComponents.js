@@ -18,6 +18,9 @@ class BaseLayout extends React.Component {
   }
 
   componentDidMount() {
+    if (!this.props.dict[1]) {
+      this.props.actions.getDict();
+    }
     this.props.actions.getBase({
       request: this.props.get,
       key: this.props.storeKey,
@@ -93,6 +96,7 @@ class BaseLayout extends React.Component {
     // 修改
     const update = (row) => {
       this.formRef.current.setFieldsValue(row);
+      console.log(row, "ROW");
       showModal();
     };
     // 提交
@@ -180,15 +184,18 @@ class BaseLayout extends React.Component {
           update={update}
         ></DYTable>
         <Modal
-          title="新增"
+          title=" "
           visible={visible}
           forceRender={true}
           onCancel={() => hideModal()}
           footer={null}
           maskClosable={false}
           afterClose={() => this.formRef.current.resetFields()}
+          className="base-layout-modal"
         >
           <DYForm
+            showCancel
+            cancelClick={() => hideModal()}
             id={keyId}
             formRef={this.formRef}
             name={storeKey}
@@ -226,6 +233,7 @@ const mapStateToProps = (state) => {
     [storeLabel]: state.currency[storeLabel],
     loading: state.management.loading,
     visible: state.currency.visible,
+    dict: state.currency.dict,
   };
 };
 

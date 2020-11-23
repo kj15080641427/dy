@@ -18,18 +18,69 @@ const formItem = [
     ele: <Input></Input>,
   },
   {
+    label: "别名",
+    name: "aliasName",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "经度",
+    name: "lon",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "纬度",
+    name: "lat",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
     label: "地址",
     name: "address",
     rules: [{ required: true }],
     ele: <Input></Input>,
   },
   {
-    label: "地区名",
-    name: "regionName",
-    rules: [{ required: true }],
+    label: "视频类别",
+    name: "ntype",
     ele: <Input></Input>,
   },
-
+  {
+    label: "来源",
+    name: "siteDictionariesID",
+    ele: <Input></Input>,
+  },
+  {
+    label: "站点编码",
+    name: "stcd",
+    ele: <Input></Input>,
+  },
+  {
+    label: "视频名称",
+    name: "strname",
+    ele: <Input></Input>,
+  },
+  {
+    label: "访问密码",
+    name: "strpasswd",
+    ele: <Input></Input>,
+  },
+  {
+    label: "设备唯一身份值",
+    name: "strtoken",
+    ele: <Input></Input>,
+  },
+  {
+    label: "访问用户名",
+    name: "struser",
+    ele: <Input></Input>,
+  },
+  {
+    label: "地区名",
+    name: "regionName",
+    ele: <Input></Input>,
+  },
   {
     label: "行政区划码",
     name: "strtoken",
@@ -45,7 +96,7 @@ const formItem = [
   {
     label: "视频地址",
     name: "strurl",
-    rules: [{ required: true }],
+    // rules: [{ required: true }],
     ele: <Input></Input>,
   },
 ];

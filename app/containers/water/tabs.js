@@ -109,6 +109,7 @@ export const TabsList = (props) => {
                   })
                 : "";
               changeWaterVideo(record);
+              console.log(record, "record");
               emitter.emit("map-move-focus", [record.lon, record.lat], 3000);
             },
             onDoubleClick: () => {

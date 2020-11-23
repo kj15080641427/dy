@@ -16,6 +16,18 @@ const formItem = [
     ele: <Input></Input>,
   },
   {
+    label: "经度",
+    name: "lon",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "纬度",
+    name: "lat",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
     label: "站址",
     name: "stlc",
     rules: [{ required: true }],
@@ -30,6 +42,67 @@ const formItem = [
   {
     label: "站点编码",
     name: "stcd",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+
+  {
+    label: "行政区划码",
+    name: "addvcd",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "管理机构",
+    name: "admauth",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "流域名称",
+    name: "bsnm",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "至河口距离",
+    name: "distancetoport",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "积水面积",
+    name: "drna",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "来源编码",
+    name: "siteDictionariesID",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "状态",
+    name: "state",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "测站岸别",
+    name: "stbk",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "警戒值",
+    name: "warning",
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "站类",
+    name: "sttp",
     rules: [{ required: true }],
     ele: <Input></Input>,
   },

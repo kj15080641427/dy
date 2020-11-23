@@ -8,7 +8,7 @@ const token = localStorage.getItem("token");
 // const token = "";
 const hashHistory = createHashHistory();
 
-const isV2 = 1;
+const isV2 = 0;
 export const URL = isV2 ? "/api/v2" : "/api";
 
 // const hostUrl = "http://218.56.180.250:9109/tuhui-base";

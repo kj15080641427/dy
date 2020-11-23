@@ -99,7 +99,6 @@ const formItem = [
     rules: [{ required: true }],
     ele: (
       <Radio.Group defaultValue={''}>
-        <Radio value={''}>未知性别</Radio>
         <Radio value={"1"}>男</Radio>
         <Radio value={"2"}>女</Radio>
       </Radio.Group>

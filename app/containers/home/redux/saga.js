@@ -181,13 +181,14 @@ function* getDict() {
   try {
     const result = yield call(req.getSiteDict, { current: 1, size: -1 });
     if (result.code == successCode) {
+      let type = {};
       let obj = {};
       result.data.records.map((item) => {
         obj[item.stateRelationID] = item.name;
       });
       yield put({
         type: types.SET_DICT,
-        data: obj,
+        data: { obj: obj, baseDict: result.data.records },
       });
     }
   } catch (error) {
