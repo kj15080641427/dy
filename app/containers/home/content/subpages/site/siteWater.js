@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Select, Radio } from "antd";
+import { Input, Select, Radio, InputNumber } from "antd";
 import BaseLayout from "../connectComponents";
 import ReadOnlyTable from "../readOnlyTable";
 import {
@@ -8,7 +8,6 @@ import {
   deleteSiteWaterData,
   updateSiteWaterData,
 } from "@app/data/home";
-import BaseDict from "../baseDict";
 import "../../../style.scss";
 
 const formItem = [
@@ -34,30 +33,32 @@ const formItem = [
     label: "经度",
     name: "lgtd",
     rules: [{ required: true }],
-    ele: <Input></Input>,
+    ele: <InputNumber style={{ width: "200px" }}></InputNumber>,
   },
   {
     label: "纬度",
     name: "lttd",
     rules: [{ required: true }],
-    ele: <Input></Input>,
+    ele: <InputNumber style={{ width: "200px" }}></InputNumber>,
   },
   {
     label: "来源",
     name: "siteDictionariesID",
     rules: [{ required: true }],
-    // ele: <BaseDict type={1}></BaseDict>,
     ele: (
       <Select>
         <Select.Option value={1}>水文局</Select.Option>
+        <Select.Option value={2}>气象局</Select.Option>
+        <Select.Option value={3}>水务局</Select.Option>
+        <Select.Option value={4}>农村基层防汛监测预警平台</Select.Option>
+        <Select.Option value={5}>河道</Select.Option>
+        <Select.Option value={6}>河口区水利局</Select.Option>
+        <Select.Option value={7}>水务局河道</Select.Option>
+        <Select.Option value={22}>黄河东营境内水位站点</Select.Option>
+        <Select.Option value={23}>人工录入</Select.Option>
+        <Select.Option value={25}>经开区</Select.Option>
       </Select>
     ),
-  },
-  {
-    label: "河流名称",
-    name: "rvnm",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
   },
 
   {
@@ -83,26 +84,29 @@ const formItem = [
     label: "警戒值",
     name: "warning",
     rules: [{ required: true }],
-    ele: <Input></Input>,
+    ele: <InputNumber style={{ width: "200px" }}></InputNumber>,
   },
   {
     label: "距河口距离",
     name: "distancetoport",
     rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-
-  {
-    label: "流域名称",
-    name: "bsnm",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
+    ele: <InputNumber style={{ width: "200px" }}></InputNumber>,
   },
 
   {
     label: "行政区划码",
     name: "addvcd",
     rules: [{ required: true }],
+    ele: <Input></Input>,
+  },
+  {
+    label: "流域名称",
+    name: "bsnm",
+    ele: <Input></Input>,
+  },
+  {
+    label: "河流名称",
+    name: "rvnm",
     ele: <Input></Input>,
   },
   {
@@ -120,11 +124,11 @@ const formItem = [
     name: "admauth",
     ele: <Input></Input>,
   },
-  {
-    label: "始报年月",
-    name: "bgfrym",
-    ele: <Input></Input>,
-  },
+  // {
+  //   label: "始报年月",
+  //   name: "bgfrym",
+  //   ele: <DatePicker format={"YYYY-MM-DD HH:mm:ss"}></DatePicker>,
+  // },
   {
     label: "拍报段次",
     name: "dfrtms",
@@ -146,11 +150,11 @@ const formItem = [
     name: "dtmnm",
     ele: <Input></Input>,
   },
-  {
-    label: "止报年月",
-    name: "edfrym",
-    ele: <Input></Input>,
-  },
+  // {
+  //   label: "止报年月",
+  //   name: "edfrym",
+  //   ele: <DatePicker format={"YYYY-MM-DD HH:mm:ss"}></DatePicker>,
+  // },
   {
     label: "防汛等级",
     name: "frgrd",
@@ -202,8 +206,8 @@ const columns = [
     dataIndex: "addvcd",
   },
   {
-    title: "距河口距离",
-    dataIndex: "distancetoport",
+    title: "警戒值",
+    dataIndex: "warning",
   },
   {
     title: "河流名称",
@@ -220,6 +224,7 @@ class SiteWater extends React.Component {
     return (
       <>
         <BaseLayout
+          // formatList={["edfrym", "bgfrym"]}
           get={getSiteWaterData} // 分页查询接口
           add={addSiteWaterData} // 添加数据接口
           upd={updateSiteWaterData} // 更新数据接口

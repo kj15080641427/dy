@@ -1,6 +1,6 @@
 import React from "react";
 import BaseLayout from "../connectComponents";
-import { Input, Select } from "antd";
+import { Input, Select, Radio } from "antd";
 import { delUser, getUser, addUser, updUser, getRole } from "@app/data/home";
 const formItem = [
   {
@@ -31,7 +31,12 @@ const formItem = [
     label: "状态",
     name: "state",
     rules: [{ required: true }],
-    ele: <Input></Input>,
+    ele: (
+      <Radio.Group>
+        <Radio value={'0'}>正常</Radio>
+        <Radio value={'1'}>冻结</Radio>
+      </Radio.Group>
+    ),
   },
   {
     label: "手机号码",
@@ -52,11 +57,11 @@ const columns = [
     dataIndex: "realname",
     className: "column-money",
   },
-  {
-    title: "角色",
-    dataIndex: "roleName",
-    className: "column-money",
-  },
+  // {
+  //   title: "角色",
+  //   dataIndex: "roleName",
+  //   className: "column-money",
+  // },
   {
     title: "状态",
     dataIndex: "state",
@@ -104,7 +109,6 @@ class SiteGate extends React.Component {
     const roleColumns = {
       label: "角色",
       name: "roleId",
-      rules: [{ required: true }],
       ele: (
         <Select>
           {this.state.roleData.map((item) => {

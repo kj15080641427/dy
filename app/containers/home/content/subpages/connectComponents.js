@@ -15,6 +15,9 @@ class BaseLayout extends React.Component {
     super(props, context);
     this.formRef = React.createRef();
     this.rwoFormRef = React.createRef();
+    this.state = {
+      filterName: {},
+    };
   }
 
   componentDidMount() {
@@ -70,6 +73,7 @@ class BaseLayout extends React.Component {
       getBaseHoc({
         current: current,
         size: 10,
+        ...this.state.filterName,
       });
     };
     //
@@ -77,6 +81,7 @@ class BaseLayout extends React.Component {
       getBaseHoc({
         current: current,
         size: pageSize,
+        ...this.state.filterName,
       });
     };
     // 删除
@@ -96,7 +101,6 @@ class BaseLayout extends React.Component {
     // 修改
     const update = (row) => {
       this.formRef.current.setFieldsValue(row);
-      console.log(row, "ROW");
       showModal();
     };
     // 提交
@@ -124,6 +128,9 @@ class BaseLayout extends React.Component {
     }
     // 查询
     const rowFinish = (values) => {
+      this.setState({
+        filterName: values,
+      });
       handleQuery
         ? handleQuery({ ...values, current: 1, size: 10 })
         : getBaseHoc({ current: 1, size: 10, ...values });
@@ -146,6 +153,9 @@ class BaseLayout extends React.Component {
               <Button
                 type="ghost"
                 onClick={() => {
+                  this.setState({
+                    filterName: {},
+                  });
                   this.rwoFormRef.current.resetFields();
                   getBaseHoc();
                 }}

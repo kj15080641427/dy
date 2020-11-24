@@ -93,7 +93,8 @@ function* rolePermission({ data }) {
     let res = [];
     const result = yield call(req.getPermissionById, data);
     if (result.code == successCode) {
-      res = result.data ? result.data.map((item) => item.permissionId) : [];
+      // result.data.map((item) => console.log(item, "??"));
+      res = result.data ? result.data.map((item) => item?.permissionId) : [];
       yield put({
         type: types.SET_R_P_SELECT_LIST,
         data: res,
@@ -146,6 +147,10 @@ function* addSiteRelation({ data }) {
     const result = yield call(req.addSiteRelation, data);
     if (result.code == successCode) {
       message.info("关联成功");
+      yield put({
+        type: types.HIDE_R_P_MODAL,
+        data: false,
+      });
     }
   } catch (e) {
     console.error(e);

@@ -3,7 +3,7 @@ import BaseLayout from "../../connectComponents";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../../redux/actions";
-import { Input, Select, Button, Modal } from "antd";
+import { Input, Select, Button, Modal, Radio } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { ReadonlyGate } from "../../site/siteGate";
@@ -62,24 +62,26 @@ const formItem = [
     label: "状态",
     name: "state",
     rules: [{ required: true }],
-    ele: <Input></Input>,
+    ele: (
+      <Radio.Group>
+        <Radio value={0}>显示</Radio>
+        <Radio value={1}>隐藏</Radio>
+      </Radio.Group>
+    ),
   },
   {
     label: "站点描述",
     name: "stationdesc",
-    rules: [{ required: true }],
     ele: <Input></Input>,
   },
   {
     label: "隶属单位",
     name: "memerof",
-    rules: [{ required: true }],
     ele: <Input></Input>,
   },
   {
     label: "交换管理单位",
     name: "exchangeorg",
-    rules: [{ required: true }],
     ele: <Input></Input>,
   },
 ];
@@ -87,45 +89,6 @@ const { Option } = Select;
 
 const rowSelect = [
   { label: "名称", name: "name", element: <Input></Input> },
-  //  {
-  //    label: "来源",
-  //    name: "dataSource",
-  //    element: (
-  //      <Select style={{ width: 200 }}>
-  //        <Option value={null}>全部</Option>
-  //        <Option value={1}>水文局</Option>
-  //        <Option value={2}>气象局</Option>
-  //        <Option value={3}>水务局积水点</Option>
-  //        <Option value={4}>农村基层防汛监测预警平台</Option>
-  //        <Option value={5}>河道</Option>
-  //        <Option value={6}>河口区水利局</Option>
-  //        <Option value={7}>水务局河道</Option>
-  //        <Option value={8}>广饶县</Option>
-  //        <Option value={9}>开发区城管局</Option>
-  //        <Option value={10}>天鹅湖蓄滞洪区</Option>
-  //      </Select>
-  //    ),
-  //  },
-  //  {
-  //    label: "测站检测类型",
-  //    name: "indtype",
-  //    element: (
-  //      <Select style={{ width: 200 }}>
-  //        <Option value={null}>全部</Option>
-  //        <Option value={1}>水文</Option>
-  //        <Option value={2}>区域水文</Option>
-  //        <Option value={3}>降水</Option>
-  //        <Option value={4}>中小河流水文</Option>
-  //        <Option value={5}>中小河流降水</Option>
-  //        <Option value={6}>自建降水</Option>
-  //        <Option value={7}>中小河流水位</Option>
-  //        <Option value={8}>水位</Option>
-  //        <Option value={9}>积水点水位站(易捞点)</Option>
-  //        <Option value={10}>积水点雨量站</Option>
-  //        <Option value={11}>天鹅湖蓄滞洪区</Option>
-  //      </Select>
-  //    ),
-  //  },
 ];
 
 class BaseStation extends React.Component {
@@ -240,8 +203,8 @@ class BaseStation extends React.Component {
           okText="关联"
           onOk={() => {
             addSiteRelation({
-              relationID: Number(selected[option][0]),
-              siteBaseID: Number(rowId),
+              relationID: selected[option][0],
+              siteBaseID: rowId,
               siteDictionariesID: dict[option],
               state: 1,
             });
