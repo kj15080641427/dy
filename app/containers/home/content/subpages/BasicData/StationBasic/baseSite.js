@@ -206,7 +206,7 @@ class BaseStation extends React.Component {
               relationID: selected[option][0],
               siteBaseID: rowId,
               siteDictionariesID: dict[option],
-              state: 1,
+              state: 0,
             });
           }}
           onCancel={() => {

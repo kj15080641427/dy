@@ -1,6 +1,6 @@
 import React from "react";
 import BaseLayout from "../../connectComponents";
-import { Input, Select } from "antd";
+import { Input, Select, Radio } from "antd";
 import { getDict } from "../../../../redux/actions";
 import {
   delSiteRelation,
@@ -20,8 +20,28 @@ const ibj = {
 const formItem = [
   { label: "基础站点ID", name: "siteBaseID", ele: <Input /> },
   { label: "关联表ID", name: "relationID", ele: <Input /> },
-  { label: "站点关系类型", name: "siteDictionariesID", ele: <Input /> },
-  { label: "状态", name: "state", ele: <Input /> },
+  {
+    label: "站点关系类型",
+    name: "siteDictionariesID",
+    ele: (
+      <Select>
+        <Select.Option value={21}>视频</Select.Option>
+        <Select.Option value={20}>积水点</Select.Option>
+        <Select.Option value={19}>水位</Select.Option>
+        <Select.Option value={18}>雨量</Select.Option>
+      </Select>
+    ),
+  },
+  {
+    label: "状态",
+    name: "state",
+    ele: (
+      <Radio.Group>
+        <Radio value={0}>显示</Radio>
+        <Radio value={1}>隐藏</Radio>
+      </Radio.Group>
+    ),
+  },
 ];
 const rowSelect = [
   {
@@ -60,7 +80,7 @@ class VideoStation extends React.Component {
         title: "状态",
         dataIndex: "state",
         render: (e) => {
-          return e ? "启用" : "停用";
+          return e ? "隐藏" : "显示";
         },
       },
       {
@@ -78,6 +98,7 @@ class VideoStation extends React.Component {
     ];
     return (
       <BaseLayout
+        stringList={["relationID", "siteBaseID"]}
         get={getSiteRelation} // 分页查询接口
         add={addSiteRelation} // 添加数据接口
         upd={updSiteRelation} // 更新数据接口

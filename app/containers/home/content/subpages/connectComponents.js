@@ -46,6 +46,7 @@ class BaseLayout extends React.Component {
       showEdit = true,
       handleQuery,
       formatList = [],
+      stringList = [],
     } = this.props;
     storeLabel = storeKey;
     const {
@@ -105,10 +106,17 @@ class BaseLayout extends React.Component {
     };
     // 提交
     function onFinish(values) {
+      console.log(values, "====");
       formatList.forEach((item) => {
         values = {
           ...values,
           [item]: moment(values[item]).format("YYYY-MM-DD HH:mm:ss"),
+        };
+      });
+      stringList.forEach((item) => {
+        values = {
+          ...values,
+          [item]: String(values[item]),
         };
       });
       // values = {}
@@ -237,6 +245,7 @@ BaseLayout.propTypes = {
   loading: PropTypes.bool,
   visible: PropTypes.bool,
   formatList: PropTypes.array,
+  stringList: PropTypes.array,
 };
 const mapStateToProps = (state) => {
   return {
