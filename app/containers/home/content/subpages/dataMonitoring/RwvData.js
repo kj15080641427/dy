@@ -1,7 +1,7 @@
 /**
  * rain 2020-06-7
  * zdl
- * 雨情信息
+ * 检测数据
  */
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
@@ -14,8 +14,6 @@ import "./style.scss";
 import { getBasicsAll, getAllVideo } from "@app/data/request";
 import { rain, water, flood, video, rowSelect } from "./columns/rwvCloumns";
 import initecharts from "./echarts";
-import DeviceManage from "../DeviceManage/index";
-import RiverAnnunciate from "./RiverAnnunciate";
 const rwvData = (props) => {
   const { TabPane } = Tabs;
   const { count, readOnlyData } = props;
@@ -100,90 +98,78 @@ const rwvData = (props) => {
   return (
     <div className="base-tabs-display">
       {/* <Tabs defaultActiveKey="site1" className="card-container"> */}
-        {/* <Tabs.TabPane key="site1" tab="站点数据"> */}
-          <div>
-            <Tabs
-              onChange={(e) => {
-                if (e === "rain") {
-                  setConfig({
-                    type: 1,
-                    columns: rain,
-                    source: "raincount",
-                    name: "雨量",
-                    onlineListName: "raindataList",
-                  });
-                } else if (e === "water") {
-                  setConfig({
-                    type: 2,
-                    columns: water,
-                    source: "watercount",
-                    name: "水位",
-                    onlineListName: "riverwaterdataList",
-                  });
-                } else if (e === "flood") {
-                  setConfig({
-                    type: 3,
-                    columns: flood,
-                    source: "floodcount",
-                    name: "易涝点",
-                    onlineListName: "riverwaterdataList",
-                  });
-                } else if (e === "video") {
-                  setConfig({
-                    source: "vodeocount",
-                    name: "视频",
-                  });
-                }
-              }}
-            >
-              <TabPane tab="雨量站" key="rain"></TabPane>
-              <TabPane tab="水位站" key="water"></TabPane>
-              <TabPane tab="易涝点" key="flood"></TabPane>
-              <TabPane tab="视频站点" key="video"></TabPane>
-            </Tabs>
-            <div className="div-site-flex">
-              <div className="div-left-echarts">
-                <div className="echarts-count" id="count"></div>
-                <div className="echarts-isOnline" id="online"></div>
-              </div>
-              <div className="div-right-table">
-                {config.name === "视频" ? (
-                  <ReadonlyTable
-                    scroll={{ x: "1500px" }}
-                    getAll
-                    rowSelection={{}}
-                    get={getAllVideo}
-                    columns={video}
-                    rowSelect={rowSelect}
-                    rowKey={"siteBaseID"}
-                  />
-                ) : (
-                  <ReadonlyTable
-                    scroll={{ x: "1500px" }}
-                    getAll
-                    rowSelection={{}}
-                    get={getBasicsAll}
-                    type={config.type}
-                    columns={config.columns}
-                    rowSelect={rowSelect}
-                    rowKey={"siteBaseID"}
-                  />
-                )}
-              </div>
-            </div>
+      {/* <Tabs.TabPane key="site1" tab="站点数据"> */}
+      <div>
+        <Tabs
+          onChange={(e) => {
+            if (e === "rain") {
+              setConfig({
+                type: 1,
+                columns: rain,
+                source: "raincount",
+                name: "雨量",
+                onlineListName: "raindataList",
+              });
+            } else if (e === "water") {
+              setConfig({
+                type: 2,
+                columns: water,
+                source: "watercount",
+                name: "水位",
+                onlineListName: "riverwaterdataList",
+              });
+            } else if (e === "flood") {
+              setConfig({
+                type: 3,
+                columns: flood,
+                source: "floodcount",
+                name: "易涝点",
+                onlineListName: "riverwaterdataList",
+              });
+            } else if (e === "video") {
+              setConfig({
+                source: "vodeocount",
+                name: "视频",
+              });
+            }
+          }}
+        >
+          <TabPane tab="雨量站" key="rain"></TabPane>
+          <TabPane tab="水位站" key="water"></TabPane>
+          <TabPane tab="易涝点" key="flood"></TabPane>
+          <TabPane tab="视频站点" key="video"></TabPane>
+        </Tabs>
+        <div className="div-site-flex">
+          <div className="div-left-echarts">
+            <div className="echarts-count" id="count"></div>
+            <div className="echarts-isOnline" id="online"></div>
           </div>
-        {/* </Tabs.TabPane> */}
-        {/* <Tabs.TabPane key="site2" tab="设备管理">
-          <div>
-            <DeviceManage />
+          <div className="div-right-table">
+            {config.name === "视频" ? (
+              <ReadonlyTable
+                scroll={{ x: "1500px" }}
+                getAll
+                rowSelection={{}}
+                get={getAllVideo}
+                columns={video}
+                rowSelect={rowSelect}
+                rowKey={"siteBaseID"}
+              />
+            ) : (
+              <ReadonlyTable
+                scroll={{ x: "1500px" }}
+                getAll
+                rowSelection={{}}
+                get={getBasicsAll}
+                type={config.type}
+                columns={config.columns}
+                rowSelect={rowSelect}
+                rowKey={"siteBaseID"}
+              />
+            )}
           </div>
-        </Tabs.TabPane>
-        <Tabs.TabPane key="site3" tab="河道信息">
-          <div>
-            <RiverAnnunciate />
-          </div>
-        </Tabs.TabPane> */}
-      {/* // </Tabs> */}
+        </div>
+      </div>
     </div>
   );
 };

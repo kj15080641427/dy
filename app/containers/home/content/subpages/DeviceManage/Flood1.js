@@ -543,6 +543,12 @@ class DeviceManageFlood extends Component {
                                 key: record.key ? record.key : record.radioID,
                               };
                               this.handleTreeSelect({ node: record });
+                              this.setState({
+                                chartStartTM: moment(
+                                  Date.now() - 6 * 24 * 60 * 60 * 1000
+                                ),
+                                chartEndTM: moment(Date.now()),
+                              });
                             },
                           };
                         }}
@@ -714,11 +720,14 @@ class DeviceManageFlood extends Component {
               <div className="device-manage-content-left-title">
                 <RangePicker
                   format="YYYY-MM-DD"
-                  defaultValue={[
-                    this.state.chartStartTM,
-                    this.state.chartEndTM,
-                  ]}
-                  onChange={(range) => this.buildSiteCountChart(range)}
+                  value={[this.state.chartStartTM, this.state.chartEndTM]}
+                  onChange={(range) => {
+                    this.setState({
+                      chartStartTM: range[0],
+                      chartEndTM: range[1],
+                    });
+                    this.buildSiteCountChart(range);
+                  }}
                 />
               </div>
               {this.props.device.type == 4 ? (

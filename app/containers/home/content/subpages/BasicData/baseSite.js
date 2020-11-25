@@ -1,18 +1,18 @@
 import React from "react";
-import BaseLayout from "../../connectComponents";
+import BaseLayout from "../connectComponents";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as actions from "../../../../redux/actions";
+import * as actions from "../../../redux/actions";
 import { Input, Select, Button, Modal, Radio } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { ReadonlyGate } from "../../site/siteGate";
-import { ReadonlyVideo } from "../../site/siteVideo";
-import { ReadonlyPump } from "../../site/sitePump";
-import { ReadonlyRain } from "../../site/siteRain";
-import { ReadonlyWater } from "../../site/siteWater";
-import { ReadonlyWaterPoint } from "../../site/siteWaterPoint";
-import { ReadonlyReservoir } from "../../site/siteReservoir";
+import { ReadonlyGate } from "../site/siteGate";
+import { ReadonlyVideo } from "../site/siteVideo";
+import { ReadonlyPump } from "../site/sitePump";
+import { ReadonlyRain } from "../site/siteRain";
+import { ReadonlyWater } from "../site/siteWater";
+import { ReadonlyWaterPoint } from "../site/siteWaterPoint";
+import { ReadonlyReservoir } from "../site/siteReservoir";
 
 import {
   getSiteBase,

@@ -15,7 +15,6 @@ import {
 import TreeSelected from "./component/tree";
 import DYForm from "@app/components/home/form";
 import * as req from "@app/data/home";
-import ListRender from "./component/list";
 
 const ChartGroup = (props) => {
   const { getFloodExpert, getFloodRankUser } = props.actions;

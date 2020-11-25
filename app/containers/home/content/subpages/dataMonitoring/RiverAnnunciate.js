@@ -3,9 +3,9 @@
  * 河道通告报表
  */
 import React from "react";
-import { Table, DatePicker, Button, Input } from "antd";
+import { Table, Button, Input } from "antd";
 import { tableColumnRiver } from "./columns/columsData";
-import { downlRiver, downlRiverdata } from "@app/data/request";
+import { downlRiverdata } from "@app/data/request";
 // import "./style.scss";
 class RiverAnnunciate extends React.PureComponent {
   constructor(props, context) {
@@ -22,9 +22,6 @@ class RiverAnnunciate extends React.PureComponent {
     this.setState({
       name: e.target.value,
     });
-    // this.setState({
-    // 	time: moment(value).format('YYYY-MM-DD HH:mm:ss')
-    // })
   };
   downl = () => {
     var url = "/api/download/river";
@@ -43,7 +40,6 @@ class RiverAnnunciate extends React.PureComponent {
               onChange={(e) => this.onChange(e)}
             ></Input>
           </div>
-          {/* <DatePicker size='large' showTime onChange={this.onChange} onOk={this.onOk} /> */}
           <Button type="primary" size="large" onClick={this.init}>
             查询
           </Button>

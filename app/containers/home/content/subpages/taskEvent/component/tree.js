@@ -42,7 +42,6 @@ class TreeSelected extends React.Component {
   }
 }
 
-// export default TreeSelected;
 const mapStateToProps = (state) => {
   return {
     formUser: state.management.formUser,
