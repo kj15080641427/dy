@@ -154,11 +154,13 @@ const rwvData = (props) => {
                 columns={video}
                 rowSelect={rowSelect}
                 rowKey={"siteBaseID"}
+                handPage={{}}
               />
             ) : (
               <ReadonlyTable
                 scroll={{ x: "1500px" }}
                 getAll
+                handPage={{}}
                 rowSelection={{}}
                 get={getBasicsAll}
                 type={config.type}
