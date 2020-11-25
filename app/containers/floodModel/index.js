@@ -119,7 +119,7 @@ class FloodModel extends Component {
             <RenderBox
               hasTitle
               title="东营市全市平均降水24h预报"
-              style={{ height: "230px" }}
+              style={{ height: "250px" }}
             >
               <div className="flood-head-rain-text">
                 {moment(new Date()).format("YYYY-MM-DD HH:00")}至
@@ -127,7 +127,7 @@ class FloodModel extends Component {
               </div>
               <div className="flood-head-rain" id="floodHeadRain"></div>
             </RenderBox>
-            <RenderBox hasTitle title="洪涝预报" style={{ height: 420 }}>
+            <RenderBox hasTitle title="洪涝预报" style={{ height: 400 }}>
               <div className={"m-left-div"}>
                 <Spin
                   spinning={this.props.model.modelIsRunning}

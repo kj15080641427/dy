@@ -11,12 +11,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/home";
 import "./style.scss";
-import { login, queryUser } from "@app/data/request";
+import { login } from "@app/data/request";
 import dyszhswxt from "@app/resource/login/dyszhswxt.png";
 import swlogo from "@app/resource/login/swlogo.png";
 const innerWidth = document.body.clientWidth;
 
-const FormItem = Form.Item;
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -24,16 +23,7 @@ class Login extends Component {
       selectSystem: "东营市智慧水务系统",
     };
   }
-  componentDidMount() {
-    window.addEventListener("resize", this.onResize);
-  }
-  componentWillUnmount() {
-    window.addEventListener("resize", this.onResize);
-    // componentWillMount进行异步操作时且在callback中进行了setState操作时，需要在组件卸载时清除state
-    this.setState = () => {
-      return;
-    };
-  }
+
   render() {
     const onFinish = (values) => {
       if (this.state.selectSystem == "东营市智慧水务系统") {
@@ -43,14 +33,9 @@ class Login extends Component {
           password: values.password,
         }).then((result) => {
           if (result.code == 200) {
+            this.props.actions.setToken(result.data.userToken);
             localStorage.setItem("token", result.data.userToken);
             localStorage.setItem("username", values.username);
-            // console.log(localStorage.getItem("token"));
-            // this.props.history.push("/display");
-            // window.location.reload();
-            // message.success("登录成功！");
-            // localStorage.setItem("token", result.data.userToken);
-
             const hrefNavi = window.location.href.split("?url=");
             const url = unescape(hrefNavi[1]);
             if (hrefNavi[1]) {
@@ -65,26 +50,13 @@ class Login extends Component {
               }
             } else {
               if (innerWidth > 3000) {
+                message.success("登录成功！");
                 this.props.history.push("/display");
-                window.location.reload();
-                message.success("登录成功！");
-                localStorage.setItem("token", result.data.userToken);
               } else {
-                this.props.history.push("/displaySmall");
-                window.location.reload();
                 message.success("登录成功！");
-                // localStorage.removeItem("token");
-                localStorage.setItem("token", result.data.userToken);
-                // console.log(localStorage.getItem("token"));
+                this.props.history.push("/displaySmall");
               }
             }
-            // queryUser({
-            //   username: values.username,
-            // }).then((res) => {
-            //   console.log(res);
-            //   // this.props.actions.addUserInfo(result.data.records);
-            //   localStorage.setItem("userInfo", res.data.records[0]);
-            // });
           } else {
             message.error("账号或密码错误");
           }
@@ -101,17 +73,6 @@ class Login extends Component {
         });
       }
     };
-    //根据登录名查询用户信息
-    // const selectUser = (username) => {
-    // 	queryUser({
-    // 		'username': username
-    // 	}).then((result) => {
-    // 		console.log(result)
-    // 		// this.props.actions.addUserInfo(result.data.records);
-    // 		localStorage.setItem("userInfo", result.data.records)
-    // 		console.log(localStorage.getItem("userInfo"))
-    // 	})
-    // }
     return (
       <div className="container">
         <img className="swlogo" src={swlogo}></img>

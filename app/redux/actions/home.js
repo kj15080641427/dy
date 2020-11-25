@@ -17,3 +17,10 @@ export function showModal(data) {
     data,
   };
 }
+
+export function setToken(data) {
+  return {
+    type: actionTypes.SET_TOKEN,
+    data,
+  };
+}

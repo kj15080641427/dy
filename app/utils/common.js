@@ -1,17 +1,9 @@
 import { createHashHistory } from "history";
 import { message } from "antd";
-// const host = "http://2287ym5502.51mypc.cn";
-//const host = "http://10.1.4.187:8080/";
-// element判断是否含有className
-//拿到token值
-const token = localStorage.getItem("token");
-// const token = "";
 const hashHistory = createHashHistory();
 
 const isV2 = 0;
 export const URL = isV2 ? "/api/v2" : "/api";
-
-// const hostUrl = "http://218.56.180.250:9109/tuhui-base";
 
 export function hasClassName(obj, name) {
   let tmpName = obj.className;
@@ -32,7 +24,7 @@ export function fetchOutData(method, url, data) {
     headers: {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
-      token: token,
+      token: localStorage.getItem("token"),
     },
     // 注意 post 时候参数的形式
     body: data ? JSON.stringify(data) : null,
@@ -51,7 +43,7 @@ export function fetchData(method, url, data) {
     headers: {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/x-www-form-urlencoded",
-      token: token,
+      token: localStorage.getItem("token"),
     },
     // 注意 post 时候参数的形式
     body: data ? appendParam(url, data) : null,
@@ -70,7 +62,7 @@ export function fetchJSONData(method, url, data) {
     headers: {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
-      token: token,
+      token: localStorage.getItem("token"),
     },
     // 注意 post 时候参数的形式
     body: data ? JSON.stringify(data) : null,
@@ -100,7 +92,7 @@ export const testLogin = (url, data) => {
     headers: {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
-      token: token,
+      token: localStorage.getItem("token"),
     },
     // 注意 post 时候参数的形式
     body: data ? JSON.stringify(data) : null,
@@ -137,7 +129,7 @@ export function fetchGet(url, params) {
     headers: {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
-      token: token,
+      token: localStorage.getItem("token"),
     },
   }).then((res) => {
     // download(res)
@@ -148,38 +140,38 @@ export function fetchGet(url, params) {
   });
 }
 //下载文件
-function download(data) {
-  if (!data) {
-    return;
-  }
-  var blob = new Blob([data], {
-    type:
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8",
-  });
-  var url = window.URL.createObjectURL(blob);
-  var aLink = document.createElement("a");
-  aLink.style.display = "none";
-  aLink.href = url;
-  aLink.setAttribute("download", "excel.xls");
-  document.body.appendChild(aLink);
-  aLink.click();
-  document.body.removeChild(aLink); //下载完成移除元素
-  window.URL.revokeObjectURL(url); //释放掉blob对象
-}
+// function download(data) {
+//   if (!data) {
+//     return;
+//   }
+//   var blob = new Blob([data], {
+//     type:
+//       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8",
+//   });
+//   var url = window.URL.createObjectURL(blob);
+//   var aLink = document.createElement("a");
+//   aLink.style.display = "none";
+//   aLink.href = url;
+//   aLink.setAttribute("download", "excel.xls");
+//   document.body.appendChild(aLink);
+//   aLink.click();
+//   document.body.removeChild(aLink); //下载完成移除元素
+//   window.URL.revokeObjectURL(url); //释放掉blob对象
+// }
 /*
  *   拼接参数
  */
-function appendParam(url, params) {
-  if (data) {
-    var str = "";
-    for (var key in data) {
-      if (data.hasOwnProperty(key)) {
-        str += key + "=" + data[key] + "&";
-      }
-    }
-    return "?" + str;
-  }
-}
+// function appendParam(url, params) {
+//   if (data) {
+//     var str = "";
+//     for (var key in data) {
+//       if (data.hasOwnProperty(key)) {
+//         str += key + "=" + data[key] + "&";
+//       }
+//     }
+//     return "?" + str;
+//   }
+// }
 /*
  *   拼接基础信息中站点名称和来源
  */

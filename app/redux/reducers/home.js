@@ -1,10 +1,10 @@
 /*
  *  reducer
  */
-import * as actionTypes from '../constants/home';
+import * as actionTypes from "../constants/home";
 
 const defaultState = {
-  userinfo: {}//用户登录信息
+  userinfo: {}, //用户登录信息
 };
 
 export default function main(state = defaultState, action) {
@@ -17,6 +17,9 @@ export default function main(state = defaultState, action) {
       }
       break;
     }
+    case actionTypes.SET_TOKEN:
+      newState.token = action.data;
+      break;
     default:
       return state;
   }

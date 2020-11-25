@@ -651,6 +651,8 @@ export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
       axisLabel: {
         color: "white",
         fontSize: 16,
+        showMinLabel: true,
+        showMaxLabel: true,
         formatter: (v) => {
           return Number(v).toFixed(1);
         },
