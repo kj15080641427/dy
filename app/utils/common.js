@@ -67,11 +67,14 @@ export function fetchJSONData(method, url, data) {
     // 注意 post 时候参数的形式
     body: data ? JSON.stringify(data) : null,
   }).then((res) => {
-    // console.log(res, 7777777777);
     if (res.status == 500) {
       message.error("网络请求失败,500");
     }
     if (res.status == 400) {
+      if (hashHistory.location.pathname !== "/") {
+      console.log(hashHistory.location.pathname, "===");
+        sessionStorage.setItem("url", hashHistory.location.pathname);
+      }
       hashHistory.push("/");
     }
     if (res.status == "404") {
@@ -134,6 +137,7 @@ export function fetchGet(url, params) {
   }).then((res) => {
     // download(res)
     if (res.status == 400) {
+      // localStorage.setItem('url')
       hashHistory.push("/");
     }
     return res.ok ? res.json() : Promise.reject("接口出错");

@@ -45,12 +45,12 @@ class Menus extends React.PureComponent {
               title="监测数据"
               inlineCollapsed={false}
             >
-              <Menu.Item title={"站点数据"} key="/rwvdata">
-                站点数据
+              <Menu.Item title={"站点数据"} key="/DataMonitoring">
+                监测数据
               </Menu.Item>
-              <Menu.Item key="/deviceManage">设备管理</Menu.Item>
+              {/* <Menu.Item key="/deviceManage">设备管理</Menu.Item>
               <Menu.Item key="/model">模型演示</Menu.Item>
-              <Menu.Item key="/riverAnnunciate">河道信息</Menu.Item>
+              <Menu.Item key="/riverAnnunciate">河道信息</Menu.Item> */}
               {/* <Menu.Item key="/waterAnnunciate">
                 水情通报
               </Menu.Item>
@@ -59,16 +59,17 @@ class Menus extends React.PureComponent {
               </Menu.Item> */}
             </SubMenu>
             <SubMenu key="sub2" icon={<MailOutlined />} title="防汛管理">
-              <Menu.Item key="/storemanage">仓库管理</Menu.Item>
+              <Menu.Item key="/floodManagement">防汛管理</Menu.Item>
+              {/* <Menu.Item key="/storemanage">仓库管理</Menu.Item>
               <Menu.Item key="/materialsmange">防汛物资</Menu.Item>
               <Menu.Item key="/floodprevention">防汛人员</Menu.Item>
-              <Menu.Item key="/expert">专家库</Menu.Item>
+              <Menu.Item key="/expert">专家库</Menu.Item> */}
             </SubMenu>
             <SubMenu key="sub3" icon={<SettingOutlined />} title="系统设置">
-              <Menu.Item key="/loginlog">日志查询</Menu.Item>
-              <Menu.Item key="/jurisdiction">权限设置</Menu.Item>
+              <Menu.Item key="/System">系统设置</Menu.Item>
+              {/* <Menu.Item key="/jurisdiction">权限设置</Menu.Item>
               <Menu.Item key="/role">角色管理</Menu.Item>
-              <Menu.Item key="/user">用户管理</Menu.Item>
+              <Menu.Item key="/user">用户管理</Menu.Item> */}
             </SubMenu>
             <SubMenu key="sub4" icon={<MailOutlined />} title="基础信息配置">
               <Menu.Item key="/stationBasic">基础站点信息配置</Menu.Item>

@@ -1,8 +1,4 @@
-import {
-  fetchJSONData,
-  fetchOutData,
-  fetchGet,
-} from "@app/utils/common";
+import { fetchJSONData, fetchOutData, fetchGet } from "@app/utils/common";
 //  获取所有基础数据
 export function getAll(data = {}) {
   return fetchJSONData("POST", "/base/SiteBase/getAll", data);
@@ -409,4 +405,8 @@ export function getRainPred(data) {
 //查询菜单
 export function getUserMenu(data) {
   return fetchJSONData("POST", "/base/Users/getMenu", data);
+}
+//退出登录
+export function loginOut(data) {
+  return fetchJSONData("POST", "/base/Users/logout", data);
 }

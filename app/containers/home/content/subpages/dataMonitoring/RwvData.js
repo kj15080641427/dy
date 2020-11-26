@@ -97,8 +97,8 @@ const rwvData = (props) => {
 
   return (
     <div className="base-tabs-display">
-      {/* <Tabs defaultActiveKey="site1" className="card-container"> */}
-      {/* <Tabs.TabPane key="site1" tab="站点数据"> */}
+      {/* <Tabs defaultActiveKey="site1" className="card-container" type="card">
+        <Tabs.TabPane key="site1" tab="站点数据"></Tabs.TabPane> */}
       <div>
         <Tabs
           onChange={(e) => {

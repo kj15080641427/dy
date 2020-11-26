@@ -110,20 +110,7 @@ export const rain = [
     dataIndex: "address",
     render: (value) => value || "-",
   },
-  {
-    title: "流域名称",
-    dataIndex: "siteRain",
-    render: (value) => {
-      return value && value[0] ? value[0].bsnm : "-";
-    },
-  },
-  {
-    title: "河流名称",
-    dataIndex: "siteRain",
-    render: (value) => {
-      return value && value[0] ? value[0].rvnm : "-";
-    },
-  },
+
   {
     title: "纬度",
     dataIndex: "lat",
@@ -141,6 +128,20 @@ export const rain = [
     className: "column-money",
     render: (value) => {
       return value && value[0] ? value[0].drp.toFixed(2) : "-";
+    },
+  },
+  {
+    title: "流域名称",
+    dataIndex: "siteRain",
+    render: (value) => {
+      return value && value[0] ? value[0].bsnm : "-";
+    },
+  },
+  {
+    title: "河流名称",
+    dataIndex: "siteRain",
+    render: (value) => {
+      return value && value[0] ? value[0].rvnm : "-";
     },
   },
   {
