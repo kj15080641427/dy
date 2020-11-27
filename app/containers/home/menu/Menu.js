@@ -72,14 +72,14 @@ class Menus extends React.PureComponent {
               <Menu.Item key="/user">用户管理</Menu.Item> */}
             </SubMenu>
             <SubMenu key="sub4" icon={<MailOutlined />} title="基础信息配置">
-              <Menu.Item key="/stationBasic">基础站点信息配置</Menu.Item>
-              <Menu.Item key="/siteWater">站点水位</Menu.Item>
+              <Menu.Item key="/BasicData">基础信息配置</Menu.Item>
+              {/* <Menu.Item key="/siteWater">站点水位</Menu.Item>
               <Menu.Item key="/siteVideo">站点视频</Menu.Item>
               <Menu.Item key="/siteRain">站点雨量</Menu.Item>
-              <Menu.Item key="/siteWaterPonit">站点积水点</Menu.Item>
+              <Menu.Item key="/siteWaterPonit">站点积水点</Menu.Item> */}
 
               {/* <Menu.Item key="/videoBasic">视频站点信息配置</Menu.Item> */}
-              <Menu.Item key="/videoStation">站点关联信息配置</Menu.Item>
+              {/* <Menu.Item key="/videoStation">站点关联信息配置</Menu.Item> */}
             </SubMenu>
             <SubMenu key="sub5" icon={<MailOutlined />} title="站点详情">
               {/* <Menu.Item key="/chart">图表</Menu.Item> */}

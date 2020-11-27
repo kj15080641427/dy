@@ -7,11 +7,11 @@ import { Input, Select, Button, Modal, Radio } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { ReadonlyGate } from "../site/siteGate";
-import { ReadonlyVideo } from "../site/siteVideo";
+import { ReadonlyVideo } from "./siteVideo";
 import { ReadonlyPump } from "../site/sitePump";
-import { ReadonlyRain } from "../site/siteRain";
-import { ReadonlyWater } from "../site/siteWater";
-import { ReadonlyWaterPoint } from "../site/siteWaterPoint";
+import { ReadonlyRain } from "./siteRain";
+import { ReadonlyWater } from "./siteWater";
+import { ReadonlyWaterPoint } from "./siteWaterPoint";
 import { ReadonlyReservoir } from "../site/siteReservoir";
 
 import {
@@ -109,11 +109,6 @@ class BaseStation extends React.Component {
         type: 3,
       },
     });
-    // getSiteDict({
-    //   current: 1,
-    //   siteDictionariesID: 0,
-    //   size: 10,
-    // });
   }
   render() {
     const {

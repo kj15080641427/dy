@@ -183,6 +183,7 @@ class BaseLayout extends React.Component {
             </Button>
           ) : null}
         </div>
+        {console.log(this.props[storeKey]?.records, "storeKey", storeKey)}
         <DYTable
           showEdit={showEdit}
           rowSelection={rowSelection}
@@ -190,7 +191,7 @@ class BaseLayout extends React.Component {
           columns={columns}
           loading={loading}
           total={this.props[storeKey]?.total}
-          dataSource={this.props[storeKey]?.records}
+          dataSource={this.props[storeKey]?.records || []}
           current={this.props[storeKey]?.current}
           size={this.props[storeKey]?.size}
           rowkey={(row) => row[keyId]}

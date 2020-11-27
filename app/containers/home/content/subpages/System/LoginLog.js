@@ -89,7 +89,9 @@ class LoginLog extends React.Component {
     );
   }
 }
-const mapStatetoProps = (state) => ({});
+const mapStatetoProps = (state) => {
+  return {};
+};
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(actions, dispatch),

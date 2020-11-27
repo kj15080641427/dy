@@ -1,27 +1,39 @@
-import React from "react";
-import { Tabs } from "antd";
+import React, { useState } from "react";
+import { Radio } from "antd";
 import Expert from "./Expert";
 import FloodPrevention from "./FloodPrevention";
 import MaterialsMange from "./MaterialsMange";
 import StoreManage from "./StoreManage";
+import "../styles.scss";
 
 const FloodManagement = () => {
+  const [value, setValue] = useState("1");
   return (
     <div className="base-tabs-display">
-      <Tabs defaultActiveKey="site1" className="card-container" type="card">
-        <Tabs.TabPane key="site1" tab="专家库">
-          <Expert></Expert>
-        </Tabs.TabPane>
-        <Tabs.TabPane key="site2" tab="防汛人员">
-          <FloodPrevention></FloodPrevention>
-        </Tabs.TabPane>
-        <Tabs.TabPane key="site3" tab="物资管理">
-          <MaterialsMange></MaterialsMange>
-        </Tabs.TabPane>
-        <Tabs.TabPane key="site4" tab="仓库管理">
-          <StoreManage></StoreManage>
-        </Tabs.TabPane>
-      </Tabs>
+      <div className="home-layout-tabs">
+        <Radio.Group
+          optionType="button"
+          onChange={(e) => {
+            console.log(e);
+            setValue(e.target.value);
+          }}
+          value={value}
+        >
+          <Radio.Button value="1">专家库</Radio.Button>
+          <Radio.Button value="2">防汛人员</Radio.Button>
+          <Radio.Button value="3">物资管理</Radio.Button>
+          <Radio.Button value="4">仓库管理</Radio.Button>
+        </Radio.Group>
+      </div>
+      {value == 1 ? (
+        <Expert rowSelection={{}} />
+      ) : value == 2 ? (
+        <FloodPrevention />
+      ) : value == 3 ? (
+        <MaterialsMange />
+      ) : (
+        <StoreManage />
+      )}
     </div>
   );
 };

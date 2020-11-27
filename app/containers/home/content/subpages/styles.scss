@@ -1,0 +1,19 @@
+.home-layout-tabs {
+  background: #003366;
+  padding: 10px 10px 0px 10px;
+  margin-bottom: 10px;
+  .ant-radio-button-wrapper {
+    margin-right: 10px;
+    color: white;
+    background: #003366;
+    border: 0px;
+    border-radius: 10px 10px 0px 0px;
+  }
+  .ant-radio-button-wrapper:not(:first-child)::before {
+    background: none;
+  }
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    color: #40a9ff;
+    background: white;
+  }
+}

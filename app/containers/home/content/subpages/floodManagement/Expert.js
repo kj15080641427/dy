@@ -86,9 +86,10 @@ const rowSelect = [
   },
 ];
 
-const Expert = () => (
+const Expert = (props) => (
   <ReadOnlyTable
     getAll
+    rowSelection={props.rowSelection}
     get={getFloodControlExpertAll}
     columns={columns}
     rowSelect={rowSelect}
