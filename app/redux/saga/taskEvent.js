@@ -141,7 +141,7 @@ function* addExpertDispatch({ data }) {
       });
       yield put({
         type: types.GET_TASK_DISPATCH_EXPERT,
-        data: { taskEventsID: data[0].taskEventsID, type: 103 },
+        data: { taskEventsID: data[0].taskEventsID, type: 104 },
       });
     } else {
       message.error(result.msg);
@@ -180,7 +180,7 @@ function* addUserDispatch({ data }) {
       });
       yield put({
         type: types.GET_USER_DISPATCH,
-        data: { taskEventsID: data[0].taskEventsID, type: 102 },
+        data: { taskEventsID: data[0].taskEventsID, type: 103 },
       });
     }
   } catch (e) {

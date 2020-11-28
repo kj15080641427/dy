@@ -131,17 +131,18 @@ function* getDayRainBySite({ data }) {
   let beginTime = moment().subtract(24, "hour").startOf("hour");
   try {
     const result = yield call(req.getByTimeHour, {
-      stcd: data,
+      stcd: data?.id,
       starttm: beginTime.format("YYYY-MM-DD HH:mm:ss"),
       endtm: endTime.format("YYYY-MM-DD HH:mm:ss"),
     });
+    console.log(data, result.data, "===");
     if (result.code == code) {
       result.data.forEach((item) => {
-        item.tm = item.endTime.slice(0, -3);
+        item.tm = item.endTime.slice(5, -3);
       });
       yield put({
         type: types.SET_DAY_RAIN_BY_SITE,
-        data: result.data,
+        data: { record: result.data, name: data.name },
       });
     }
   } catch (e) {

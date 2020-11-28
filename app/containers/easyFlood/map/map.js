@@ -43,7 +43,7 @@ class Map extends React.PureComponent {
     ];
     // eslint-disable-next-line react/no-direct-mutation-state
     this.type.forEach((Ovl) => {
-       this.state.overlays[Ovl.type] = {};
+      this.state.overlays[Ovl.type] = {};
     });
     this.mapKey = "b032247838f51a57717f172c55d25894";
     this.onOverlayClose = this.onOverlayClose.bind(this);
@@ -239,6 +239,10 @@ class Map extends React.PureComponent {
 
     this.map.startSelectFeature("fRain", (param) => {
       param = { ...param, dict: this.props.dict };
+      this.props.mapAction.getDayRainBySite({
+        id: param.stcd,
+        name: param.aliasName,
+      });
       this.addOverlay(Rain.type, param);
     });
     this.map.startSelectFeature("ponding", (param) => {
@@ -393,7 +397,6 @@ class Map extends React.PureComponent {
       overlays: { ...overlays },
     });
   }
-
 }
 function mapStateToProps(state) {
   // console.log(state, "STATE");

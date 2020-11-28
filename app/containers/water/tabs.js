@@ -18,7 +18,6 @@ export const TabsList = (props) => {
     let ydata = [];
     let name = row.aliasName;
     var myChart = echarts.init(document.getElementById(id));
-    console.log(myChart, "dayWater---------", dayWater);
 
     data.forEach((item) => {
       xdata.push(item.tm);
@@ -32,6 +31,8 @@ export const TabsList = (props) => {
       },
       grid: {
         top: 90,
+        show: true,
+        borderColor: "black",
       },
       dataZoom: [
         {
@@ -64,6 +65,11 @@ export const TabsList = (props) => {
       yAxis: {
         type: "value",
         name: "水位（mm）",
+        axisLabel: {
+          formatter: (v) => {
+            return Number(v).toFixed(1);
+          },
+        },
       },
       legend: {
         right: "center",

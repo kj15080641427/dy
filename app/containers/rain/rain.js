@@ -343,7 +343,7 @@ class RainMonitor extends React.PureComponent {
               </RenderBox>
             </div>
             <div className="right-second-box">
-              <RenderBox hasTitle title="24小时降雨统计">
+              <RenderBox hasTitle title="24小时降雨统计(mm)">
                 <div className="flex-center">
                   <div className="rotateBarChart" id="rotateBarChart" />
                 </div>

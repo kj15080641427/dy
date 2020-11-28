@@ -87,7 +87,7 @@ class Monitor extends React.PureComponent {
   }
   render() {
     let { layerVisible, displayRight, displayLeft, tabsKey } = this.state;
-    const { expert, wareHouse, material, floodRanks, expertCount } = this.props;
+    const { expert, wareHouse, material, floodRanks } = this.props;
     return (
       <div className="flood-warning-display">
         {/* <script src="http://119.187.146.174:10416/shzh/base/js/md5/md5.js"></script> */}
@@ -289,6 +289,7 @@ class Monitor extends React.PureComponent {
                     </TabPane>
                     <TabPane key="2" tab="县级专家">
                       <TableShow
+                        pageSize={7}
                         columns={[
                           {
                             name: "姓名",
@@ -319,6 +320,7 @@ class Monitor extends React.PureComponent {
                     </TabPane>
                     <TabPane key="3" tab="乡镇专家">
                       <TableShow
+                        pageSize={7}
                         columns={[
                           {
                             name: "姓名",

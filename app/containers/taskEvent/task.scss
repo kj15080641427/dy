@@ -531,7 +531,10 @@
   display: flex;
   justify-content: center;
   width: 800px;
-  height: 800px;
+  height: 930px;
+  .ant-modal {
+    top: 50px;
+  }
   .ant-modal-content {
     width: 1200px;
   }
@@ -576,7 +579,6 @@
     background-color: rgba(0, 0, 0, 0);
   }
   .ant-modal-footer {
-    
     background: #003366;
     opacity: 0.8;
     border-top: none;

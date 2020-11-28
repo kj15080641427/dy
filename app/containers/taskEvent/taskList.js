@@ -570,6 +570,7 @@ const TaskList = (props) => {
                 {
                   title: "类型",
                   dataIndex: "alarmtype",
+                  render: (e) => (e == 1 ? "水位" : "易涝点"),
                 },
                 {
                   title: "警戒值",

@@ -23,12 +23,12 @@ import { TableShow } from "../../components/chart/table";
 import titleImg from "../../resource/title/easyFlood.png";
 
 const floodRainId = "46020108";
+const floodRainName = "胜利花苑站";
 import emitter from "@app/utils/emitter.js";
 class Monitor extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      floodRainName: "胜利花苑站",
       radio: "a",
       onLine: 0,
       line: 0,
@@ -76,13 +76,15 @@ class Monitor extends React.PureComponent {
     });
   };
   componentDidMount() {
-    const { floodId } = this.props;
     // this.props.actions.getFloodType(); //易涝点基本信息
     this.props.actions.getDict();
     this.props.actions.getFloodRain(); //获取防汛雨量站 {type: "1",isshow: "1",datasource: "3",}
     // this.props.actions.getFloodInfoRealTime(floodId.id); //根据易涝点id获取实时数据
     this.props.actions.getCountStation();
-    this.props.actions.getDayRainBySite(floodRainId);
+    this.props.actions.getDayRainBySite({
+      id: floodRainId,
+      name: floodRainName,
+    });
     this.props.actions.getFloodAlarm();
   }
   componentDidUpdate(pre) {
@@ -91,7 +93,6 @@ class Monitor extends React.PureComponent {
       floodId,
       historyFlood,
       floodRain,
-      floodWarning,
       floodDayRain,
     } = this.props;
     if (floodId != pre.floodId) {
@@ -105,17 +106,14 @@ class Monitor extends React.PureComponent {
       // lineChart("easyfloodLine", historyFlood, 380, floodWarning || -0.1);
     }
     if (floodRain != pre.floodRain) {
-      let noRain = 0;
       let small = 0;
       let c = 0;
       let d = 0;
       let e = 0;
       let f = 0;
       let g = 0;
-      let h = 0;
       floodRain.map((item) => {
         if (item.dayDrp == 0) {
-          noRain++;
           return;
         }
         if (item.dayDrp < 10) {
@@ -249,19 +247,20 @@ class Monitor extends React.PureComponent {
     }
   }
   render() {
-    let { layerVisible, displayRight, displayLeft, floodRainName } = this.state;
+    let { layerVisible, displayRight, displayLeft } = this.state;
     const {
       initFlood,
       floodName,
       floodAlarmData,
       floodId,
       floodRain,
+      floodDayRainName,
     } = this.props;
     const { getDayRainBySite } = this.props.actions;
     return (
       <div className="easy-flood-display">
         <div className="right-background"></div>
-        <Map layerVisible={layerVisible} onFeatureClick={(param) => {}} />
+        <Map layerVisible={layerVisible} onFeatureClick={() => {}} />
         <Head titleImg={titleImg} groundColor="#003366"></Head>
         <div style={{ display: displayLeft }}>
           <div className="easyFlood-left">
@@ -422,11 +421,11 @@ class Monitor extends React.PureComponent {
                                 ? record.siteRain[0].stcd
                                 : record.siteRain[0].stcd,
                             };
-                            this.setState({
-                              floodRainName: record.aliasName,
-                            });
                             this.locationClick(record);
-                            getDayRainBySite(record.stcd);
+                            getDayRainBySite({
+                              id: record.stcd,
+                              name: record.aliasName,
+                            });
                           },
                         };
                       }}
@@ -473,7 +472,7 @@ class Monitor extends React.PureComponent {
                   <br />
                   <div className="water-select-flex">
                     <div className="water-select-flex">
-                      {floodRainName} &nbsp;
+                      {floodDayRainName} &nbsp;
                     </div>
                     <div className="water-select-flex">{`${moment(
                       new Date().getTime() - 24 * 60 * 60 * 1000
@@ -664,6 +663,7 @@ function mapStateToProps(state) {
     initFlood: state.mapAboutReducers.initFlood,
     floodAlarmData: state.handState.floodAlarmData,
     floodDayRain: state.handState.floodDayRain,
+    floodDayRainName: state.handState.floodDayRainName,
   };
 }
 

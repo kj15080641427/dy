@@ -33,6 +33,8 @@ export const TabsList = (props) => {
       },
       grid: {
         top: 90,
+        show: true,
+        borderColor: "black",
       },
       dataZoom: [
         {
@@ -64,7 +66,12 @@ export const TabsList = (props) => {
       },
       yAxis: {
         type: "value",
-        name: "雨量（mm）",
+        name: "降雨(mm)",
+        axisLabel: {
+          formatter: (v) => {
+            return Number(v).toFixed(1);
+          },
+        },
       },
       legend: {
         right: "center",
@@ -137,14 +144,14 @@ export const TabsList = (props) => {
             name: "1小时",
             dataIndex: "raindataList",
             width: "13%",
-            render: (v) => (v && v[0] ? v[0].hourDrp : "-"),
+            render: (v) => (v && v[0] ? `${v[0].hourDrp}(mm)` : "-"),
             align: "center",
           },
           {
             name: "24小时",
             dataIndex: "raindataList",
             width: "15%",
-            render: (v) => (v && v[0] ? v[0].dayDrp : "-"),
+            render: (v) => (v && v[0] ? `${v[0].dayDrp}(mm)` : "-"),
             align: "center",
           },
           {

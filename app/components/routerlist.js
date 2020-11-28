@@ -6,22 +6,7 @@ import { TableShow } from "../components/chart/table";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../redux/actions/map";
-// import display from "../resource/icon/display.svg";
-// import waterRouter from "../resource/icon/waterRouter.svg";
-import hzz from "../resource/icon/hzz.svg";
-import szjc from "../resource/icon/szjc.svg";
-import znxh from "../resource/icon/znxh.svg";
-// import floodmaterial from "../resource/icon/floodmaterial.svg";
-// import notices from "../resource/icon/notices.svg";
-// import ocean from "../resource/icon/ocean.svg";
-// import yellowRiver from "../resource/icon/yellowRiver.svg";
-// import home from "../resource/icon/home.svg";
 
-// import forecast from "../resource/icon/forecast.svg";
-// import task from "../resource/task.svg";
-// import device from "../resource/icon/device.svg";
-// import dataCenter from "../resource/工程信息数据.svg";
-// import { getUserMenuList } from "../data/home";
 class RouterList extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -40,13 +25,6 @@ class RouterList extends React.PureComponent {
     if (!userMenuList[0]) {
       getUserMenuList({ token: localStorage.getItem("token") });
     }
-
-    // getUserMenu({ token: localStorage.getItem("token") }).then((res) => {
-    //   console.log(res, "RESSS");
-    //   this.setState({
-    //     routerList: res.data,
-    //   });
-    // });
   }
 
   render() {
@@ -88,14 +66,11 @@ class RouterList extends React.PureComponent {
                     )}`
                   )
                 }
-                // to={"http://218.58.213.201:8081/dyhzsys"}
-                // target={"_blank"}
               >
                 <div
                   className="router-item-style"
                   style={{
                     background: "#0099ff",
-                    // color: "rgb(132,135,192)",
                     color: "white",
                   }}
                 >
@@ -110,7 +85,6 @@ class RouterList extends React.PureComponent {
             ) : item.name == "空中巡河" ? (
               <a
                 key={"znxh"}
-                // to={"IntelligentRiver"}
                 onClick={() => {
                   this.setState({
                     visible: true,
@@ -121,7 +95,6 @@ class RouterList extends React.PureComponent {
                   className="router-item-style"
                   style={{
                     background: "#0099ff",
-                    // color: "rgb(132,135,192)",
                     color: "white",
                   }}
                 >
@@ -228,6 +201,7 @@ class RouterList extends React.PureComponent {
       {
         name: "时长(分钟)",
         dataIndex: "e",
+        render: (e) => Number(e).toFixed(2),
       },
       {
         name: "播放",

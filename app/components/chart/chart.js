@@ -190,33 +190,11 @@ export const taskChart = (domId, data, title, width, legend) => {
 export const rotateBarChart = (domId, data, width, height) => {
   let myChartcount = echarts.init(document.getElementById(domId));
   let fontSize = 15;
-  // const max = Math.max(...data.map((d) => d.value));
-  // const min = Math.min(...data.filter((d) => d.value > 0).map((d) => d.value));
-  // let reduceNum = Math.floor(max / 15);
-  // if (reduceNum >= min) {
-  //   reduceNum = min - 1;
-  // }
-  // if (reduceNum == 0) {
-  //   reduceNum = max / 10;
-  // }
-  // data.map((d) => {
-  //   if (d.value == 0) {
-  //     d.value = reduceNum;
-  //     d.reduceFlag = true;
-  //   }
-  // });
   let option = {
     tooltip: {
       trigger: "axis",
       axisPointer: {
         type: "shadow",
-      },
-      formatter: (params) => {
-        if (params[0].data.reduceFlag) {
-          return 0;
-        } else {
-          return params[0].value;
-        }
       },
     },
     legend: {
@@ -249,35 +227,30 @@ export const rotateBarChart = (domId, data, width, height) => {
       show: true,
       type: "category",
       data: [
-        // { value: "无雨(0)", textStyle: { color: "white", fontSize: fontSize } },
         {
-          value: "小雨(0-10)",
+          value: "小雨(0-10mm)",
           textStyle: { color: "white", fontSize: fontSize },
         },
         {
-          value: "中雨(10-25)",
+          value: "中雨(10-25mm)",
           textStyle: { color: "white", fontSize: fontSize },
         },
         {
-          value: "大雨(25-50)",
+          value: "大雨(25-50mm)",
           textStyle: { color: "white", fontSize: fontSize },
         },
         {
-          value: "暴雨(50-100)",
+          value: "暴雨(50-100mm)",
           textStyle: { color: "white", fontSize: fontSize },
         },
         {
-          value: "大暴雨(100-250)",
+          value: "大暴雨(100-250mm)",
           textStyle: { color: "white", fontSize: fontSize },
         },
         {
-          value: "特大暴雨(>250)",
+          value: "特大暴雨(>250mm)",
           textStyle: { color: "white", fontSize: fontSize },
         },
-        // {
-        //   value: "短历时强降雨",
-        //   textStyle: { color: "white", fontSize: fontSize },
-        // },
       ],
     },
     series: [
@@ -289,13 +262,6 @@ export const rotateBarChart = (domId, data, width, height) => {
           show: true,
           position: "left",
           color: "white",
-          // formatter: (params) => {
-          //   if (params.data.reduceFlag) {
-          //     return 0;
-          //   } else {
-          //     return params.value;
-          //   }
-          // },
         },
         width: width || 300,
         height: height,
@@ -335,22 +301,22 @@ export const easyfloodRain = (domId, data) => {
       type: "category",
       data: [
         {
-          value: "小雨(0-10)",
+          value: "小雨(0-10mm)",
         },
         {
-          value: "中雨(10-25)",
+          value: "中雨(10-25mm)",
         },
         {
-          value: "大雨(25-50)",
+          value: "大雨(25-50mm)",
         },
         {
-          value: "暴雨(50-100)",
+          value: "暴雨(50-100mm)",
         },
         {
-          value: "大暴雨(100-250)",
+          value: "大暴雨(100-250mm)",
         },
         {
-          value: "特大暴雨(>250)",
+          value: "特大暴雨(>250mm)",
         },
       ],
     },
@@ -361,7 +327,7 @@ export const easyfloodRain = (domId, data) => {
           position: "right",
           color: "white",
         },
-        name: "积水",
+        name: "数量",
         type: "bar",
         barMinHeight: 4,
         data: data,
@@ -407,7 +373,7 @@ export const funnelChart = (domId, data) => {
           color: "white",
         },
         barMinHeight: 4,
-        name: "积水",
+        name: "数量",
         type: "bar",
         data: data,
       },
@@ -417,7 +383,6 @@ export const funnelChart = (domId, data) => {
 };
 //24小时折线图
 export const showChart = (data, id, yd, yname) => {
-  const length = data.length;
   let xdata = [];
   let ydata = [];
   var myChart = echarts.init(document.getElementById(id));
@@ -436,7 +401,7 @@ export const showChart = (data, id, yd, yname) => {
     grid: {
       show: true,
       borderColor: "white",
-      right: "3%",
+      right: "4%",
     },
     toolbox: {
       show: true,
@@ -446,14 +411,19 @@ export const showChart = (data, id, yd, yname) => {
         restore: { show: true },
         // saveAsImage: { show: true },
       },
+      iconStyle: {
+        borderColor: "rgb(27,184,108)",
+      },
     },
     xAxis: {
+      boundaryGap: false,
       type: "category",
       data: xdata.length ? xdata : [],
       name: "",
       axisLabel: {
         color: "white",
-        fontSize: 16,
+        fontSize: 14,
+        // showMaxLabel: true,
       },
 
       axisLine: {
@@ -489,6 +459,7 @@ export const showChart = (data, id, yd, yname) => {
       {
         data: ydata.length ? ydata : [],
         type: "line",
+        symbolSize: 0,
         markPoint: {
           data: [
             {
@@ -608,7 +579,6 @@ export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
     xdata.push(item[xvalue].split(" ")[1].slice(0, -3));
     ydata.push(Number(item[yvalue]).toFixed(2));
   });
-  console.log(xdata, ydata, "XX");
   myChart.setOption({
     tooltip: {
       trigger: "axis",
@@ -708,7 +678,6 @@ export const showChartRiver = (data, id) => {
     },
     xAxis: [
       {
-        // name: "站点",
         type: "category",
         data: xdata,
         axisTick: {
@@ -745,7 +714,7 @@ export const showChartRiver = (data, id) => {
     ],
     series: [
       {
-        name: "站点",
+        name: "水位",
         type: "line",
         data: ydata,
         lineStyle: {

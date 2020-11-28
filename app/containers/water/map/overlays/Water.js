@@ -30,7 +30,7 @@ class Water extends Base {
           水位站点：{model?.siteWaterLevels[0]?.name}
         </div>
         <div className="m-ovl-line">
-          <label style={{ width: "80px" }}>水位：</label>
+          <label style={{ width: "80px" }}>站点水位：</label>
           {model?.riverwaterdataList[0]?.z || "--"}m
         </div>
         <div className="m-ovl-line">
@@ -42,11 +42,11 @@ class Water extends Base {
           {model.dict[model?.siteWaterLevels[0]?.siteDictionariesID]}
         </div>
         <div className="m-ovl-line">
-          <label style={{ width: "80px" }}>区县：</label>
+          <label style={{ width: "80px" }}>所属区县：</label>
           {model?.siteWaterLevels[0]?.stlc || "--"}
         </div>
         <div className="m-ovl-line">
-          <label style={{ width: "80px" }}>河流：</label>
+          <label style={{ width: "80px" }}>所属河流：</label>
           {model?.siteWaterLevels[0]?.rvnm}
         </div>
         {/* <div className="m-ovl-line">

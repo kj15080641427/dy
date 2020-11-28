@@ -37,8 +37,9 @@ const UserDispatch = (props) => {
   const [info, setInfo] = useState({});
 
   useEffect(() => {
+    console.log(taskInfo, "TASKINFO");
     if (taskInfo) {
-      getUserDispatch({ taskEventsID: taskInfo.taskEventsID, type: 102 });
+      getUserDispatch({ taskEventsID: taskInfo.taskEventsID, type: 103 });
       getFloodRankUser();
       changeTaskRadioType("city");
     } else {
@@ -59,6 +60,7 @@ const UserDispatch = (props) => {
       };
     });
     addUserDispatch(formData);
+    changeTaskRenderList([]); //清空已选择人员
   };
   return (
     <div className="task-dispatch-root-body">
@@ -87,7 +89,7 @@ const UserDispatch = (props) => {
               </div>
             </TabPane>
             <TabPane key="2" tab="已调派人员">
-              <div className='task-body-min-height'>
+              <div className="task-body-min-height">
                 <Table
                   columns={[
                     ...tableColumns,

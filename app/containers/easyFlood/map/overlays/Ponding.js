@@ -40,7 +40,7 @@ class Ponding extends Base {
           {model.address}
         </div>
         <div className="m-ovl-line">
-          <label>积水：</label>
+          <label>站点积水：</label>
           {model.z}cm
         </div>
         <div className="m-ovl-line">

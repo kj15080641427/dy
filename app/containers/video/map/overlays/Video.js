@@ -23,26 +23,26 @@ class Video extends Base {
     return (
       <div
         className="m-ovl-box m-ovl-rain luo-ovl-rain"
-        style={{ display: "none", width: 400, overflow: "hidden" }}
+        style={{ display: "none", width: 450, overflow: "hidden" }}
         ref={(node) => {
           this.container = node;
         }}
       >
         <div className="m-ovl-line luo-ovl-title">视频站点：{model.name}</div>
         <div className="m-ovl-line">
-          <label>名称：</label>
+          <label>站点名称：</label>
           {name}
         </div>
         <div className="m-ovl-line">
-          <label>来源：</label>
+          <label>站点来源：</label>
           {model.dict[model.stiteWaterRadios[0].siteDictionariesID]}
         </div>
         <div className="m-ovl-line">
-          <label>地址：</label>
+          <label>详细地址：</label>
           {model.address}
         </div>
         <div className="m-ovl-line">
-          <label>地区：</label>
+          <label>所属地区：</label>
           {stiteWaterRadios?.[0]?.regionName}
         </div>
         {/* <div className="m-ovl-line"><label>5分钟降水量：</label>{drpLevel}</div>

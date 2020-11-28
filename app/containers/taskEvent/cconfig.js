@@ -71,10 +71,12 @@ export const taskListform = [
   {
     label: "联系人",
     name: "reportPersonName",
+    rules: [{ required: true }],
     ele: <Input />,
   },
   {
     label: "电话",
+    rules: [{ required: true }],
     name: "reportPersonPhone",
     ele: <Input />,
   },

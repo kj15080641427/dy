@@ -43,23 +43,33 @@ class WeatherChart extends React.PureComponent {
   render() {
     const { RangePicker } = DatePicker;
     const { hideBorder, color } = this.props;
-    const that = this;
-    function onChange(value, dateString) {
+    const onChange = (value, dateString) => {
       getFiveCitydata({
         startTime: moment(value[0]).format("YYYY-MM-DD HH:00:00"),
         endTime: moment(value[1]).format("YYYY-MM-DD HH:00:00"),
       }).then((result) => {
-        console.log(result);
         var myChart = echarts.init(document.getElementById("main"));
         let setData = [];
         let c = result.data.pop();
-        that.setState({
+        this.setState({
           cityData: Number(c.prd).toFixed(1),
         });
+        console.log(this.state.cityData, "????");
         for (var i = result.data.length - 1; i >= 0; i--) {
           setData.unshift((result.data[i].prd * 1).toFixed(2));
         }
         myChart.setOption({
+          title: {
+            text: `全市平均降雨:${this.state.cityData}(mm)`,
+            left: "center",
+            top: "2px",
+            bottom: "20px",
+            textStyle: {
+              color: "#0099ff",
+              fontSize: "25",
+              fontWeight: "bold",
+            },
+          },
           series: [
             {
               data: setData,
@@ -71,7 +81,7 @@ class WeatherChart extends React.PureComponent {
           ],
         });
       });
-    }
+    };
     return (
       <div className="m-wth-chart-rain">
         <img className="m-chart-img" src={hideBorder ? "" : imgURL} alt="" />
@@ -197,7 +207,7 @@ class WeatherChart extends React.PureComponent {
               "河口区\n(东营港)",
               "垦利区",
               "利津县",
-              "广饶县\n(省高农区)",
+              "广饶县\n(省农高区)",
             ],
         axisLabel: {
           textStyle: {
@@ -222,6 +232,9 @@ class WeatherChart extends React.PureComponent {
         axisLabel: {
           textStyle: {
             color: "white",
+          },
+          formatter: (v) => {
+            return Number(v).toFixed(1);
           },
         },
         axisLine: {

@@ -6,6 +6,7 @@ const initState = {
   waterVideoInfo: { strtoken: "" },
   floodAlarmData: [],
   floodDayRain: [],
+  floodDayRainName: "",
   riverSiteWater: [],
   siteRiverTable: [],
   displayWater: [],
@@ -42,7 +43,11 @@ export default function handState(state = initState, action) {
       newState = { ...newState, floodAlarmData: action.data };
       break;
     case types.SET_DAY_RAIN_BY_SITE:
-      newState = { ...newState, floodDayRain: action.data };
+      newState = {
+        ...newState,
+        floodDayRain: action.data.record,
+        floodDayRainName: action.data.name,
+      };
       break;
     case types.SET_SITE_WATER_BY_RIVER:
       newState = { ...newState, riverSiteWater: action.data };

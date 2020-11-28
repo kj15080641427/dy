@@ -232,6 +232,12 @@ class WeatherPic extends React.PureComponent {
                     scrolling="no"
                     // style={{ position: "absolute" }}
                     className="radar-chart"
+                    // style={{
+                    //   position: "relative",
+                    //   left: 80,
+                    //   top: "-170px",
+                    //   transform: "scale(1.0)",
+                    // }}
                   ></iframe>
                 </div>
                 <Modal

@@ -383,11 +383,15 @@ class Map extends React.PureComponent {
         let name = r.aliasNme ? r.aliasNme : r.name;
         let isonlise = nowDate - new Date(r.tm).getTime() < 259200000;
 
-        this.map.addTagBox("water_tag_" + r.stcd, [r.lon, r.lat], {
-          title: name,
-          subTitle: r.z && isonlise ? `${r.z.toFixed(2)}m` : "--",
-          prefix: "water_tag",
-        });
+        this.map.addTagBox(
+          "water_tag_" + r.siteWaterLevels[0]?.stcd,
+          [r.lon, r.lat],
+          {
+            title: name,
+            subTitle: r.z && isonlise ? `${r.z.toFixed(2)}m` : "--",
+            prefix: "water_tag",
+          }
+        );
       });
     }
   }
