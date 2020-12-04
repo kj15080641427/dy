@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
 import echarts from "echarts/lib/echarts";
 import "echarts";
+const iconColor = "#0099ff";
 //柱状图
 export const barChart = (domId, legend, online, line) => {
   let myChartcount = echarts.init(document.getElementById(domId));
@@ -33,7 +33,9 @@ export const barChart = (domId, legend, online, line) => {
           type: ["pie", "funnel"],
         },
         restore: { show: true },
-        saveAsImage: { show: true },
+      },
+      iconStyle: {
+        borderColor: iconColor,
       },
     },
     // grid: {
@@ -412,7 +414,7 @@ export const showChart = (data, id, yd, yname) => {
         // saveAsImage: { show: true },
       },
       iconStyle: {
-        borderColor: "rgb(27,184,108)",
+        borderColor: iconColor,
       },
     },
     xAxis: {
@@ -505,7 +507,10 @@ export const modelChart = (data, id, yname, xvalue, yvalue) => {
         // dataView: { show: true, readOnly: true },
         magicType: { show: true, type: ["line", "bar"] },
         restore: { show: true },
-        saveAsImage: { show: true },
+        // saveAsImage: { show: true },
+      },
+      iconStyle: {
+        borderColor: iconColor,
       },
     },
     xAxis: {
@@ -592,7 +597,10 @@ export const modelBarChart = (data, id, yname, xvalue, yvalue) => {
       feature: {
         magicType: { show: true, type: ["line", "bar"] },
         restore: { show: true },
-        saveAsImage: { show: true },
+        // saveAsImage: { show: true },
+      },
+      iconStyle: {
+        borderColor: iconColor,
       },
     },
     xAxis: {
@@ -676,8 +684,21 @@ export const showChartRiver = (data, id) => {
       show: true,
       borderColor: "white",
     },
+    toolbox: {
+      show: true,
+      feature: {
+        // dataView: { show: true, readOnly: true },
+        magicType: { show: true, type: ["line", "bar"] },
+        restore: { show: true },
+        // saveAsImage: { show: true },
+      },
+      iconStyle: {
+        borderColor: iconColor,
+      },
+    },
     xAxis: [
       {
+        boundaryGap: false,
         type: "category",
         data: xdata,
         axisTick: {
@@ -714,6 +735,7 @@ export const showChartRiver = (data, id) => {
     ],
     series: [
       {
+        symbolSize: 0,
         name: "水位",
         type: "line",
         data: ydata,

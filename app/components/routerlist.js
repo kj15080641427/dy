@@ -17,6 +17,7 @@ class RouterList extends React.PureComponent {
       visible: false,
       videoUrl: "",
       showVideo: "",
+      color: "#0099ff",
     };
   }
   componentDidMount() {
@@ -88,13 +89,14 @@ class RouterList extends React.PureComponent {
                 onClick={() => {
                   this.setState({
                     visible: true,
+                    color: "rgb(227,152,62)",
                   });
                 }}
               >
                 <div
                   className="router-item-style"
                   style={{
-                    background: "#0099ff",
+                    background: this.state.color,
                     color: "white",
                   }}
                 >
@@ -149,6 +151,7 @@ class RouterList extends React.PureComponent {
           onCancel={() =>
             this.setState({
               visible: false,
+              color: "#0099ff",
             })
           }
         >

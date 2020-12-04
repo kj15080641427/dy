@@ -328,12 +328,16 @@ class FloodModel extends Component {
                 .format("YYYY-MM-DD HH:mm")}
             </div>
             <div className="flood-model-water-border">
-              <div>{waterName}站24小时水位预测曲线图</div>
+              <div style={{ marginTop: "3px" }}>
+                {waterName}站24小时水位预测曲线图
+              </div>
 
               <div className="flood-model-water" id="floodModelWater"></div>
             </div>
             <div className="flood-model-water-border">
-              <div>{floodName}站24小时积水预测曲线图</div>
+              <div style={{ marginTop: "3px" }}>
+                {floodName}站24小时积水预测曲线图
+              </div>
 
               <div className="flood-model-water" id="floodModelFlood"></div>
             </div>
@@ -376,9 +380,7 @@ class FloodModel extends Component {
     dispatch(actions.queryPredictions());
     dispatch(
       actions.getRainPred({
-        endtm: moment(new Date())
-          .add(1, "days")
-          .format("YYYY-MM-DD HH:00:00"),
+        endtm: moment(new Date()).add(1, "days").format("YYYY-MM-DD HH:00:00"),
         starttm: moment(new Date()).format("YYYY-MM-DD HH:00:00"),
       })
     );

@@ -230,15 +230,30 @@ class WeatherPic extends React.PureComponent {
                     height="510px"
                     frameBorder="0"
                     scrolling="no"
-                    // style={{ position: "absolute" }}
                     className="radar-chart"
-                    // style={{
-                    //   position: "relative",
-                    //   left: 80,
-                    //   top: "-170px",
-                    //   transform: "scale(1.0)",
-                    // }}
                   ></iframe>
+                  {/* <BorderBox8
+                    style={{
+                      height: 255,
+                      width: 364,
+                    }}
+                    reverse="{true}"
+                  >
+                    <div className="dis-satellite-div">
+                      <iframe
+                        frameborder="0"
+                        scrolling="no"
+                        src="http://58.59.29.51:14003/Radar"
+                        style={{
+                          position: "absolute",
+                          top: -125,
+                          // left: 15,
+                          height: 440,
+                          width: 360,
+                        }}
+                      ></iframe>
+                    </div>
+                  </BorderBox8> */}
                 </div>
                 <Modal
                   title="气象雷达"

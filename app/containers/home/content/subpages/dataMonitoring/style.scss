@@ -1,7 +1,7 @@
 .div-site-flex {
   display: flex;
   .div-right-table {
-    width: 50vw;
+    flex: 1;
   }
   .div-left-echarts {
     width: 420px;
@@ -10,9 +10,9 @@
 }
 .div-right-table {
   position: relative;
-  width: 1200px;
+  width: 1150px;
   // height: 750px;
-  right: -20px;
+  // right: 10px;
 }
 
 .echarts-isOnline {
@@ -64,12 +64,12 @@
   text-align: center;
   vertical-align: top;
 }
-.view-query{
+.view-query {
   display: flex;
   align-content: center;
   justify-items: center;
-  button{
-      margin-left:15px
+  button {
+    margin-left: 15px;
   }
 }
 .base-tabs-display {

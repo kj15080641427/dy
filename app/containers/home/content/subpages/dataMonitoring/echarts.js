@@ -20,7 +20,7 @@ export default (domId, title, legend, data) => {
       show: true,
       feature: {
         mark: { show: true },
-        dataView: { show: true, readOnly: false },
+        // dataView: { show: true, readOnly: false },
         magicType: {
           show: true,
           type: ["pie", "funnel"],

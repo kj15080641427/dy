@@ -89,7 +89,6 @@ const rwvData = (props) => {
   }, [readOnlyData, config.name]);
   //来源图
   useEffect(() => {
-    console.log(count, "COUNT");
     if (count) {
       selectRainSource(count[config.source]);
     }
@@ -140,14 +139,10 @@ const rwvData = (props) => {
           <TabPane tab="视频站点" key="video"></TabPane>
         </Tabs>
         <div className="div-site-flex">
-          <div className="div-left-echarts">
-            <div className="echarts-count" id="count"></div>
-            <div className="echarts-isOnline" id="online"></div>
-          </div>
           <div className="div-right-table">
             {config.name === "视频" ? (
               <ReadonlyTable
-                scroll={{ x: "1500px" }}
+                scroll={{ x: "1150px" }}
                 getAll
                 rowSelection={{}}
                 get={getAllVideo}
@@ -158,7 +153,7 @@ const rwvData = (props) => {
               />
             ) : (
               <ReadonlyTable
-                scroll={{ x: "1500px" }}
+                scroll={{ x: "1150px" }}
                 getAll
                 handPage={{}}
                 rowSelection={{}}
@@ -169,6 +164,10 @@ const rwvData = (props) => {
                 rowKey={"siteBaseID"}
               />
             )}
+          </div>
+          <div className="div-left-echarts">
+            <div className="echarts-count" id="count"></div>
+            <div className="echarts-isOnline" id="online"></div>
           </div>
         </div>
       </div>

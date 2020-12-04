@@ -22,7 +22,7 @@ class RiverAnnunciate extends React.PureComponent {
         <Table
           title={this.title}
           columns={tableColumnRiver}
-          dataSource={data}
+          dataSource={data.sort((a, b) => b.rvnm.length - a.rvnm.length)}
           loading={loding}
           rowKey={(row) => row.stnm}
           size="small"

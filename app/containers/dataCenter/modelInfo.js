@@ -17,10 +17,10 @@ const dict = {
     1: "挡水坝",
   },
   rvbartypem: {
-    1: '土坝',
+    1: "土坝",
   },
   rvbartypes: {
-    1: '均质坝',
+    1: "均质坝",
   },
 };
 const ModalInfo = (props) => {
@@ -42,18 +42,14 @@ const ModalInfo = (props) => {
                   <Col key={item.label} span={item.col ? 12 : 24}>
                     {item.isDict ? (
                       <div>
-                        {console.log(
-                          info,
-                          dict[item.isDict],
-                          [info[item.value]],
-                          "=="
-                        )}
-                        {item.label}：{dict[item.isDict][info[item.value]]}
-                        {/* {info[item.value] ? whether[0] : whether[1]} */}
+                        {item.label}
+                        {item.unit ? item.unit : ""}：
+                        {dict[item.isDict][info[item.value]]}
                       </div>
                     ) : (
                       <div>
-                        {item.label}：{info[item.value]}
+                        {item.label}
+                        {item.unit ? item.unit : ""}：{info[item.value]}
                       </div>
                     )}
                   </Col>

@@ -186,7 +186,7 @@ class Map extends React.PureComponent {
         fontColor: "#f5222d",
         fontOffset: [0, 0],
         fontText: function (featureObj) {
-          return featureObj.name + "";
+          return featureObj.aliasName;
         },
         font: "16px sans-serif",
       },
@@ -367,6 +367,7 @@ class Map extends React.PureComponent {
   drawFeatures() {
     const { water, alarmData } = this.props;
     if (water && water[0]) {
+      console.log(water.length, "LLL");
       this.map.addFeatures("water", templateWater(water, {}));
       this.addWaterWaring(alarmData);
       this.addWaterTagBox(water);
