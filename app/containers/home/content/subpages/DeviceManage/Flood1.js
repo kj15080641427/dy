@@ -714,8 +714,8 @@ class DeviceManageFlood extends Component {
             <div className="device-manage-content-left">
               <div className="device-manage-content-left-title">
                 {this.props.device.type == 4
-                  ? `${this.state.currentSite.title}站设备在线走势图`
-                  : `${this.state.currentSite.title}站设备数量走势图`}
+                  ? `${this.state.currentSite.title}站上报数据走势图`
+                  : `${this.state.currentSite.title}站上报数据走势图`}
               </div>
               <div className="device-manage-content-left-title">
                 <RangePicker

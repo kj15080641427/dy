@@ -28,6 +28,10 @@ class Ponding extends Base {
       >
         <div className="m-ovl-line luo-ovl-title">积水站点：{model.name}</div>
         <div className="m-ovl-line">
+          <label>积水深度：</label>
+          {model.z}cm
+        </div>
+        <div className="m-ovl-line">
           <label>站点编号：</label>
           {model.stcd}
         </div>
@@ -38,10 +42,6 @@ class Ponding extends Base {
         <div className="m-ovl-line">
           <label>站点地址：</label>
           {model.address}
-        </div>
-        <div className="m-ovl-line">
-          <label>站点积水：</label>
-          {model.z}cm
         </div>
         <div className="m-ovl-line">
           <label>更新时间：</label>

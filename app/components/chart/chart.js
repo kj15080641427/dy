@@ -258,7 +258,7 @@ export const rotateBarChart = (domId, data, width, height) => {
     series: [
       {
         barMinHeight: 4,
-        name: "24小时降雨",
+        name: "站点数",
         type: "bar",
         label: {
           show: true,

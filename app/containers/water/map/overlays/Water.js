@@ -1,8 +1,14 @@
 import React from "react";
 import "./style.scss";
 import Base from "./Base";
-import { bindActionCreators } from "redux";
-import * as actions from "@app/redux/actions/rain";
+const areaMap = {
+  370502: "东营区(开发区)",
+  370503: "河口区(东营港)",
+  370521: "垦利区",
+  370522: "利津县",
+  370523: "广饶县(省农高区)",
+  370500: "东营市",
+};
 class Water extends Base {
   static type = "water";
   constructor(props, context) {
@@ -12,16 +18,13 @@ class Water extends Base {
   }
   render() {
     let { model } = this.props;
-    const { dict } = model;
-    console.log(model);
-    //let drpLevel = (model.drp !== null && model.drp !== undefined) ? model.drp + 'mm' : '--';
     let tmDesc = model?.riverwaterdataList[0]?.tm
       ? model?.riverwaterdataList[0]?.tm
       : "--";
     return (
       <div
         className="m-ovl-box m-ovl-rain luo-ovl-rain"
-        style={{ display: "none" }}
+        style={{ display: "none", margin: "0 5px" }}
         ref={(node) => {
           this.container = node;
         }}
@@ -43,7 +46,7 @@ class Water extends Base {
         </div>
         <div className="m-ovl-line">
           <label style={{ width: "80px" }}>所属区县：</label>
-          {model?.siteWaterLevels[0]?.stlc || "--"}
+          {areaMap[model?.siteWaterLevels[0]?.addvcd] || "--"}
         </div>
         <div className="m-ovl-line">
           <label style={{ width: "80px" }}>所属河流：</label>
@@ -61,7 +64,6 @@ class Water extends Base {
       </div>
     );
   }
-  componentDidCatch() {}
   componentDidMount() {
     super.componentDidMount();
   }

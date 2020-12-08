@@ -42,11 +42,11 @@ const river = [
   { label: "河口详细地址", value: "addressdest" },
   { label: "上一级河流", value: "riverlevelabove" },
   { label: "流经范围", value: "flowrange" },
-  { label: "河流总长", value: "riverlen", unit: "(m)" },
+  { label: "河流总长", value: "riverlen", unit: "(km)" },
 
-  { label: "流域总面积", value: "riverarea", unit: "(㎡)" },
-  { label: "流经东营市河流长度", value: "riverlendy", unit: "(m)" },
-  { label: "流域面积东营市", value: "riveraready", unit: "(㎡)" },
+  { label: "流域总面积", value: "riverarea", unit: "(k㎡)" },
+  { label: "流经东营市河流长度", value: "riverlendy", unit: "(km)" },
+  { label: "流域面积东营市", value: "riveraready", unit: "(k㎡)" },
   { label: "防洪标准", value: "floodspec" },
   { label: "排涝标准", value: "drainspec" },
 
@@ -323,14 +323,14 @@ const DataCenter = (props) => {
                   align: "center",
                 },
                 {
-                  name: "河流总长(m)",
+                  name: "河流总长(km)",
                   dataIndex: "riverlen",
                   width: "10%",
                   align: "center",
                 },
 
                 {
-                  name: "流域总面积(㎡)",
+                  name: "流域总面积(k㎡)",
                   dataIndex: "riverarea",
                   width: "10%",
                   align: "center",

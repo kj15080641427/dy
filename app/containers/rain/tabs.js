@@ -141,17 +141,17 @@ export const TabsList = (props) => {
             ),
           },
           {
-            name: "1小时",
+            name: "1小时(mm)",
             dataIndex: "raindataList",
             width: "13%",
-            render: (v) => (v && v[0] ? `${v[0].hourDrp}(mm)` : "-"),
+            render: (v) => (v && v[0] ? `${v[0].hourDrp}` : "-"),
             align: "center",
           },
           {
-            name: "24小时",
+            name: "24小时(mm)",
             dataIndex: "raindataList",
             width: "15%",
-            render: (v) => (v && v[0] ? `${v[0].dayDrp}(mm)` : "-"),
+            render: (v) => (v && v[0] ? `${v[0].dayDrp}` : "-"),
             align: "center",
           },
           {
@@ -186,6 +186,7 @@ export const TabsList = (props) => {
                     {
                       title: "1小时",
                       dataIndex: "avgDrp",
+                      render: (v) => Number(v).toFixed(1),
                     },
                     {
                       title: "更新时间",
@@ -211,6 +212,7 @@ export const TabsList = (props) => {
                     {
                       title: "24小时",
                       dataIndex: "avgDrp",
+                      render: (v) => Number(v).toFixed(1),
                     },
                     {
                       title: "更新时间",
@@ -239,6 +241,7 @@ export const TabsList = (props) => {
                     {
                       title: "7天",
                       dataIndex: "avgDrp",
+                      render: (v) => Number(v).toFixed(1),
                     },
                     {
                       title: "更新时间",
