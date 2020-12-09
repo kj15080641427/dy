@@ -48,13 +48,13 @@ const formItem = [
     ele: <Input></Input>,
   },
   {
-    label: "经度",
-    name: "lon",
+    label: "区县",
+    name: "districtName",
     ele: <Input />,
   },
   {
-    label: "纬度",
-    name: "lat",
+    label: "河流",
+    name: "riversName",
     ele: <Input />,
   },
   {

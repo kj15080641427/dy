@@ -28,7 +28,7 @@ export const tableColumnRiver = [
     dataIndex: "z",
     ellipsis: true,
     className: "table-title-column",
-    sorter: (a, b) => a.z - b.z,
+    sorter: (a, b) => Number(a.z) - Number(b.z),
   },
   {
     title: "警戒水位(m)",

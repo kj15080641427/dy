@@ -258,7 +258,7 @@ export const rotateBarChart = (domId, data, width, height) => {
     series: [
       {
         barMinHeight: 4,
-        name: "24小时降雨",
+        name: "站点数",
         type: "bar",
         label: {
           show: true,
@@ -329,7 +329,7 @@ export const easyfloodRain = (domId, data) => {
           position: "right",
           color: "white",
         },
-        name: "数量",
+        name: "站点数",
         type: "bar",
         barMinHeight: 4,
         data: data,
@@ -375,7 +375,7 @@ export const funnelChart = (domId, data) => {
           color: "white",
         },
         barMinHeight: 4,
-        name: "数量",
+        name: "站点数",
         type: "bar",
         data: data,
       },

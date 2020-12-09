@@ -113,7 +113,7 @@ class Monitor extends React.PureComponent {
       let f = 0;
       let g = 0;
       floodRain.map((item) => {
-        if (item.dayDrp == 0) {
+        if (item.dayDrp <= 0) {
           return;
         }
         if (item.dayDrp < 10) {
@@ -175,7 +175,7 @@ class Monitor extends React.PureComponent {
           } else {
             line++;
           }
-          if (itemList.z === 0) {
+          if (itemList.z < 0.5) {
             a++;
             return;
           }
@@ -271,9 +271,7 @@ class Monitor extends React.PureComponent {
               </div>
               <TableShow
                 locale={{
-                  emptyText: (
-                    <div style={{ color: "white" }}>无超警戒易涝点</div>
-                  ),
+                  emptyText: <div style={{ color: "white" }}>无积水报警</div>,
                 }}
                 columns={[
                   { name: "易涝点", dataIndex: "stnm", width: "35%" },
