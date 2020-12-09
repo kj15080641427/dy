@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Card, Row, Col } from "antd";
+import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import "./style.scss";
 const dict = {
   whether: { 0: "是", 1: "否" },
@@ -25,19 +26,30 @@ const dict = {
 };
 const ModalInfo = (props) => {
   const { visible, setVisible, list, info } = props;
+  const [renderList, setRenderList] = useState(list.base);
+  const [showMore, setShowMore] = useState(false);
+  useEffect(() => {
+    console.log(list, "LIII");
+    setRenderList(list.base);
+  }, list.base);
   return (
     <div className="data-center-modal">
       <Modal
         visible={visible}
         footer={null}
-        onCancel={() => setVisible(false)}
+        onCancel={() => {
+          setVisible(false);
+          setRenderList(list.base);
+          setShowMore(false);
+        }}
         style={{ padding: "0px" }}
+        destroyOnClose
         className="data-center-modal"
       >
         <div className="data-center-card">
-          <Card title={info[list[0].value]}>
+          <Card title={info[renderList[0].value]}>
             <Row>
-              {list.map((item) => {
+              {renderList.map((item) => {
                 return (
                   <Col key={item.label} span={item.col ? 12 : 24}>
                     {item.isDict ? (
@@ -55,6 +67,36 @@ const ModalInfo = (props) => {
                   </Col>
                 );
               })}
+              <br />
+              {showMore ? (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                  onClick={() => {
+                    setShowMore(false);
+                    setRenderList(list.base);
+                  }}
+                >
+                  <UpOutlined style={{ color: "#00a0ea", fontSize: 25 }} />
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                  onClick={() => {
+                    setShowMore(true);
+                    setRenderList([...list.base, ...list.more]);
+                  }}
+                >
+                  <DownOutlined style={{ color: "#00a0ea", fontSize: 25 }} />
+                </div>
+              )}
             </Row>
           </Card>
         </div>

@@ -4,6 +4,7 @@
 import React from "react";
 import "./style.scss";
 import Base from "./Base";
+import { Popover } from "antd";
 import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/rain";
 class Ponding extends Base {
@@ -40,12 +41,17 @@ class Ponding extends Base {
           {model.dict[model.siteDictionariesID]}
         </div>
         <div className="m-ovl-line">
-          <label>站点地址：</label>
-          {model.address}
-        </div>
-        <div className="m-ovl-line">
           <label>更新时间：</label>
           {tmDesc}
+        </div>
+        <div className="m-ovl-line" style={{ display: "flex" }}>
+          <label>站点地址：</label>
+          {/* <Popover content={model.address.toString()} title="地址全称">
+            {model.address.toString().length > 15
+              ? model.address.toString().substring(0, 15) + "..."
+              : model.address.toString()}
+          </Popover> */}
+          <div style={{ width: "150px" }}>{model.address}</div>
         </div>
         <span className="iconfont iconcuo m-ovl-close"></span>
       </div>
