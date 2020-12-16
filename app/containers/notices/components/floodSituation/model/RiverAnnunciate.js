@@ -22,9 +22,7 @@ class RiverAnnunciate extends React.PureComponent {
         <Table
           title={this.title}
           columns={tableColumnRiver}
-          dataSource={data.sort((a, b) =>
-            b.rvnm.localeCompare(a.rvnm, "zh-CN")
-          )}
+          dataSource={data}
           loading={loding}
           rowKey={(row) => row.stnm}
           size="small"
