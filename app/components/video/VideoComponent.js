@@ -104,7 +104,7 @@ class VideoComponent extends Component {
 
   render() {
     return (
-      <div id={'videoDiv'} ref={(obj) => this.container = obj} onresize={() => this.onVideoSizeChange()}>
+      <div id={'videoDiv'} ref={(obj) => this.container = obj} onresize={() => this.onVideoSizeChange()} style={this.props.style}>
         <video
           style={styles.videoStyle}
           id="h5sVideo1"
@@ -125,6 +125,14 @@ class VideoComponent extends Component {
         document.exitFullscreen();
       }
     });
+  }
+
+  /**
+   * 获取视频标签的dom对象
+   * @returns {HTMLElement}
+   */
+  getVideoDom () {
+    return document.getElementById('h5sVideo1');
   }
 }
 

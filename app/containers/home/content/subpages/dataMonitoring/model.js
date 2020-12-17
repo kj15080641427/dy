@@ -9,6 +9,8 @@ import { bindActionCreators } from "redux";
 import * as actions from "@app/redux/actions/home";
 import Trimap from "../../../../../components/3dmap/Trimap";
 import {getPump, getGate, getAllVideo} from "@app/data/home";
+import VideoControl from "@app/components/video/VideoControl";
+import VideoComponent from "@app/components/video/VideoComponent";
 
 const pumpImageUrl = require("@app/resource/icon/定位.svg")["default"];
 const gateImageUrl = require('@app/resource/icon/ponding.svg')['default'];
@@ -19,8 +21,14 @@ class LoginLog extends React.PureComponent {
     super(props, context);
     this.state = {
       pumps: [],
-      gates: []
+      gates: [],
+      //选择的视频唯一标识
+      selectedVideoToken: null,
+      //视频窗口的中心点坐标
+      videoCenter: [],
     };
+
+    this.videoControl = new VideoControl();
   }
 
   componentDidMount() {
@@ -79,13 +87,40 @@ class LoginLog extends React.PureComponent {
   }
 
   render() {
+    let videoComponent =
+        <VideoComponent videoControl={this.videoControl} token={this.state.selectedVideoToken} ref={(ref) => this.video=ref} />;
+
     return (
       <>
         <div style={{ height: "914px", position: "relative" }}>
-          <Trimap points={this.state.pumps} />
+          <Trimap
+              ref={(ref) => this.triMap=ref }
+              points={this.state.pumps}
+              videoComponent={videoComponent}
+              videoCenter={this.state.videoCenter}
+              onElementClick={this.onElementClick.bind(this)} />
         </div>
       </>
     );
+  }
+
+  onElementClick(tagData) {
+    if(tagData && tagData.strtoken) {
+        this.setState({
+          selectedVideoToken: tagData.strtoken,
+          videoCenter: [tagData.lon, tagData.lat]
+        }, () =>{
+          if(this.triMap){
+            this.triMap.flyTo({
+              lon: tagData.lon,
+              lat: tagData.lat,
+              height: 1200
+            }, {
+              pitch: -88,
+            })
+          }
+        });
+    }
   }
 
   getDataObject(type, item) {
@@ -108,7 +143,8 @@ class LoginLog extends React.PureComponent {
         width: 32,
         height: 32,
       },
-      type: type,
+      tagType: type,
+      tagData: item,
     };
 
     if(type === 'pump') {
@@ -155,7 +191,6 @@ class LoginLog extends React.PureComponent {
 
 function mapStateToProps(state) {
   return {
- //   count: state.mapAboutReducers.count,
     video: state.monitor.video,
     videoInfo: state.handState.videoInfo,
   };
