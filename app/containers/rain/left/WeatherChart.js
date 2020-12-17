@@ -221,7 +221,6 @@ class WeatherChart extends React.PureComponent {
         },
       },
       yAxis: {
-        min: 0,
         // boundaryGap: ["10%", "10%"],
         nameLocation: "end",
         name: "单位(mm)",
@@ -234,7 +233,7 @@ class WeatherChart extends React.PureComponent {
             color: "white",
           },
           formatter: (v) => {
-            return Number(v).toFixed(2);
+            return Number(v).toFixed(1);
           },
         },
         axisLine: {
@@ -247,6 +246,8 @@ class WeatherChart extends React.PureComponent {
             color: "#00A0FD",
           },
         },
+        min: 0.5,
+        minInterval: 0.1,
       },
       series: [
         {

@@ -10,7 +10,7 @@ class Situation extends React.PureComponent {
     this.state = {};
   }
   render() {
-    const { dataSource } = this.props;
+    const { dataSource, showRain } = this.props;
     return (
       <>
         {dataSource === undefined ? null : (
@@ -26,9 +26,9 @@ class Situation extends React.PureComponent {
             <Row className="situation-text">
               <a className="text-title">降雨：</a>全市平均降水量
               {Number(dataSource?.b).toFixed(1)}
-              毫米,{Number(dataSource?.b) <= 0 ? "查询时段无降水" : ""}
-              {dataSource.b !== "0.00"
-                ? `，最大${dataSource.c}站${dataSource.d}毫米。全市${dataSource.e}
+              毫米{Number(dataSource?.b) <= 0 ? "查询时段无降水" : ""}
+              {dataSource.b !== "0.00" && showRain
+                ? `,最大${dataSource.c}站${dataSource.d}毫米。全市${dataSource.e}
               个站点暴雨，${dataSource.f}个大雨，${dataSource.g}个中雨，
               ${dataSource.h}个小雨。`
                 : "。"}

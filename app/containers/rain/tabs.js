@@ -144,14 +144,16 @@ export const TabsList = (props) => {
             name: "1小时(mm)",
             dataIndex: "raindataList",
             width: "13%",
-            render: (v) => (v && v[0] ? `${v[0].hourDrp}` : "-"),
+            render: (v) =>
+              v && v[0] ? `${Number(v[0].hourDrp)?.toFixed(1)}` : "-",
             align: "center",
           },
           {
             name: "24小时(mm)",
             dataIndex: "raindataList",
             width: "15%",
-            render: (v) => (v && v[0] ? `${v[0].dayDrp}` : "-"),
+            render: (v) =>
+              v && v[0] ? `${Number(v[0].dayDrp).toFixed(1)}` : "-",
             align: "center",
           },
           {

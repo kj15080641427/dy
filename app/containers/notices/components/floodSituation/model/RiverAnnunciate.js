@@ -14,6 +14,17 @@ class RiverAnnunciate extends React.PureComponent {
     };
   }
   render() {
+    const filterData = (data) => {
+      let list = [];
+      data.map((item) => {
+        if (item.z > item.waning && item.z && Number(item.waning)) {
+          list.unshift(item);
+        } else {
+          list.push(item);
+        }
+      });
+      return list;
+    };
     let { data } = this.state;
     let { loding } = this.props;
     return (
@@ -22,7 +33,7 @@ class RiverAnnunciate extends React.PureComponent {
         <Table
           title={this.title}
           columns={tableColumnRiver}
-          dataSource={data}
+          dataSource={filterData(data)}
           loading={loding}
           rowKey={(row) => row.stnm}
           size="small"
@@ -48,6 +59,7 @@ class RiverAnnunciate extends React.PureComponent {
       </Row>
     );
   }
+
   componentDidUpdate() {
     this.setState({
       data: this.props.dataSource,

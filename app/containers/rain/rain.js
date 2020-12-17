@@ -271,7 +271,7 @@ class RainMonitor extends React.PureComponent {
                           value = max.raindataList[0]?.dayDrp;
 
                           if (value && value !== 0) {
-                            return <span>{`${max.aliasName}(${value})`}</span>;
+                            return <span>{`${max.aliasName}(${Number(value).toFixed(1)})`}</span>;
                           }
                         }
 
@@ -298,7 +298,7 @@ class RainMonitor extends React.PureComponent {
                             }
 
                             return (
-                              <span>{`${min?.aliasName}(${minValue})`}</span>
+                              <span>{`${min?.aliasName}(${Number(minValue).toFixed(1)})`}</span>
                             );
                           }
                         }

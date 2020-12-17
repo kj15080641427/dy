@@ -114,13 +114,17 @@
   background: rgba(255, 255, 255, 0);
   width: 85px;
   z-index: 99999;
+  // a: {
+  //   width: 67px;
+  //   height: 67px;
+  // }
   .router-item-style {
     overflow: auto;
-    height: calc(100 - 80px);
+    // height: calc(100 - 80px);
     border-radius: 10px;
-    margin-bottom: 7px;
-    width: 67px;
-    height: 67px;
+    margin-bottom: 15px;
+    width: 59px;
+    height: 59px;
     color: white;
     display: flex;
     justify-content: center;
@@ -148,7 +152,7 @@
   // }
 }
 .rouer-list-modal {
-  .ant-tabs-top > .ant-tabs-nav::before{
+  .ant-tabs-top > .ant-tabs-nav::before {
     border-bottom: none;
   }
   .ant-modal-body {

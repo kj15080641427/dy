@@ -118,7 +118,7 @@ class FloodModel extends Component {
           <Spin spinning={this.props.model.loading}>
             <RenderBox
               hasTitle
-              title="东营市全市平均降水24h预报"
+              title="东营市24小时降水预报"
               style={{ height: "250px" }}
             >
               <div className="flood-head-rain-text">

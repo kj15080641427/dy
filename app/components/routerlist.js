@@ -113,6 +113,7 @@ class RouterList extends React.PureComponent {
                 key={item.url}
                 to={item.url}
                 target={item.url == "/home" ? "_blank" : ""}
+                style={{ width: "70px", height: "70px" }}
               >
                 <div
                   className="router-item-style"

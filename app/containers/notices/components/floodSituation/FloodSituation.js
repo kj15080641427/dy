@@ -25,6 +25,7 @@ class FloodSituation extends React.PureComponent {
       onOkstart,
       onOkend,
       init,
+      showRain,
       downl,
     } = this.props;
     const element = (
@@ -79,7 +80,7 @@ class FloodSituation extends React.PureComponent {
       <div>
         {element}
         <br />
-        <Situation dataSource={raindata.count}></Situation>
+        <Situation dataSource={raindata.count} showRain={showRain}></Situation>
         <br></br>
         <RainrAnnunciate
           // element={element}

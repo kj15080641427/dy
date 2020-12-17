@@ -25,6 +25,7 @@ class notices extends React.PureComponent {
         .format("YYYY-MM-DD 08:00"),
       endtime: moment(new Date()).format("YYYY-MM-DD HH:00"),
       // moment().format('YYYY-MM-DD')
+      showRain: false,
     };
     this.init = this.init.bind(this);
   }
@@ -36,6 +37,7 @@ class notices extends React.PureComponent {
       raindata,
       pointloding,
       riverloding,
+      showRain,
     } = this.state;
     return (
       <div className="flood-notices">
@@ -43,6 +45,7 @@ class notices extends React.PureComponent {
         <Head titleImg={titleImg}></Head>
         <div className="m-left-notices">
           <FloodSituation
+            showRain={showRain}
             pointdata={pointdata}
             riverdata={riverdata}
             raindata={raindata}
@@ -88,6 +91,21 @@ class notices extends React.PureComponent {
       pointloding: true,
       riverloding: true,
     });
+    let start = moment(this.state.starttime);
+    let end = moment(this.state.endtime);
+    let diff = end.diff(start, "hour");
+
+    if (diff > 24) {
+      this.setState({
+        showRain: false,
+      });
+    } else {
+      this.setState({
+        showRain: true,
+      });
+    }
+
+    console.log(diff, "AAAAAAAAAAAAA");
     downlWordData({
       startTime: this.state.starttime,
       endTime: this.state.endtime,

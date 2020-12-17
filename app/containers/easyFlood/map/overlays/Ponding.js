@@ -29,23 +29,43 @@ class Ponding extends Base {
       >
         <div className="m-ovl-line luo-ovl-title">积水站点：{model.name}</div>
         <div className="m-ovl-line">
-          <label>积水深度：</label>
+          <label
+            style={{ width: "80px", marginLeft: "10px", textAlign: "left" }}
+          >
+            积水深度：
+          </label>
           {model.z}cm
         </div>
         <div className="m-ovl-line">
-          <label>站点编号：</label>
+          <label
+            style={{ width: "80px", marginLeft: "10px", textAlign: "left" }}
+          >
+            站点编号：
+          </label>
           {model.stcd}
         </div>
         <div className="m-ovl-line">
-          <label>数据来源：</label>
+          <label
+            style={{ width: "80px", marginLeft: "10px", textAlign: "left" }}
+          >
+            数据来源：
+          </label>
           {model.dict[model.siteDictionariesID]}
         </div>
         <div className="m-ovl-line">
-          <label>更新时间：</label>
+          <label
+            style={{ width: "80px", marginLeft: "10px", textAlign: "left" }}
+          >
+            更新时间：
+          </label>
           {tmDesc}
         </div>
         <div className="m-ovl-line" style={{ display: "flex" }}>
-          <label>站点地址：</label>
+          <label
+            style={{ width: "80px", marginLeft: "10px", textAlign: "left" }}
+          >
+            站点地址：
+          </label>
           {/* <Popover content={model.address.toString()} title="地址全称">
             {model.address.toString().length > 15
               ? model.address.toString().substring(0, 15) + "..."

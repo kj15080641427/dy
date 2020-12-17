@@ -165,12 +165,13 @@ export const taskChart = (domId, data, title, width, legend) => {
         startAngle: 140,
         name: "",
         type: "pie",
-        radius: ["50%", "65%"],
+        radius: ["60%", "75%"],
         data: data,
         left: "center",
         width: width || 400,
         labelLine: {
-          // show: false,
+          length: 0,
+          show: false,
           lineStyle: {
             color: "white",
           },
