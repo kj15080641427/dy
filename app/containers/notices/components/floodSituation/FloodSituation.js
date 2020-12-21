@@ -32,16 +32,15 @@ class FloodSituation extends React.PureComponent {
       <div className="noties-head">
         {/* <Row> */}
         <div>
-          开始时间&nbsp;&nbsp;&nbsp;
+          选择日期&nbsp;&nbsp;&nbsp;
           <DatePicker
-            format={"YYYY-MM-DD HH"}
+            format={"YYYY-MM-DD"}
             size="large"
-            showTime
             onOk={onOkstart}
             onChange={onOkstart}
           />
         </div>
-        <div>
+        {/* <div>
           结束时间&nbsp;&nbsp;&nbsp;
           <DatePicker
             format={"YYYY-MM-DD HH"}
@@ -50,7 +49,7 @@ class FloodSituation extends React.PureComponent {
             onOk={onOkend}
             onChange={onOkend}
           />
-        </div>
+        </div> */}
         <div>
           <Button
             type="primary"

@@ -68,9 +68,10 @@ const TaskInfoCard = (props) => {
         color: index == 1 ? "red" : index == 2 ? "green" : "blue",
       },
     }));
-    let a = stateList[0];
-    stateList[0] = stateList[2];
-    stateList[2] = a;
+    // stateList
+    // let a = stateList[0];
+    // stateList[0] = stateList[2];
+    // stateList[2] = a;
     taskChart("stateChart", stateList, "状态");
     taskChart("sourceChart", sourceList, "来源");
     taskChart("gradeChart", gradeList.reverse(), "等级");

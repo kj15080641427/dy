@@ -158,6 +158,7 @@ export const taskChart = (domId, data, title, width, legend) => {
     },
     grid: {
       left: "center",
+      width: "180px",
     },
     series: [
       {
@@ -165,7 +166,7 @@ export const taskChart = (domId, data, title, width, legend) => {
         startAngle: 140,
         name: "",
         type: "pie",
-        radius: ["60%", "75%"],
+        radius: ["50%", "65%"],
         data: data,
         left: "center",
         width: width || 400,
@@ -182,6 +183,7 @@ export const taskChart = (domId, data, title, width, legend) => {
           color: "white",
           show: true,
           position: "inside",
+          rotate: -20,
           formatter: "{b}: {@2012}",
         },
       },
