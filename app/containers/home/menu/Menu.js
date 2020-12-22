@@ -11,6 +11,7 @@ import {
   DesktopOutlined,
   ContainerOutlined,
   MailOutlined,
+  HistoryOutlined
 } from "@ant-design/icons";
 import "./style.scss";
 const NewMenus = () => {
@@ -19,6 +20,11 @@ const NewMenus = () => {
       url: "/home/",
       name: "首页",
       img: <ContainerOutlined />,
+    },
+    {
+      url: '/home/History',
+      name: '历史数据',
+      img : <HistoryOutlined />
     },
     {
       url: "/home/DataMonitoring",
