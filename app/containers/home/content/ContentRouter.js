@@ -8,6 +8,7 @@ import FloodManagement from "./subpages/floodManagement";
 import System from "./subpages/System";
 import BasicData from "./subpages/BasicData";
 import SiteInfo from "./subpages/site";
+import History from "./subpages/History/History";
 const NoMatch = () => <div>没有找到该路由</div>;
 
 class ContentRouter extends React.PureComponent {
@@ -22,6 +23,7 @@ class ContentRouter extends React.PureComponent {
         {console.log(path)}
         <Route exact path={path} component={Home} />
         <Route path={"/#/"} component={Login} />
+          <Route path={path + "/History"} component={History} />
         <Route path={path + "/DataMonitoring"} component={DataMonitoring} />
         <Route path={path + "/FloodManagement"} component={FloodManagement} />
         <Route path={path + "/System"} component={System} />
