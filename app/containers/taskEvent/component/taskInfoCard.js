@@ -110,7 +110,10 @@ const TaskInfoCard = (props) => {
           </div>
         </Card>
         <br />
-        <Card title={taskInfo?.name} className="task-left-card">
+        <Card
+          title={taskInfo?.name}
+          className="task-left-card"
+        >
           <img
             src={state[taskInfo?.state]}
             style={{
