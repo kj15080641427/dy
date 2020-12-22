@@ -389,7 +389,7 @@ class Monitor extends React.PureComponent {
                           width: "25%",
                           render: (value) =>
                             value && value[0]
-                              ? (value[0].z * 100).toFixed(2)
+                              ? (value[0].z * 100).toFixed(1)
                               : "-",
                         },
                         {
@@ -439,7 +439,8 @@ class Monitor extends React.PureComponent {
                           name: "雨量",
                           dataIndex: "raindataList",
                           width: "15%",
-                          render: (v) => (v && v[0] ? v[0].dayDrp : "-"),
+                          render: (v) =>
+                            v && v[0] ? Number(v[0].dayDrp).toFixed(1) : "-",
                         },
                         {
                           name: "更新时间",

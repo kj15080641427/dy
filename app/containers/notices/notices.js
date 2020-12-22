@@ -73,7 +73,8 @@ class notices extends React.PureComponent {
 
   onOkstart = (value) => {
     this.setState({
-      starttime: moment(value).format("YYYY-MM-DD HH:00"),
+      starttime: moment(value).format("YYYY-MM-DD 08:00"),
+      endtime: moment(value).add(1, "days").format("YYYY-MM-DD 08:00"),
     });
     console.log(value);
   };

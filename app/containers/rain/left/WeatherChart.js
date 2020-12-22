@@ -56,7 +56,7 @@ class WeatherChart extends React.PureComponent {
         });
         console.log(this.state.cityData, "????");
         for (var i = result.data.length - 1; i >= 0; i--) {
-          setData.unshift((result.data[i].prd * 1).toFixed(2));
+          setData.unshift((result.data[i].prd * 1).toFixed(1));
         }
         myChart.setOption({
           title: {
@@ -165,7 +165,7 @@ class WeatherChart extends React.PureComponent {
       let c = data.pop();
       this.setState({ cityData: Number(c.prd).toFixed(1) });
 
-      data.map((d) => (d.value = Number(d.prd)));
+      data.map((d) => (d.value = Number(d.prd).toFixed(1)));
       dataSource = data;
     }
     const myChart = echarts.init(document.getElementById("main"));
@@ -246,8 +246,10 @@ class WeatherChart extends React.PureComponent {
             color: "#00A0FD",
           },
         },
-        min: 0.5,
-        minInterval: 0.1,
+        // scale: true,
+        min: 2.5,
+        splitNumber: 6,
+        minInterval: 0.5,
       },
       series: [
         {
@@ -265,7 +267,7 @@ class WeatherChart extends React.PureComponent {
               { offset: 1, color: "rgba(156, 79, 245, 0.1)" },
             ]),
           },
-          data: dataSource ? dataSource.map((ds) => ds.value.toFixed(1)) : [],
+          data: dataSource ? dataSource.map((ds) => ds.value) : [],
         },
       ],
     });
