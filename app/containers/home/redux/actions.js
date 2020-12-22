@@ -401,3 +401,11 @@ export const setFeedTaskModal = (data) => {
     data,
   };
 };
+
+//获取区县
+export const getArea = (data) => {
+  return {
+    type: types.GET_AREA,
+    data,
+  };
+};

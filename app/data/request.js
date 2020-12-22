@@ -410,3 +410,65 @@ export function getUserMenu(data) {
 export function loginOut(data) {
   return fetchJSONData("POST", "/base/Users/logout", data);
 }
+
+//历史数据查询实时降雨
+export function getHisNowRain(data) {
+  return fetchJSONData("POST", "/base/pagedata/pageRaindataLog", data);
+}
+
+//历史数据查询5分钟降雨
+export function getHisFiveRain(data) {
+  return fetchJSONData("POST", "/base/pagedata/pageRaindataMinute", data);
+}
+
+//历史数据查询1小时降雨
+export function getHisHourRain(data) {
+  return fetchJSONData("POST", "/base/pagedata/pageRaindataHour", data);
+}
+
+//历史数据查询24小时降雨
+export function getHisDayRain(data) {
+  return fetchJSONData("POST", "/base/pagedata/pageRaindataDay", data);
+}
+
+//历史数据查询实时水位
+export function getHisNowWater(data) {
+  return fetchJSONData("POST", "/base/pagedata/pageWaterLevels", data);
+}
+
+//历史数据查询积水点
+export function getHisPoint(data) {
+  return fetchJSONData("POST", "/base/pagedata/pageSiteWaterPoint", data);
+}
+
+//导出实时降雨量
+export function exportNowRain() {
+  return "/api/v2/base/pagedata/exportPageRaindataLog";
+}
+//导出5分钟降雨量
+export function exportFiveRain() {
+  return "/api/v2/base/pagedata/exportPageRaindataMinute";
+}
+//导出1小时降雨量
+export function exportHourRain() {
+  return "/api/v2/base/pagedata/exportPageRaindataHour";
+}
+//导出24小时降雨量
+export function exportDayRain() {
+  return "/api/v2/base/pagedata/exportPageRaindataDay";
+}
+
+//导出实时水位
+export function exportWater() {
+  return "/api/v2/base/pagedata/exportPageWaterLevels";
+}
+
+//导出积水点
+export function exportPoint() {
+  return "/api/v2/base/pagedata/exportPageSiteWaterPoint";
+}
+
+//历史数据查询积水点
+export function getArea(data) {
+  return fetchJSONData("POST", "/base/area/query", data);
+}

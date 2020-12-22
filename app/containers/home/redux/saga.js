@@ -191,16 +191,45 @@ function* getDict() {
       result.data.records.map((item) => {
         obj[item.stateRelationID] = item.name;
       });
+      let dataFromDict = result.data.records.filter((item) => item.type == 1);
       yield put({
         type: types.SET_DICT,
-        data: { obj: obj, baseDict: result.data.records },
+        data: {
+          obj: obj,
+          baseDict: result.data.records,
+          dataFromDict: dataFromDict,
+        },
       });
     }
   } catch (error) {
     console.error(error);
   }
 }
-
+//获取区县
+function* getArea() {
+  try {
+    const result = yield call(req.getArea, { parent: "370500" });
+    if ((result.code = successCode)) {
+      let list = result.data.map((item) => ({
+        title: item.areaname,
+        value: item.areacode,
+      }));
+      const areaTree = [
+        {
+          title: "东营市",
+          value: '370500',
+          children: list,
+        },
+      ];
+      yield put({
+        type: types.SET_AREA,
+        data: areaTree,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
 export default function* management() {
   yield all([
     takeEvery(types.GET_BASE, getbaseData),
@@ -212,5 +241,6 @@ export default function* management() {
     takeEvery(types.READ_ONLY_TABLE_GETALL, readOnlyGetAll),
     takeEvery(types.ADD_SITE_RELATION, addSiteRelation),
     takeEvery(types.GET_DICT, getDict),
+    takeEvery(types.GET_AREA, getArea),
   ]);
 }

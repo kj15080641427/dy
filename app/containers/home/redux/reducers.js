@@ -85,6 +85,9 @@ export default function management(state = initState, action) {
         },
       };
       break;
+    case types.SET_AREA:
+      newState = { ...newState, area: action.data };
+      break;
     default:
       break;
   }

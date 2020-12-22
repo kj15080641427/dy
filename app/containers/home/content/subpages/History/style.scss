@@ -1,0 +1,27 @@
+.fc_container {
+  .ant-form-item {
+    margin-left: 10px;
+  }
+}
+.home-his-layout-tabs {
+  background: rgb(123, 147, 255);
+  padding: 10px 10px 0px 10px;
+  margin-bottom: 10px;
+  .ant-radio-button-wrapper {
+    margin-right: 10px;
+    color: white;
+    background: rgb(123, 147, 255);
+    border: 0px;
+    border-radius: 10px 10px 0px 0px;
+  }
+  .ant-radio-button-wrapper:not(:first-child)::before {
+    background: none;
+  }
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    color: #40a9ff;
+    background: white;
+  }
+  .ant-radio-button-wrapper-checked:not([class*=" ant-radio-button-wrapper-disabled"]).ant-radio-button-wrapper:first-child {
+    border-radius: 10px 10px 0px 0px;
+  }
+}

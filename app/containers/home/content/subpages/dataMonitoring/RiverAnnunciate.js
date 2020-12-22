@@ -43,9 +43,9 @@ class RiverAnnunciate extends React.PureComponent {
           <Button type="primary" size="large" onClick={this.init}>
             查询
           </Button>
-          <Button type="primary" size="large" onClick={this.downl}>
+          {/* <Button type="primary" size="large" onClick={this.downl}>
             导出
-          </Button>
+          </Button> */}
         </div>
 
         <br />

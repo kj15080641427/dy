@@ -567,3 +567,7 @@ export function getUserMenu(data) {
 export function getVideoOnline(data) {
   return fetchJSONData("POST", "/base/RadioOnline/query", data);
 }
+
+export function getArea(data) {
+  return fetchJSONData("POST", "/base/area/query", data);
+}

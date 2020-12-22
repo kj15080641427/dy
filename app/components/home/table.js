@@ -17,7 +17,7 @@ export default (props) => {
     rowSelection, //查询配置
     columns = [], //表格配置
     showEdit = true, //是否可以编辑
-
+    showSizeChangeer = true,
   } = props;
   const columnsBase = [
     {
@@ -48,7 +48,7 @@ export default (props) => {
     size: "default",
     current: current,
     showQuickJumper: true,
-    showSizeChanger: true,
+    showSizeChanger: showSizeChangeer,
     onChange: (current) => changePage(current),
     pageSize: size,
     onShowSizeChange: (current, pageSize) => {

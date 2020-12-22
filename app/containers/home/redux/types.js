@@ -101,3 +101,7 @@ export const SET_TASK_TIMELINE = "SET_TASK_TIMELINE";
 export const FEED_TASK = "FEED_TASK";
 //事件反馈modal
 export const FEED_TASK_MODAL = "FEED_TASK_MODAL";
+
+//获取行政区域
+export const GET_AREA = "GET_AREA";
+export const SET_AREA = "SET_AREA";

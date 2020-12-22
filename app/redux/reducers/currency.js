@@ -28,6 +28,7 @@ export default function currency(
         ...newState,
         dict: action.data.obj,
         baseDict: action.data.baseDict,
+        dataFromDict: action.data.dataFromDict,
       };
       break;
     case types.SET_ALARM_DATA:
