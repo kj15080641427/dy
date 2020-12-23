@@ -98,6 +98,9 @@ const History = () => {
   const onRainFinish = (values) => {
     setRainLoading(true);
     setCurrent(1);
+    if (values.addvcd == "370500") {
+      values.addvcd = undefined;
+    }
     let req = type[rainType];
     if (values.time) {
       let start = moment(values.time[0]).format("YYYY-MM-DD HH:mm:ss");
