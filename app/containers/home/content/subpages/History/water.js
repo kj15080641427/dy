@@ -29,12 +29,13 @@ const rainCol = [
     title: "水位(m)",
     ellipsis: true,
     dataIndex: "z",
+    render: (e) => Number(e)?.toFixed(2),
   },
   {
     title: "更新时间",
     ellipsis: true,
     dataIndex: "",
-    render: (value) => value.tm || value.startTime || "-",
+    render: (value) => value.tm?.slice(0, -3) || "-",
   },
 ];
 
