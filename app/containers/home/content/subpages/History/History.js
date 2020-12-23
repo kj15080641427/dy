@@ -5,7 +5,6 @@ import { Radio, Tabs, message, Select } from "antd";
 // import Model from "../dataMonitoring/model";
 import FilterCondition from "@app/components/filter/FilterCondition";
 import {
-  getHisNowRain,
   getHisFiveRain,
   getHisHourRain,
   getHisDayRain,
@@ -24,7 +23,6 @@ import Water from "./water";
 import Point from "./point";
 
 const type = {
-  0: getHisNowRain,
   1: getHisFiveRain,
   2: getHisHourRain,
   3: getHisDayRain,
@@ -58,29 +56,24 @@ const rainCol = [
     title: "降雨量(mm)",
     ellipsis: true,
     dataIndex: "",
-    render: (value) =>
-      value.avgDrp
-        ? value.avgDrp
-        : value.avgDrp == 0
-        ? value.avgDrp
-        : value.drp,
+    render: (value) => Number(value.avgDrp)?.toFixed(1),
   },
   {
     title: "更新时间",
     ellipsis: true,
     dataIndex: "",
-    render: (value) => value.tm || value.startTime || "-",
+    render: (value) => value.startTime?.slice(0, -3) || "-",
   },
 ];
 const History = () => {
-  const [rainType, setRainType] = useState("0");
+  const [rainType, setRainType] = useState("1");
   const [rainData, setRainData] = useState();
   const [rainSelect, setRainSelect] = useState({});
   const [current, setCurrent] = useState(1);
   const [rainLoading, setRainLoading] = useState(false);
   useEffect(() => {
     setRainLoading(true);
-    getHisNowRain({ current: 1, size: 10 }).then((res) => {
+    getHisFiveRain({ current: 1, size: 10 }).then((res) => {
       setRainData(res.data);
       setRainLoading(false);
     });
@@ -98,6 +91,9 @@ const History = () => {
   const onRainFinish = (values) => {
     setRainLoading(true);
     setCurrent(1);
+    if (values.addvcd == "370500") {
+      values.addvcd = undefined;
+    }
     let req = type[rainType];
     if (values.time) {
       let start = moment(values.time[0]).format("YYYY-MM-DD HH:mm:ss");
@@ -131,7 +127,7 @@ const History = () => {
   const rainExportData = () => {
     let req = exportType[rainType];
     let obj = {
-      0: "实时降雨量",
+      // 0: "实时降雨量",
       1: "5分钟降雨量",
       2: "1小时降雨量",
       3: "24小时降雨量",
@@ -168,13 +164,13 @@ const History = () => {
             exportData={rainExportData}
           >
             <Select
-              defaultValue="0"
+              defaultValue="1"
               value={rainType}
               onChange={(e) => setRainType(e)}
             >
-              <Select.Option key="0" value="0">
+              {/* <Select.Option key="0" value="0">
                 实时降雨量
-              </Select.Option>
+              </Select.Option> */}
               <Select.Option key="1" value="1">
                 5分钟降雨量
               </Select.Option>

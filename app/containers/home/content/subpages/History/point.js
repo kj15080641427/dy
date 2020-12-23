@@ -26,15 +26,16 @@ const rainCol = [
     render: (value) => value || "-",
   },
   {
-    title: "积水(cm)",
+    title: "积水深(cm)",
     ellipsis: true,
     dataIndex: "z",
+    render: (e) => Number(e).toFixed(1),
   },
   {
     title: "更新时间",
     ellipsis: true,
     dataIndex: "",
-    render: (value) => value.tm || value.startTime || "-",
+    render: (value) => value.tm?.slice(0, -3) || "-",
   },
 ];
 
@@ -63,6 +64,9 @@ export default () => {
   const onRainFinish = (values) => {
     setRainLoading(true);
     setCurrent(1);
+    if (values.addvcd == "370500") {
+      values.addvcd = undefined;
+    }
     if (values.time) {
       let start = moment(values.time[0]).format("YYYY-MM-DD HH:mm:ss");
       let end = moment(values.time[1]).format("YYYY-MM-DD HH:mm:ss");
