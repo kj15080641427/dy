@@ -13,9 +13,9 @@ import updateImg from "@app/resource/事件调整.svg";
 import "../task.scss";
 
 const iconStyle = {
-  fontSize: "50px",
-  width: "50px",
-  height: "50px",
+  fontSize: "25px",
+  width: "20px",
+  height: "20px",
   background: "#003366",
 };
 const navi = [
@@ -31,7 +31,7 @@ const navi = [
   },
   {
     icon: <img src={userImg} style={iconStyle} />,
-    text: "防汛人员调度",
+    text: "人员调度",
     url: "/userDispatch",
   },
   {
