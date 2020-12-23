@@ -14,7 +14,7 @@ import {
   Tabs,
   DatePicker,
   Table,
-  Spin,
+  Form,
 } from "antd";
 import DYForm from "@app/components/home/form";
 import moment from "moment";
@@ -424,8 +424,7 @@ const TaskList = (props) => {
               })}
             </div>
             <Modal
-              width="100%"
-              height="930px"
+              width="800px"
               style={{ top: 20 }}
               visible={taskdangerModalVisible}
               footer={null}
@@ -435,91 +434,226 @@ const TaskList = (props) => {
                 setShowButton(true);
                 setShowDanger(false);
               }}
-              className="task-danger-body"
               forceRender
             >
-              <div className="task-danger-modal">
-                <Card
-                  title={dangerType[danger.stateRelationID]}
-                  style={{ height: "700px", width: "300px" }}
-                >
-                  <div className="task-list-card-text-margin">
-                    <div className="task-list-card-text-span"></div>
-                    <div>上报时间：{danger.createTime?.substring(0, 16)}</div>
-                  </div>
-                  {/* <div className="task-list-card-text-margin">
-                    <div className="task-list-card-text-span"></div>
-                    <div>
-                      事件区域：<span>{danger.address}</span>
-                    </div>
-                  </div> */}
-                  <div className="task-list-card-text-margin">
-                    <div>
-                      <div className="task-list-card-text-margin">
-                        <div className="task-list-card-text-span"></div>
-                        <div>事件地址：</div>
-                      </div>
-                      <div className="task-list-card-remark">
-                        &nbsp;&nbsp; &nbsp;&nbsp;{" "}
-                        <Popover content={danger.address}>
-                          {danger.address}
-                        </Popover>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="task-list-card-text-margin">
-                    <div>
-                      <div className="task-list-card-text-margin">
-                        <div className="task-list-card-text-span"></div>
-                        <div>事件描述：</div>
-                      </div>
-                      <div className="task-list-card-remark">
-                        &nbsp;&nbsp; &nbsp;&nbsp;{" "}
-                        <Popover content={danger.resultCount}>
-                          {danger.resultCount}
-                        </Popover>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    {danger.resultFile &&
-                      danger.resultFile.split(",").map((item, index) => {
-                        return (
-                          <img
-                            src={item}
-                            key={index}
-                            width="150px"
-                            height="150px"
-                          ></img>
-                        );
-                      })}
-                  </div>
-                  {showButton ? (
-                    <Button
-                      onClick={() => {
-                        setSource(1);
-                        setShowButton(false);
-                        formRef.current.setFieldsValue({
-                          ...danger,
-                          name: dangerType[danger.stateRelationID],
-                          remark: danger.resultCount,
-                        });
-                        setShowDanger(true);
-                      }}
-                      type="primary"
-                      style={{ marginTop: "80px", marginLeft: "70px" }}
-                    >
-                      立即处理
-                    </Button>
-                  ) : null}
-                </Card>
-                <img
-                  src={jimg}
-                  width="50px"
-                  height="50px"
-                  style={{ display: showDanger ? "block" : "none" }}
-                ></img>
+              {/* <div className="task-danger-info">
+                <div className="danger-title">险情上报</div>
+                <div className="danger-one">
+                  <div>类型</div>
+                  <div>{dangerType[danger.stateRelationID]}</div>
+                </div>
+              </div> */}
+              <div className="task-danger-inf">
+                <Form onFinish={onFinish} ref={formRef}>
+                  <table border="1" className="danger-table">
+                    <tr>
+                      <th colSpan="18" className="danger-title">
+                        险情上报
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>类型</th>
+                      <td>{dangerType[danger.stateRelationID]}</td>
+                      <th>时间</th>
+                      <td>{danger.createTime?.substring(0, 16)}</td>
+                      <th>上报人</th>
+                      <td>{dangerType[danger.user]}</td>
+                    </tr>
+                    <tr>
+                      <th colSpan="1">事件地点</th>
+                      <td colSpan="14"> {danger.address}</td>
+                    </tr>
+                    <tr className="danger-detail">
+                      <th colSpan="1">事件描述</th>
+                      <td colSpan="14"> {danger.resultCount}</td>
+                    </tr>
+                    <tr className="danger-image">
+                      <th colSpan="1">现场照片</th>
+                      <td colSpan="14">
+                        {danger.resultFile &&
+                          danger.resultFile.split(",").map((item, index) => {
+                            return (
+                              <img
+                                src={item}
+                                key={index}
+                                width="150px"
+                                height="150px"
+                              ></img>
+                            );
+                          })}
+                      </td>
+                    </tr>
 
+                    <tr>
+                      <td colSpan="18" className="danger-button">
+                        {showButton ? (
+                          <Button
+                            onClick={() => {
+                              setSource(1);
+                              setShowButton(false);
+                              formRef.current.setFieldsValue({
+                                ...danger,
+                                name: dangerType[danger.stateRelationID],
+                                remark: danger.resultCount,
+                              });
+                              setShowDanger(true);
+                            }}
+                            type="primary"
+                          >
+                            创建事件
+                          </Button>
+                        ) : null}
+                      </td>
+                    </tr>
+                    {!showButton && (
+                      <>
+                        <tr>
+                          <th>事件来源</th>
+                          <td>险情上报</td>
+                          <th>时间</th>
+                          <td className="danger-formitem">
+                            <Form.Item name="happenTime">
+                              <DatePicker showTime />
+                            </Form.Item>
+                          </td>
+                          <th>事件等级</th>
+                          <td className="danger-formitem">
+                            <Form.Item
+                              name="grade"
+                              rules={[{ required: true, message: "不能为空" }]}
+                            >
+                              <Select className="danger-select">
+                                <Select.Option value={1}>一级</Select.Option>
+                                <Select.Option value={2}>二级</Select.Option>
+                                <Select.Option value={3}>三级</Select.Option>
+                              </Select>
+                            </Form.Item>
+                          </td>
+                        </tr>
+                        {/*  */}
+                        <tr>
+                          <th>事件名称</th>
+                          <td className="danger-formitem">
+                            <Form.Item
+                              name="name"
+                              rules={[{ required: true, message: "不能为空" }]}
+                            >
+                              <Input />
+                            </Form.Item>
+                          </td>
+
+                          <th>区县</th>
+                          <td className="danger-formitem">
+                            <Form.Item name="address">
+                              <Select
+                                defaultValue={"东营区(开发区)"}
+                                className="danger-select"
+                              >
+                                <Select.Option value={"东营区(开发区)"}>
+                                  东营区(开发区)
+                                </Select.Option>
+                                <Select.Option value={"垦利区"}>
+                                  垦利区
+                                </Select.Option>
+                                <Select.Option value={"河口区(东营港)"}>
+                                  河口区(东营港)
+                                </Select.Option>
+                                <Select.Option value={"利津区"}>
+                                  利津区
+                                </Select.Option>
+                                <Select.Option value={"广饶县(省农高区)"}>
+                                  广饶县(省农高区)
+                                </Select.Option>
+                              </Select>
+                            </Form.Item>
+                          </td>
+
+                          <th>河流</th>
+                          <td className="danger-formitem">
+                            <Form.Item name="riversName">
+                              <Input />
+                            </Form.Item>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>联系人</th>
+                          <td className="danger-formitem">
+                            <Form.Item
+                              name="reportPersonName"
+                              rules={[{ required: true, message: "不能为空" }]}
+                            >
+                              <Input />
+                            </Form.Item>
+                          </td>
+
+                          <th>联系电话</th>
+                          <td className="danger-formitem">
+                            <Form.Item
+                              name="reportPersonPhone"
+                              rules={[{ required: true, message: "不能为空" }]}
+                            >
+                              <Input />
+                            </Form.Item>
+                          </td>
+                          <th>事件类型</th>
+                          <td className="danger-formitem">
+                            <Form.Item
+                              name="stateRelationID"
+                              rules={[{ required: true, message: "不能为空" }]}
+                            >
+                              <Select>
+                                <Select.Option value={26}>
+                                  河流水位
+                                </Select.Option>
+                                <Select.Option value={27}>
+                                  城市积水
+                                </Select.Option>
+                                <Select.Option value={28}>
+                                  设备问题
+                                </Select.Option>
+                                <Select.Option value={29}>其他</Select.Option>
+                              </Select>
+                            </Form.Item>
+                          </td>
+                        </tr>
+                        {/*  */}
+                        <tr className="danger-detail">
+                          <th colSpan="1">事件描述</th>
+                          <td colSpan="14">
+                            <Form.Item
+                              name="remark"
+                              rules={[{ required: true, message: "不能为空" }]}
+                            >
+                              <Input.TextArea
+                                autoSize={{ minRows: 7, maxRows: 7 }}
+                              />
+                            </Form.Item>
+                          </td>
+                        </tr>
+                        {/*  */}
+                        <tr>
+                          <td colSpan="18" className="danger-button">
+                            <Button
+                              onClick={() => {
+                                setTaskDangerModal(false);
+                                setShowButton(true);
+                                setShowDanger(false);
+                              }}
+                            >
+                              取消
+                            </Button>
+                            <Button type="primary" htmlType="submit">
+                              保存
+                            </Button>
+                          </td>
+                        </tr>
+                      </>
+                    )}
+                  </table>
+                </Form>
+              </div>
+
+              {/* <div className="task-danger-modal">
                 <div style={{ width: "300px" }}>
                   <Card
                     // title="新增事件"
@@ -549,7 +683,7 @@ const TaskList = (props) => {
                     ></DYForm>
                   </Card>
                 </div>
-              </div>
+              </div> */}
             </Modal>
             <Pagination
               className="task-list-pagination"

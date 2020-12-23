@@ -1,3 +1,4 @@
+@import "@app/variable.scss";
 .task-list-head {
   width: 100%;
   display: flex;
@@ -79,6 +80,7 @@
     position: absolute;
     bottom: 10px;
     right: 10px;
+    cursor: pointer;
   }
   a {
     position: absolute;
@@ -139,7 +141,7 @@
   width: 450px;
   // right: 20px;
   margin-left: 20px;
-  .ant-card-body{
+  .ant-card-body {
     padding: 0;
   }
 }
@@ -531,26 +533,6 @@
     background: blue;
   }
 }
-.task-danger-body {
-  display: flex;
-  justify-content: center;
-  width: 800px;
-  height: 930px;
-  .ant-modal {
-    top: 50px;
-  }
-  .ant-modal-content {
-    width: 1200px;
-  }
-  .task-danger-modal {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    .ant-card-body {
-      // height: 700px;
-    }
-  }
-}
 .task-dispatch-root-body {
   // min-height: 800px;
   height: 100%;
@@ -624,4 +606,42 @@
     margin-left: 10px;
     border: 1px solid #1890ff;
   }
+}
+
+.danger-table {
+  width: 760px;
+  td,
+  th {
+    padding-right: 10px;
+    padding-left: 10px;
+    height: 40px;
+    word-break: break-all;
+    min-width: 100px;
+  }
+}
+.danger-title {
+  text-align: center;
+  height: 40px;
+  padding: 0px;
+}
+.danger-detail {
+  height: 200px;
+}
+.danger-image {
+  height: 190px;
+  img {
+    margin: 13px;
+  }
+}
+.danger-button {
+  text-align: right;
+  padding-right: 10px;
+}
+.danger-formitem {
+  .ant-form-item {
+    margin: 0px;
+  }
+}
+.danger-select {
+  width: 100%;
 }
