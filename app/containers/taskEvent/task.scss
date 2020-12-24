@@ -153,7 +153,7 @@
 .task-info-statistics-modal {
   z-index: 99;
   position: absolute;
-  min-width: 380px;
+  min-width: 480px;
   //width: 230px;
   top: 150px;
   transform: translate(-50%, -50%);
@@ -371,7 +371,7 @@
   top: 120px;
   width: 200px;
   height: 50px;
-  right: 500px;
+  right: 450px;
   z-index: 99;
   .track-query-icon {
     width: 15px;
@@ -389,7 +389,7 @@
   position: absolute;
   top: 180px;
   z-index: 9;
-  right: 500px;
+  right: 450px;
   text-align: right;
   img {
     width: 50px;
@@ -675,6 +675,7 @@
     height: 40px;
     word-break: break-all;
     min-width: 100px;
+    line-height: 40px;
   }
 }
 .danger-title {

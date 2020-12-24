@@ -541,29 +541,23 @@ const TaskList = (props) => {
                               <Input />
                             </Form.Item>
                           </td>
-
-                          <th>区县</th>
+                          <th>事件类型</th>
                           <td className="danger-formitem">
-                            <Form.Item name="address">
-                              <Select
-                                defaultValue={"东营区(开发区)"}
-                                className="danger-select"
-                              >
-                                <Select.Option value={"东营区(开发区)"}>
-                                  东营区(开发区)
+                            <Form.Item
+                              name="stateRelationID"
+                              rules={[{ required: true, message: "不能为空" }]}
+                            >
+                              <Select>
+                                <Select.Option value={26}>
+                                  河流水位
                                 </Select.Option>
-                                <Select.Option value={"垦利区"}>
-                                  垦利区
+                                <Select.Option value={27}>
+                                  城市积水
                                 </Select.Option>
-                                <Select.Option value={"河口区(东营港)"}>
-                                  河口区(东营港)
+                                <Select.Option value={28}>
+                                  设备问题
                                 </Select.Option>
-                                <Select.Option value={"利津区"}>
-                                  利津区
-                                </Select.Option>
-                                <Select.Option value={"广饶县(省农高区)"}>
-                                  广饶县(省农高区)
-                                </Select.Option>
+                                <Select.Option value={29}>其他</Select.Option>
                               </Select>
                             </Form.Item>
                           </td>
@@ -595,28 +589,20 @@ const TaskList = (props) => {
                               <Input />
                             </Form.Item>
                           </td>
-                          <th>事件类型</th>
-                          <td className="danger-formitem">
-                            <Form.Item
-                              name="stateRelationID"
-                              rules={[{ required: true, message: "不能为空" }]}
-                            >
-                              <Select>
-                                <Select.Option value={26}>
-                                  河流水位
-                                </Select.Option>
-                                <Select.Option value={27}>
-                                  城市积水
-                                </Select.Option>
-                                <Select.Option value={28}>
-                                  设备问题
-                                </Select.Option>
-                                <Select.Option value={29}>其他</Select.Option>
-                              </Select>
-                            </Form.Item>
-                          </td>
+                          <td colSpan={6}></td>
                         </tr>
                         {/*  */}
+
+                        <th>地址</th>
+                        <td className="danger-formitem" colSpan={12}>
+                          <Form.Item
+                            name="address"
+                            rules={[{ required: true, message: "不能为空" }]}
+                          >
+                            <Input></Input>
+                          </Form.Item>
+                        </td>
+
                         <tr className="danger-detail">
                           <th colSpan="1">事件描述</th>
                           <td colSpan="14">

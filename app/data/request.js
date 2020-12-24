@@ -468,7 +468,7 @@ export function exportPoint() {
   return "/api/v2/base/pagedata/exportPageSiteWaterPoint";
 }
 
-//历史数据查询积水点
+//历史数据查询区域
 export function getArea(data) {
   return fetchJSONData("POST", "/base/area/query", data);
 }
