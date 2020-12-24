@@ -64,8 +64,8 @@ const TaskTimeLine = (props) => {
               <div>
                 <img
                   src={taskTimelineHeaderIcon}
-                  width="50px"
-                  height="50px"
+                  width="30px"
+                  height="30px"
                 ></img>
                 <div>事件动态</div>
               </div>
@@ -74,7 +74,7 @@ const TaskTimeLine = (props) => {
           <Timeline.Item
             position="right"
             label={taskInfo?.happenTime}
-            dot={<img src={taskTimelineIcon} width="20px" height="20px"></img>}
+            // dot={<img src={taskTimelineIcon} width="15px" height="15px"></img>}
           >
             <Popover
               content={
@@ -83,14 +83,15 @@ const TaskTimeLine = (props) => {
                   <div>操作人：{taskInfo?.reportPersonName}</div>
                 </div>
               }
-              title="事件新增"
+              title="新事件"
             >
               <div
                 className="task-timeline-arrow"
                 style={{ justifyContent: "flex-end" }}
               >
-                <Card className="task-timeline-card">事件新增</Card>
-                <CaretRightOutlined style={{ color: "white" }} />
+                <span>新事件</span>
+                {/*<Card className="task-timeline-card">事件新增</Card>*/}
+                {/*<CaretRightOutlined style={{ color: "white" }} />*/}
               </div>
             </Popover>
           </Timeline.Item>
@@ -99,9 +100,6 @@ const TaskTimeLine = (props) => {
             const path = index % 2;
             return (
               <Timeline.Item
-                dot={
-                  <img src={taskTimelineIcon} width="20px" height="20px"></img>
-                }
                 key={index}
                 label={item.time}
                 position={path == 0 ? "left" : "right"}
@@ -140,9 +138,10 @@ const TaskTimeLine = (props) => {
                                 : "white",
                           }}
                         />
-                        <Card className="task-timeline-card">
-                          <div>{typeList[item.type]}</div>
-                        </Card>
+                        <span>{typeList[item.type]}</span>
+                        {/*<Card className="task-timeline-card">*/}
+                        {/*  <div>{typeList[item.type]}</div>*/}
+                        {/*</Card>*/}
                       </div>
                     </Popover>
                   </>
@@ -165,9 +164,10 @@ const TaskTimeLine = (props) => {
                         className="task-timeline-arrow"
                         style={{ justifyContent: "flex-end" }}
                       >
-                        <Card className="task-timeline-card">
-                          <div>{typeList[item.type]}</div>
-                        </Card>
+                        {/*<Card className="task-timeline-card">*/}
+                        {/*  <div>{typeList[item.type]}</div>*/}
+                        {/*</Card>*/}
+                        <span>{typeList[item.type]}</span>
                         <CaretRightOutlined
                           style={{
                             color:

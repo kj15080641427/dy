@@ -13,7 +13,7 @@ import updateImg from "@app/resource/事件调整.svg";
 import "../task.scss";
 
 const iconStyle = {
-  fontSize: "25px",
+  fontSize: "12px",
   width: "20px",
   height: "20px",
   background: "#003366",
