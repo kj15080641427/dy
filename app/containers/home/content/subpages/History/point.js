@@ -6,44 +6,46 @@ import DYTable from "../../../../../components/home/table";
 import moment from "moment";
 import { downloadFile } from "./download";
 
-const rainCol = [
-  {
-    title: "名称",
-    ellipsis: true,
-    dataIndex: "stnm",
-    render: (value) => value || "-",
-  },
-  {
-    title: "来源",
-    ellipsis: true,
-    dataIndex: "dataSourceName",
-    render: (value) => value || "-",
-  },
-  {
-    title: "区县",
-    ellipsis: true,
-    dataIndex: "areaName",
-    render: (value) => value || "-",
-  },
-  {
-    title: "积水深(cm)",
-    ellipsis: true,
-    dataIndex: "z",
-    render: (e) => Number(e).toFixed(1),
-  },
-  {
-    title: "更新时间",
-    ellipsis: true,
-    dataIndex: "",
-    render: (value) => value.tm?.slice(0, -3) || "-",
-  },
-];
-
-export default () => {
+export default (props) => {
   const [data, setData] = useState();
   const [rainSelect, setRainSelect] = useState({});
   const [current, setCurrent] = useState(1);
   const [rainLoading, setRainLoading] = useState(false);
+  const { dict } = props;
+  const rainCol = [
+    {
+      title: "名称",
+      ellipsis: true,
+      dataIndex: "stnm",
+      render: (value) => value || "-",
+    },
+    {
+      title: "来源",
+      ellipsis: true,
+      dataIndex: "siteDictionariesId",
+      render: (value) => {
+        return dict[value] || "-";
+      },
+    },
+    {
+      title: "区县",
+      ellipsis: true,
+      dataIndex: "areaName",
+      render: (value) => value || "-",
+    },
+    {
+      title: "积水深(cm)",
+      ellipsis: true,
+      dataIndex: "z",
+      render: (e) => Number(e).toFixed(1),
+    },
+    {
+      title: "更新时间",
+      ellipsis: true,
+      dataIndex: "",
+      render: (value) => value.tm?.slice(0, -3) || "-",
+    },
+  ];
 
   useEffect(() => {
     setRainLoading(true);

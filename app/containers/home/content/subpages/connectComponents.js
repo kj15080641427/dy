@@ -4,10 +4,10 @@ import DYTable from "@app/components/home/table";
 import DYForm from "@app/components/home/form";
 import { bindActionCreators } from "redux";
 import * as actions from "../../redux/actions";
-import "../../style.scss";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import moment from "moment";
+import "../../style.scss";
 
 let storeLabel = "base";
 class BaseLayout extends React.Component {
