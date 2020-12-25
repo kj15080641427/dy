@@ -20,7 +20,7 @@ const Data = () => {
         >
           <Radio.Button value="1">站点数据</Radio.Button>
           <Radio.Button value="2">河道信息</Radio.Button>
-          <Radio.Button value="3">模型演示</Radio.Button>
+          <Radio.Button value="3">3D地图</Radio.Button>
         </Radio.Group>
       </div>
       <div>
