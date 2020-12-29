@@ -104,7 +104,7 @@ const TaskInfoCard = (props) => {
             />
             <Statistic
               title={taskCountState[1]?.taskName}
-              valueStyle={{ fontSize: "24px", color: "green" }}
+              valueStyle={{ fontSize: "24px", color: "blue" }}
               value={taskCountState[1]?.number}
               prefix={<AlignCenterOutlined style={{ fontSize: "12px" }} />}
             />
@@ -116,7 +116,7 @@ const TaskInfoCard = (props) => {
             />
              <Statistic
               title={taskCountState[3]?.taskName}
-              valueStyle={{ fontSize: "24px", color: "blue" }}
+              valueStyle={{ fontSize: "24px", color: "green" }}
               value={taskCountState[3]?.number}
               prefix={<LikeOutlined style={{ fontSize: "12px" }} />}
             />
@@ -193,15 +193,16 @@ const TaskInfoCard = (props) => {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
-                <div>
+              <Col span={12}/>
+              <Col span={12}>
+                <Space>
                   <Button
                     onClick={() => {
                       setTitle("终止事件");
                       setFeedTaskModal(true);
                     }}
-                    disabled={taskInfo?.state == 3}
-                    type={"primary"}
+                    disabled={taskInfo?.state === 3}
+                    danger={true}
                   >
                     取消
                   </Button>
@@ -211,11 +212,11 @@ const TaskInfoCard = (props) => {
                       setFeedTaskModal(true);
                     }}
                     type="primary"
-                    disabled={taskInfo?.state == 3}
+                    disabled={taskInfo?.state === 3}
                   >
                     完成
                   </Button>
-                </div>
+                </Space>
               </Col>
             </Row>
 
