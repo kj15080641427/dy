@@ -22,6 +22,10 @@ import { downloadFile } from "./download";
 import Water from "./water";
 import Point from "./point";
 
+import { bindActionCreators } from "redux";
+import * as actions from "../../../redux/actions";
+import { connect } from "react-redux";
+
 const type = {
   1: getHisFiveRain,
   2: getHisHourRain,
@@ -33,45 +37,53 @@ const exportType = {
   2: exportHourRain,
   3: exportDayRain,
 };
-const rainCol = [
-  {
-    title: "名称",
-    ellipsis: true,
-    dataIndex: "stnm",
-    render: (value) => value || "-",
-  },
-  {
-    title: "来源",
-    ellipsis: true,
-    dataIndex: "dataSourceName",
-    render: (value) => value || "-",
-  },
-  {
-    title: "区县",
-    ellipsis: true,
-    dataIndex: "areaName",
-    render: (value) => value || "-",
-  },
-  {
-    title: "降雨量(mm)",
-    ellipsis: true,
-    dataIndex: "",
-    render: (value) => Number(value.avgDrp)?.toFixed(1),
-  },
-  {
-    title: "更新时间",
-    ellipsis: true,
-    dataIndex: "",
-    render: (value) => value.startTime?.slice(0, -3) || "-",
-  },
-];
-const History = () => {
+
+const History = (props) => {
   const [rainType, setRainType] = useState("1");
   const [rainData, setRainData] = useState();
   const [rainSelect, setRainSelect] = useState({});
   const [current, setCurrent] = useState(1);
   const [rainLoading, setRainLoading] = useState(false);
+  const { getDict } = props.actions;
+  const { dict } = props;
+  const rainCol = [
+    {
+      title: "名称",
+      ellipsis: true,
+      dataIndex: "stnm",
+      render: (value) => value || "-",
+    },
+    {
+      title: "来源",
+      ellipsis: true,
+      dataIndex: "siteDictionariesId",
+      render: (value) => {
+        console.log(dict, "DDDDD");
+        return dict[value] || "-";
+      },
+    },
+    {
+      title: "区县",
+      ellipsis: true,
+      dataIndex: "areaName",
+      render: (value) => value || "-",
+    },
+    {
+      title: "降雨量(mm)",
+      ellipsis: true,
+      dataIndex: "",
+      render: (value) => Number(value.avgDrp)?.toFixed(1),
+    },
+    {
+      title: "更新时间",
+      ellipsis: true,
+      dataIndex: "",
+      render: (value) => value.startTime?.slice(0, -3) || "-",
+    },
+  ];
+
   useEffect(() => {
+    getDict();
     setRainLoading(true);
     getHisFiveRain({ current: 1, size: 10 }).then((res) => {
       setRainData(res.data);
@@ -199,10 +211,10 @@ const History = () => {
           ></DYTable>
         </Tabs.TabPane>
         <Tabs.TabPane key="2" tab="水位">
-          <Water></Water>
+          <Water dict={dict}></Water>
         </Tabs.TabPane>
         <Tabs.TabPane key="3" tab="易涝点">
-          <Point></Point>
+          <Point dict={dict}></Point>
         </Tabs.TabPane>
       </Tabs>
 
@@ -218,4 +230,14 @@ const History = () => {
   );
 };
 
-export default History;
+const mapStateToProps = (state) => {
+  return {
+    dict: state.currency.dict,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(actions, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(History);

@@ -102,6 +102,7 @@ const TaskList = (props) => {
     addTaskEvent(form);
     setTaskWarningModal(false);
     setTaskDangerModal(false);
+    setShowButton(true);
   };
 
   return (
@@ -445,6 +446,10 @@ const TaskList = (props) => {
               </div> */}
               <div className="task-danger-inf">
                 <Form onFinish={onFinish} ref={formRef}>
+                  <div style={{ display: "none" }}>
+                    <Form.Item name="lon"></Form.Item>
+                    <Form.Item name="lat"></Form.Item>
+                  </div>
                   <table border="1" className="danger-table">
                     <tr>
                       <th colSpan="18" className="danger-title">
@@ -616,6 +621,7 @@ const TaskList = (props) => {
                             </Form.Item>
                           </td>
                         </tr>
+
                         {/*  */}
                         <tr>
                           <td colSpan="18" className="danger-button">
