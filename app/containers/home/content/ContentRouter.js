@@ -21,9 +21,9 @@ class ContentRouter extends React.PureComponent {
     return (
       <Switch>
         {console.log(path)}
-        <Route exact path={path} component={Home} />
+        <Route exact path={path} component={History} />
         <Route path={"/#/"} component={Login} />
-          <Route path={path + "/History"} component={History} />
+        <Route path={path + "/History"} component={History} />
         <Route path={path + "/DataMonitoring"} component={DataMonitoring} />
         <Route path={path + "/FloodManagement"} component={FloodManagement} />
         <Route path={path + "/System"} component={System} />

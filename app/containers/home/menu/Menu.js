@@ -10,17 +10,21 @@ import {
   PieChartOutlined,
   DesktopOutlined,
   ContainerOutlined,
+  BankOutlined,
+  TeamOutlined,
+  ExceptionOutlined,
   MailOutlined,
-  HistoryOutlined
+  HistoryOutlined,
+  AliwangwangOutlined
 } from "@ant-design/icons";
 import "./style.scss";
 const NewMenus = () => {
   const routerList = [
-    {
-      url: "/home/",
-      name: "首页",
-      img: <ContainerOutlined />,
-    },
+    // {
+    //   url: "/home/",
+    //   name: "首页",
+    //   img: <ContainerOutlined />,
+    // },
     {
       url: '/home/History',
       name: '历史数据',
@@ -32,32 +36,31 @@ const NewMenus = () => {
       img: <FundViewOutlined />,
     },
     {
-      url: "/home/System",
-      name: "系统设置",
-      img: <SettingOutlined />,
-    },
-    {
       url: "/home/floodManagement",
       name: "防汛管理",
       img: <CloudOutlined />,
     },
-
     {
       url: "/home/BasicData",
       name: "基础信息",
-      img: <MailOutlined />,
+      img: <ExceptionOutlined />,
     },
     {
       url: "/home/SiteInfo",
       name: "站点信息",
-      img: <DesktopOutlined />,
+      img: <BankOutlined />,
     },
 
     {
       url: "/home/chartGroup",
       name: "群聊管理",
-      img: <PieChartOutlined />,
+      img: <AliwangwangOutlined />,
     },
+    {
+      url: "/home/System",
+      name: "系统设置",
+      img: <SettingOutlined />,
+    }
   ];
   return (
     <div className="menu-layout">
