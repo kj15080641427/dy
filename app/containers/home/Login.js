@@ -138,7 +138,7 @@ class Login extends Component {
                     东营市智慧水务系统
                   </Select.Option>
                   <Select.Option value="水质监测系统">
-                    水质监测系统
+                  水环境监测与告警系统
                   </Select.Option>
                 </Select>
                 <Checkbox>

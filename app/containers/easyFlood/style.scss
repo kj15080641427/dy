@@ -1,7 +1,6 @@
 @import "@app/variable.scss";
 
 .easy-flood-display {
-  
   position: relative;
   min-height: $minheight;
   height: $mapDisplayHeight;
@@ -10,7 +9,7 @@
     display: flex;
     align-items: center;
   }
-  .flood-video-flex{
+  .flood-video-flex {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -54,8 +53,14 @@
       .ant-tabs-card.ant-tabs-top
         > .ant-tabs-nav
         .ant-tabs-tab:not(:last-of-type) {
-        border-radius: 0 30px 0 0;
-        background: #003366;
+        // border-radius: 0 30px 0 0;
+        // background: #003366;
+        width: 100px;
+        // height: 27px;
+        border-radius: 0 18px 0 0;
+        background: rgba(0, 51, 102, 0.7);
+        // color: #0099ff;
+        border: 1px solid #0099ff;
       }
     }
     .card-container p {
@@ -87,9 +92,12 @@
       .card-container
       > .ant-tabs-card
       .ant-tabs-tab-active {
-      border-color: #1890ff;
-      background: #1890ff !important;
-      color: white;
+      border-color: #0076c8;
+      background:#0076c8 !important;
+      width: 100px;
+      border-radius: 0 18px 0 0;
+      color: #0099ff !important;
+      border: 1px solid #0099ff;
     }
     #components-tabs-demo-card-top .code-box-demo {
       background: #f5f5f5;
@@ -299,7 +307,7 @@
 
     .easyfloodLine {
       width: 100%;
-      height: 290px;
+      height: 280px;
     }
     .videoBox {
       // margin-top: 10px;

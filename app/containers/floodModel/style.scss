@@ -7,7 +7,7 @@
   min-height: $minheight;
   height: $mapDisplayHeight;
 }
-.flood-head-rain-text{
+.flood-head-rain-text {
   color: white;
   text-align: center;
 }
@@ -143,7 +143,26 @@
   background: #003366 !important;
   border: none;
 }
-
+.task-card-container .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab {
+  border-color: #0076c8;
+  background: rgba(0, 51, 102, 0.7) !important;
+  width: 100px;
+  border-radius: 0 18px 0 0;
+  // color: #0099ff !important;
+  height: 27px;
+  border: 1px solid #0099ff;
+}
+.task-card-container
+  .ant-tabs-card.ant-tabs-top
+  > .ant-tabs-nav
+  .ant-tabs-tab-active {
+  width: 100px;
+  height: 27px;
+  border-radius: 0 18px 0 0;
+  background: #0076c8 !important;
+  color: #0099ff;
+  border: 1px solid #0099ff;
+}
 .flood-model-right {
   color: white;
   text-align: center;
@@ -160,20 +179,18 @@
 }
 
 .flood-model-left-box {
-  
   .radar-box {
     height: 50vh;
   }
   .task-card-container {
-    
     .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
       border: 1px solid #003366;
     }
     .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab {
-      border-radius: 2px 20px 0 0;
-      border: 0px;
-      color: white;
-      background: #1890ff;
+      // border-radius: 2px 20px 0 0;
+      // border: 0px;
+      // color: white;
+      // background: #1890ff;
     }
     .task-card-container
       .ant-tabs-card.ant-tabs-top

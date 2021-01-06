@@ -517,6 +517,7 @@ export const modelChart = (data, id, yname, xvalue, yvalue) => {
       },
     },
     xAxis: {
+      boundaryGap: false,
       type: "category",
       data: xdata.length ? xdata : [],
       name: "",
