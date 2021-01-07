@@ -1,17 +1,15 @@
-import * as types from "./types";
+import { SET_RAIN_STORM } from "./types";
 const initState = {
-  tasMaterialkUser: [],
-  tableNumber: [],
-  tableInput: [],
-  taskUpdateMidal: false,
-  taskTimeLine: [],
-  feedTaskModalVisible: false,
+  rainStorm: [],
 };
-let selected = [];
 
-export default function taskReducers2(state = {}, action) {
+export default function taskReducers2(state = { initState }, action) {
   let newState = Object.assign({}, state);
   switch (action.type) {
+    case SET_RAIN_STORM:
+      newState = { ...newState, rainStorm: action.data };
+      break;
+
     default:
       break;
   }

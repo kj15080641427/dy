@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Login from "../Login";
-import Home from "./subpages/Home/Home";
+// import Home from "./subpages/Home/Home";
 import ChartGroup from "./subpages/taskEvent/chartGroup";
 import DataMonitoring from "./subpages/dataMonitoring";
 import FloodManagement from "./subpages/floodManagement";
@@ -9,6 +9,7 @@ import System from "./subpages/System";
 import BasicData from "./subpages/BasicData";
 import SiteInfo from "./subpages/site";
 import History from "./subpages/History/History";
+import PublicSentiment from "./subpages/publicSentiment";
 const NoMatch = () => <div>没有找到该路由</div>;
 
 class ContentRouter extends React.PureComponent {
@@ -30,6 +31,7 @@ class ContentRouter extends React.PureComponent {
         <Route path={path + "/BasicData"} component={BasicData} />
         <Route path={path + "/SiteInfo"} component={SiteInfo} />
         <Route path={path + "/chartGroup"} component={ChartGroup} />
+        <Route path={path + "/publicSentiment"} component={PublicSentiment} />
         <Route component={NoMatch} />
       </Switch>
     );

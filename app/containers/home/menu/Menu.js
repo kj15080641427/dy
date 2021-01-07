@@ -15,20 +15,15 @@ import {
   ExceptionOutlined,
   MailOutlined,
   HistoryOutlined,
-  AliwangwangOutlined
+  AliwangwangOutlined,
 } from "@ant-design/icons";
 import "./style.scss";
 const NewMenus = () => {
   const routerList = [
-    // {
-    //   url: "/home/",
-    //   name: "首页",
-    //   img: <ContainerOutlined />,
-    // },
     {
-      url: '/home/History',
-      name: '历史数据',
-      img : <HistoryOutlined />
+      url: "/home/History",
+      name: "历史数据",
+      img: <HistoryOutlined />,
     },
     {
       url: "/home/DataMonitoring",
@@ -39,6 +34,11 @@ const NewMenus = () => {
       url: "/home/floodManagement",
       name: "防汛管理",
       img: <CloudOutlined />,
+    },
+    {
+      url: "/home/publicSentiment",
+      name: "舆情监测",
+      img: <FundViewOutlined />,
     },
     {
       url: "/home/BasicData",
@@ -60,7 +60,7 @@ const NewMenus = () => {
       url: "/home/System",
       name: "系统设置",
       img: <SettingOutlined />,
-    }
+    },
   ];
   return (
     <div className="menu-layout">

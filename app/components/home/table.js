@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Input, Button, Form, Modal, Radio, Popconfirm } from "antd";
+import { Table, Button, Radio, Popconfirm } from "antd";
 import { CloseCircleOutlined, FormOutlined } from "@ant-design/icons";
 
 export default (props) => {

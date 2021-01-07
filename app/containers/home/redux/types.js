@@ -105,3 +105,10 @@ export const FEED_TASK_MODAL = "FEED_TASK_MODAL";
 //获取行政区域
 export const GET_AREA = "GET_AREA";
 export const SET_AREA = "SET_AREA";
+
+//舆情
+export const GET_RAIN_STORM = "GET_RAIN_STORM";
+export const SET_RAIN_STORM = "SET_RAIN_STORM";
+
+export const GET_RAIN_STORM_NUM = "GET_RAIN_STORM_NUM";
+export const SET_RAIN_STORM_NUM = "SET_RAIN_STORM_NUM";

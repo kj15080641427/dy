@@ -217,13 +217,43 @@ function* getArea() {
       const areaTree = [
         {
           title: "东营市",
-          value: '370500',
+          value: "370500",
           children: list,
         },
       ];
       yield put({
         type: types.SET_AREA,
         data: areaTree,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+//获取舆情
+function* getRainStorm({ data = { size: 10, current: 1, monitor: 2 } }) {
+  try {
+    const result = yield call(req.getRainStormReq, data);
+    if ((result.code = successCode)) {
+      yield put({
+        type: types.SET_RAIN_STORM,
+        data: result.data,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+//获取舆情主题数量
+function* getRainStormType() {
+  try {
+    const result = yield call(req.getRainStormNum, {});
+    if ((result.code = successCode)) {
+      yield put({
+        type: types.SET_RAIN_STORM_NUM,
+        data: result.data,
       });
     }
   } catch (e) {
@@ -242,5 +272,7 @@ export default function* management() {
     takeEvery(types.ADD_SITE_RELATION, addSiteRelation),
     takeEvery(types.GET_DICT, getDict),
     takeEvery(types.GET_AREA, getArea),
+    takeEvery(types.GET_RAIN_STORM, getRainStorm),
+    takeEvery(types.GET_RAIN_STORM_NUM, getRainStormType),
   ]);
 }

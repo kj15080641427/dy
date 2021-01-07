@@ -409,3 +409,18 @@ export const getArea = (data) => {
     data,
   };
 };
+
+//获取舆情
+export const getRainStorm = (data) => {
+  return {
+    type: types.GET_RAIN_STORM,
+    data,
+  };
+};
+//获取舆情主题数量
+export const getRainStormType = (data) => {
+  return {
+    type: types.GET_RAIN_STORM_NUM,
+    data,
+  };
+};

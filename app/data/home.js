@@ -571,3 +571,13 @@ export function getVideoOnline(data) {
 export function getArea(data) {
   return fetchJSONData("POST", "/base/area/query", data);
 }
+
+
+//舆情/暴雨
+export function getRainStormReq(data) {
+  return fetchJSONData("POST", "/base/Rainstorm/page", data);
+}
+//主题数量
+export function getRainStormNum(data) {
+  return fetchJSONData("POST", "/base/Rainstorm/query", data);
+}

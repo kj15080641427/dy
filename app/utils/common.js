@@ -2,7 +2,7 @@ import { createHashHistory } from "history";
 import { message } from "antd";
 const hashHistory = createHashHistory();
 
-const isV2 = 1;
+const isV2 = 0;
 export const URL = isV2 ? "/api/v2" : "/api";
 
 export function hasClassName(obj, name) {

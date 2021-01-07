@@ -34,7 +34,7 @@ class Ponding extends Base {
           >
             积水深度：
           </label>
-          {Number(model.z).toFixed(1)}cm
+          {Number(model.z * 100).toFixed(1)}cm
         </div>
         <div className="m-ovl-line">
           <label
