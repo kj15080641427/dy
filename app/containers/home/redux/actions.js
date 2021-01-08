@@ -424,3 +424,10 @@ export const getRainStormType = (data) => {
     data,
   };
 };
+//设置舆情loading
+export const getRainStormLoading = (data) => {
+  return {
+    type: types.SET_RAIN_STORM_LOADING,
+    data,
+  };
+};

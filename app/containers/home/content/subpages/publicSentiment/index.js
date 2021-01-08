@@ -8,7 +8,6 @@ import {
   Button,
   Checkbox,
   Form,
-  Row,
   Col,
 } from "antd";
 import DYTable from "@app/components/home/table";
@@ -16,6 +15,7 @@ import "./index.scss";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../redux/actions";
 import { connect } from "react-redux";
+import moment from "moment";
 
 const { RangePicker } = DatePicker;
 const obj = {
@@ -24,12 +24,15 @@ const obj = {
 };
 
 const RainStorm = (props) => {
-  const { rainStorm, rainStormNum } = props;
+  const { rainStorm, rainStormNum, rainStormLoading } = props;
   const { getRainStorm, getRainStormType } = props.actions;
   const [visible, setVisible] = useState(false);
   const [typeVisible, setTypeVisible] = useState(false);
   const [info, setInfo] = useState({});
-
+  const [status, setStatus] = useState("");
+  const [label, setLabel] = useState("");
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
   useEffect(() => {
     getRainStorm();
     getRainStormType();
@@ -73,7 +76,33 @@ const RainStorm = (props) => {
   const closeModal = () => setVisible(false);
   const closeTypeModal = () => setTypeVisible(false);
   const onFinish = (values) => {
-    console.log(values);
+    if (values) {
+      let start = moment(values[0]).format("YYYY-MM-DD HH:mm:ss");
+      let end = moment(values[1]).format("YYYY-MM-DD HH:mm:ss");
+      setStartTime(start);
+      setEndTime(end);
+      getRainStorm({
+        size: 10,
+        current: 1,
+        monitor: 2,
+        states: status,
+        label: label,
+        beginTime: start,
+        endTime: end,
+      });
+    } else {
+      setStartTime("");
+      setEndTime("");
+      getRainStorm({
+        size: 10,
+        current: 1,
+        monitor: 2,
+        states: status,
+        label: label,
+        beginTime: "",
+        endTime: "",
+      });
+    }
   };
   return (
     <div className="piblic-sentiment">
@@ -93,7 +122,7 @@ const RainStorm = (props) => {
         </Button>
       </div>
       <div>
-        <Form onFinish={onFinish} className="public-sentiment-selected">
+        <Form className="public-sentiment-selected">
           <Col>
             <Form.Item label="时间" name="time">
               <RangePicker onChange={onFinish}></RangePicker>
@@ -101,13 +130,47 @@ const RainStorm = (props) => {
           </Col>
           <Col className="public-type">
             <Form.Item label="话题" name="label">
-              <Select onChange={onFinish}></Select>
+              <Select
+                defaultValue=""
+                onChange={(e) => {
+                  setLabel(e);
+                  getRainStorm({
+                    size: 10,
+                    current: 1,
+                    monitor: 2,
+                    states: status,
+                    label: e,
+                    beginTime: startTime,
+                    endTime: endTime,
+                  });
+                }}
+                value={label}
+              >
+                <Select.Option value="">全部</Select.Option>
+                <Select.Option value="1">话题1</Select.Option>
+                <Select.Option value="2">话题2</Select.Option>
+              </Select>
             </Form.Item>
           </Col>
           <Col className="public-state">
             <Form.Item label="状态" name="states">
-              <Select defaultValue="0" onChange={onFinish}>
-                <Select.Option value="0">全部</Select.Option>
+              <Select
+                defaultValue=""
+                onChange={(e) => {
+                  setStatus(e);
+                  getRainStorm({
+                    size: 10,
+                    current: 1,
+                    monitor: 2,
+                    states: e,
+                    label: label,
+                    beginTime: startTime,
+                    endTime: endTime,
+                  });
+                }}
+                value={status}
+              >
+                <Select.Option value="">全部</Select.Option>
                 <Select.Option value="1">未处理</Select.Option>
                 <Select.Option value="2">已研判</Select.Option>
               </Select>
@@ -118,10 +181,10 @@ const RainStorm = (props) => {
       <DYTable
         columns={columns}
         showEdit={false}
-        // loading={""}
+        loading={rainStormLoading}
         dataSource={rainStorm?.records}
         rowkey={(row) => row.rainstormId}
-        total={999}
+        total={rainStorm?.total}
       ></DYTable>
       <Modal
         footer={null}
@@ -230,10 +293,10 @@ const RainStorm = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state, "S");
   return {
     rainStorm: state.management.rainStorm,
     rainStormNum: state.management.rainStormNum,
+    rainStormLoading: state.management.rainStormLoading,
   };
 };
 

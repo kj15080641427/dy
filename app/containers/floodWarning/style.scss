@@ -1,6 +1,28 @@
 @import "@app/variable.scss";
 
 .flood-warning-display {
+  .pie-title-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    div {
+      width: 60px;
+    }
+    label {
+      width: 60px;
+      display: flex;
+      justify-content: center;
+    }
+    .number-color {
+      color: rgb(0, 153, 255);
+      font-size: 34px;
+      font-weight: bold;
+    }
+  }
   .ant-table-pagination.ant-pagination {
     margin: 10px 0;
   }
@@ -89,28 +111,7 @@
         width: 120px;
       }
     }
-    .pie-title-flex {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      color: white;
-      margin-top: 10px;
-      margin-bottom: 20px;
-      font-size: 15px;
-      div {
-        width: 60px;
-      }
-      label {
-        width: 60px;
-        display: flex;
-        justify-content: center;
-      }
-      .number-color {
-        color: rgb(0, 153, 255);
-        font-size: 34px;
-        font-weight: bold;
-      }
-    }
+ 
   }
   //
   .card-container {

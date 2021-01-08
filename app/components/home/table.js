@@ -48,7 +48,7 @@ export default (props) => {
     size: "default",
     current: current,
     showQuickJumper: true,
-    showSizeChanger: showSizeChangeer,
+    // showSizeChanger: showSizeChangeer,
     onChange: (current) => changePage(current),
     pageSize: size,
     onShowSizeChange: (current, pageSize) => {

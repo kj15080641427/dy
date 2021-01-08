@@ -186,7 +186,6 @@ function* getDict() {
   try {
     const result = yield call(req.getSiteDict, { current: 1, size: -1 });
     if (result.code == successCode) {
-      let type = {};
       let obj = {};
       result.data.records.map((item) => {
         obj[item.stateRelationID] = item.name;
@@ -234,11 +233,19 @@ function* getArea() {
 //获取舆情
 function* getRainStorm({ data = { size: 10, current: 1, monitor: 2 } }) {
   try {
+    yield put({
+      type: types.SET_RAIN_STORM_LOADING,
+      data: true,
+    });
     const result = yield call(req.getRainStormReq, data);
     if ((result.code = successCode)) {
       yield put({
         type: types.SET_RAIN_STORM,
         data: result.data,
+      });
+      yield put({
+        type: types.SET_RAIN_STORM_LOADING,
+        data: false,
       });
     }
   } catch (e) {

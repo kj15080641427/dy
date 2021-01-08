@@ -27,6 +27,7 @@ const initState = {
   dispatchMaterial: [],
   materialWarehouseID: [],
   rainStorm: [],
+  rainStormLoading: false,
 };
 
 export default function management(state = initState, action) {
@@ -94,6 +95,9 @@ export default function management(state = initState, action) {
       break;
     case types.SET_RAIN_STORM_NUM:
       newState = { ...newState, rainStormNum: action.data };
+      break;
+    case types.SET_RAIN_STORM_LOADING:
+      newState = { ...newState, rainStormLoading: action.data };
       break;
     default:
       break;

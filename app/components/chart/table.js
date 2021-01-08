@@ -109,11 +109,13 @@ export class TableShow extends React.PureComponent {
       rowKey,
       number,
       locale,
-      scroll
+      scroll,
+      showHeader = true,
     } = this.props;
 
     return (
       <Table
+        showHeader={showHeader}
         scroll={scroll}
         locale={locale}
         size="small"
