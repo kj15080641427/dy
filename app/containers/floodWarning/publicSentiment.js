@@ -9,11 +9,12 @@ const PublicSent = (props) => {
   const { getRainStorm } = props.actions;
 
   useEffect(() => {
-    getRainStorm();
+    getRainStorm({ size: -1, current: 1, monitor: 2 });
   }, []);
 
   return (
     <TableShow
+      pageSize={13}
       rowKey="rainstormId"
       showHeader={false}
       columns={[
