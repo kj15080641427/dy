@@ -118,6 +118,7 @@ export default (props) => {
         onFinish={onRainFinish}
         reset={reset}
         exportData={rainExportData}
+        minData={0}
       ></FilterCondition>
       <DYTable
         showSizeChangeer={false}

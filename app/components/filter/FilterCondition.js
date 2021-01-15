@@ -22,7 +22,7 @@ const FilterCondition = (props) => {
   const [min, setMin] = useState();
   const formRef = useRef();
   const { getDict, getArea } = props.actions;
-  const { dataFromDict, onFinish, reset, exportData, area } = props;
+  const { dataFromDict, onFinish, reset, exportData, area, minData } = props;
 
   useEffect(() => {
     getDict();
@@ -63,6 +63,7 @@ const FilterCondition = (props) => {
               placeholder={"最小值"}
               disabled={!rangeFlag}
               value={min}
+              min={minData}
               onChange={(e) => {
                 setMin(e);
               }}

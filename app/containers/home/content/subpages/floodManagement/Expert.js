@@ -84,10 +84,22 @@ const rowSelect = [
       </Select>
     ),
   },
+  {
+    label: "性别",
+    name: "sex",
+    element: (
+      <Select size="large" style={{ width: 200 }} defaultValue={0}>
+        <Option value={0}>全部</Option>
+        <Option value={1}>男</Option>
+        <Option value={2}>女</Option>
+      </Select>
+    ),
+  },
 ];
 
 const Expert = (props) => (
   <ReadOnlyTable
+    hasRowSelection={false}
     getAll
     rowSelection={props.rowSelection}
     get={getFloodControlExpertAll}

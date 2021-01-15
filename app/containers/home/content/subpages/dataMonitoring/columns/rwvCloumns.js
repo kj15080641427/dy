@@ -1,6 +1,18 @@
 import React from "react";
 import { Input } from "antd";
 import moment from "moment";
+const ly = {
+  1: "水文局",
+  2: "气象局",
+  3: "水务局",
+  4: "农村基层防汛监测预警平台",
+  5: "河道",
+  6: "河口区水利局",
+  7: "水务局河道",
+  22: "黄河东营境内水位站点",
+  23: "人工录入",
+  25: "经开区",
+};
 //水位
 export const water = [
   {
@@ -11,8 +23,9 @@ export const water = [
   },
   {
     title: "数据来源",
-    dataIndex: "dataSourceDesc",
-    render: (value) => value || "-",
+    dataIndex: "siteWaterLevels",
+    render: (value) =>
+      value && value[0] ? ly[value[0].siteDictionariesID] : "-",
   },
   {
     title: "地址",
@@ -23,14 +36,14 @@ export const water = [
   {
     title: "流域",
     ellipsis: true,
-    dataIndex: "flowarea",
-    render: (value) => value || "-",
+    dataIndex: "siteWaterLevels",
+    render: (value) => (value && value[0] ? value[0]?.bsnm : "-"),
   },
   {
     title: "河流名称",
     ellipsis: true,
-    dataIndex: "rivername",
-    render: (value) => value || "-",
+    dataIndex: "siteWaterLevels",
+    render: (value) => (value && value[0] ? value[0]?.rvnm : "-"),
   },
   {
     title: "纬度",
@@ -186,8 +199,9 @@ export const flood = [
   {
     title: "数据来源",
     ellipsis: true,
-    dataIndex: "dataSourceDesc",
-    render: (value) => (value === null ? "-" : value),
+    dataIndex: "siteWaterPoints",
+    render: (value) =>
+      value && value[0] ? ly[value[0].siteDictionariesID] : "-",
   },
   {
     title: "地址",
@@ -206,10 +220,10 @@ export const flood = [
     render: (value) => (value === null ? "-" : value),
   },
   {
-    title: "水深(m)",
+    title: "水深(cm)",
     dataIndex: "riverwaterdataList",
     width: 120,
-    render: (value) => (value && value[0] ? value[0].z : "--"),
+    render: (value) => (value && value[0] ? value[0].z * 100 : "--"),
   },
   {
     title: "更新时间",

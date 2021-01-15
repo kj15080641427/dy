@@ -91,8 +91,8 @@ const History = (props) => {
     });
   }, []);
   const reset = () => {
-    setRainType("0");
-    let req = type[0];
+    setRainType("1");
+    let req = type[1];
     req({
       current: 1,
       size: 10,
@@ -174,6 +174,7 @@ const History = (props) => {
             onFinish={onRainFinish}
             reset={reset}
             exportData={rainExportData}
+            minData={0}
           >
             <Select
               defaultValue="1"

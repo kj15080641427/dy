@@ -23,11 +23,12 @@ const ReadOnlyTable = (props) => {
     selected,
     readOnlyLoading,
     rowSelection,
+    hasRowSelection = true,
     type, //getall 参数
     footer,
     initSelect = { current: 1, size: 10 },
     handPage,
-    scroll
+    scroll,
   } = props;
   useEffect(() => {
     readOnlyTableGetAll({
@@ -108,16 +109,18 @@ const ReadOnlyTable = (props) => {
           };
         }}
         rowSelection={
-          rowSelection
+          hasRowSelection
             ? rowSelection
-            : {
-                fixed: true,
-                type: "radio",
-                selectedRowKeys: selected?.[rowKey],
-                onChange: (e) => {
-                  selectTable({ key: rowKey, value: e });
-                },
-              }
+              ? rowSelection
+              : {
+                  fixed: true,
+                  type: "radio",
+                  selectedRowKeys: selected?.[rowKey],
+                  onChange: (e) => {
+                    selectTable({ key: rowKey, value: e });
+                  },
+                }
+            : null
         }
         columns={columns}
         dataSource={getAll ? readOnlyData || [] : readOnlyData?.records || []}

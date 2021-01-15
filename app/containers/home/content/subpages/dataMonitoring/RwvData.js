@@ -40,43 +40,74 @@ const rwvData = (props) => {
   };
   //站点在线图
   const waterOnline = (name = "雨量") => {
-    let okcount = 0;
-    let nocount = 0;
-    let thday = 0;
-    let startdata = new Date().getTime();
-    readOnlyData?.map((item) => {
-      if (item[config.onlineListName] && item[config.onlineListName][0]) {
-        if (
-          startdata - new Date(item?.[config.onlineListName][0].tm).getTime() >=
-          1000 * 60 * 60 * 24 * 3
-        ) {
-          thday++;
+    if (name == "视频") {
+      let line = 0;
+      let onLine = 0;
+      console.log(readOnlyData, "readOnlyDatareadOnlyData");
+      readOnlyData?.map((item) => {
+        if (item.isOnline == "0") {
+          onLine = onLine + 1;
         } else {
-          okcount++;
+          line = line + 1;
         }
-      } else {
-        nocount++;
-      }
-    });
-    initecharts(
-      "online",
-      `${name}站点在线统计图`,
-      ["最近更新", "三天前", "离线"],
-      [
-        {
-          value: okcount,
-          name: "最近更新",
-        },
-        {
-          value: thday,
-          name: "三天前",
-        },
-        {
-          value: nocount,
-          name: "离线",
-        },
-      ]
-    );
+      });
+      initecharts(
+        "online",
+        `${name}站点在线统计图`,
+        ["在线", "离线"],
+        [
+          {
+            value: onLine,
+            name: "在线",
+          },
+          {
+            value: line,
+            name: "离线",
+          },
+        ]
+      );
+    } else {
+      let okcount = 0;
+      let nocount = 0;
+      let thday = 0;
+
+      let startdata = new Date().getTime();
+      console.log(readOnlyData, "readOnlyDatareadOnlyData");
+      readOnlyData?.map((item) => {
+        if (item[config.onlineListName] && item[config.onlineListName][0]) {
+          if (
+            startdata -
+              new Date(item?.[config.onlineListName][0].tm).getTime() >=
+            1000 * 60 * 60 * 24 * 3
+          ) {
+            thday++;
+          } else {
+            okcount++;
+          }
+        } else {
+          nocount++;
+        }
+      });
+      initecharts(
+        "online",
+        `${name}站点在线统计图`,
+        ["在线", "离线"],
+        [
+          {
+            value: okcount,
+            name: "最近更新",
+          },
+          {
+            value: thday,
+            name: "三天前",
+          },
+          {
+            value: nocount,
+            name: "离线",
+          },
+        ]
+      );
+    }
   };
   //获取来源
   useEffect(() => {
@@ -144,7 +175,7 @@ const rwvData = (props) => {
               <ReadonlyTable
                 scroll={{ x: "1150px" }}
                 getAll
-                rowSelection={{}}
+                hasRowSelection={false}
                 get={getAllVideo}
                 columns={video}
                 rowSelect={rowSelect}
@@ -156,7 +187,7 @@ const rwvData = (props) => {
                 scroll={{ x: "1150px" }}
                 getAll
                 handPage={{}}
-                rowSelection={{}}
+                hasRowSelection={false}
                 get={getBasicsAll}
                 type={config.type}
                 columns={config.columns}
