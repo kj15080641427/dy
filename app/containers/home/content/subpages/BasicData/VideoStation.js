@@ -66,7 +66,7 @@ class VideoStation extends React.Component {
     const { dict } = this.props;
     const columns = [
       {
-        title: "站点ID",
+        title: "站点名称",
         dataIndex: "stateRelationID",
       },
       {
@@ -77,7 +77,7 @@ class VideoStation extends React.Component {
         },
       },
       {
-        title: "关联站点ID",
+        title: "关联站点名称",
         dataIndex: "relationID",
         ellipsis: true,
       },

@@ -47,6 +47,7 @@ class BaseLayout extends React.Component {
       handleQuery,
       formatList = [],
       stringList = [],
+      showImport = false,
     } = this.props;
     storeLabel = storeKey;
     const {
@@ -106,7 +107,6 @@ class BaseLayout extends React.Component {
     };
     // 提交
     function onFinish(values) {
-      console.log(values, "====");
       formatList.forEach((item) => {
         values = {
           ...values,
@@ -119,7 +119,6 @@ class BaseLayout extends React.Component {
           [item]: String(values[item]),
         };
       });
-      // values = {}
       values[keyId]
         ? addOrUpdateBase({
             request: upd,
@@ -182,8 +181,18 @@ class BaseLayout extends React.Component {
               添加
             </Button>
           ) : null}
+          {showImport ? (
+            <Button
+              onClick={() => {
+                //  showModal();
+              }}
+            >
+              导入
+            </Button>
+          ) : (
+            ""
+          )}
         </div>
-        {console.log(this.props[storeKey]?.records, "storeKey", storeKey)}
         <DYTable
           showEdit={showEdit}
           rowSelection={rowSelection}
@@ -203,6 +212,7 @@ class BaseLayout extends React.Component {
           update={update}
         ></DYTable>
         <Modal
+          width="1000px"
           title=" "
           visible={visible}
           forceRender={true}
@@ -215,7 +225,7 @@ class BaseLayout extends React.Component {
           <DYForm
             showCancel
             cancelClick={() => hideModal()}
-            id={keyId}
+            keyId={keyId}
             formRef={this.formRef}
             name={storeKey}
             formItem={formItem}

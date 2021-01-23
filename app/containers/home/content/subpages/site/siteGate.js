@@ -8,46 +8,35 @@ import {
   addSiteGate,
   updSiteGate,
 } from "@app/data/home";
-
-const formItem = [
-  {
-    label: "名称",
-    name: "name",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-  {
-    label: "主建筑物级别",
-    name: "buidinglevel",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-  {
-    label: "所在灌区",
-    name: "irrigateregion",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-
-  {
-    label: "管理部门",
-    name: "ownermanagement",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-  {
-    label: "管理单位",
-    name: "management",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-  {
-    label: "河流名称",
-    name: "rivername",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
+const items = [
+  { label: "水闸名称", value: "name" },
+  { label: "水闸类别", value: "type", isDict: "type" },
+  { label: "所在灌区", value: "irrigateregion" },
+  { label: "所在河流", value: "rivername" },
+  { label: "工程等级", value: "projectlevel" },
+  { label: "管理单位", value: "management" },
+  { label: "归口部门", value: "ownermanagement" },
+  { label: "建成时间", value: "buildtime" },
+  { label: "闸站编号", value: "stcd" },
+  { label: "地区编码", value: "region" },
+  { label: "经度", value: "lon" },
+  { label: "纬度", value: "lat" },
+  { label: "所在水资源三级区名称", value: "waterresource3" },
+  { label: "主要建筑物级别", value: "buidinglevel" },
+  { label: "是否为闸站工程", value: "isgateproject", isDict: "whether" },
+  { label: "是否为套闸工程", value: "isdualproject", isDict: "whether" },
+  { label: "是否完成划界", value: "isbordered", isDict: "whether" },
+  { label: "是否完成确权", value: "isauthorized", isDict: "whether" },
 ];
+let formItems = items.map((item) => {
+  return {
+    label: item.label,
+    name: item.value,
+    rules: [{ required: true }],
+    ele: <Input></Input>,
+  };
+});
+
 // 表格配置
 const columns = [
   {
@@ -89,7 +78,7 @@ class SiteGate extends React.Component {
         upd={updSiteGate} // 更新数据接口
         del={delSiteGate} // 删除数据接口
         columns={columns} // 表格配置项
-        formItem={formItem} // 表单配置项
+        formItem={formItems} // 表单配置项
         keyId={"gateID"} // 数据的唯一ID
         storeKey={"siteGate"} // store中的key值
         rowSelect={rowSelect}

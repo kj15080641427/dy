@@ -15,7 +15,7 @@ class Home extends React.PureComponent {
       collapsed: false,
     };
     this.onCollapsClick = this.onCollapsClick.bind(this);
-    console.log("this.props.match", this.props.match, this.props.location);
+    // console.log("this.props.match", this.props.match, this.props.location);
   }
   toggle = () => {
     this.setState({

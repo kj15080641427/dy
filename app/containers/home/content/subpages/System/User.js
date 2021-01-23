@@ -83,7 +83,7 @@ const columns = [
   },
 ];
 const rowSelect = [
-  { label: "名称", name: "realname", element: <Input></Input> },
+  { label: "用户姓名", name: "realname", element: <Input></Input> },
 ];
 class SiteGate extends React.Component {
   constructor(props) {

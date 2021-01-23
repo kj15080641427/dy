@@ -15,6 +15,14 @@ import {
 import { Input, Radio, DatePicker, Select } from "antd";
 
 const { Option } = Select;
+const obj = {
+  32: "市水务局防汛仓库",
+  33: "东营区防汛仓库",
+  34: "垦利区防汛仓库",
+  35: "河口区防汛仓库",
+  36: "利津县防汛仓库",
+  37: "广饶县防汛仓库",
+};
 const columns = [
   {
     title: "名称",
@@ -25,12 +33,17 @@ const columns = [
     dataIndex: "spec",
   },
   {
-    title: "计量单位",
-    dataIndex: "company",
-  },
-  {
     title: "存储总量",
     dataIndex: "saveTotal",
+  },
+  {
+    title: "所属仓库",
+    dataIndex: "materialWarehouseId",
+    render: (e) => obj[e],
+  },
+  {
+    title: "计量单位",
+    dataIndex: "company",
   },
   {
     title: "价值(元)",
@@ -48,14 +61,15 @@ const columns = [
     title: "过期时间",
     dataIndex: "expireDate",
     width: 160,
-    render: (expireDate) => (expireDate === null ? "暂无数据" : expireDate),
+    render: (expireDate) =>
+      expireDate === null ? "暂无数据" : expireDate.slice(0, 10),
   },
   {
     title: "出厂日期",
     dataIndex: "manufactureDate",
     width: 160,
     render: (manufactureDate) =>
-      manufactureDate === null ? "暂无数据" : manufactureDate,
+      manufactureDate === null ? "暂无数据" : manufactureDate.slice(0, 10),
   },
   {
     title: "预警数量",
@@ -79,13 +93,20 @@ const MaterialsMange = () => {
   const ele = (
     <Select style={{ width: 200 }}>
       {data.map((item) => (
-        <Option value={item.materialWarehouseId} key={item.materialWarehouseId}>
+        <Option
+          value={Number(item.materialWarehouseId)}
+          key={item.materialWarehouseId}
+        >
           {item.name}
         </Option>
       ))}
     </Select>
   );
-
+  var a = 1000;
+  for (let i = 0; i++; i < 1000) {
+    a = a * 1.1;
+  }
+  console.log(a, "IIi");
   const rowSelect = [
     { label: "名称", name: "name", element: <Input></Input> },
     {
@@ -167,6 +188,7 @@ const MaterialsMange = () => {
       storeKey={"material"} // store中的key值
       rowSelect={rowSelect}
       formatList={["expireDate", "manufactureDate"]}
+      showImport={true}
     />
   );
 };

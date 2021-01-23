@@ -8,50 +8,37 @@ import {
   addSiteReservoir,
   updSiteReservoir,
 } from "@app/data/home";
-const formItem = [
-  {
-    label: "名称",
-    name: "name",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-  {
-    label: "高程系统",
-    name: "elevationsystem",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-  {
-    label: "水口管理单位",
-    name: "ownermanagement",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-  {
-    label: "工程建设情况",
-    name: "projectstatus",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-  {
-    label: "设计灌溉面积(万亩)",
-    name: "areairrigate",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-  {
-    label: "河流名称",
-    name: "rivername",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
-  {
-    label: "水库调节性能",
-    name: "rvadjust",
-    rules: [{ required: true }],
-    ele: <Input></Input>,
-  },
+const items = [
+  { label: "水库名称", value: "name", rules: true },
+  { label: "所在河流", value: "rivername" },
+  { label: "水库类型", value: "rvtype", isDict: "rvType" },
+  { label: "管理单位", value: "management" },
+  { label: "主坝类型(材料)", value: "rvbartypem", isDict: "rvbartypem" },
+  { label: "主坝类型(结构)", value: "rvbartypes", isDict: "rvbartypes" },
+  { label: "调节性能", value: "rvadjust" },
+  { label: "主坝坝高（m）", value: "barheight" },
+  { label: "主坝坝长（m）", value: "barlen" },
+  { label: "最大泄洪流量（m3/S）", value: "floodmax" },
+  { label: "主坝级别", value: "barlevel" },
+  { label: "工程等别", value: "projectlevel" },
+  { label: "高程系统", value: "elevationsystem" },
+  { label: "坝顶高程(m)", value: "bartopheight" },
+  { label: "正常蓄水位(m)", value: "waterlevelnormal" },
+  { label: "死水位(m)", value: "waterleveldeath" },
+  { label: "总库容（万m3）", value: "capacitymax" },
+  { label: "死库容(万m3)", value: "capacitydeath" },
+  { label: "设计年供水量(万m3)", value: "waterproviddesign" },
+  { label: "设计灌溉面积(万亩)", value: "waterprovidactualsrs" },
+  { label: "建成时间", value: "buildtime" },
 ];
+let formItems = items.map((item) => {
+  return {
+    label: item.label,
+    name: item.value,
+    rules: [{ required: item.rules }],
+    ele: <Input></Input>,
+  };
+});
 // 表格配置
 const columns = [
   {
@@ -99,7 +86,7 @@ class SiteReservoir extends React.Component {
           keyId={"reservoirID"} // 数据的唯一ID
           storeKey={"siteReservoir"} // store中的key值. 要与 mapStatetoProps 中的key相同
           columns={columns} // 表格配置项
-          formItem={formItem} // 表单配置项
+          formItem={formItems} // 表单配置项
           rowSelect={rowSelect}
         ></BaseLayout>
       </>

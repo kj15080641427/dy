@@ -7,15 +7,11 @@ import {
   SettingOutlined,
   FundViewOutlined,
   CloudOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  ContainerOutlined,
   BankOutlined,
-  TeamOutlined,
   ExceptionOutlined,
-  MailOutlined,
   HistoryOutlined,
   AliwangwangOutlined,
+  ThunderboltOutlined,
 } from "@ant-design/icons";
 import "./style.scss";
 const NewMenus = () => {
@@ -42,7 +38,7 @@ const NewMenus = () => {
     },
     {
       url: "/home/BasicData",
-      name: "基础信息",
+      name: "基础配置",
       img: <ExceptionOutlined />,
     },
     {
@@ -55,6 +51,12 @@ const NewMenus = () => {
       url: "/home/chartGroup",
       name: "群聊管理",
       img: <AliwangwangOutlined />,
+    },
+
+    {
+      url: "/home/dispatch",
+      name: "应急调度",
+      img: <ThunderboltOutlined />,
     },
     {
       url: "/home/System",

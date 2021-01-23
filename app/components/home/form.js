@@ -11,6 +11,7 @@ const DYForm = (props) => {
     cancelClick,
     showDelete = false,
     deleteClick,
+    keyId,
   } = props;
 
   return (
@@ -30,7 +31,7 @@ const DYForm = (props) => {
         </Form.Item>
       ))}
 
-      {/*<Form.Item name={id}/>*/}
+      <Form.Item name={keyId} />
       <Form.Item style={{ textAlign: "right" }}>
         <Space>
           <Button type="primary" htmlType="submit">

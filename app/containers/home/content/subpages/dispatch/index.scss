@@ -1,0 +1,12 @@
+.dispatch-layout {
+  display: flex;
+}
+.dispaych-search-layout {
+  display: flex;
+  #input {
+    width: 200px;
+  }
+  button {
+    margin-left: 20px;
+  }
+}

@@ -257,7 +257,7 @@ BaseStation.propTypes = {
 };
 
 const parentMapStateToProps = (state) => {
-  console.log(state, "STATE");
+  // console.log(state, "STATE");
   return {
     dict: state.currency.dict,
     modalVisible: state.management.modalVisible,

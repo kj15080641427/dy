@@ -3,28 +3,14 @@
  */
 import React from "react";
 import "./style.scss";
-import { withRouter, BrowserRouter, Route, Link } from "react-router-dom";
-import {
-  Button,
-  Layout,
-  Header,
-  Tags,
-  Icon,
-  Dropdown,
-  Avatar,
-  Menu,
-} from "antd";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as actions from "@app/redux/actions/home";
-import setsys from "@app/resource/setsys.png";
+import { withRouter } from "react-router-dom";
+import { Layout, Icon, Dropdown, Avatar } from "antd";
 import UserMenu from "./UserMenu";
 
 import {
   MenuFoldOutlined,
   HomeOutlined,
   MenuUnfoldOutlined,
-  SettingFilled,
   UserOutlined,
 } from "@ant-design/icons";
 import FullScreen from "../components/FullScreen";
@@ -45,12 +31,12 @@ class Head extends React.PureComponent {
     this.context.router.history.push("/login");
   }
   render() {
-    const { tags } = this.props;
-    const goback = () => {
-      props.history.push("/login");
-    };
-    console.log("11", actions);
-    console.log("11", this.props.history.push);
+    // const { tags } = this.props;
+    // const goback = () => {
+    //   props.history.push("/login");
+    // };
+    // console.log("11", actions);
+    // console.log("11", this.props.history.push);
     const DropdownList = (
       <UserMenu></UserMenu>
       //       <Menu className="drop-list">
@@ -65,7 +51,7 @@ class Head extends React.PureComponent {
       // </Menu.Item>
       //       </Menu>
     );
-    console.log(localStorage.getItem("userInfo"));
+    // console.log(localStorage.getItem("userInfo"));
     return (
       <div className="top-header">
         <div className="top-header-inner">
@@ -152,7 +138,6 @@ class Head extends React.PureComponent {
     // localStorage.setItem('theme', JSON.stringify({ type: checked ? 'dark' : 'light' }));
     this.onClose();
   };
-  componentDidMount() {}
   btnClick() {
     if (this.props.collapsClick) {
       this.props.collapsClick();
