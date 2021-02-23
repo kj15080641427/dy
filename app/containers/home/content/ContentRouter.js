@@ -11,6 +11,7 @@ import SiteInfo from "./subpages/site";
 import History from "./subpages/History/History";
 import PublicSentiment from "./subpages/publicSentiment";
 import Dispatch from "./subpages/dispatch";
+import DispatchTree from "./subpages/dispatch/index2";
 
 const NoMatch = () => <div>没有找到该路由</div>;
 
@@ -35,6 +36,7 @@ class ContentRouter extends React.PureComponent {
         <Route path={path + "/chartGroup"} component={ChartGroup} />
         <Route path={path + "/publicSentiment"} component={PublicSentiment} />
         <Route path={path + "/dispatch"} component={Dispatch} />
+        <Route path={path + "/dispatchTree"} component={DispatchTree} />
         <Route component={NoMatch} />
       </Switch>
     );

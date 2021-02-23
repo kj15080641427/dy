@@ -1,7 +1,7 @@
 import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 // import Monitor from '@app/containers/monitor/Monitor';
-import Home from '@app/containers/home/Index';
+import Home from "@app/containers/home/Index";
 // import AsyncComp from "@app/components/asyncComponent";
 import AsyncHome from "@app/containers/home/Index";
 import rainMonitor from "@app/containers/rain/rain";
@@ -31,54 +31,8 @@ import TaskTimeLine from "@app/containers/taskEvent/taskTimeLine";
 import DeviceManager from "@app/containers/rain/device";
 import DataCenter from "@app/containers/dataCenter/";
 import SilentLogin from "./containers//home/silentLogin";
-
+import Navi from "./containers/navi/index";
 import "./style.scss";
-// const AsyncHome = AsyncComp(() => import(/*webpackChunkName:'Index'*/"@app/containers/home/Index").then((res) => { removeLoading(); return res; }));
-// const AsyncLogin = AsyncComp(() => import(/*webpackChunkName:'Login'*/"@app/containers/home/Login").then((res) => { removeLoading(); return res; }));
-// const AsyncMonitor = AsyncComp(() => import(/*webpackChunkName:'monitor'*/"@app/containers/monitor/Monitor").then((res) => { removeLoading(); return res; }));
-// const rainMonitor = AsyncComp(() => import(/*webpackChunkName:'rain'*/"@app/containers/rain/rain").then((res) => { removeLoading(); return res; }));
-// const waterMonitor = AsyncComp(() => import(/*webpackChunkName:'water'*/"@app/containers/water/water").then((res) => { removeLoading(); return res; }));
-// const easyFloodMonitor = AsyncComp(() => import(/*webpackChunkName:'easyFlood'*/"@app/containers/easyFlood/easyFlood").then((res) => { removeLoading(); return res; }));
-// const videoMonitor = AsyncComp(() =>
-//   import(/*webpackChunkName:'video'*/ "@app/containers/video/video").then(
-//     (res) => {
-//       removeLoading();
-//       return res;
-//     }
-//   )
-// );
-// const floodWarningMonitor = AsyncComp(() => import(/*webpackChunkName:'floodWarning'*/"@app/containers/floodWarning/floodWarning").then((res) => { removeLoading(); return res; }));
-// const AsyncNoLogin = AsyncComp(() =>
-//   import(/*webpackChunkName:'NoLogin'*/ "@app/containers/home/NoLogin").then(
-//     (res) => {
-//       removeLoading();
-//       return res;
-//     }
-//   )
-// );
-// function removeLoading() {
-//   let $loading = document.getElementById("loading");
-//   if ($loading) {
-//     $loading.parentNode.removeChild($loading);
-//   }
-// }
-// const AsyncDisplay = AsyncComp(() =>
-//   import(/*webpackChunkName:'display'*/ "@app/containers/display/Display").then(
-//     (res) => {
-//       removeLoading();
-//       console.log(res, "RESRSERE");
-//       return res;
-//     }
-//   )
-// );
-// const AsyncNotices = AsyncComp(() =>
-//   import(/*webpackChunkName:'display'*/ "@app/containers/notices/notices").then(
-//     (res) => {
-//       removeLoading();
-//       return res;
-//     }
-//   )
-// );
 
 export class App extends React.Component {
   render() {
@@ -87,8 +41,6 @@ export class App extends React.Component {
       if ($loading) {
         $loading.parentNode.removeChild($loading);
       }
-      // let $loading = document.getElementById("loading");
-      // $loading.parentNode.removeChild($loading);
     }
     return (
       <HashRouter>
@@ -96,9 +48,6 @@ export class App extends React.Component {
           <Route exact path={`/login`} component={AsyncNoLogin} />
           <Route exact path={`/`} component={AsyncLogin} />
           <Route exact path={`/signIn`} component={SingIn} />
-          {/* {localStorage.getItem("username") === "admin1" ? null : (
-              <Route path={`/home`} component={AsyncHome} />
-            )} */}
           <Route path="/index" component={AsyncMonitor} />
           <Route path={`/rain`} component={rainMonitor} />
           <Route path={`/easyFlood`} component={easyFloodMonitor} />
@@ -123,7 +72,7 @@ export class App extends React.Component {
           <Route path={`/dataCenter`} component={DataCenter} />
           <Route path={`/home`} component={Home} />
           <Route path={`/silentLogin`} component={SilentLogin} />
-          {/* <Route component={AsyncLogin} /> */}
+          <Route path={`/Navi`} component={Navi} />
         </Switch>
       </HashRouter>
     );

@@ -97,7 +97,7 @@ module.exports = {
       //     ]
       // },
       {
-        test: /\.(woff|woff2|svg|eot|ttf|png|svg)$/,
+        test: /\.(woff|woff2|svg|eot|ttf|png|svg|jpg)$/,
         loader: "file-loader",
         options: {
           name: "static/[name].[hash:5].[ext]",

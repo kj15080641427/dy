@@ -1,9 +1,30 @@
-import React, { useState } from "react";
-import { Table, Form, Button, Modal, Card, Input } from "antd";
+import React, { useState, useEffect } from "react";
+import { Table, Form, Button, Modal, Card, Input, message } from "antd";
+import {
+  addProgramme,
+  getProgramme,
+  updProgramme,
+  delProgramme,
+  queryProgramme,
+  //子方案
+  addProgrammeSon,
+  getProgrammeSon,
+  updProgrammeSon,
+  delProgrammeSon,
+} from "@app/data/home";
 import "./index.scss";
 export default () => {
   const [visible, setVisible] = useState(false);
-
+  const [dataSource, setDataSource] = useState([]);
+  const [sonPrograme, setSonPrograme] = useState([]);
+  useEffect(() => {
+    getProgramme({
+      size: 10,
+      current: 1,
+    }).then((res) => {
+      setDataSource(res.data.records);
+    });
+  }, []);
   const columns = [
     {
       title: "方案名称",
@@ -11,36 +32,51 @@ export default () => {
     },
     {
       title: "适用类型",
-      dataIndex: "name2",
+      dataIndex: "type",
     },
     {
       title: "创建时间",
-      dataIndex: "name3",
+      dataIndex: "createTime",
     },
     {
       title: "维护时间",
-      dataIndex: "name4",
+      dataIndex: "repairTime",
     },
     {
       width: "200px",
       title: "操作",
       dataIndex: "",
-      render: () => (
+      render: (_, row) => (
         <div>
           <Button
             onClick={() => {
+              console.log(row);
+              queryProgramme(row.programmeId).then((res) => {
+                setSonPrograme(res.data.programmeSonList);
+              });
               setVisible(true);
             }}
           >
             编辑
           </Button>
-          <Button>删除</Button>
+          <Button
+            onClick={() => {
+              delProgramme(row.programmeId).then((res) =>
+                message.info("删除成功")
+              );
+            }}
+          >
+            删除
+          </Button>
         </div>
       ),
     },
   ];
   const onSearch = (values) => {
     console.log(values);
+  };
+  const add = (values) => {
+    addProgramme(values);
   };
   return (
     <div>
@@ -64,36 +100,37 @@ export default () => {
           </Button>
         </div>
       </Form>
-      <Table
-        columns={columns}
-        dataSource={[
-          {
-            name: "1",
-            name2: "2",
-            name3: "3",
-            name4: "4",
-          },
-        ]}
-        rowKey="name"
-      ></Table>
+      <Table columns={columns} dataSource={dataSource} rowKey="name"></Table>
       <Modal visible={visible} onCancel={() => setVisible(false)}>
         <div className="dispatch-layout">
           <div>
-            {[1, 2, 3, 4].map((item, index) => (
-              <Card key={index} title="组织指挥" extra={<a>删除</a>}>
-                <div>指挥组织</div>
-                <div>哈哈哈哈哈卡刷点卡还是</div>
+            {sonPrograme?.map((item, index) => (
+              <Card
+                key={index}
+                title={item.name}
+                extra={
+                  <a
+                    onClick={() => {
+                      delProgrammeSon(item.programmeSonId);
+                    }}
+                  >
+                    删除
+                  </a>
+                }
+              >
+                <div>{item.content}</div>
               </Card>
             ))}
           </div>
           <Card title="调度方案">
-            <Form>
-              <Form.Item label="标题">
+            <Form onFinish={add}>
+              <Form.Item label="方案名称">
                 <Input></Input>
               </Form.Item>
-              <Form.Item label="">
+              <Form.Item label="适用类型">
                 <Input></Input>
               </Form.Item>
+              <Button htmlType="submit">新增</Button>
             </Form>
           </Card>
         </div>

@@ -3,6 +3,7 @@ import { TableShow } from "../../components/chart/table";
 import { bindActionCreators } from "redux";
 import * as actions from "../home/redux/actions";
 import { connect } from "react-redux";
+import addimg from "../../resource/增加.svg";
 
 const PublicSent = (props) => {
   const { rainStorm } = props;
@@ -18,11 +19,23 @@ const PublicSent = (props) => {
       rowKey="rainstormId"
       showHeader={false}
       columns={[
-        { name: "内容", dataIndex: "text", width: "80%" },
+        {
+          name: "标签",
+          dataIndex: "",
+          width: "5%",
+          render: () => <img width={20} height={20} src={addimg}></img>,
+        },
+        {
+          name: "内容",
+          dataIndex: "text",
+          width: "70%",
+          render: (e) =>
+            e.length <= 24 ? e.slice(0, 4) : `${e.slice(0, 24)}...`,
+        },
         {
           name: "时间",
           dataIndex: "time",
-          width: "20%",
+          width: "25%",
           render: (e) => e.slice(0, 10),
         },
       ]}

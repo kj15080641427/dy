@@ -572,7 +572,6 @@ export function getArea(data) {
   return fetchJSONData("POST", "/base/area/query", data);
 }
 
-
 //舆情/暴雨
 export function getRainStormReq(data) {
   return fetchJSONData("POST", "/base/Rainstorm/page", data);
@@ -580,4 +579,42 @@ export function getRainStormReq(data) {
 //主题数量
 export function getRainStormNum(data) {
   return fetchJSONData("POST", "/base/Rainstorm/query", data);
+}
+
+//添加方案
+export function addProgramme(data) {
+  return fetchJSONData("POST", "/base/programme/save", data);
+}
+//查询方案
+export function getProgramme(data) {
+  return fetchJSONData("POST", "/base/programme/page", data);
+}
+//修改方案
+export function updProgramme(data) {
+  return fetchJSONData("POST", "/base/programme/update", data);
+}
+//删除方案
+export function delProgramme(data) {
+  return fetchJSONData("POST", "/base/programme/delete", data);
+}
+//预览方案
+export function queryProgramme(data) {
+  return fetchJSONData("POST", "/base/programme/query", data);
+}
+
+//添加子方案
+export function addProgrammeSon(data) {
+  return fetchJSONData("POST", "/api/base/programmeSon/save", data);
+}
+//查询子方案
+export function getProgrammeSon(data) {
+  return fetchJSONData("POST", "/api/base/programmeSon/page", data);
+}
+//修改子方案
+export function updProgrammeSon(data) {
+  return fetchJSONData("POST", "/api/base/programmeSon/update", data);
+}
+//删除子方案
+export function delProgrammeSon(data) {
+  return fetchJSONData("POST", "/api/base/programmeSon/delete", data);
 }

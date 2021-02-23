@@ -59,12 +59,57 @@
 .site-layout .site-layout-background {
   background: #fff;
 }
-.container {
+.login-body-layout {
   width: 100%;
   height: 100%;
-  background: url(../../resource/login/loginbank.png) no-repeat center center;
+  background: url(../../resource/navi/login.png) no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .ant-input-affix-wrapper {
+    border: 1px solid #1175be;
+    border-radius: 5px;
+  }
+}
+.login-body-card {
+  display: flex;
+  width: 800px;
+  height: 400px;
+  opacity: 0.9;
+}
+.login-card-left {
+  border-radius: 20px 0 0 20px;
+  background: rgba(17, 117, 190, 0.8);
+  width: 50%;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 50px;
+  div {
+    text-align: center;
+  }
+}
+.login-card-right {
+  border-radius: 0px 20px 20px 0px;
+  background: white;
+  width: 50%;
+  height: 400px;
+  border: 2px solid rgba(17, 117, 190, 1);
+  
+}
+.login-crad-right-title {
+  margin-top: 20px;
+  text-align: center;
+  color: rgb(0, 107, 185);
+  font-size: 24px;
+  font-weight: bold;
+}
+.login-card-right-input {
+  padding: 24px;
 }
 .swlogo {
   position: absolute;
@@ -95,20 +140,7 @@
   font-size: 25px;
   border-radius: 5px;
 }
-.sbmbotton {
-  width: 100%;
-  height: 100%;
-  padding: 10px 20px;
-  font-size: 25px;
-  border-radius: 5px;
-}
-.inputs {
-  width: 100%;
-  height: 100%;
-  padding: 10px 20px;
-  font-size: 25px;
-  border-radius: 5px;
-}
+
 .content {
   width: 500px;
   height: 615px;
@@ -129,4 +161,23 @@
   button {
     margin-left: 15px;
   }
+}
+
+.inputs {
+  width: 100%;
+  height: 100%;
+  // padding: 10px 20px;
+  font-size: 25px;
+  border-radius: 5px;
+  border: 1px solid rgba(17, 117, 190, 1);
+}
+.sbmbotton {
+  font-size: 25px;
+  border-radius: 15px;
+}
+.login-footer{
+  position: fixed;
+  bottom: 20px;
+  z-index: 99;
+  color: white;
 }

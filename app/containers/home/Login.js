@@ -13,7 +13,7 @@ import * as actions from "@app/redux/actions/home";
 import "./style.scss";
 import { login } from "@app/data/request";
 import dyszhswxt from "@app/resource/login/dyszhswxt.png";
-import swlogo from "@app/resource/login/swlogo.png";
+import titleimg from "@app/resource/navi/1-防汛排涝智慧调度.svg";
 const innerWidth = document.body.clientWidth;
 
 class Login extends Component {
@@ -74,93 +74,93 @@ class Login extends Component {
       }
     };
     return (
-      <div className="container">
-        <img className="swlogo" src={swlogo}></img>
-        <img className="dyszhswxt" src={dyszhswxt}></img>
-        <div className="content">
-          <div className="title">登录</div>
-          <br />
-          <br />
-          <Form
-            name="normal_login"
-            className="login-form"
-            initialValues={{
-              remember: true,
-            }}
-            onFinish={onFinish}
-          >
-            <Form.Item
-              name="username"
-              rules={[
-                {
-                  required: true,
-                  message: "请输入用户名!",
-                },
-              ]}
-            >
-              <Input
-                className="inputs"
-                placeholder="请输入用户名"
-                size="large"
-                prefix={<UserOutlined className="site-form-item-icon" />}
-              />
-            </Form.Item>
-            <br />
-            <Form.Item
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "请输入密码!",
-                },
-              ]}
-            >
-              <Input
-                className="inputs"
-                placeholder="请输入密码"
-                size="large"
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-              />
-            </Form.Item>
-            <Form.Item name="remember" valuePropName="checked">
-              <div style={{ display: "flex" }}>
-                <Select
-                  defaultValue="东营市智慧水务系统"
-                  onChange={(e) => {
-                    this.setState({
-                      selectSystem: e,
-                    });
-                  }}
-                  style={{ flex: 1, marginRight: 16 }}
-                >
-                  <Select.Option value="东营市智慧水务系统">
-                    东营市智慧水务系统
-                  </Select.Option>
-                  <Select.Option value="水质监测系统">
-                  水环境监测与告警系统
-                  </Select.Option>
-                </Select>
-                <Checkbox>
-                  <span className="remenberpass">记住密码</span>
-                </Checkbox>
-              </div>
-            </Form.Item>
-            <br />
-            <br />
-            <br />
-            <br />
-            <Form.Item>
-              <Button
-                size="large"
-                type="primary"
-                htmlType="submit"
-                className="sbmbotton"
+      <div className="login-body-layout">
+        <div className="login-body-card">
+          <div className="login-card-left">
+            <div>
+              <img src={titleimg} width={150} height={150}></img>
+              <div>防汛排涝</div>
+              <div>智慧调度系统</div>
+            </div>
+          </div>
+          <div className="login-card-right">
+            <div className="login-crad-right-title">用户登录</div>
+            <div className="login-card-right-input">
+              <Form
+                name="normal_login"
+                className="login-form"
+                initialValues={{
+                  remember: true,
+                }}
+                onFinish={onFinish}
               >
-                登录
-              </Button>
-            </Form.Item>
-          </Form>
+                <Form.Item
+                  name="username"
+                  rules={[
+                    {
+                      required: true,
+                      message: "请输入用户名!",
+                    },
+                  ]}
+                >
+                  <Input
+                    className="inputs"
+                    placeholder="请输入用户名"
+                    size="large"
+                    prefix={<UserOutlined className="site-form-item-icon" />}
+                  />
+                </Form.Item>
+                <br />
+                <Form.Item
+                  name="password"
+                  rules={[
+                    {
+                      required: true,
+                      message: "请输入密码!",
+                    },
+                  ]}
+                >
+                  <Input
+                    className="inputs"
+                    placeholder="请输入密码"
+                    size="large"
+                    prefix={<LockOutlined className="site-form-item-icon" />}
+                    type="password"
+                  />
+                </Form.Item>
+                <div style={{ textAlign: "right" }}>
+                  <Checkbox>
+                    <span
+                      style={{ color: "#1175be", fontSize: "16px" }}
+                      className="remenberpass"
+                    >
+                      记住密码
+                    </span>
+                  </Checkbox>
+                </div>
+                <br />
+                <br />
+                <Form.Item>
+                  <Button
+                    size="large"
+                    type="primary"
+                    htmlType="submit"
+                    className="sbmbotton"
+                    style={{
+                      borderRadius: "5px",
+                      height: "50px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    登录
+                  </Button>
+                </Form.Item>
+              </Form>
+            </div>
+          </div>
+        </div>
+        <div className="login-footer">
+          技术支持:中国水科院信息中心 联系电话68781215 QQ群80732239
         </div>
       </div>
     );
